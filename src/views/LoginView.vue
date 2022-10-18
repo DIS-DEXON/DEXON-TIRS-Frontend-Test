@@ -3,19 +3,21 @@
     <div class="app-logo-login">
       <img src="/img/logo-dark.png" />
     </div>
-    <div class="login-panel">
+
+    <!-- LOG IN -->
+    <div class="login-panel" v-if="current_tab == 1">
       <div class="app-logo">
         <img :src="appIcon" alt="app icon" />
       </div>
-      <h1>AIM</h1>
-      <label class="sub-title">Asset Integrity Management</label>
+      <h1>DEXON TIMS</h1>
+      <label class="sub-title">Tank Inspection Management System</label>
       <div class="form-login">
         <div class="input-set">
           <input
             class="user"
             type="text"
             placeholder="Username"
-            v-model="formData.username"
+            v-model="formData.signin.username"
             v-on:keyup.enter="SIGN_IN()"
           />
         </div>
@@ -24,19 +26,19 @@
             class="password"
             type="password"
             placeholder="Password"
-            v-model="formData.password"
+            v-model="formData.signin.password"
             v-on:keyup.enter="SIGN_IN()"
           />
         </div>
         <div class="button-set" style="margin-top: 40px">
           <button class="blue" v-on:click="SIGN_IN()">
-            <label>Sign in</label>
+            <label>Sign In</label>
           </button>
         </div>
         <!-- <hr />
         <div class="button-set">
-          <button class="outline-blue">
-            <label>Sign-in option</label>
+          <button class="outline-blue" v-on:click="SIGN_UP_BTN(2)">
+            <label>Create Account</label>
           </button>
         </div> -->
         <div class="help-label">
@@ -44,6 +46,101 @@
         </div>
       </div>
     </div>
+
+    <!-- CREATE ACCOUNT
+    <div class="login-panel" v-if="current_tab == 2">
+      <h1 style="margin-bottom: 20px">Create Account</h1>
+      <div class="form-login">
+        <div class="input-set">
+          <input
+            class="first"
+            type="text"
+            placeholder="Username"
+            v-model="formData.create_account.username"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="middle"
+            type="password"
+            placeholder="Password"
+            v-model="formData.create_account.password"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="last"
+            type="password"
+            placeholder="confirm Password"
+            v-model="formData.create_account.confirm_password"
+          />
+        </div>
+        <div class="button-set" style="margin-top: 40px">
+          <button class="blue" v-on:click="SIGN_UP_BTN(3)">
+            <label>Create Account</label>
+          </button>
+        </div>
+        <hr />
+        <div class="button-set">
+          <button class="outline-blue" v-on:click="SIGN_UP_BTN(1)">
+            <label>Cancel</label>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    SET USER INFO
+    <div class="login-panel" v-if="current_tab == 3">
+      <h1 style="margin-bottom: 20px">User Information</h1>
+      <div class="form-login">
+        <div class="input-set">
+          <input
+            class="first"
+            type="text"
+            placeholder="First Name"
+            v-model="formData.user_info.first_name"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="middle"
+            type="text"
+            placeholder="Middle Name"
+            v-model="formData.user_info.middle_name"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="last"
+            type="text"
+            placeholder="Last Name"
+            v-model="formData.user_info.last_name"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="first"
+            type="text"
+            placeholder="Last Name"
+            v-model="formData.user_info.last_name"
+          />
+        </div>
+        <div class="input-set">
+          <input
+            class="last"
+            type="text"
+            placeholder="Last Name"
+            v-model="formData.user_info.last_name"
+          />
+        </div>
+        <div class="button-set" style="margin-top: 40px">
+          <button class="blue" v-on:click="SIGN_UP()">
+            <label>Continue</label>
+          </button>
+        </div>
+      </div>
+    </div> -->
+
     <PageLoading v-if="isLoading == true" text="Logging In" />
     <div class="bg-filter"></div>
   </div>
@@ -51,10 +148,10 @@
 
 <script>
 //API
-import axios from "/axios.js";
+// import axios from "/axios.js";
 
 //JS
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 
 //UI
 import ViewLayout from "@/layouts/non-sidebar-layout.vue";
@@ -65,13 +162,48 @@ export default {
   components: { PageLoading },
   data() {
     return {
-      formData: {
-        username: "",
-        password: "",
-      },
       appIcon: this.$store.state.appIcon,
       isLoggedIn: localStorage.getItem("user"),
       isLoading: false,
+      loginInfo: {
+        user: {
+          id_user: 1,
+          prefix: "Mr.",
+          first_name: "Peerapong",
+          middle_name: "Simon",
+          last_name: "Thammakaew",
+          role: "staff",
+          phone_no: "+66985155403",
+          email: "peerapong.tmk@dexon-technology.com",
+          employee_no: 1045,
+          profile_picture: null,
+        },
+        token: "golfnarak1234",
+      },
+      current_tab: 1,
+      formData: {
+        signin: {
+          username: "",
+          password: "",
+        },
+        create_account: {
+          username: "",
+          password: "",
+          confirm_password: "",
+          isActive: false,
+        },
+        user_info: {
+          prefix: "",
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          role: "staff",
+          phone_no: "",
+          email: "",
+          employee_no: null,
+          profile_picture: null,
+        },
+      },
     };
   },
   created() {
@@ -80,53 +212,65 @@ export default {
     if (this.isLoggedIn) this.$router.push("/");
   },
   methods: {
-    SIGN_IN() {
-      if (this.formData.username) {
-        if (this.formData.password) {
-          this.isLoading = true;
-          setTimeout(() => {
-            var password = sha256(this.formData.password);
-            var username = this.formData.username.toLowerCase();
+    // SIGN_IN() {
+    //   if (this.formData.username) {
+    //     if (this.formData.password) {
+    //       this.isLoading = true;
+    //       setTimeout(() => {
+    //         var password = sha256(this.formData.password);
+    //         var username = this.formData.username.toLowerCase();
 
-            axios({
-              method: "post",
-              url: "/user/login",
-              data: { username, password },
-            })
-              .then((res) => {
-                if (res.data.user && res.data.token) {
-                  localStorage.setItem("user", JSON.stringify(res.data.user));
-                  localStorage.setItem("token", JSON.stringify(res.data.token));
-                  console.log(res.data.user);
-                  if (res.data.user.role == "ceo") {
-                    this.$router.push("/executive-report");
-                  } else this.$router.push("/");
-                }
-              })
-              .catch((error) => {
-                if (error.response) {
-                  if (error.response.data) {
-                    this.$ons.notification.alert(error.response.data.message);
-                  }
-                  if (error.response.status == 0) {
-                    this.$ons.notification.alert(
-                      "Cannot connect to a server.<br/> Please try again later."
-                    );
-                  }
-                } else {
-                  console.log(error);
-                }
-              })
-              .finally(() => {
-                this.isLoading = false;
-              });
-          }, 500);
-        } else {
-          this.$ons.notification.alert('"Password" cannot be empty');
-        }
-      } else {
-        this.$ons.notification.alert('"Username" cannot be empty');
-      }
+    //         axios({
+    //           method: "post",
+    //           url: "/user/login",
+    //           data: { username, password },
+    //         })
+    //           .then((res) => {
+    //             if (res.data.user && res.data.token) {
+    //               localStorage.setItem("user", JSON.stringify(res.data.user));
+    //               localStorage.setItem("token", JSON.stringify(res.data.token));
+    //               console.log(res.data.user);
+    //               if (res.data.user.role == "ceo") {
+    //                 this.$router.push("/executive-report");
+    //               } else this.$router.push("/");
+    //             }
+    //           })
+    //           .catch((error) => {
+    //             if (error.response) {
+    //               if (error.response.data) {
+    //                 this.$ons.notification.alert(error.response.data.message);
+    //               }
+    //               if (error.response.status == 0) {
+    //                 this.$ons.notification.alert(
+    //                   "Cannot connect to a server.<br/> Please try again later."
+    //                 );
+    //               }
+    //             } else {
+    //               console.log(error);
+    //             }
+    //           })
+    //           .finally(() => {
+    //             this.isLoading = false;
+    //           });
+    //       }, 500);
+    //     } else {
+    //       this.$ons.notification.alert('"Password" cannot be empty');
+    //     }
+    //   } else {
+    //     this.$ons.notification.alert('"Username" cannot be empty');
+    //   }
+    // },
+    SIGN_IN() {
+      localStorage.setItem("user", JSON.stringify(this.loginInfo.user));
+      localStorage.setItem("token", JSON.stringify(this.loginInfo.token));
+      // if (this.loginInfo.user.role == "ceo") {
+      //   this.$router.push("/executive-report");
+      // } else this.$router.push("/");
+      this.$router.push("/");
+    },
+    SIGN_UP() {},
+    SIGN_UP_BTN(opt) {
+      this.current_tab = opt;
     },
   },
 };
@@ -136,7 +280,7 @@ export default {
 @import "@/style/main.scss";
 
 #page-login {
-  background-image: url("/public/img/main-bg.png");
+  background-image: url("/public/img/main-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -151,7 +295,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 0;
-    // background: linear-gradient(180deg, #2759a8 0%, rgba(39, 89, 168, 0) 100%);
+    background: linear-gradient(180deg, #2759a8 0%, rgba(39, 89, 168, 0) 100%);
   }
 }
 .page-container {
@@ -159,13 +303,12 @@ export default {
   height: 100%;
 }
 .login-panel {
-  width: 300px;
-  max-width: 300px;
+  width: 360px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
+  padding: 30px 20px;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0px 2px 25px 2px rgba(0, 0, 0, 0.06);
@@ -179,7 +322,7 @@ export default {
     font-style: normal;
     font-weight: 510;
     line-height: 30px;
-    color: $web-font-color-blue;
+    color: $web-font-color-black;
     text-align: center;
     margin: 0;
     margin-top: 20px;
@@ -224,6 +367,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 30px;
+  z-index: 999;
   img {
     width: 100%;
     object-fit: contain;
@@ -255,10 +399,16 @@ export default {
       font-weight: 400;
       border-radius: 6px;
     }
-    .user {
+    .user,
+    .first {
       border-radius: 6px 6px 0px 0px;
     }
-    .password {
+    .middle {
+      border-radius: 0px;
+      border-width: 0px 1px 1px 1px;
+    }
+    .password,
+    .last {
       border-radius: 0px 0px 6px 6px;
       border-width: 0px 1px 1px 1px;
     }

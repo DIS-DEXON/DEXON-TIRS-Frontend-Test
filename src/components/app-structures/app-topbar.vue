@@ -22,7 +22,10 @@
           v-on:click="SHOW_POPOVER($event, 'down', true)"
           style="padding-right: 0px"
         >
-          <span> {{ user.firstname }} {{ user.lastname }} </span>
+          <span>
+            {{ user.prefix }} {{ user.first_name }} {{ user.middle_name }}
+            {{ user.last_name }}
+          </span>
           <div class="topbar-photo">
             <img :src="user.profile_picture" v-if="user.profile_picture" />
             <img
@@ -102,7 +105,8 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    this.user = JSON.parse(localStorage.getItem("user"));
   },
   mounted() {},
   updated() {},

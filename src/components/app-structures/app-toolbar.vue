@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  name: "toolbar",
+  name: "app-toolbar",
   props: {
     pageName: String,
     pageSubName: String,

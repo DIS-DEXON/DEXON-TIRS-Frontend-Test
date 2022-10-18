@@ -1,93 +1,8 @@
 <template>
   <div class="app-sidebar">
-    <div
-      class="item-container"
-      v-if="
-        user.role == 'ceo' || user.role == 'manager' || user.role == 'admin'
-      "
-    >
-      <div class="section-label"><label>Executive Management</label></div>
-      <router-link
-        v-for="item in sidebarMenu.executiveManagement"
-        :key="item.id"
-        :to="item.link"
-      >
-        <v-ons-toolbar-button class="item">
-          <!-- <i :class="item.icon"></i> -->
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
-    <div
-      class="item-container"
-      v-if="
-        user.role == 'staff' || user.role == 'manager' || user.role == 'admin'
-      "
-    >
-      <div class="section-label"><label>Project Manager</label></div>
-      <router-link
-        v-for="item in sidebarMenu.projectManager"
-        :key="item.id"
-        :to="item.link"
-      >
-        <v-ons-toolbar-button class="item">
-          <!-- <i :class="item.icon"></i> -->
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
-    <div
-      class="item-container"
-      v-if="
-        user.role == 'staff' || user.role == 'manager' || user.role == 'admin'
-      "
-    >
-      <div class="section-label"><label>Record</label></div>
-      <router-link
-        v-for="item in sidebarMenu.record"
-        :key="item.id"
-        :to="item.link"
-      >
-        <v-ons-toolbar-button class="item">
-          <!-- <i :class="item.icon"></i> -->
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
-    <div
-      class="item-container"
-      v-if="
-        user.role == 'staff' || user.role == 'manager' || user.role == 'admin'
-      "
-    >
-      <div class="section-label"><label>Contact</label></div>
-      <router-link
-        v-for="item in sidebarMenu.contact"
-        :key="item.id"
-        :to="item.link"
-      >
-        <v-ons-toolbar-button class="item">
-          <!-- <i :class="item.icon"></i> -->
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
-    <div
-      class="item-container"
-      v-if="
-        user.role == 'staff' || user.role == 'manager' || user.role == 'admin'
-      "
-    >
-      <div class="section-label"><label>Other</label></div>
-      <router-link
-        v-for="item in sidebarMenu.other"
-        :key="item.id"
-        :to="item.link"
-      >
+    <div class="item-container">
+      <div class="section-label"><label>Information</label></div>
+      <router-link v-for="item in sidebarMenu" :key="item.id" :to="item.link">
         <v-ons-toolbar-button class="item">
           <!-- <i :class="item.icon"></i> -->
           <img :src="item.icon" />
@@ -100,20 +15,14 @@
 
 <script>
 export default {
-  name: "sidebar",
+  name: "app-sidebar",
   mounted() {},
   data() {
     return {
-      currentPath: this.$route.path,
-      currentPathAlias: this.$route.alias,
-      sidebarMenu: this.$store.state.appsList,
+      sidebarMenu: this.$store.state.sidebarList,
     };
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-  },
+  computed: {},
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div id="footer-label">
     <div class="wrapper">
-      <p>Asset Integrity Management (BETA)</p>
+      <p>Tank Inspection Management System (TIMS)</p>
       <p>Copyright 2022 © Dexon Technology PLC.</p>
     </div>
   </div>
@@ -13,15 +13,7 @@ export default {
   props: {
     option: String,
   },
-  computed: {
-    isLoginPage() {
-      var path = this.$route.path;
-      if (path == "/login") return true;
-      else {
-        return false;
-      }
-    },
-  },
+  computed: {},
 };
 </script>
 

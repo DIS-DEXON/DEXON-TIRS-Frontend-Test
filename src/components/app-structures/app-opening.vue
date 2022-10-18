@@ -7,7 +7,7 @@
 
       <hash-loader
         class="loader"
-        color="#eb1851"
+        color="#1e1450"
         :loading="true"
         :size="40"
         sizeUnit="px"

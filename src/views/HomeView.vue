@@ -4,29 +4,23 @@
       <div class="page-container">
         <div class="wrapper">
           <div class="left-col">
-            <div class="photo">
-              <img :src="user.profile_picture" v-if="user.profile_picture" />
-              <img
-                src="/img/default_profile_picture.png"
-                v-if="!user.profile_picture"
-              />
-            </div>
             <div class="detail">
               <div class="name">
-                <h2>{{ user.firstname }}</h2>
+                <h2>
+                  <span class="hl">T</span>ank
+                  <span class="hl">I</span>nspection
+                  <span class="hl">M</span>anagement
+                  <span class="hl">S</span>ystem
+                </h2>
                 <h2>{{ user.lastname }}</h2>
               </div>
-              <div class="desc" v-if="user.position">
-                <label>{{ user.position }}, {{ user.department }}</label>
+              <!-- <div class="desc">
+                <label>{{ user.role }}, {{ user.department }}</label>
                 <label>DITT-{{ user.employee_no }}</label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="right-col">
-            <v-ons-toolbar-button v-on:click="GO_TO('dos')">
-              <span>Dexon Omnia System (DOS) </span>
-              <i class="las la-laptop"></i>
-            </v-ons-toolbar-button>
             <v-ons-toolbar-button v-on:click="GO_TO('/account')">
               <span>My Account</span>
               <i class="las la-user-circle"></i>
@@ -34,22 +28,22 @@
           </div>
         </div>
       </div>
-      <div class="bg-filter"></div>
     </div>
     <div
       class="page-container"
-      style="padding-bottom: 100px"
+      style="padding: 20px 0 40px 0"
       v-if="isLoading == false"
     >
-      <div v-if="this.user.role == 'ceo' || this.user.role == 'admin'">
+      <!-- <div v-if="this.user.role != 'manager'"> -->
+      <div>
         <div class="section-label" v-if="showSectionLabel == true">
-          <h2 class="page-section-label">Executive Summary</h2>
+          <h2 class="page-section-label">Management</h2>
         </div>
         <div class="app-drawer-wrapper">
           <div
             class="app-item-wrapper"
-            v-for="item in appsList.executiveSummary"
-            :key="item.name"
+            v-for="item in appsList.managementApps"
+            :key="item.id"
           >
             <div
               class="app-item"
@@ -61,81 +55,70 @@
             </div>
           </div>
         </div>
-        <hr v-if="this.user.role == 'manager'" />
       </div>
-      <div v-if="this.user.role == 'manager' || this.user.role == 'admin'">
-        <div class="section-label" v-if="showSectionLabel == true">
-          <h2 class="page-section-label">Executive Management</h2>
-        </div>
-        <div class="app-drawer-wrapper">
-          <div
-            class="app-item-wrapper"
-            v-for="item in appsList.executiveManagement"
-            :key="item.name"
-          >
-            <div
-              class="app-item"
-              v-on:click="OPEN_APP(item)"
-              v-if="item.isActive == true"
-            >
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
+    </div>
+    <div class="page-container sheet">
+      <h2>Clients</h2>
+      <DxDataGrid
+        id="dx-table table-client"
+        :data-source="clientList"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="false"
+        :row-alternation-enabled="true"
+      >
+        <DxColumn
+          data-field="created_time"
+          :width="0"
+          caption=""
+          sort-order="asc"
+        />
+        <DxColumn
+          data-field=""
+          :width="100"
+          caption="Logo"
+          cell-template="CLIENT_LOGO"
+        />
+        <template #CLIENT_LOGO="{ data }">
+          <div class="client_logo">
+            <img :src="data.data.logo" />
+          </div>
+        </template>
+        <DxColumn data-field="company_name" caption="Client Name" />
+        <DxColumn
+          data-field="status"
+          :width="200"
+          caption="Last Updated Date"
+        />
+        <DxColumn :width="50" caption="" cell-template="cell-button-set" />
+        <template #cell-button-set="{ data }">
+          <div class="table-btn-group">
+            <div class="table-btn" v-on:click="VIEW_INFO(data)">
+              <i class="las la-search blue"></i>
             </div>
           </div>
-        </div>
-        <hr v-if="this.user.role == 'manager'" />
-      </div>
-      <div v-if="this.user.role != 'ceo'">
-        <div class="section-label" v-if="showSectionLabel == true">
-          <h2 class="page-section-label">Applications</h2>
-        </div>
-        <div class="app-drawer-wrapper">
-          <div
-            class="app-item-wrapper"
-            v-for="item in appsList.projectManager"
-            :key="item.name"
-          >
-            <div
-              class="app-item"
-              v-on:click="OPEN_APP(item)"
-              v-if="item.isActive == true"
-            >
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
-            </div>
-          </div>
-          <div
-            class="app-item-wrapper"
-            v-for="item in appsList.record"
-            :key="item.name"
-          >
-            <div class="app-item" v-on:click="OPEN_APP(item)">
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
-            </div>
-          </div>
-          <div
-            class="app-item-wrapper"
-            v-for="item in appsList.contact"
-            :key="item.name"
-          >
-            <div class="app-item" v-on:click="OPEN_APP(item)">
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
-            </div>
-          </div>
-          <div
-            class="app-item-wrapper"
-            v-for="item in appsList.other"
-            :key="item.name"
-          >
-            <div class="app-item" v-on:click="OPEN_APP(item)">
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
-            </div>
-          </div>
-        </div>
-      </div>
+        </template>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
+    </div>
+    <div class="page-container" style="padding-top: 40px">
+      <label class="update-label"
+        >Information Updated on: {{ current_date }}</label
+      >
     </div>
     <AppLoading
       :icon="openingApp.icon_menu"
@@ -147,8 +130,22 @@
 </template>
 
 <script>
+//DxDataGrid
+import "devextreme/dist/css/dx.light.css";
+
+import {
+  DxDataGrid,
+  DxSearchPanel,
+  DxScrolling,
+  DxColumn,
+  DxPaging,
+  DxPager,
+  DxExport,
+} from "devextreme-vue/data-grid";
+
 //API
 import axios from "/axios.js";
+import moment from "moment";
 
 //UI
 import AppLoading from "@/components/app-structures/app-opening.vue";
@@ -160,6 +157,15 @@ export default {
   components: {
     AppLoading,
     PageLoading,
+    DxDataGrid,
+    DxSearchPanel,
+    DxScrolling,
+    DxColumn,
+    DxPaging,
+    DxExport,
+    DxPager,
+    // DxEditing,
+    // DxRequiredRule,
   },
   data() {
     return {
@@ -169,17 +175,35 @@ export default {
       openingApp: "",
       showSectionLabel: true,
       user: "",
+      clientList: [
+        {
+          id: 1,
+          logo: "/img/mockup/client.png",
+          company_name: "PTTLNG",
+        },
+        {
+          id: 2,
+          logo: "/img/mockup/client2.jpg",
+          company_name: "CPOC",
+        },
+        {
+          id: 3,
+          logo: "/img/mockup/client3.png",
+          company_name: "PTTEP1",
+        },
+      ],
     };
   },
   created() {
     this.$emit(`update:layout`, ViewLayout);
     this.$store.commit("CLEAR_CURRENT_INAPP");
-    if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    this.user = JSON.parse(localStorage.getItem("user"));
   },
   beforeMount() {
-    if (this.$store.state.user) {
-      this.user = this.$store.state.user;
-    }
+    // if (this.$store.state.user) {
+    //   this.user = this.$store.state.user;
+    // }
   },
   mounted() {},
   methods: {
@@ -247,6 +271,9 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
+    },
+    current_date() {
+      return moment().format("dddd, LL, hh:mm:ss a");
     },
   },
 };
@@ -411,8 +438,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     .left-col {
-      display: grid;
-      grid-template-columns: 96px auto;
       .photo {
         width: 96px;
         height: 96px;
@@ -434,15 +459,22 @@ export default {
         text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
         .name {
           display: flex;
+
           h2 {
             font-style: normal;
             font-weight: 600;
-            font-size: 3em;
-            line-height: 16px;
+            font-size: 24px;
             margin: 0 !important;
+            text-transform: uppercase;
+            letter-spacing: 1pt;
           }
           h2:last-child {
             margin-left: 10px !important;
+          }
+
+          .hl {
+            font-size: 30px;
+            font-weight: 700;
           }
         }
         .desc {
@@ -541,6 +573,31 @@ export default {
         display: none;
       }
     }
+  }
+}
+
+.sheet {
+  padding: 20px;
+  box-shadow: $web-card-shadow;
+  background-color: #fff;
+  border-radius: 6px;
+  width: calc(1280px - 40px);
+}
+
+h2 {
+  margin: 10px 0;
+  font-size: 26px;
+}
+
+.client_logo {
+  width: 100%;
+  max-height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 60px;
+    object-fit: contain;
   }
 }
 </style>

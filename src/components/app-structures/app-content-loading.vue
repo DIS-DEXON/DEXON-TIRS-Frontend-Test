@@ -3,7 +3,7 @@
     <div class="box">
       <hash-loader
         class="custom-class"
-        color="#eb1851"
+        color="#1e1450"
         :loading="true"
         :size="40"
         sizeUnit="px"

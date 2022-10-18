@@ -640,12 +640,6 @@ export default {
   }
 }
 
-.update-label {
-  font-size: 12px;
-  color: $web-font-color-grey;
-  padding-bottom: 60px;
-}
-
 .report-message-display {
   min-height: 200px;
   font-size: 16px;

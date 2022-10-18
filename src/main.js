@@ -8,7 +8,7 @@ import store from './store'
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
 import VueOnsen from 'vue-onsenui';
-var sha256 = require('js-sha256');
+// var sha256 = require('js-sha256');
 import { VueSpinners } from '@saeris/vue-spinners'
 import SignaturePad from 'signature_pad'
 
@@ -30,14 +30,14 @@ Highchart.setOptions({
 Vue.use(HighchartsVue);
 
 Vue.use(VueSpinners)
-Vue.use(require('vue-moment'));
+// Vue.use(require('vue-moment'));
 Vue.use(VueOnsen);
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  sha256,
+  // sha256,
   SignaturePad,
   render: h => h(App)
 }).$mount('#app')
