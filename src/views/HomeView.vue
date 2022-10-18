@@ -29,50 +29,39 @@
         </div>
       </div>
     </div>
-    <div
-      class="page-container"
-      style="padding: 20px 0 40px 0"
-      v-if="isLoading == false && this.user.role == 'admin'"
-    >
-      <!-- <div v-if="this.user.role != 'manager'"> -->
-      <div>
-        <div class="section-label" v-if="showSectionLabel == true">
-          <h2 class="page-section-label">Management</h2>
-        </div>
-        <div class="app-drawer-wrapper">
+    <div class="page-container" v-if="isLoading == false">
+      <div class="section-label" v-if="showSectionLabel == true">
+        <h2 class="page-section-label">Management</h2>
+      </div>
+      <div class="app-drawer-wrapper">
+        <div
+          class="app-item-wrapper"
+          v-for="item in appsList.managementApps"
+          :key="item.id"
+        >
           <div
-            class="app-item-wrapper"
-            v-for="item in appsList.managementApps"
-            :key="item.id"
+            class="app-item"
+            v-on:click="OPEN_APP(item)"
+            v-if="item.isActive == true"
           >
-            <div
-              class="app-item"
-              v-on:click="OPEN_APP(item)"
-              v-if="item.isActive == true"
-            >
-              <img :src="item.icon_menu" />
-              <label>{{ item.name }}</label>
-            </div>
+            <img :src="item.icon_menu" />
+            <label>{{ item.name }}</label>
           </div>
         </div>
       </div>
     </div>
-
     <div class="page-container">
-      <h2>Clients</h2>
       <div class="searchbar-box">
         <input
           type="text"
           name="search"
           size="50"
-          value=""
+          v-model="search_key"
           placeholder="Search client"
           class="query"
-          data-v-1ae928fe=""
-        /><span class="icon" data-v-1ae928fe=""
-          ><i class="la la-search" data-v-1ae928fe=""></i></span
-        ><span class="close" style="display: none" data-v-1ae928fe=""
-          ><i class="la la-close" data-v-1ae928fe=""></i
+        /><span class="icon"><i class="la la-search"></i></span
+        ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
+          ><i class="la la-close"></i
         ></span>
       </div>
       <div class="client-list-grid">
@@ -163,6 +152,7 @@ export default {
           company_name: "Petrofac South East Asia Pte. Ltd",
         },
       ],
+      search_key: null,
     };
   },
   created() {
@@ -234,6 +224,10 @@ export default {
           "_blank"
         );
       } else this.$router.push({ path: path, replace: true });
+    },
+    SEARCH_GET() {},
+    SEARCH_CLEAR() {
+      this.search_key = null;
     },
   },
   computed: {
@@ -352,6 +346,7 @@ export default {
 .page-container {
   position: relative;
   // height: 100%;
+  padding-top: 40px;
 }
 
 .opening-loader {
@@ -368,7 +363,6 @@ export default {
 
 .page-section-label {
   font-size: 1.75em;
-  padding-top: 30px;
   font-style: italic;
   text-transform: capitalize;
   color: #5b5b5b;
@@ -383,22 +377,6 @@ export default {
   @media screen and (max-width: 768px) {
     margin: 0 -20px;
   }
-
-  .bg-filter {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    // background: linear-gradient(
-    //   180deg,
-    //   $dexon-primary-blue 0%,
-    //   rgba(39, 89, 168, 0) 100%
-    // );
-    // backdrop-filter: blur(10px);
-  }
-
   .page-container {
     z-index: 1;
   }
@@ -421,7 +399,6 @@ export default {
         }
       }
       .detail {
-        margin-left: 30px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -547,14 +524,6 @@ export default {
   }
 }
 
-.sheet {
-  padding: 20px;
-  box-shadow: $web-card-shadow;
-  background-color: #fff;
-  border-radius: 6px;
-  width: calc(1280px - 40px);
-}
-
 h2 {
   margin: 10px 0;
   font-size: 26px;
@@ -592,9 +561,9 @@ h2 {
 .searchbar-box {
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+  box-shadow: 0 9px 17px rgb(0 0 0 / 13%);
   border-radius: 6px;
-  height: 40px;
+  height: 60px;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
@@ -631,7 +600,7 @@ h2 {
     right: 25px;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 28px;
+    font-size: 22px;
     color: #d2d2d2;
   }
 }
