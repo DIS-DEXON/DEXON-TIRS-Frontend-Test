@@ -32,7 +32,7 @@
     <div
       class="page-container"
       style="padding: 20px 0 40px 0"
-      v-if="isLoading == false"
+      v-if="isLoading == false && this.user.role == 'admin'"
     >
       <!-- <div v-if="this.user.role != 'manager'"> -->
       <div>
@@ -57,68 +57,41 @@
         </div>
       </div>
     </div>
-    <div class="page-container sheet">
+
+    <div class="page-container">
       <h2>Clients</h2>
-      <DxDataGrid
-        id="dx-table table-client"
-        :data-source="clientList"
-        :selection="{ mode: 'single' }"
-        :hover-state-enabled="true"
-        :allow-column-reordering="true"
-        :show-borders="true"
-        :show-row-lines="false"
-        :row-alternation-enabled="true"
-      >
-        <DxColumn
-          data-field="created_time"
-          :width="0"
-          caption=""
-          sort-order="asc"
-        />
-        <DxColumn
-          data-field=""
-          :width="100"
-          caption="Logo"
-          cell-template="CLIENT_LOGO"
-        />
-        <template #CLIENT_LOGO="{ data }">
+      <div class="searchbar-box">
+        <input
+          type="text"
+          name="search"
+          size="50"
+          value=""
+          placeholder="Search client"
+          class="query"
+          data-v-1ae928fe=""
+        /><span class="icon" data-v-1ae928fe=""
+          ><i class="la la-search" data-v-1ae928fe=""></i></span
+        ><span class="close" style="display: none" data-v-1ae928fe=""
+          ><i class="la la-close" data-v-1ae928fe=""></i
+        ></span>
+      </div>
+      <div class="client-list-grid">
+        <v-ons-card
+          class="client-card"
+          v-for="item in clientList"
+          :key="item.id"
+        >
           <div class="client_logo">
-            <img :src="data.data.logo" />
+            <img :src="item.logo" alt="client logo" />
           </div>
-        </template>
-        <DxColumn data-field="company_name" caption="Client Name" />
-        <DxColumn
-          data-field="status"
-          :width="200"
-          caption="Last Updated Date"
-        />
-        <DxColumn :width="50" caption="" cell-template="cell-button-set" />
-        <template #cell-button-set="{ data }">
-          <div class="table-btn-group">
-            <div class="table-btn" v-on:click="VIEW_INFO(data)">
-              <i class="las la-search blue"></i>
-            </div>
+          <div class="title">{{ item.company_name }}</div>
+          <div class="content">
+            <v-ons-list>
+              <v-ons-list-header>Bindings</v-ons-list-header>
+            </v-ons-list>
           </div>
-        </template>
-        <!-- Configuration goes here -->
-        <!-- <DxFilterRow :visible="true" /> -->
-        <DxScrolling mode="standard" />
-        <DxSearchPanel :visible="true" />
-        <DxPaging :page-size="10" :page-index="0" />
-        <DxPager
-          :show-page-size-selector="true"
-          :allowed-page-sizes="[5, 10, 20]"
-          :show-navigation-buttons="true"
-          :show-info="true"
-          info-text="Page {0} of {1} ({2} items)"
-        />
-        <DxExport :enabled="true" />
-      </DxDataGrid>
-    </div>
-    <div class="page-container" style="padding-top: 40px">
-      <label class="update-label"
-        >Information Updated on: {{ current_date }}</label
-      >
+        </v-ons-card>
+      </div>
     </div>
     <AppLoading
       :icon="openingApp.icon_menu"
@@ -130,19 +103,6 @@
 </template>
 
 <script>
-//DxDataGrid
-import "devextreme/dist/css/dx.light.css";
-
-import {
-  DxDataGrid,
-  DxSearchPanel,
-  DxScrolling,
-  DxColumn,
-  DxPaging,
-  DxPager,
-  DxExport,
-} from "devextreme-vue/data-grid";
-
 //API
 import axios from "/axios.js";
 import moment from "moment";
@@ -157,15 +117,6 @@ export default {
   components: {
     AppLoading,
     PageLoading,
-    DxDataGrid,
-    DxSearchPanel,
-    DxScrolling,
-    DxColumn,
-    DxPaging,
-    DxExport,
-    DxPager,
-    // DxEditing,
-    // DxRequiredRule,
   },
   data() {
     return {
@@ -174,22 +125,42 @@ export default {
       isLoading: false,
       openingApp: "",
       showSectionLabel: true,
-      user: "",
+      user: null,
       clientList: [
         {
           id: 1,
           logo: "/img/mockup/client.png",
-          company_name: "PTTLNG",
+          company_name: "PTT LNG Company Limited",
         },
         {
           id: 2,
           logo: "/img/mockup/client2.jpg",
-          company_name: "CPOC",
+          company_name: "IRPC Public Company Limited",
         },
         {
           id: 3,
           logo: "/img/mockup/client3.png",
-          company_name: "PTTEP1",
+          company_name: "Indorama Eleme Petrochemicals Limited",
+        },
+        {
+          id: 4,
+          logo: "/img/mockup/client.png",
+          company_name: "PTTEP Siam Limited",
+        },
+        {
+          id: 5,
+          logo: "/img/mockup/client2.jpg",
+          company_name: "PTT Exploration and Production Public Company Limited",
+        },
+        {
+          id: 6,
+          logo: "/img/mockup/client3.png",
+          company_name: "Petrofac South East Asia Pte. Ltd",
+        },
+        {
+          id: 7,
+          logo: "/img/mockup/client3.png",
+          company_name: "Petrofac South East Asia Pte. Ltd",
         },
       ],
     };
@@ -591,13 +562,77 @@ h2 {
 
 .client_logo {
   width: 100%;
-  max-height: 60px;
+  height: 100px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
   img {
-    width: 60px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+  }
+}
+
+.client-list-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+}
+
+.client-card {
+  cursor: pointer;
+}
+
+.client-card:hover {
+  transition: all 100ms;
+  transform: scale(1.02);
+}
+
+.searchbar-box {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+  border-radius: 6px;
+  height: 40px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 8px;
+  margin-bottom: 40px;
+  .query {
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
+      "Fira Sans", Roboto, Oxygen, Ubuntu, "Droid Sans", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #000;
+    box-sizing: border-box;
+    padding: 0 30px 0 70px;
+    border: none;
+    background: none;
+    width: 100%;
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    pointer-events: none;
+    transform: translateY(-50%) scaleX(-1);
+    color: #e0e0e0;
+    font-size: 24px;
+  }
+
+  .close {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 28px;
+    color: #d2d2d2;
   }
 }
 </style>
