@@ -179,14 +179,71 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_STATUS(){
-
+    CREATE_STATUS(e){
+      console.log(e);
+      axios({
+        method: "post",
+        url: "/MdApplicableStatus",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.FETCH_LIST();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
     },
-    UPDATE_STATUS(){
-
+    UPDATE_STATUS(e){
+      console.log(e);
+      axios({
+        method: "put",
+        url: "/MdApplicableStatus/" + e.data.id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.FETCH_LIST();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
     },
-    DELETE_STATUS(){
-
+    DELETE_STATUS(e){
+      console.log(e);
+      axios({
+        method: "delete",
+        url: "/MdApplicableStatus/" + e.data.id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.FETCH_LIST();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
     },
   },
 };
