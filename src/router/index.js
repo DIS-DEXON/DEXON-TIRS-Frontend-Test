@@ -80,6 +80,11 @@ const routes = [
         component: () => import('../views/Applications/MasterData/DexonDepartment.vue'),
       },
       {
+        path: 'dexon-position',
+        alias: 'Dexon Position',
+        component: () => import('../views/Applications/MasterData/DexonPosition.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),

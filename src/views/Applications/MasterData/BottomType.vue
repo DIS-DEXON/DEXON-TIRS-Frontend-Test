@@ -166,7 +166,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          if (res.status == 200 && res.data) {
+          if (res.status == 201 && res.data) {
             this.statusList = res.data;
           }
         })
@@ -190,7 +190,7 @@ export default {
         data: e.data,
       })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status == 204) {
             this.FETCH_LIST();
           }
         })
@@ -212,7 +212,7 @@ export default {
         data: e.data,
       })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status == 204) {
             this.FETCH_LIST();
           }
         })

@@ -2,7 +2,7 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="Dexon Department"
+        pageName="Dexon Position"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="false"
         newBtnLabel="New"
@@ -12,8 +12,8 @@
     <div class="pm-page-container">
       <div class="page-container">
         <DxDataGrid
-          id="dexon-department-list"
-          key-expr="id_department"
+          id="dexon-position-list"
+          key-expr="id_position"
           :data-source="statusList"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -21,9 +21,9 @@
           :show-borders="true"
           :show-row-lines="false"
           :row-alternation-enabled="true"
-          @row-inserted="CREATE_DEPT"
-          @row-updated="UPDATE_DEPT"
-          @row-removed="DELETE_DEPT"
+          @row-inserted="CREATE_POSITION"
+          @row-updated="UPDATE_POSITION"
+          @row-removed="DELETE_POSITION"
           @exporting="EXPORT_DATA"
         >
           <DxEditing
@@ -32,8 +32,8 @@
             :allow-adding="true"
             mode="row"
           />
-          <DxColumn data-field="department_desc"
-                    caption="Dexon Department">
+          <DxColumn data-field="position_desc"
+                    caption="Dexon Position">
             <DxRequiredRule />
           </DxColumn>
 
@@ -106,7 +106,7 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Dexon Department",
+      name: "Dexon Position",
       icon: "/img/icon_menu/project_manager/project.png",
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
@@ -159,7 +159,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "/MdDexonDepartment",
+        url: "/MdDexonPosition",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         }
@@ -179,11 +179,11 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_DEPT(e){
+    CREATE_POSITION(e){
       console.log(e);
       axios({
         method: "post",
-        url: "/MdDexonDepartment",
+        url: "/MdDexonPosition",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -201,11 +201,11 @@ export default {
         })
         .finally(() => {});
     },
-    UPDATE_DEPT(e){
+    UPDATE_POSITION(e){
       console.log(e);
       axios({
         method: "put",
-        url: "/MdDexonDepartment/" + e.data.id_department,
+        url: "/MdDexonPosition/" + e.data.id_position,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -223,11 +223,11 @@ export default {
         })
         .finally(() => {});
     },
-    DELETE_DEPT(e){
+    DELETE_POSITION(e){
       console.log(e);
       axios({
         method: "delete",
-        url: "/MdDexonDepartment/" + e.data.id_department,
+        url: "/MdDexonPosition/" + e.data.id_position,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
