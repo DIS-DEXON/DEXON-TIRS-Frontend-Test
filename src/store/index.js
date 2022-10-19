@@ -86,6 +86,7 @@ export default new Vuex.Store({
       noData: "<div class='no-data-box' style='display: flex;justify-content: center;align-items: center;flex-direction: column;color: #a6a6a6;height: 200px;'><div><i class='las la-folder-open' style='margin-right:10px;font-size:20px;'></i><span>No Data</span></div></div>",
     },
     currentViewClient: null,
+    currentViewTank: null,
   },
   getters: {
   },
@@ -174,6 +175,11 @@ export default new Vuex.Store({
     UPDATE_CURRENT_VIEW_CLIENT: (state, payload) => {
       if (payload) {
         state.currentViewClient = payload;
+      }
+    },
+    UPDATE_CURRENT_VIEW_TANK: (state, payload) => {
+      if (payload) {
+        state.currentViewTank = payload;
       }
     }
 

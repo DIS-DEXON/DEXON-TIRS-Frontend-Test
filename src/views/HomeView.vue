@@ -60,7 +60,7 @@
           name="search"
           size="50"
           v-model="search_key"
-          placeholder="Search client"
+          placeholder="client company name"
           class="query"
         /><span class="icon"><i class="la la-search"></i></span
         ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"

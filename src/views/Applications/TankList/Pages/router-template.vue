@@ -3,14 +3,18 @@
     <toolbar
       :pageName="infoTank.tag_no"
       @refreshInfo="FETCH_LIST()"
-      :isBackPath="true"
-      :isBack_specificPath="'/tank/list/' + this.$store.state.currentViewClient"
+      :isBack="true"
       newBtnLabel="New Project Info"
       style="grid-column: span 2"
     />
     <sidebar />
     <div class="pm-page-container">
       <router-view></router-view>
+      <contentLoading
+        text="Loading, please wait..."
+        v-if="isLoading == true"
+        color="#fc9b21"
+      />
     </div>
   </div>
 </template> 
@@ -29,7 +33,7 @@ export default {
   created() {},
   data() {
     return {
-      infoTank: {
+      tankInfo: {
         id_tank: 1,
         plant: "MUDA-01",
         tag_no: "MUDA-FA-001",
@@ -44,9 +48,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pm-page {
-  display: grid;
-  grid-template-columns: 240px calc(100vw - 240px);
-  grid-template-rows: 61px calc(100vh - 139px);
-}
 </style>
