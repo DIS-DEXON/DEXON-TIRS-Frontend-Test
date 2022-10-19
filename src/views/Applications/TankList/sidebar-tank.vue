@@ -2,9 +2,12 @@
   <div class="app-sidebar">
     <div class="item-container">
       <div class="section-label"><label>Information</label></div>
-      <router-link v-for="item in sidebarMenu" :key="item.id" :to="item.link">
+      <router-link
+        v-for="item in sidebarList"
+        :key="item.id"
+        :to="item.link + infoTank.id_tank"
+      >
         <v-ons-toolbar-button class="item">
-          <!-- <i :class="item.icon"></i> -->
           <img :src="item.icon" />
           <span>{{ item.name }}</span>
         </v-ons-toolbar-button>
@@ -17,9 +20,36 @@
 export default {
   name: "app-sidebar",
   mounted() {},
+  props: {
+    id_tank: Number,
+  },
   data() {
     return {
-      sidebarMenu: this.$store.state.sidebarList.TankInfo,
+      infoTank: {
+        id_tank: 1,
+        plant: "MUDA-01",
+        tag_no: "MUDA-FA-001",
+        int_status: "normal",
+        app_status: "in-service",
+      },
+      sidebarList: [
+        {
+          id: 1,
+          name: "Tank Information",
+          icon: "/img/icon_sidebar/executive_management/summary.png",
+          icon_menu: "/img/icon_menu/executive_management/summary.png",
+          link: "/tank/info/info/",
+          isActive: true,
+        },
+        {
+          id: 2,
+          name: "Operation Process",
+          icon: "/img/icon_sidebar/executive_management/summary.png",
+          icon_menu: "/img/icon_menu/executive_management/summary.png",
+          link: "/tank/info/operation-process/",
+          isActive: true,
+        },
+      ],
     };
   },
   computed: {},
