@@ -56,6 +56,28 @@ const routes = [
   },
   {
     // EXECUTIVE MANAGEMENT
+    path: '/md',
+    name: 'MasterData',
+    component: () => import('../views/Applications/MasterData/router-template.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (store.state.user.role == 'manager' || store.state.user.role == 'admin') next()
+    //   else next('/')
+    // },
+    children: [
+      {
+        path: 'applicable-status',
+        alias: 'Applicable Status',
+        component: () => import('../views/Applications/MasterData/ApplicableStatus.vue'),
+      },
+      {
+        path: 'list/:id_client',
+        alias: 'Tank List',
+        component: () => import('../views/Applications/TankList/TankList.vue'),
+      }
+    ]
+  },
+  {
+    // EXECUTIVE MANAGEMENT
     path: '/executive-report',
     name: 'Executive Report',
     component: () => import('../views/Applications/ExecutiveManagement/SummaryReport.vue'),
