@@ -75,6 +75,11 @@ const routes = [
         component: () => import('../views/Applications/MasterData/ConstructionCode.vue'),
       },
       {
+        path: 'dexon-department',
+        alias: 'Dexon Department',
+        component: () => import('../views/Applications/MasterData/DexonDepartment.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
