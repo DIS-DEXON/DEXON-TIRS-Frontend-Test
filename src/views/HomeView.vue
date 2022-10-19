@@ -226,6 +226,7 @@ export default {
     },
     VIEW_INFO(id_client) {
       if (id_client) {
+        this.$store.commit("UPDATE_CURRENT_VIEW_CLIENT", id_client);
         this.$router.push("/tank/list/" + id_client);
       }
     },
