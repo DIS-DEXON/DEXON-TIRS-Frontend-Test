@@ -105,6 +105,31 @@ const routes = [
         component: () => import('../views/Applications/MasterData/Product.vue'),
       },
       {
+        path: 'roof-shade',
+        alias: 'Roof Shade',
+        component: () => import('../views/Applications/MasterData/RoofShade.vue'),
+      },
+      {
+        path: 'roof-type',
+        alias: 'Roof Type',
+        component: () => import('../views/Applications/MasterData/RoofType.vue'),
+      },
+      {
+        path: 'tank-integrity-status',
+        alias: 'Tank Integrity Status',
+        component: () => import('../views/Applications/MasterData/TankIntegrityStatus.vue'),
+      },
+      {
+        path: 'tank-internal-pressure',
+        alias: 'Tank Internal Pressure',
+        component: () => import('../views/Applications/MasterData/TankInternalPressure.vue'),
+      },
+      {
+        path: 'tank-status',
+        alias: 'Tank Status',
+        component: () => import('../views/Applications/MasterData/TankStatus.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
