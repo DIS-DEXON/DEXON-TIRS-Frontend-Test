@@ -2,7 +2,7 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="Bottom Type"
+        pageName="Foundation"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="false"
         newBtnLabel="New"
@@ -12,7 +12,7 @@
     <div class="pm-page-container">
       <div class="page-container">
         <DxDataGrid
-          id="bottom-type-list"
+          id="foundation-list"
           key-expr="id"
           :data-source="statusList"
           :selection="{ mode: 'single' }"
@@ -21,9 +21,9 @@
           :show-borders="true"
           :show-row-lines="false"
           :row-alternation-enabled="true"
-          @row-inserted="CREATE_TYPE"
-          @row-updated="UPDATE_TYPE"
-          @row-removed="DELETE_TYPE"
+          @row-inserted="CREATE_LIST"
+          @row-updated="UPDATE_LIST"
+          @row-removed="DELETE_LIST"
           @exporting="EXPORT_DATA"
         >
           <DxEditing
@@ -33,7 +33,7 @@
             mode="row"
           />
           <DxColumn data-field="code"
-                    caption="Bottom Type">
+                    caption="Foundation">
             <DxRequiredRule />
           </DxColumn>
 
@@ -106,7 +106,7 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Applicable Status",
+      name: "Foundation",
       icon: "/img/icon_menu/project_manager/project.png",
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
@@ -130,12 +130,6 @@ export default {
     // },
   },
   methods: {
-    VIEW_INFO(e) {
-      const rowID = e.data.id_project;
-      if (rowID != null) {
-        this.$router.push("/projectmanager/projects/" + rowID);
-      }
-    },
     EXPORT_DATA(e) {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet("Projects");
@@ -159,7 +153,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "/MdBottomType",
+        url: "/MdFoundation",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         }
@@ -179,11 +173,11 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_TYPE(e){
+    CREATE_LIST(e){
       console.log(e);
       axios({
         method: "post",
-        url: "/MdBottomType",
+        url: "/MdFoundation",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -201,11 +195,11 @@ export default {
         })
         .finally(() => {});
     },
-    UPDATE_TYPE(e){
+    UPDATE_LIST(e){
       console.log(e);
       axios({
         method: "put",
-        url: "/MdBottomType/" + e.data.id,
+        url: "/MdFoundation/" + e.data.id,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -223,11 +217,11 @@ export default {
         })
         .finally(() => {});
     },
-    DELETE_TYPE(e){
+    DELETE_LIST(e){
       console.log(e);
       axios({
         method: "delete",
-        url: "/MdBottomType/" + e.data.id,
+        url: "/MdFoundation/" + e.data.id,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
