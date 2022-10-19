@@ -65,6 +65,11 @@ const routes = [
         component: () => import('../views/Applications/MasterData/ApplicableStatus.vue'),
       },
       {
+        path: 'bottom-type',
+        alias: 'Bottom Type',
+        component: () => import('../views/Applications/MasterData/BottomType.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
