@@ -43,9 +43,21 @@ const routes = [
         component: () => import('../views/Applications/TankList/TankList.vue'),
       },
       {
-        path: 'list/:id_client/:id_tank/info',
+        path: 'info',
         alias: 'Tank Info',
-        component: () => import('../views/Applications/TankList/TankInfo.vue'),
+        component: () => import('../views/Applications/TankList/Pages/router-template-page.vue'),
+        children: [
+          {
+            path: 'info/:id_tank',
+            alias: 'Tank Info',
+            component: () => import('../views/Applications/TankList/Pages/Info-Info.vue'),
+          },
+          {
+            path: 'operation-process/:id_tank',
+            alias: 'Tank Info',
+            component: () => import('../views/Applications/TankList/Pages/Info-OperationProcess.vue'),
+          },
+        ]
       },
     ]
   },

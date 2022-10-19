@@ -5,6 +5,10 @@
         <i class="las la-angle-left"></i>
         <span>Back</span>
       </v-ons-toolbar-button>
+      <v-ons-toolbar-button v-if="isBackPath" v-on:click="GO_BACK_TO()">
+        <i class="las la-angle-left"></i>
+        <span>Back</span>
+      </v-ons-toolbar-button>
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
     </div>
@@ -61,6 +65,8 @@ export default {
     pageName: String,
     pageSubName: String,
     isBack: Boolean,
+    isBack_specificPath: String,
+    isBackPath: Boolean,
     isEdit: Boolean,
     isSave: Boolean,
     isDelete: Boolean,
@@ -69,7 +75,11 @@ export default {
     isNewBtn: Boolean,
     newBtnLabel: String,
   },
-  methods: {},
+  methods: {
+    GO_BACK_TO() {
+      this.$router.push(this.isBack_specificPath);
+    },
+  },
 };
 </script>
 
@@ -104,6 +114,7 @@ export default {
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      user-select: text;
     }
     h1 {
       font-size: 2.75em;

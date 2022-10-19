@@ -3,7 +3,8 @@
     <toolbar
       :pageName="infoClient.company_name"
       @refreshInfo="FETCH_LIST()"
-      :isBack="true"
+      :isBackPath="true"
+      isBack_specificPath="/"
       newBtnLabel="New Project Info"
       style="grid-column: span 2"
     />
@@ -165,9 +166,7 @@ export default {
     VIEW_INFO(e) {
       const rowID = e.data.id_tank;
       if (rowID != null) {
-        this.$router.push(
-          "/tank/list/" + this.infoClient.id_client + "/" + rowID + "/info"
-        );
+        this.$router.push("/tank/info/info/" + rowID);
       }
     },
     EXPORT_DATA(e) {
