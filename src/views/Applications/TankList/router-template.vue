@@ -3,7 +3,7 @@
 </template> 
 
 <script>
-import ViewLayout from "@/layouts/sidebar-layout.vue";
+import ViewLayout from "@/layouts/non-sidebar-layout.vue";
 export default {
   name: "RouterTemplate",
   created() {

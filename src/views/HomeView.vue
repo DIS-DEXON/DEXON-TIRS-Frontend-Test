@@ -1,7 +1,7 @@
 <template>
   <div id="page-home" class="page-body">
-    <div id="user-panel" v-if="isLoading == false">
-      <div class="page-container">
+    <div id="user-panel">
+      <div class="page-container" style="padding-top: 0; padding-bottom: 0">
         <div class="wrapper">
           <div class="left-col">
             <div class="detail">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="page-container" v-if="isLoading == false">
+    <div class="page-container" v-if="this.user.role == 'admin'">
       <div class="section-label" v-if="showSectionLabel == true">
         <h2 class="page-section-label">Management</h2>
       </div>
@@ -51,6 +51,9 @@
       </div>
     </div>
     <div class="page-container">
+      <div class="section-label" v-if="showSectionLabel == true">
+        <h2 class="page-section-label" style="padding-bottom: 30px">Clients</h2>
+      </div>
       <div class="searchbar-box">
         <input
           type="text"
@@ -69,16 +72,12 @@
           class="client-card"
           v-for="item in clientList"
           :key="item.id"
+          v-on:click="VIEW_INFO(item.id_client)"
         >
           <div class="client_logo">
             <img :src="item.logo" alt="client logo" />
           </div>
           <div class="title">{{ item.company_name }}</div>
-          <div class="content">
-            <v-ons-list>
-              <v-ons-list-header>Bindings</v-ons-list-header>
-            </v-ons-list>
-          </div>
         </v-ons-card>
       </div>
     </div>
@@ -93,7 +92,7 @@
 
 <script>
 //API
-import axios from "/axios.js";
+// import axios from "/axios.js";
 import moment from "moment";
 
 //UI
@@ -117,37 +116,37 @@ export default {
       user: null,
       clientList: [
         {
-          id: 1,
+          id_client: 1,
           logo: "/img/mockup/client.png",
           company_name: "PTT LNG Company Limited",
         },
         {
-          id: 2,
+          id_client: 2,
           logo: "/img/mockup/client2.jpg",
           company_name: "IRPC Public Company Limited",
         },
         {
-          id: 3,
+          id_client: 3,
           logo: "/img/mockup/client3.png",
           company_name: "Indorama Eleme Petrochemicals Limited",
         },
         {
-          id: 4,
+          id_client: 4,
           logo: "/img/mockup/client.png",
           company_name: "PTTEP Siam Limited",
         },
         {
-          id: 5,
+          id_client: 5,
           logo: "/img/mockup/client2.jpg",
           company_name: "PTT Exploration and Production Public Company Limited",
         },
         {
-          id: 6,
+          id_client: 6,
           logo: "/img/mockup/client3.png",
           company_name: "Petrofac South East Asia Pte. Ltd",
         },
         {
-          id: 7,
+          id_client: 7,
           logo: "/img/mockup/client3.png",
           company_name: "Petrofac South East Asia Pte. Ltd",
         },
@@ -168,44 +167,44 @@ export default {
   },
   mounted() {},
   methods: {
-    FETCH_USER_INFO() {
-      this.isLoading = true;
-      setTimeout(() => {
-        var id_user = JSON.parse(localStorage.getItem("user")).id_user;
-        axios({
-          method: "post",
-          url: "/user/get-info",
-          headers: {
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
-          },
-          data: { id_user },
-        })
-          .then((res) => {
-            if (res.status == 200) {
-              var user = res.data.user;
-              this.user = user;
-              if (user.profile_picture == null) {
-                this.user.profile_picture = null;
-              } else {
-                this.user.profile_picture =
-                  this.baseURL + this.user.profile_picture;
-              }
+    // FETCH_USER_INFO() {
+    //   this.isLoading = true;
+    //   setTimeout(() => {
+    //     var id_user = JSON.parse(localStorage.getItem("user")).id_user;
+    //     axios({
+    //       method: "post",
+    //       url: "/user/get-info",
+    //       headers: {
+    //         Authorization:
+    //           "Bearer " + JSON.parse(localStorage.getItem("token")),
+    //       },
+    //       data: { id_user },
+    //     })
+    //       .then((res) => {
+    //         if (res.status == 200) {
+    //           var user = res.data.user;
+    //           this.user = user;
+    //           if (user.profile_picture == null) {
+    //             this.user.profile_picture = null;
+    //           } else {
+    //             this.user.profile_picture =
+    //               this.baseURL + this.user.profile_picture;
+    //           }
 
-              console.log("==> Fetch User Info : Home View <==");
-              if (this.user.role == "ceo") {
-                this.$router.push("/executive-report");
-              }
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
-      }, 100);
-    },
+    //           console.log("==> Fetch User Info : Home View <==");
+    //           if (this.user.role == "ceo") {
+    //             this.$router.push("/executive-report");
+    //           }
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       })
+    //       .finally(() => {
+    //         this.isLoading = false;
+    //       });
+    //   }, 100);
+    // },
     OPEN_APP(item) {
       if (item.isActive == true) {
         this.openingApp = item;
@@ -224,6 +223,11 @@ export default {
           "_blank"
         );
       } else this.$router.push({ path: path, replace: true });
+    },
+    VIEW_INFO(id_client) {
+      if (id_client) {
+        this.$router.push("/tank/list/" + id_client);
+      }
     },
     SEARCH_GET() {},
     SEARCH_CLEAR() {
@@ -347,6 +351,10 @@ export default {
   position: relative;
   // height: 100%;
   padding-top: 40px;
+}
+
+.page-container:last-child {
+  padding-bottom: 100px;
 }
 
 .opening-loader {
@@ -529,21 +537,6 @@ h2 {
   font-size: 26px;
 }
 
-.client_logo {
-  width: 100%;
-  height: 100px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-}
-
 .client-list-grid {
   display: grid;
   grid-template-columns: repeat(5, 20%);
@@ -551,6 +544,31 @@ h2 {
 
 .client-card {
   cursor: pointer;
+  height: 220px;
+
+  .client_logo {
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0 20px 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 .client-card:hover {
@@ -561,7 +579,7 @@ h2 {
 .searchbar-box {
   position: relative;
   background: #fff;
-  box-shadow: 0 9px 17px rgb(0 0 0 / 13%);
+  box-shadow: 0 9px 17px rgb(0 0 0 / 8%);
   border-radius: 6px;
   height: 60px;
   display: flex;
@@ -570,6 +588,7 @@ h2 {
   align-items: center;
   margin: 0 8px;
   margin-bottom: 40px;
+
   .query {
     position: relative;
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
