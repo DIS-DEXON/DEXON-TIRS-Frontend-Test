@@ -172,7 +172,7 @@ export default {
           first_name: "Peerapong",
           middle_name: "Simon",
           last_name: "Thammakaew",
-          role: "staff",
+          role: "admin",
           phone_no: "+66985155403",
           email: "peerapong.tmk@dexon-technology.com",
           employee_no: 1045,

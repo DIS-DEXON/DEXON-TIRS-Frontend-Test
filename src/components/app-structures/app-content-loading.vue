@@ -27,8 +27,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .app-content-loading {
-  height: calc(100% - 78px);
-  width: calc(100% - 220px);
+  height: 100%;
+  width: 100%;
   background-color: #fdfdfd;
   position: absolute;
   top: 54px;

@@ -1,19 +1,17 @@
 <template>
   <div class="pm-page">
-    <div class="pm-toolbar">
-      <toolbar
-        pageName="Project Manager"
-        @refreshInfo="FETCH_LIST()"
-        :isNewBtn="true"
-        newBtnLabel="New Project Info"
-        @newBtnFn="TOGGLE_POPUP()"
-      />
-    </div>
+    <toolbar
+      :pageName="infoClient.company_name"
+      @refreshInfo="FETCH_LIST()"
+      :isBack="true"
+      newBtnLabel="New Project Info"
+      style="grid-column: span 2"
+    />
     <div class="pm-page-container">
       <div class="page-container">
         <DxDataGrid
-          id="project-manager-project-list"
-          :data-source="projectList"
+          id="data-grid-style"
+          :data-source="tankList"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -28,24 +26,10 @@
             caption=""
             sort-order="asc"
           />
-          <DxColumn data-field="project_no" :width="120" caption="Project No" />
-          <DxColumn data-field="project_name" caption="Project Name" />
-          <DxColumn data-field="client_name" caption="Client Name" />
-          <DxColumn
-            data-field="job_start_date"
-            data-type="date"
-            format="dd MMM, yyyy"
-            :width="120"
-            caption="Start Date"
-          />
-          <DxColumn
-            data-field="job_end_date"
-            data-type="date"
-            format="dd MMM, yyyy"
-            :width="120"
-            caption="End Date"
-          />
-          <DxColumn data-field="status" caption="Status" />
+          <DxColumn data-field="plant" caption="Plant / Site" />
+          <DxColumn data-field="tag_no" caption="Tag Number" />
+          <DxColumn data-field="int_status" caption="Integrity Status" />
+          <DxColumn data-field="app_status" caption="Applicable Status" />
           <DxColumn :width="50" caption="" cell-template="cell-button-set" />
           <template #cell-button-set="{ data }">
             <div class="table-btn-group">
@@ -69,13 +53,13 @@
           <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
+      <contentLoading
+        text="Loading, please wait..."
+        v-if="isLoading == true"
+        color="#fc9b21"
+      />
     </div>
     <popupAdd v-if="isAdd == true" @closePopup="TOGGLE_POPUP()" />
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
   </div>
 </template> 
 
@@ -119,10 +103,10 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Project Manager",
+      name: "Tank Management",
       icon: "/img/icon_menu/project_manager/project.png",
     });
-    if (this.$store.state.status.server == true) this.FETCH_LIST();
+    // if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
     return {
@@ -132,21 +116,58 @@ export default {
       isLoading: false,
       errorMessage: "",
       editInfo: "",
+      infoClient: {
+        id_client: 1,
+        logo: "/img/mockup/client.png",
+        company_name: "PTT LNG Company Limited",
+      },
+      tankList: [
+        {
+          id_tank: 1,
+          plant: "MUDA-01",
+          tag_no: "MUDA-FA-001",
+          int_status: "normal",
+          app_status: "in-service",
+        },
+        {
+          id_tank: 2,
+          plant: "MUDA-01",
+          tag_no: "MUDA-FA-001",
+          int_status: "normal",
+          app_status: "in-service",
+        },
+        {
+          id_tank: 3,
+          plant: "MUDA-01",
+          tag_no: "MUDA-FA-001",
+          int_status: "normal",
+          app_status: "in-service",
+        },
+        {
+          id_tank: 4,
+          plant: "MUDA-01",
+          tag_no: "MUDA-FA-001",
+          int_status: "normal",
+          app_status: "in-service",
+        },
+        {
+          id_tank: 5,
+          plant: "MUDA-01",
+          tag_no: "MUDA-FA-001",
+          int_status: "normal",
+          app_status: "in-service",
+        },
+      ],
     };
   },
-  computed: {
-    // projectStatus(EndDate) {
-    //   const now = new date();
-    //   if (now > EndDate) return "Ongoing";
-    //   else if ((now = EndDate)) return "On Due";
-    //   else return "Late";
-    // },
-  },
+  computed: {},
   methods: {
     VIEW_INFO(e) {
-      const rowID = e.data.id_project;
+      const rowID = e.data.id_tank;
       if (rowID != null) {
-        this.$router.push("/projectmanager/projects/" + rowID);
+        this.$router.push(
+          "/tank/list/" + this.infoClient.id_client + "/" + rowID + "/info"
+        );
       }
     },
     EXPORT_DATA(e) {
@@ -199,7 +220,7 @@ export default {
 <style lang="scss" scoped>
 .pm-page {
   border: 1px solid #e6e6e6;
-  border-width: 0 0 0 1px;
+  border-width: 0;
   background-color: #ffffff;
   height: 100%;
 
