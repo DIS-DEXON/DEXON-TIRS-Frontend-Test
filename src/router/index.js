@@ -38,17 +38,12 @@ const routes = [
     // },
     children: [
       {
-        path: 'list',
-        alias: 'Client List',
-        component: () => import('../views/Applications/TankList/ClientList.vue'),
-      },
-      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
       },
       {
-        path: 'list/:id_client/:id_tank',
+        path: 'list/:id_client/:id_tank/info',
         alias: 'Tank Info',
         component: () => import('../views/Applications/TankList/TankInfo.vue'),
       },

@@ -9,11 +9,11 @@ export default new Vuex.Store({
   state: {
     mode: 'dev', //dev, prod
     modeURL: {
-      dev: 'https://localhost:8081/',
+      dev: 'https://localhost:5001/',
       prod: 'https://ai.dexon-technology.com:443/'
     },
     urlApi: {
-      dev: 'https://localhost:8081/api',
+      dev: 'https://localhost:5001/api',
       prod: 'https://ai.dexon-technology.com:443/api',
     },
     user: '',
@@ -80,24 +80,26 @@ export default new Vuex.Store({
         },
       ]
     },
-    sidebarList: [
-      {
-        id: 100,
-        name: "Operation Process",
-        icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
-        link: "/executive-report",
-        isActive: true,
-      },
-      {
-        id: 100,
-        name: "Tank Information",
-        icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
-        link: "/executive-report",
-        isActive: true,
-      },
-    ],
+    sidebarList: {
+      TankInfo: [
+        {
+          id: 1,
+          name: "Operation Process",
+          icon: "/img/icon_sidebar/executive_management/summary.png",
+          icon_menu: '/img/icon_menu/executive_management/summary.png',
+          link: "/tank/info/operation-process",
+          isActive: true,
+        },
+        {
+          id: 2,
+          name: "Tank Information",
+          icon: "/img/icon_sidebar/executive_management/summary.png",
+          icon_menu: '/img/icon_menu/executive_management/summary.png',
+          link: "/tank/info/info",
+          isActive: true,
+        },
+      ],
+    },
     inAppMessage: {
       noData: "<div class='no-data-box' style='display: flex;justify-content: center;align-items: center;flex-direction: column;color: #a6a6a6;height: 200px;'><div><i class='las la-folder-open' style='margin-right:10px;font-size:20px;'></i><span>No Data</span></div></div>",
     }

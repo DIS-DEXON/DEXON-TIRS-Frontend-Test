@@ -57,17 +57,17 @@
           <div class="input-set">
             <p class="label">Name:</p>
             <p class="info" v-if="isEdit.info == false">
-              {{ user.firstname }} {{ user.lastname }}
+              {{ user.first_name }} {{ user.last_name }}
             </p>
             <input
               placeholder="Firstname"
-              v-model="formData.firstname"
+              v-model="formData.first_name"
               v-if="isEdit.info == true"
               style="border-radius: 6px 0 0 6px; grid-column: span 1"
             />
             <input
               placeholder="Lastname"
-              v-model="formData.lastname"
+              v-model="formData.last_name"
               v-if="isEdit.info == true"
               style="
                 border-radius: 0 6px 6px 0;
@@ -76,59 +76,10 @@
               "
             />
           </div>
-          <!-- <div class="input-set">
-            <p class="label">Nickname:</p>
-            <p class="info" v-if="isEdit.info == false">
-              {{ user.nickname }}
-            </p>
-            <input
-              placeholder="Nickname"
-              v-model="formData.nickname"
-              v-if="isEdit.info == true"
-            />
-          </div> -->
-          <!-- <div class="input-set">
-            <p class="label">Birthday:</p>
-            <p class="info" v-if="isEdit.info == false">
-              {{ userBirthday }}
-            </p>
-            <DxDateBox
-              :value="formData.birthday"
-              type="date"
-              v-model="formData.birthday"
-              placeholder="Birthday"
-              v-if="isEdit.info == true"
-              style="grid-column: span 2; margin: 10px 0 5px 0"
-            />
-          </div> -->
           <div class="input-set">
             <p class="label">Position:</p>
             <p class="info">
               {{ user.position }}
-            </p>
-            <!-- <input
-              placeholder="Position"
-              v-model="formData.position"
-              v-if="isEdit.info == true"
-            /> -->
-            <!-- <DxSelectBox
-              v-if="isEdit.info == true"
-              style="
-                border: 0;
-                font-size: 14px;
-                grid-column: span 2;
-                margin: 10px 0 5px 0;
-              "
-              :items="jobPositionList"
-              placeholder="Select Job Position"
-              v-model="formData.position"
-              item-template="item"
-            /> -->
-          </div>
-          <div class="input-set">
-            <p class="label">Department:</p>
-            <p class="info">
-              {{ user.department }}
             </p>
           </div>
           <div class="input-set">
@@ -136,11 +87,6 @@
             <p class="info">
               {{ user.employee_no }}
             </p>
-            <!-- <input
-              placeholder="Employee No"
-              v-model="formData.employee_no"
-              v-if="isEdit.info == true"
-            /> -->
           </div>
           <div class="input-set">
             <p class="label">Email:</p>
@@ -252,7 +198,7 @@
 //JS
 import clone from "just-clone";
 import { sha256 } from "js-sha256";
-import moment from "moment";
+// import moment from "moment";
 
 //API
 import axios from "/axios.js";
@@ -277,13 +223,6 @@ export default {
         account: false,
         photo: false,
       },
-      jobPositionList: [
-        "Data Engineer",
-        "Programmer",
-        "General Engineer",
-        "Manager",
-        "Staff",
-      ],
       picUpload: "",
       isLoading: false,
     };
@@ -294,7 +233,8 @@ export default {
       name: "My Account",
       icon: "",
     });
-    if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
+    this.user = JSON.parse(localStorage.getItem("user"));
   },
   mounted() {},
   methods: {
@@ -521,10 +461,6 @@ export default {
     },
   },
   computed: {
-    userBirthday() {
-      var date = this.user.birthday;
-      return moment(date).format("LL");
-    },
     baseURL() {
       var mode = this.$store.state.mode;
       if (mode == "dev") return this.$store.state.modeURL.dev;
