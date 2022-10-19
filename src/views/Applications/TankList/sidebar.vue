@@ -5,7 +5,7 @@
       <router-link
         v-for="item in sidebarList"
         :key="item.id"
-        :to="item.link + infoTank.id_tank"
+        :to="item.link + currentTankID"
       >
         <v-ons-toolbar-button class="item">
           <img :src="item.icon" />
@@ -19,19 +19,15 @@
 <script>
 export default {
   name: "app-sidebar",
-  mounted() {},
+  mounted() {
+    console.log(this.currentTankID);
+  },
   props: {
     id_tank: Number,
   },
   data() {
     return {
-      infoTank: {
-        id_tank: 1,
-        plant: "MUDA-01",
-        tag_no: "MUDA-FA-001",
-        int_status: "normal",
-        app_status: "in-service",
-      },
+      currentTankID: this.$route.params.id_tank,
       sidebarList: [
         {
           id: 1,

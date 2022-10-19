@@ -67,10 +67,23 @@
           ><i class="la la-close"></i
         ></span>
       </div>
-      <div class="client-list-grid">
+      <div class="client-list-grid" v-if="!this.search_key">
         <v-ons-card
           class="client-card"
           v-for="item in clientList"
+          :key="item.id"
+          v-on:click="VIEW_INFO(item.id_client)"
+        >
+          <div class="client_logo">
+            <img :src="item.logo" alt="client logo" />
+          </div>
+          <div class="title">{{ item.company_name }}</div>
+        </v-ons-card>
+      </div>
+      <div class="client-list-grid" v-if="this.search_key">
+        <v-ons-card
+          class="client-card"
+          v-for="item in clientListFiltered"
           :key="item.id"
           v-on:click="VIEW_INFO(item.id_client)"
         >
@@ -151,8 +164,15 @@ export default {
           company_name: "Petrofac South East Asia Pte. Ltd",
         },
       ],
-      search_key: null,
+      clientListFiltered: [],
+      search_key: "",
     };
+  },
+  watch: {
+    // whenever question changes, this function will run
+    search_key() {
+      this.SEARCH_GET(this.search_key);
+    },
   },
   created() {
     this.$emit(`update:layout`, ViewLayout);
@@ -230,7 +250,18 @@ export default {
         this.$router.push("/tank/list/" + id_client);
       }
     },
-    SEARCH_GET() {},
+    SEARCH_GET(searchValue) {
+      let clientListFiltered = this.clientList;
+
+      if (searchValue != "" && searchValue) {
+        clientListFiltered = clientListFiltered.filter((item) => {
+          return item.company_name
+            .toUpperCase()
+            .includes(searchValue.toUpperCase());
+        });
+      }
+      this.clientListFiltered = clientListFiltered;
+    },
     SEARCH_CLEAR() {
       this.search_key = null;
     },
