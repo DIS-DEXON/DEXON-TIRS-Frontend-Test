@@ -70,6 +70,11 @@ const routes = [
         component: () => import('../views/Applications/MasterData/BottomType.vue'),
       },
       {
+        path: 'construction-code',
+        alias: 'Construction Code',
+        component: () => import('../views/Applications/MasterData/ConstructionCode.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
