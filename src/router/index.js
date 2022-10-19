@@ -95,6 +95,16 @@ const routes = [
         component: () => import('../views/Applications/MasterData/InspectionCode.vue'),
       },
       {
+        path: 'prefix',
+        alias: 'Prefix',
+        component: () => import('../views/Applications/MasterData/Prefix.vue'),
+      },
+      {
+        path: 'product',
+        alias: 'Product',
+        component: () => import('../views/Applications/MasterData/Product.vue'),
+      },
+      {
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
