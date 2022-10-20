@@ -3,9 +3,11 @@
     <toolbar
       :pageName="infoClient.company_name"
       @refreshInfo="FETCH_LIST()"
+      @newBtnFn="TOGGLE_POPUP()"
       :isBackPath="true"
       isBack_specificPath="/"
-      newBtnLabel="New Project Info"
+      newBtnLabel="New Tank"
+      :isNewBtn="true"
       style="grid-column: span 2"
     />
     <div class="pm-page-container">
@@ -83,7 +85,7 @@ import {
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/ProjectManager/Projects/project-add.vue";
+import popupAdd from "@/views/Applications/TankList/popup-add.vue";
 
 //API
 import axios from "/axios.js";
@@ -107,6 +109,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/project_manager/project.png",
     });
+
     // if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
