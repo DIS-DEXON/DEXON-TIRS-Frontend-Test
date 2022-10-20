@@ -45,7 +45,7 @@ const routes = [
       {
         path: 'info',
         alias: 'Tank Info',
-        component: () => import('../views/Applications/TankList/Pages/router-template-page.vue'),
+        component: () => import('../views/Applications/TankList/Pages/router-template-detail.vue'),
         children: [
           {
             path: 'info/:id_tank',

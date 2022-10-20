@@ -4,7 +4,8 @@
       :pageName="infoTank.tag_no"
       @refreshInfo="FETCH_LIST()"
       :isBackPath="true"
-      :isBack_specificPath="'/tank/list/' + this.$store.state.currentViewClient"
+      :isBack_specificPath="'/tank/list/' + infoTank.id_client"
+      :isEdit="true"
       newBtnLabel="New Project Info"
       style="grid-column: span 2"
     />
@@ -18,7 +19,7 @@
 <script>
 //Structures
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import sidebar from "@/views/Applications/TankList/sidebar-tank.vue";
+import sidebar from "@/views/Applications/TankList/sidebar.vue";
 
 export default {
   name: "ViewProjectList",
@@ -31,6 +32,7 @@ export default {
     return {
       infoTank: {
         id_tank: 1,
+        id_client: 1,
         plant: "MUDA-01",
         tag_no: "MUDA-FA-001",
         int_status: "normal",

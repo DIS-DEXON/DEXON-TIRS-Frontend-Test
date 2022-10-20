@@ -289,7 +289,7 @@ export default new Vuex.Store({
       if (payload) {
         state.currentViewClient = payload;
       }
-    }
+    },
 
   },
   actions: {
