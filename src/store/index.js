@@ -19,6 +19,7 @@ export default new Vuex.Store({
     user: '',
     appIcon: '/app-icon.png',
     currentInApp: '',
+    currentClient: '',
     status: {
       fullscreenAlert: false,
       server: true,
@@ -27,16 +28,8 @@ export default new Vuex.Store({
     appsList: {
       managementApps: [
         {
-          id: 100,
-          name: "Executive Summary",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
-          link: "/executive-report",
-          isActive: true,
-        },
-        {
           id: 102,
-          name: "Clients",
+          name: "Client Manager",
           icon: "/img/icon_sidebar/executive_management/summary.png",
           icon_menu: '/img/icon_menu/executive_management/summary.png',
           link: "/executive-report",
@@ -208,8 +201,15 @@ export default new Vuex.Store({
       if (payload) state.currentInApp = payload;
       else console.log('error: no payload');
     },
+    UPDATE_CURRENT_CLIENT: (state, payload) => {
+      if (payload) state.currentClient = payload;
+      else console.log('error: no payload');
+    },
     CLEAR_CURRENT_INAPP: (state) => {
       state.currentInApp = '';
+    },
+    CLEAR_CURRENT_CLIENT: (state) => {
+      state.currentClient = '';
     },
     SIGN_IN: (state, payload) => {
       state.user = payload

@@ -28,7 +28,7 @@ const routes = [
     component: () => import('../views/404View.vue'),
   },
   {
-    // EXECUTIVE MANAGEMENT
+    // TANK
     path: '/tank',
     name: 'Tank',
     component: () => import('../views/Applications/TankList/router-template.vue'),
@@ -52,17 +52,12 @@ const routes = [
             alias: 'Tank Info',
             component: () => import('../views/Applications/TankList/Pages/Info-Info.vue'),
           },
-          {
-            path: 'operation-process/:id_tank',
-            alias: 'Tank Info',
-            component: () => import('../views/Applications/TankList/Pages/Info-OperationProcess.vue'),
-          },
         ]
       },
     ]
   },
   {
-    // EXECUTIVE MANAGEMENT
+    // MASTER DATA
     path: '/md',
     name: 'MasterData',
     component: () => import('../views/Applications/MasterData/router-template.vue'),
@@ -147,15 +142,7 @@ const routes = [
         component: () => import('../views/Applications/TankList/TankList.vue'),
       }
     ]
-  },
-  {
-    // EXECUTIVE MANAGEMENT
-    path: '/executive-report',
-    name: 'Executive Report',
-    component: () => import('../views/Applications/ExecutiveManagement/SummaryReport.vue'),
-    // beforeEnter: (to, from, next) => {
-    // }
-  },
+  }
 ]
 
 const router = new VueRouter({

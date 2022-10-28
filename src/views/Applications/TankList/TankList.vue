@@ -1,7 +1,7 @@
 <template>
   <div class="pm-page">
     <toolbar
-      :pageName="infoClient.company_name"
+      pageName="Tank List"
       @refreshInfo="FETCH_LIST()"
       @newBtnFn="TOGGLE_POPUP()"
       :isBackPath="true"
@@ -19,8 +19,8 @@
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
-          :show-row-lines="false"
-          :row-alternation-enabled="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
           @exporting="EXPORT_DATA"
         >
           <DxColumn
@@ -29,10 +29,9 @@
             caption=""
             sort-order="asc"
           />
-          <DxColumn data-field="plant" caption="Plant / Site" />
           <DxColumn data-field="tag_no" caption="Tag Number" />
-          <DxColumn data-field="int_status" caption="Integrity Status" />
-          <DxColumn data-field="app_status" caption="Applicable Status" />
+          <DxColumn data-field="plant" caption="Site" />
+          <DxColumn data-field="location" caption="Location" />
           <DxColumn :width="50" caption="" cell-template="cell-button-set" />
           <template #cell-button-set="{ data }">
             <div class="table-btn-group">
@@ -93,7 +92,6 @@ import axios from "/axios.js";
 export default {
   name: "ViewProjectList",
   components: {
-    toolbar,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -101,6 +99,7 @@ export default {
     DxScrolling,
     DxColumn,
     DxExport,
+    toolbar,
     contentLoading,
     popupAdd,
   },
@@ -108,6 +107,10 @@ export default {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
       icon: "/img/icon_menu/project_manager/project.png",
+    });
+    this.$store.commit("UPDATE_CURRENT_CLIENT", {
+      name: this.infoClient.company_name,
+      logo: this.infoClient.logo,
     });
 
     // if (this.$store.state.status.server == true) this.FETCH_LIST();
@@ -130,6 +133,7 @@ export default {
           id_tank: 1,
           plant: "MUDA-01",
           tag_no: "MUDA-FA-001",
+          location: "Rayong",
           int_status: "normal",
           app_status: "in-service",
         },
@@ -137,6 +141,7 @@ export default {
           id_tank: 2,
           plant: "MUDA-01",
           tag_no: "MUDA-FA-001",
+          location: "Rayong",
           int_status: "normal",
           app_status: "in-service",
         },
@@ -144,6 +149,7 @@ export default {
           id_tank: 3,
           plant: "MUDA-01",
           tag_no: "MUDA-FA-001",
+          location: "Rayong",
           int_status: "normal",
           app_status: "in-service",
         },
@@ -151,6 +157,7 @@ export default {
           id_tank: 4,
           plant: "MUDA-01",
           tag_no: "MUDA-FA-001",
+          location: "Rayong",
           int_status: "normal",
           app_status: "in-service",
         },
@@ -158,6 +165,7 @@ export default {
           id_tank: 5,
           plant: "MUDA-01",
           tag_no: "MUDA-FA-001",
+          location: "Rayong",
           int_status: "normal",
           app_status: "in-service",
         },
