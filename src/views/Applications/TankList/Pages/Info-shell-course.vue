@@ -12,6 +12,9 @@
       @exporting="EXPORT_DATA"
       :word-wrap-enabled="true"
     >
+      <DxToolbar>
+        <DxItem location="before" template="table-header" />
+      </DxToolbar>
       <DxColumn
         data-field="created_time"
         :width="0"
@@ -38,6 +41,11 @@
           <div class="table-btn" v-on:click="VIEW_INFO(data)">
             <i class="las la-edit blue"></i>
           </div>
+        </div>
+      </template>
+      <template #table-header>
+        <div>
+          <div class="page-section-label">Shell Course</div>
         </div>
       </template>
       <!-- Configuration goes here -->
@@ -77,6 +85,8 @@ import {
   DxScrolling,
   DxColumn,
   DxExport,
+  DxToolbar,
+  DxItem,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -89,6 +99,8 @@ export default {
     DxScrolling,
     DxColumn,
     DxExport,
+    DxToolbar,
+    DxItem,
   },
   created() {},
   data() {
