@@ -2,18 +2,19 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="Client Contact"
+        pageName="User Account"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="true"
-        newBtnLabel="New Client Info"
+        newBtnLabel="New Account"
         @newBtnFn="TOGGLE_POPUP('add')"
+        :isBack="true"
       />
     </div>
     <div class="pm-page-container">
       <div class="page-content page-list">
         <DxDataGrid
-          id="contact-client-list"
-          :data-source="clientList"
+          id="data-grid-style"
+          :data-source="accountList"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="false"
@@ -22,21 +23,45 @@
           :row-alternation-enabled="true"
           @exporting="EXPORT_DATA"
         >
-          <DxColumn data-field="client_name" caption="Client Name" />
-          <DxColumn data-field="location" caption="Location" />
-          <DxColumn data-field="phone_no" caption="Phone No" />
-          <DxColumn :width="50" caption="" cell-template="option-btn-set" />
-          <template #option-btn-set="{ data }">
-            <div class="table-btn-group">
-              <div class="table-btn" v-on:click="VIEW_INFO(data)">
-                <i class="las la-search blue"></i>
+          <DxColumn
+            data-field="id_user"
+            alignment="center"
+            :width="50"
+            caption="ID"
+          />
+          <DxColumn data-field="employee_no" caption="Employee No" />
+          <DxColumn data-field="first_name" caption="First Name" />
+          <DxColumn data-field="last_name" caption="Last Name" />
+          <DxColumn data-field="role" caption="Role" />
+          <DxColumn data-field="username" caption="Username" />
+          <DxColumn
+            caption="Password"
+            :width="150"
+            cell-template="option-btn-password"
+          />
+          <DxColumn :width="90" caption="" cell-template="option-btn-set" />
+          <template #option-btn-password="{ data }">
+            <div class="table-btn-group" v-if="data.data.role != 'super user'">
+              <div
+                class="table-btn table-btn-none"
+                v-on:click="TOGGLE_POPUP('edit', data)"
+              >
+                <i class="las la-undo-alt red"></i>
+                <span class="red">reset password</span>
               </div>
-              <!-- <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
+            </div>
+          </template>
+          <template #option-btn-set="{ data }">
+            <div class="table-btn-group" v-if="data.data.role != 'super user'">
+              <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
+                <i class="las la-search blue"></i>
+              </div> -->
+              <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
                 <i class="las la-pen green"></i>
               </div>
               <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
                 <i class="las la-trash red"></i>
-              </div> -->
+              </div>
             </div>
           </template>
           <!-- Configuration goes here -->
@@ -53,63 +78,6 @@
           />
           <DxExport :enabled="true" />
         </DxDataGrid>
-      </div>
-      <div class="page-content page-info border-left">
-        <div class="pm-info-sidebar form">
-          <p class="pm-section-label">Details</p>
-          <!-- <div class="pm-sidebar-close-btn" v-on:click="$emit('close-infobar')">
-      <i class="las la-times"></i>
-    </div> -->
-          <div class="form-item-container">
-            <div class="input-set">
-              <p class="label">Client Name:</p>
-              <p class="info">
-                {{ currentViewRow.client_name }}
-              </p>
-            </div>
-            <div class="input-set">
-              <p class="label">Address:</p>
-              <p class="info">
-                {{ currentViewRow.address }}
-              </p>
-            </div>
-            <div class="input-set">
-              <p class="label">Location:</p>
-              <p class="info">
-                {{ currentViewRow.location }}
-              </p>
-            </div>
-            <div class="input-set">
-              <p class="label">Domestic:</p>
-              <p class="info" v-if="currentViewRow.is_domestic == true">Yes</p>
-              <p class="info" v-if="currentViewRow.is_domestic == false">No</p>
-            </div>
-            <div class="input-set">
-              <p class="label">Phone:</p>
-              <p class="info">
-                {{ currentViewRow.phone_no }}
-              </p>
-            </div>
-            <div class="input-set">
-              <p class="label">Email:</p>
-              <p class="info">
-                {{ currentViewRow.email }}
-              </p>
-            </div>
-          </div>
-          <div class="form-button-container">
-            <div class="button-set info-button-set">
-              <v-ons-toolbar-button v-on:click="TOGGLE_POPUP('edit')">
-                <i class="las la-pen"></i>
-                <span>Edit</span>
-              </v-ons-toolbar-button>
-              <v-ons-toolbar-button class="red" v-on:click="DELETE_CLIENT()">
-                <i class="las la-trash"></i>
-                <span>Delete</span>
-              </v-ons-toolbar-button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <popupAdd
@@ -152,8 +120,8 @@ import axios from "/axios.js";
 
 //Pages & Structures
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-// import popupAdd from "@/views/Applications/Contact/Client/client-add.vue";
-import popupEdit from "@/views/Applications/Contact/Client/client-edit.vue";
+import popupAdd from "@/views/Applications/UserAccountManager/account-add.vue";
+import popupEdit from "@/views/Applications/UserAccountManager/account-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import clone from "just-clone";
 
@@ -174,14 +142,50 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Client Contact",
+      name: "User Account Manager",
       icon: "/img/icon_menu/contact/client.png",
     });
-    if (this.$store.state.status.server == true) this.FETCH_LIST();
+    // if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
     return {
-      clientList: [],
+      accountList: [
+        {
+          id_user: 0,
+          employee_no: "-",
+          username: "su",
+          first_name: "-",
+          last_name: "-",
+          role: "super user",
+        },
+        {
+          id_user: 1,
+          employee_no: "dext001",
+          username: "ditt1045",
+          first_name: "Warat",
+          last_name: "Kaweepornpoj",
+          role: "admin",
+          department: "DPS",
+        },
+        {
+          id_user: 2,
+          username: "ditt1008",
+          employee_no: "dext1012",
+          first_name: "Nithiwadee",
+          last_name: "Wangviboonkij",
+          role: "staff",
+          department: "OPS",
+        },
+        {
+          id_user: 3,
+          employee_no: "dext987",
+          username: "ditt1045",
+          first_name: "Bhaksiree",
+          last_name: "Tongtago",
+          role: "management",
+          department: "Management",
+        },
+      ],
       isAdd: false,
       isEdit: false,
       isLoading: false,
@@ -211,14 +215,14 @@ export default {
     VIEW_INFO(e) {
       this.currentViewRow = e.data;
     },
-    TOGGLE_POPUP(m) {
+    TOGGLE_POPUP(m, data) {
       if (m == "add") {
         if (this.isAdd == true) this.isAdd = false;
         else this.isAdd = true;
       } else if (m == "edit") {
         if (this.isEdit == true) this.isEdit = false;
         else {
-          this.editInfo = clone(this.currentViewRow);
+          this.editInfo = clone(data.data);
           this.isEdit = true;
         }
       }

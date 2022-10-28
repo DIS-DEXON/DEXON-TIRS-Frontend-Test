@@ -28,14 +28,6 @@ export default new Vuex.Store({
     appsList: {
       managementApps: [
         {
-          id: 102,
-          name: "Client Manager",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
-          link: "/executive-report",
-          isActive: true,
-        },
-        {
           id: 103,
           name: "Master Data Manager",
           icon: "/img/icon_sidebar/executive_management/summary.png",
@@ -48,30 +40,10 @@ export default new Vuex.Store({
           name: "User Account Manager",
           icon: "/img/icon_sidebar/executive_management/summary.png",
           icon_menu: '/img/icon_menu/executive_management/summary.png',
-          link: "/executive-report",
+          link: "/user-account-manager",
           isActive: true,
         },
       ],
-      staffApps: [
-        {
-          id: 101,
-          name: "Tank List",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
-          link: "/executive-report",
-          isActive: true,
-        },
-      ],
-      clientApps: [
-        {
-          id: 101,
-          name: "Tank List",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
-          link: "/executive-report",
-          isActive: true,
-        },
-      ]
     },
     sidebarMasterDateList: [
       {
