@@ -33,7 +33,7 @@
           style="padding-right: 0px"
         >
           <span>
-            {{ user.prefix }} {{ user.first_name }} {{ user.middle_name }}
+            {{ user.first_name }} {{ user.middle_name }}
             {{ user.last_name }}
           </span>
           <div class="topbar-photo">

@@ -8,6 +8,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '*',
+    name: '404',
+    component: () => import('../views/404View.vue'),
+  },
+  {
     path: '/login',
     name: 'Log In',
     component: () => import('../views/LoginView.vue'),
@@ -21,11 +26,6 @@ const routes = [
     path: '/account',
     name: 'Account',
     component: () => import('../views/AccountView.vue'),
-  },
-  {
-    path: '*',
-    name: '404',
-    component: () => import('../views/404View.vue'),
   },
   {
     // TANK
@@ -55,6 +55,16 @@ const routes = [
         ]
       },
     ]
+  },
+  {
+    // USER ACCOUNT MANAGER
+    path: '/user-account-manager',
+    name: 'User Account Manager',
+    component: () => import('../views/Applications/UserAccountManager/UserList.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (store.state.user.role == 'manager' || store.state.user.role == 'admin') next()
+    //   else next('/')
+    // },
   },
   {
     // MASTER DATA

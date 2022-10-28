@@ -2,55 +2,100 @@
   <div class="popup-wrapper">
     <div class="popup-card">
       <div class="popup-header">
-        <label>Add New Client Info</label>
+        <label>Create New Account</label>
       </div>
       <div class="popup-content form">
         <div class="form-item-container">
+          <label class="section-text" style="grid-column: span 2; margin-top: 0"
+            >Account Informations</label
+          >
+
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Clint Name:</p>
+              <p class="label">First Name:</p>
               <span class="star-label"><i class="las la-asterisk"></i></span>
             </div>
             <input
               type="text"
-              placeholder="Client Name"
-              v-model="formData.client_name"
+              placeholder="First Name"
+              v-model="formData.first_name"
             />
           </div>
           <div class="input-set">
-            <p class="label">Location:</p>
+            <p class="label">Last Name:</p>
             <input
               type="text"
-              placeholder="Location"
-              v-model="formData.location"
+              placeholder="Last Name"
+              v-model="formData.last_name"
             />
           </div>
-
           <div class="input-set">
-            <p class="label">Phone No:</p>
+            <div class="label-box">
+              <p class="label">Employee No:</p>
+              <span class="star-label"><i class="las la-asterisk"></i></span>
+            </div>
             <input
               type="text"
+              placeholder="Employee No"
+              v-model="formData.employee_no"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Department:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              :items="formSelect.departmentList"
+              placeholder="Select Department"
+              v-model="formData.department"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Email:</p>
+              <!-- <span class="star-label"><i class="las la-asterisk"></i></span> -->
+            </div>
+            <input type="email" placeholder="Email" v-model="formData.email" />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Phone No:</p>
+              <!-- <span class="star-label"><i class="las la-asterisk"></i></span> -->
+            </div>
+            <input
+              type="tel"
               placeholder="Phone No"
               v-model="formData.phone_no"
             />
           </div>
+
+          <label class="section-text" style="grid-column: span 2"
+            >Log-in Informations</label
+          >
           <div class="input-set">
-            <p class="label">Email:</p>
-            <input type="email" placeholder="Email" v-model="formData.email" />
-          </div>
-          <div class="input-set" style="grid-column: span 2">
-            <p class="label">Address:</p>
-            <textarea
+            <div class="label-box">
+              <p class="label">Username:</p>
+              <span class="star-label"><i class="las la-asterisk"></i></span>
+            </div>
+            <input
               type="text"
-              placeholder="Address"
-              style="height: 60px; width: 610px; max-height: 610px"
-              v-model="formData.address"
+              placeholder="Username"
+              v-model="formData.username"
             />
           </div>
-          <div class="checkbox-set">
-            <v-ons-checkbox input-id="incountry" v-model="formData.is_domestic">
-            </v-ons-checkbox>
-            <label for="incountry">Client is located in Thailand</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Role:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              :items="formSelect.roleList"
+              placeholder="Select Role"
+              v-model="formData.role"
+            />
           </div>
         </div>
       </div>
@@ -71,18 +116,21 @@
 <script>
 import axios from "/axios.js";
 // import clone from "just-clone";
+import DxSelectBox from "devextreme-vue/select-box";
+
 export default {
-  name: "popup-add-client",
-  components: {},
+  name: "popup-add-account",
+  components: {
+    DxSelectBox,
+  },
   data() {
     return {
       formData: {
-        client_name: "",
-        location: "",
-        is_domestic: true,
-        phone_no: "",
-        email: "",
-        address: "",
+        password: "dex0n7845",
+      },
+      formSelect: {
+        roleList: ["staff", "admin"],
+        departmentList: ["OPS", "DPS", "Management"],
       },
     };
   },

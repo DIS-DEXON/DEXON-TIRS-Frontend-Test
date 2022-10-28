@@ -467,6 +467,11 @@ hr {
         color: $web-font-color-grey;
         // margin-right: 4px;
     }
+
+    span {
+        font-size: 12px;
+        color: $web-font-color-grey;
+    }
 }
 
 .table-btn:hover {
@@ -480,7 +485,8 @@ hr {
         color: #fbc121; //Madarin Peal Orange (requested by P-Gift)
     }
 
-    i.red {
+    i.red,
+    span.red {
         color: #dd251d; //Humming Bird Ruff Red (requested by P-Gift)
     }
 }
@@ -490,6 +496,15 @@ hr {
 
     i {
         color: $web-font-color-grey;
+    }
+}
+
+.table-btn-none {
+    width: fit-content;
+    padding: 0 10px;
+
+    i {
+        margin-right: 5px;
     }
 }
 

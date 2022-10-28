@@ -77,9 +77,9 @@
             />
           </div>
           <div class="input-set">
-            <p class="label">Position:</p>
+            <p class="label">Role:</p>
             <p class="info">
-              {{ user.position }}
+              {{ user.role }}
             </p>
           </div>
           <div class="input-set">
