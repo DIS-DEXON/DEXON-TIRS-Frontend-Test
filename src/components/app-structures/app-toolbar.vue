@@ -11,6 +11,33 @@
       </v-ons-toolbar-button>
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
+      <div class="toolbar-info" v-if="infoTank">
+        <div class="info-item">
+          <label class="desc">Tank No: </label>
+          <label class="value">{{ infoTank.tag_no }}</label>
+        </div>
+        <div class="info-item">
+          <label class="desc">Product: </label>
+          <label class="value">{{ infoTank.product }}</label>
+        </div>
+
+        <div class="info-item">
+          <label class="desc">Location:</label>
+          <label class="value"> {{ infoTank.location }}</label>
+        </div>
+        <div class="info-item">
+          <label class="desc">Site: </label>
+          <label class="value">{{ infoTank.plant }}</label>
+        </div>
+        <div class="info-item">
+          <label class="desc">Client:</label>
+          <label class="value"> {{ infoTank.company_name }}</label>
+        </div>
+        <div class="info-item">
+          <label class="desc">In-service Date : </label>
+          <label class="value">{{ tank_inservice_date }}</label>
+        </div>
+      </div>
     </div>
     <div class="right-col">
       <v-ons-toolbar-button
@@ -59,6 +86,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "app-toolbar",
   props: {
@@ -74,10 +102,18 @@ export default {
     isDownload: Boolean,
     isNewBtn: Boolean,
     newBtnLabel: String,
+    infoTank: Object,
   },
   methods: {
     GO_BACK_TO() {
       this.$router.push(this.isBack_specificPath);
+    },
+  },
+  computed: {
+    tank_inservice_date() {
+      if (this.infoTank.inservice_date) {
+        return moment(this.infoTank.inservice_date).format("LL");
+      } else return "N/A";
     },
   },
 };
@@ -103,6 +139,7 @@ export default {
   .left-col {
     padding-left: 20px;
     justify-content: flex-start;
+    width: fit-content;
     h1,
     h2 {
       font-style: normal;
@@ -123,6 +160,8 @@ export default {
     h2 {
       font-size: 2em;
       color: $web-font-color-black;
+      width: auto;
+      padding-right: 30px;
     }
     .toolbar-button {
       margin-left: 0;
@@ -202,5 +241,35 @@ export default {
 
 .highlight-btn:active {
   opacity: 1;
+}
+
+.toolbar-info {
+  display: flex;
+  .info-item {
+    display: block;
+    width: fit-content;
+    padding-right: 40px;
+
+    .desc,
+    .value {
+      font-size: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+      cursor: text;
+    }
+    .desc {
+      color: $web-font-color-grey;
+    }
+    .value {
+      color: $web-font-color-black;
+      font-weight: 600;
+    }
+  }
 }
 </style>

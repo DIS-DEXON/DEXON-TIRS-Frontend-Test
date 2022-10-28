@@ -32,8 +32,7 @@
             :allow-adding="true"
             mode="row"
           />
-          <DxColumn data-field="code"
-                    caption="Foundation">
+          <DxColumn data-field="code" caption="Foundation">
             <DxRequiredRule />
           </DxColumn>
 
@@ -53,7 +52,7 @@
         </DxDataGrid>
       </div>
     </div>
-    <popupAdd v-if="isAdd == true" @closePopup="TOGGLE_POPUP()" />
+
     <contentLoading
       text="Loading, please wait..."
       v-if="isLoading == true"
@@ -77,13 +76,12 @@ import {
   DxColumn,
   DxExport,
   DxEditing,
-  DxRequiredRule
+  DxRequiredRule,
 } from "devextreme-vue/data-grid";
 
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/ProjectManager/Projects/project-add.vue";
 
 //API
 import axios from "/axios.js";
@@ -102,7 +100,6 @@ export default {
     DxEditing,
     DxRequiredRule,
     contentLoading,
-    popupAdd,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -156,7 +153,7 @@ export default {
         url: "/MdFoundation",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        }
+        },
       })
         .then((res) => {
           console.log(res);
@@ -173,7 +170,7 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_LIST(e){
+    CREATE_LIST(e) {
       console.log(e);
       axios({
         method: "post",
@@ -195,7 +192,7 @@ export default {
         })
         .finally(() => {});
     },
-    UPDATE_LIST(e){
+    UPDATE_LIST(e) {
       console.log(e);
       axios({
         method: "put",
@@ -217,7 +214,7 @@ export default {
         })
         .finally(() => {});
     },
-    DELETE_LIST(e){
+    DELETE_LIST(e) {
       console.log(e);
       axios({
         method: "delete",

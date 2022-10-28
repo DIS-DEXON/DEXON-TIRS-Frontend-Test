@@ -32,8 +32,7 @@
             :allow-adding="true"
             mode="row"
           />
-          <DxColumn data-field="code"
-                    caption="Applicable Status">
+          <DxColumn data-field="code" caption="Applicable Status">
             <DxRequiredRule />
           </DxColumn>
 
@@ -53,7 +52,6 @@
         </DxDataGrid>
       </div>
     </div>
-    <popupAdd v-if="isAdd == true" @closePopup="TOGGLE_POPUP()" />
     <contentLoading
       text="Loading, please wait..."
       v-if="isLoading == true"
@@ -77,13 +75,12 @@ import {
   DxColumn,
   DxExport,
   DxEditing,
-  DxRequiredRule
+  DxRequiredRule,
 } from "devextreme-vue/data-grid";
 
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/ProjectManager/Projects/project-add.vue";
 
 //API
 import axios from "/axios.js";
@@ -102,7 +99,6 @@ export default {
     DxEditing,
     DxRequiredRule,
     contentLoading,
-    popupAdd,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -162,7 +158,7 @@ export default {
         url: "/MdApplicableStatus",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        }
+        },
       })
         .then((res) => {
           console.log(res);
@@ -179,7 +175,7 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_STATUS(e){
+    CREATE_STATUS(e) {
       console.log(e);
       axios({
         method: "post",
@@ -201,7 +197,7 @@ export default {
         })
         .finally(() => {});
     },
-    UPDATE_STATUS(e){
+    UPDATE_STATUS(e) {
       console.log(e);
       axios({
         method: "put",
@@ -223,7 +219,7 @@ export default {
         })
         .finally(() => {});
     },
-    DELETE_STATUS(e){
+    DELETE_STATUS(e) {
       console.log(e);
       axios({
         method: "delete",

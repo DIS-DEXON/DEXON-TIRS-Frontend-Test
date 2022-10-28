@@ -473,7 +473,7 @@ hr {
     background-color: #f0f0f0;
 
     i.blue {
-        color: #2c98f0; //Your Name Blue (requested by P-Gift)
+        color: #140a4b; //Your Name Blue (requested by P-Gift)
     }
 
     i.green {
@@ -505,11 +505,12 @@ hr {
         background-color: #fcfcfc;
         color: $dexon-primary-blue;
 
+
     }
 
     //hover
     .dx-datagrid-table .dx-data-row.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row):not(.dx-row-focused)>td:not(.dx-focused) {
-        background-color: #140a4b1d;
+        background-color: #140a4b1f;
         color: $dexon-primary-blue;
         // border-top: 1px solid #e6e6e6;
         // border-bottom: 1px solid #e6e6e6;
@@ -518,22 +519,24 @@ hr {
     //HEADER ROW
     .dx-datagrid-borders>.dx-datagrid-filter-panel,
     .dx-datagrid-borders>.dx-datagrid-headers {
-        border-radius: 6px 6px 0 0;
+        // border-radius: 0;
         overflow: hidden;
-        // border: 1px solid #140a4b;
+        border: 1px solid #000000;
+        background-color: #000000;
     }
 
     .dx-datagrid-headers .dx-datagrid-table .dx-row>td {
-        // border-bottom: 1px solid #140a4b;
-        // background-color: #140a4b;
-        color: $web-font-color-black;
+        border-bottom: 1px solid #000000;
+        color: #fff;
+        background-color: #140a4b;
+        // color: $web-font-color-black;
         font-weight: 600;
     }
 
-    // .dx-datagrid .dx-column-lines>td {
-    //     border-left: 1px solid #140a4b;
-    //     border-right: 1px solid #140a4b;
-    // }
+    .dx-datagrid .dx-column-lines>td {
+        border-left: 1px solid #000000;
+        border-right: 1px solid #000000;
+    }
 
     //HEADER ROW
     .dx-datagrid .dx-row-alt>td,
@@ -542,11 +545,40 @@ hr {
         border-bottom: 0px;
     }
 
-    // //DATA ROW
-    // .dx-datagrid-borders .dx-datagrid-rowsview,
-    // .dx-datagrid-headers+.dx-datagrid-rowsview {
-    //     border: 0.5px solid #140a4b;
-    // }
+    //DATA ROW
+    .dx-datagrid-borders .dx-datagrid-rowsview,
+    .dx-datagrid-headers+.dx-datagrid-rowsview {
+        border: 0.5px solid #000000;
+    }
+
+    .dx-datagrid .dx-row-lines>td {
+        border-bottom: 1px solid #000;
+    }
+
+    //SEARCH BOX
+    .dx-texteditor-container,
+    .dx-lookup-field {
+        background: #fff;
+        border: 1px solid rgb(20 10 75);
+        // border-radius: 0;
+    }
+
+    .dx-searchbox .dx-icon-search::before {
+        color: #140a4b;
+    }
+
+    .dx-placeholder {
+        color: #140a4b;
+    }
+
+    .dx-button-mode-contained {
+        border-color: #140a4b;
+        color: #140a4b;
+    }
+
+    .dx-button-mode-contained .dx-icon {
+        color: #140a4b;
+    }
 }
 
 .loader-box {
@@ -633,13 +665,13 @@ hr {
                 background-color: $dexon-primary-blue;
                 border: 0.5px solid #000;
 
-
                 label {
                     font-size: 14px;
                     font-family: inherit;
                     font-weight: 700;
                     text-transform: uppercase;
                     color: #fff;
+                    letter-spacing: 0.5pt;
                 }
             }
 
@@ -652,7 +684,7 @@ hr {
                 align-items: center;
 
                 label {
-                    font-size: 14px;
+                    font-size: 12px;
                     font-family: inherit;
                     font-weight: 400;
                     text-transform: none;
@@ -670,11 +702,68 @@ hr {
                 align-items: center;
 
                 label {
-                    font-size: 14px;
+                    font-size: 12px;
                     font-family: inherit;
                     font-weight: 400;
                     text-transform: capitalize;
                     color: #000;
+                }
+            }
+
+            .form-item-picture-log {
+                border: 0.5px solid #000 !important;
+                height: 100%;
+                grid-column: span 2;
+
+                .img-box {
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: $web-theme-color-lightgrey;
+                    position: relative;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+
+                    i {
+                        font-size: 16px;
+                    }
+
+                    label {
+                        padding-left: 6px;
+                        font-size: 12px;
+                    }
+
+                    i,
+                    label {
+                        color: $web-font-color-grey;
+                        margin: 20px 0;
+                    }
+
+                    .btn-panel {
+                        position: absolute;
+                        top: 0px;
+                        right: 10px;
+
+                        .btn {
+                            width: 42px;
+                            height: 30px;
+                            margin-top: 10px;
+                            border: 1px solid rgb(218, 218, 218);
+                            background-color: #fff;
+                            padding: 0px !important;
+
+                            i {
+                                color: $web-font-color-blue;
+                            }
+                        }
+                    }
                 }
             }
 

@@ -3,7 +3,46 @@
     <div class="item-container">
       <div class="section-label"><label>Information</label></div>
       <router-link
-        v-for="item in sidebarList"
+        v-for="item in sidebarList.info"
+        :key="item.id"
+        :to="item.link + currentTankID"
+      >
+        <v-ons-toolbar-button class="item">
+          <img :src="item.icon" />
+          <span>{{ item.name }}</span>
+        </v-ons-toolbar-button>
+      </router-link>
+    </div>
+    <div class="item-container">
+      <div class="section-label"><label>Inspection</label></div>
+      <router-link
+        v-for="item in sidebarList.inspection"
+        :key="item.id"
+        :to="item.link + currentTankID"
+      >
+        <v-ons-toolbar-button class="item">
+          <img :src="item.icon" />
+          <span>{{ item.name }}</span>
+        </v-ons-toolbar-button>
+      </router-link>
+    </div>
+    <div class="item-container">
+      <div class="section-label"><label>Report</label></div>
+      <router-link
+        v-for="item in sidebarList.summary"
+        :key="item.id"
+        :to="item.link + currentTankID"
+      >
+        <v-ons-toolbar-button class="item">
+          <img :src="item.icon" />
+          <span>{{ item.name }}</span>
+        </v-ons-toolbar-button>
+      </router-link>
+    </div>
+    <div class="item-container">
+      <div class="section-label"><label>Other</label></div>
+      <router-link
+        v-for="item in sidebarList.other"
         :key="item.id"
         :to="item.link + currentTankID"
       >
@@ -20,7 +59,7 @@
 export default {
   name: "app-sidebar",
   mounted() {
-    console.log(this.currentTankID);
+    console.log("==> Sidebar: id_tank: " + this.currentTankID);
   },
   props: {
     id_tank: Number,
@@ -28,24 +67,88 @@ export default {
   data() {
     return {
       currentTankID: this.$route.params.id_tank,
-      sidebarList: [
-        {
-          id: 1,
-          name: "Tank Information",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: "/img/icon_menu/executive_management/summary.png",
-          link: "/tank/info/info/",
-          isActive: true,
-        },
-        {
-          id: 2,
-          name: "Operation Process",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: "/img/icon_menu/executive_management/summary.png",
-          link: "/tank/info/operation-process/",
-          isActive: true,
-        },
-      ],
+      sidebarList: {
+        info: [
+          {
+            id: 0,
+            name: "Tank Information",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/info/",
+            isActive: true,
+          },
+        ],
+        inspection: [
+          {
+            id: 0,
+            name: "Inspection Record",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+          {
+            id: 1,
+            name: "Marked-up Drawing",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+          {
+            id: 2,
+            name: "API Checklist",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+          {
+            id: 3,
+            name: "Thickness",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+          {
+            id: 4,
+            name: "Visual Inspection",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+          {
+            id: 5,
+            name: "Evaluation",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+        ],
+        summary: [
+          {
+            id: 1,
+            name: "Final Report",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+        ],
+        other: [
+          {
+            id: 0,
+            name: "Library",
+            icon: "/img/icon_sidebar/executive_management/summary.png",
+            icon_menu: "/img/icon_menu/executive_management/summary.png",
+            link: "/tank/info/operation-process/",
+            isActive: true,
+          },
+        ],
+      },
     };
   },
   computed: {},

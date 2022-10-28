@@ -14,6 +14,16 @@
             <img :src="this.$store.state.currentInApp.icon" />
             <label for="">{{ this.$store.state.currentInApp.name }}</label>
           </div>
+          <div
+            class="inapp-logo client-logo"
+            v-if="this.$store.state.currentClient"
+          >
+            <div class="btn-group-separater-client">
+              <i class="las la-angle-right"></i>
+            </div>
+            <img :src="this.$store.state.currentClient.logo" />
+            <label for="">{{ this.$store.state.currentClient.name }}</label>
+          </div>
         </div>
       </div>
 
@@ -155,6 +165,7 @@ export default {
     },
     GO_TO(path) {
       this.$store.commit("CLEAR_CURRENT_INAPP");
+      this.$store.commit("CLEAR_CURRENT_CLIENT");
       var currentPath = this.$route.path;
       if (currentPath != path) {
         this.$router.push({ path: path, replace: true });
@@ -289,6 +300,15 @@ export default {
           color: $web-font-color-grey;
         }
       }
+
+      .client-logo {
+        margin-left: 0px;
+        img {
+          height: 30px;
+          -webkit-mask: none !important;
+          mask: none !important;
+        }
+      }
     }
   }
   .right-col {
@@ -354,5 +374,12 @@ hr {
 
 .btn-group-separater {
   margin-right: 0;
+}
+.btn-group-separater-client {
+  margin: 0 10px;
+  i {
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
