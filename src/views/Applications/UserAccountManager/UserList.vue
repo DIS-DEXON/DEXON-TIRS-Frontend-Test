@@ -24,15 +24,15 @@
           @exporting="EXPORT_DATA"
         >
           <DxColumn
-            data-field="id_user"
+            data-field="id_account"
             alignment="center"
             :width="50"
             caption="ID"
           />
-          <DxColumn data-field="employee_no" caption="Employee No" />
+          <DxColumn data-field="emp_no" caption="Employee No" />
           <DxColumn data-field="first_name" caption="First Name" />
           <DxColumn data-field="last_name" caption="Last Name" />
-          <DxColumn data-field="role" caption="Role" />
+          <DxColumn data-field="role_desc" caption="Role" />
           <DxColumn data-field="username" caption="Username" />
           <DxColumn
             caption="Password"
@@ -126,7 +126,7 @@ import contentLoading from "@/components/app-structures/app-content-loading.vue"
 import clone from "just-clone";
 
 export default {
-  name: "ViewClientList",
+  name: "ViewAccountList",
   components: {
     toolbar,
     DxDataGrid,
@@ -145,47 +145,11 @@ export default {
       name: "User Account Manager",
       icon: "/img/icon_menu/contact/client.png",
     });
-    // if (this.$store.state.status.server == true) this.FETCH_LIST();
+    if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
     return {
-      accountList: [
-        {
-          id_user: 0,
-          employee_no: "-",
-          username: "su",
-          first_name: "-",
-          last_name: "-",
-          role: "super user",
-        },
-        {
-          id_user: 1,
-          employee_no: "dext001",
-          username: "ditt1045",
-          first_name: "Warat",
-          last_name: "Kaweepornpoj",
-          role: "admin",
-          department: "DPS",
-        },
-        {
-          id_user: 2,
-          username: "ditt1008",
-          employee_no: "dext1012",
-          first_name: "Nithiwadee",
-          last_name: "Wangviboonkij",
-          role: "staff",
-          department: "OPS",
-        },
-        {
-          id_user: 3,
-          employee_no: "dext987",
-          username: "ditt1045",
-          first_name: "Bhaksiree",
-          last_name: "Tongtago",
-          role: "management",
-          department: "Management",
-        },
-      ],
+      accountList: [],
       isAdd: false,
       isEdit: false,
       isLoading: false,
@@ -231,27 +195,19 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "/contact-client/client-list",
+        url: "/account-user/account-list",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           if (res.data) {
-            this.clientList = res.data;
-            this.currentViewRow = this.clientList[0];
+            this.accountList = res.data;
           }
         })
         .catch((error) => {
           console.log(error);
-          this.$ons.notification.alert(
-            error.code +
-              " " +
-              error.response.status +
-              " " +
-              error.response.statusText
-          );
         })
         .finally(() => {
           this.isLoading = false;
