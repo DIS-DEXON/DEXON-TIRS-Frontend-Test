@@ -161,6 +161,11 @@ const routes = [
         alias: 'Tank Material',
         component: () => import('../views/Applications/MasterData/TankMaterial.vue'),
       },
+      {
+        path: 'insulation',
+        alias: 'Insulation',
+        component: () => import('../views/Applications/MasterData/Insulation.vue'),
+      },
     ]
   }
 ]
