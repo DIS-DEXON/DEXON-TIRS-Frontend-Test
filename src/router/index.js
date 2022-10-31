@@ -155,7 +155,12 @@ const routes = [
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
-      }
+      },
+      {
+        path: 'tank-material',
+        alias: 'Tank Material',
+        component: () => import('../views/Applications/MasterData/TankMaterial.vue'),
+      },
     ]
   }
 ]
