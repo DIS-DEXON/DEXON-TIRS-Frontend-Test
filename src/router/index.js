@@ -45,12 +45,17 @@ const routes = [
       {
         path: 'info',
         alias: 'Tank Info',
-        component: () => import('../views/Applications/TankList/Pages/router-template-detail.vue'),
+        component: () => import('../views/Applications/TankList/Pages/router-template.vue'),
         children: [
           {
             path: 'info/:id_tank',
             alias: 'Tank Info',
-            component: () => import('../views/Applications/TankList/Pages/Info-Info.vue'),
+            component: () => import('../views/Applications/TankList/Pages/Information/Page.vue'),
+          },
+          {
+            path: 'inspection-record/:id_tank',
+            alias: 'Tank Inspection Record',
+            component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
         ]
       },

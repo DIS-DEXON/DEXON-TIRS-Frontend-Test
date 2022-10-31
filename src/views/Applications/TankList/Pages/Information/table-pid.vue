@@ -13,6 +13,7 @@
     >
       <DxToolbar>
         <DxItem location="before" template="table-header" />
+        <DxItem location="after" template="table-header-button-set" />
       </DxToolbar>
       <DxColumn
         data-field="created_time"
@@ -26,13 +27,13 @@
       <DxColumn :width="110" caption="" cell-template="cell-button-set" />
       <template #cell-button-set="{ data }">
         <div class="table-btn-group">
-          <div class="table-btn" v-on:click="VIEW_INFO(data)">
-            <i class="las la-search blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="VIEW_INFO(data)">
+          <div class="table-btn" v-on:click="DOWNLOAD_INFO(data)">
             <i class="las la-download green"></i>
           </div>
-          <div class="table-btn" v-on:click="VIEW_INFO(data)">
+          <div class="table-btn" v-on:click="EDIT_INFO(data)">
+            <i class="las la-pen blue"></i>
+          </div>
+          <div class="table-btn" v-on:click="DELETE_INFO(data)">
             <i class="las la-trash red"></i>
           </div>
         </div>
@@ -40,6 +41,14 @@
       <template #table-header>
         <div>
           <div class="page-section-label">P&ID</div>
+        </div>
+      </template>
+      <template #table-header-button-set>
+        <div>
+          <v-ons-toolbar-button>
+            <i class="las la-upload"></i>
+            <span>Upload New</span>
+          </v-ons-toolbar-button>
         </div>
       </template>
       <!-- Configuration goes here -->
@@ -156,5 +165,35 @@ export default {
 
 .page-section:last-child {
   padding-bottom: 20px;
+}
+
+.toolbar-button {
+  background-color: $web-theme-color-background;
+  padding: 0;
+  padding-right: 15px;
+  height: 34px;
+  border: 0px;
+  border: 1px solid $web-font-color-black;
+
+  i {
+    font-size: 20px;
+    color: $web-font-color-black;
+  }
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: $web-font-color-black;
+  }
+}
+.toolbar-button:hover,
+.toolbar-button:active {
+  background-color: $dexon-primary-blue;
+
+  i {
+    color: $web-font-color-white;
+  }
+  span {
+    color: $web-font-color-white;
+  }
 }
 </style>
