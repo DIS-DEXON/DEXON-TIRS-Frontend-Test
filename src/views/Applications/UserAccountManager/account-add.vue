@@ -7,19 +7,61 @@
       <div class="popup-content form">
         <div class="form-item-container">
           <label class="section-text" style="grid-column: span 2; margin-top: 0"
-            >Account Informations</label
+            >Log-in Informations</label
           >
-
           <div class="input-set">
             <div class="label-box">
-              <p class="label">First Name:</p>
+              <p class="label">Username:</p>
               <span class="star-label"><i class="las la-asterisk"></i></span>
             </div>
             <input
               type="text"
-              placeholder="First Name"
-              v-model="formData.first_name"
+              placeholder="Username"
+              v-model="formData.username"
             />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Password:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              placeholder="Password"
+              v-model="formData.password"
+              disabled
+            />
+          </div>
+
+          <label class="section-text" style="grid-column: span 2"
+            >Account Informations</label
+          >
+          <div style="display: grid; grid-template-columns: 120px auto">
+            <div class="input-set" style="padding-right: 10px; width: unset">
+              <div class="label-box">
+                <p class="label">Prefix:</p>
+                <span class="star-label"><i class="las la-asterisk"></i></span>
+              </div>
+              <DxSelectBox
+                style="border: 0; font-size: 14px"
+                :items="formSelect.prefixList"
+                placeholder="Select Prefix"
+                v-model="formData.id_prefix"
+                display-expr="prefix_desc"
+                value-expr="id_prefix"
+              />
+            </div>
+            <div class="input-set">
+              <div class="label-box">
+                <p class="label">First Name:</p>
+                <span class="star-label"><i class="las la-asterisk"></i></span>
+              </div>
+              <input
+                type="text"
+                placeholder="First Name"
+                v-model="formData.first_name"
+              />
+            </div>
           </div>
           <div class="input-set">
             <p class="label">Last Name:</p>
@@ -37,7 +79,7 @@
             <input
               type="text"
               placeholder="Employee No"
-              v-model="formData.employee_no"
+              v-model="formData.emp_no"
             />
           </div>
           <div class="input-set">
@@ -49,7 +91,37 @@
               style="border: 0; font-size: 14px"
               :items="formSelect.departmentList"
               placeholder="Select Department"
-              v-model="formData.department"
+              v-model="formData.id_department"
+              display-expr="department_desc"
+              value-expr="id_department"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Position:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              :items="formSelect.positionList"
+              placeholder="Select Position"
+              v-model="formData.id_position"
+              display-expr="position_desc"
+              value-expr="id_position"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Role:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              :items="formSelect.roleList"
+              placeholder="Select Role"
+              v-model="formData.id_role"
+              display-expr="role_desc"
+              value-expr="id_role"
             />
           </div>
           <div class="input-set">
@@ -68,33 +140,6 @@
               type="tel"
               placeholder="Phone No"
               v-model="formData.phone_no"
-            />
-          </div>
-
-          <label class="section-text" style="grid-column: span 2"
-            >Log-in Informations</label
-          >
-          <div class="input-set">
-            <div class="label-box">
-              <p class="label">Username:</p>
-              <span class="star-label"><i class="las la-asterisk"></i></span>
-            </div>
-            <input
-              type="text"
-              placeholder="Username"
-              v-model="formData.username"
-            />
-          </div>
-          <div class="input-set">
-            <div class="label-box">
-              <p class="label">Role:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
-            </div>
-            <DxSelectBox
-              style="border: 0; font-size: 14px"
-              :items="formSelect.roleList"
-              placeholder="Select Role"
-              v-model="formData.role"
             />
           </div>
         </div>
@@ -118,31 +163,51 @@ import axios from "/axios.js";
 // import clone from "just-clone";
 import DxSelectBox from "devextreme-vue/select-box";
 
+//JS
+import { sha256 } from "js-sha256";
+
 export default {
   name: "popup-add-account",
   components: {
     DxSelectBox,
   },
+  created() {
+    this.FETCH_DROPDOWN_LIST();
+  },
   data() {
     return {
       formData: {
         password: "dex0n7845",
+        is_active: true,
+        is_dexon: true,
       },
       formSelect: {
-        roleList: ["staff", "admin"],
-        departmentList: ["OPS", "DPS", "Management"],
+        roleList: [],
+        departmentList: [],
+        positionList: [],
+        prefixList: [],
       },
     };
   },
   methods: {
     SAVE() {
-      if (this.formData.client_name) {
+      if (
+        this.formData.username &&
+        this.formData.id_prefix &&
+        this.formData.first_name &&
+        this.formData.emp_no &&
+        this.formData.id_department &&
+        this.formData.id_position &&
+        this.formData.id_role
+      ) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
           if (res == 1) {
             const data = this.formData;
+            data.password = sha256(data.password);
+            console.log(data);
             axios({
               method: "post",
-              url: "/contact-client/client-add",
+              url: "/account-user/add-dexon-account",
               headers: {
                 Authorization:
                   "Bearer " + JSON.parse(localStorage.getItem("token")),
@@ -165,7 +230,7 @@ export default {
           }
         });
       } else {
-        this.$ons.notification.alert('"Client name" field cannot be empty');
+        this.$ons.notification.alert("Please fill all required fields.");
       }
     },
     CANCEL() {
@@ -183,6 +248,84 @@ export default {
       } else {
         this.$emit("btn-cancel-add");
       }
+    },
+    FETCH_DROPDOWN_LIST() {
+      this.FETCH_DROPDOWN_DEXON_DEPARTMENT();
+      this.FETCH_DROPDOWN_DEXON_POSITION();
+      this.FETCH_DROPDOWN_ROLE();
+      this.FETCH_DROPDOWN_PREFIX();
+    },
+    FETCH_DROPDOWN_DEXON_DEPARTMENT() {
+      axios({
+        method: "get",
+        url: "/MdDexonDepartment",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formSelect.departmentList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    FETCH_DROPDOWN_DEXON_POSITION() {
+      axios({
+        method: "get",
+        url: "/MdDexonPosition",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formSelect.positionList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    FETCH_DROPDOWN_ROLE() {
+      axios({
+        method: "get",
+        url: "/account-user/role-list",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formSelect.roleList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    FETCH_DROPDOWN_PREFIX() {
+      axios({
+        method: "get",
+        url: "/MdPrefix",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formSelect.prefixList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
     },
   },
 };

@@ -13,7 +13,7 @@ export default new Vuex.Store({
       prod: 'https://ai.dexon-technology.com:443/'
     },
     urlApi: {
-      dev: 'https://localhost:44338/api',
+      dev: 'https://localhost:5001/api',
       prod: 'https://ai.dexon-technology.com:443/api',
     },
     user: '',
@@ -30,16 +30,16 @@ export default new Vuex.Store({
         {
           id: 103,
           name: "Master Data Manager",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
+          icon: "/img/icon_sidebar/master_data/table.png",
+          icon_menu: '/img/icon_menu/master_data/table.png',
           link: "/md/applicable-status",
           isActive: true,
         },
         {
           id: 105,
           name: "User Account Manager",
-          icon: "/img/icon_sidebar/executive_management/summary.png",
-          icon_menu: '/img/icon_menu/executive_management/summary.png',
+          icon: "/img/icon_sidebar/account/account.png",
+          icon_menu: '/img/icon_menu/account/account.png',
           link: "/user-account-manager",
           isActive: true,
         },
