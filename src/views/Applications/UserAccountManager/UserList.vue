@@ -30,10 +30,13 @@
             caption="ID"
           />
           <DxColumn data-field="emp_no" caption="Employee No" />
+          <DxColumn data-field="prefix_desc" caption="Prefix" :width="80" />
           <DxColumn data-field="first_name" caption="First Name" />
           <DxColumn data-field="last_name" caption="Last Name" />
           <DxColumn data-field="role_desc" caption="Role" />
           <DxColumn data-field="username" caption="Username" />
+          <DxColumn data-field="position_desc" caption="Position" />
+          <DxColumn data-field="department_desc" caption="Department" />
           <DxColumn
             caption="Password"
             :width="150"

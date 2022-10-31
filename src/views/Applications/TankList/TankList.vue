@@ -29,9 +29,10 @@
             caption=""
             sort-order="asc"
           />
-          <DxColumn data-field="tag_no" caption="Tag Number" />
-          <DxColumn data-field="plant" caption="Site" />
-          <DxColumn data-field="location" caption="Location" />
+          <DxColumn data-field="tag_no" caption="Tag No" />
+          <DxColumn data-field="tank_no" caption="Tank No" />
+          <DxColumn data-field="site_desc" caption="Site" />
+
           <DxColumn :width="50" caption="" cell-template="cell-button-set" />
           <template #cell-button-set="{ data }">
             <div class="table-btn-group">
@@ -113,7 +114,7 @@ export default {
       logo: this.infoClient.logo,
     });
 
-    // if (this.$store.state.status.server == true) this.FETCH_LIST();
+    if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
     return {
@@ -128,48 +129,7 @@ export default {
         logo: "/img/mockup/client.png",
         company_name: "PTT LNG Company Limited",
       },
-      tankList: [
-        {
-          id_tank: 1,
-          plant: "MUDA-01",
-          tag_no: "MUDA-FA-001",
-          location: "Rayong",
-          int_status: "normal",
-          app_status: "in-service",
-        },
-        {
-          id_tank: 2,
-          plant: "MUDA-01",
-          tag_no: "MUDA-FA-001",
-          location: "Rayong",
-          int_status: "normal",
-          app_status: "in-service",
-        },
-        {
-          id_tank: 3,
-          plant: "MUDA-01",
-          tag_no: "MUDA-FA-001",
-          location: "Rayong",
-          int_status: "normal",
-          app_status: "in-service",
-        },
-        {
-          id_tank: 4,
-          plant: "MUDA-01",
-          tag_no: "MUDA-FA-001",
-          location: "Rayong",
-          int_status: "normal",
-          app_status: "in-service",
-        },
-        {
-          id_tank: 5,
-          plant: "MUDA-01",
-          tag_no: "MUDA-FA-001",
-          location: "Rayong",
-          int_status: "normal",
-          app_status: "in-service",
-        },
-      ],
+      tankList: [],
     };
   },
   computed: {},
@@ -201,23 +161,26 @@ export default {
     },
     FETCH_LIST() {
       this.isLoading = true;
+      var id_client = this.$route.params.id_client;
+      console.log("ID CLIENT: " + id_client);
       axios({
-        method: "get",
-        url: "/project-manager/project-list",
+        method: "post",
+        url: "/tank-info/tank-info-by-client",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
+        data: {
+          id_client: id_client,
+        },
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           if (res.status == 200 && res.data) {
-            this.projectList = res.data;
+            this.tankList = res.data;
           }
         })
         .catch((error) => {
-          this.$ons.notification.alert(
-            error.code + " " + error.response.status + " " + error.message
-          );
+          console.log(error);
         })
         .finally(() => {
           this.isLoading = false;

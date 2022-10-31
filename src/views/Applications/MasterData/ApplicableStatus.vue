@@ -102,8 +102,8 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Applicable Status",
-      icon: "/img/icon_menu/project_manager/project.png",
+      name: "Master Data Manager",
+      icon: "/img/icon_menu/master_data/table.png",
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
