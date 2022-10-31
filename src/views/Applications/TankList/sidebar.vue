@@ -26,32 +26,6 @@
         </v-ons-toolbar-button>
       </router-link>
     </div>
-    <div class="item-container">
-      <div class="section-label"><label>Report</label></div>
-      <router-link
-        v-for="item in sidebarList.summary"
-        :key="item.id"
-        :to="item.link + currentTankID"
-      >
-        <v-ons-toolbar-button class="item">
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
-    <div class="item-container">
-      <div class="section-label"><label>Other</label></div>
-      <router-link
-        v-for="item in sidebarList.other"
-        :key="item.id"
-        :to="item.link + currentTankID"
-      >
-        <v-ons-toolbar-button class="item">
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
-        </v-ons-toolbar-button>
-      </router-link>
-    </div>
   </div>
 </template>
 
@@ -84,7 +58,7 @@ export default {
             name: "Inspection Record",
             icon: "/img/icon_sidebar/executive_management/summary.png",
             icon_menu: "/img/icon_menu/executive_management/summary.png",
-            link: "/tank/info/operation-process/",
+            link: "/tank/info/inspection-record/",
             isActive: true,
           },
           {
@@ -122,26 +96,6 @@ export default {
           {
             id: 5,
             name: "Evaluation",
-            icon: "/img/icon_sidebar/executive_management/summary.png",
-            icon_menu: "/img/icon_menu/executive_management/summary.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-        ],
-        summary: [
-          {
-            id: 1,
-            name: "Final Report",
-            icon: "/img/icon_sidebar/executive_management/summary.png",
-            icon_menu: "/img/icon_menu/executive_management/summary.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-        ],
-        other: [
-          {
-            id: 0,
-            name: "Library",
             icon: "/img/icon_sidebar/executive_management/summary.png",
             icon_menu: "/img/icon_menu/executive_management/summary.png",
             link: "/tank/info/operation-process/",
