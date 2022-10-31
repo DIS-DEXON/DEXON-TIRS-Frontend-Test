@@ -2,6 +2,7 @@
   <div id="page-account" class="page-body">
     <appNavi :isBack="false" pageName="My Account" />
     <div class="page-container page-display">
+      <!-- 
       <div class="form">
         <div class="page-section-button">
           <h2 class="page-section-label">Profile Photo</h2>
@@ -26,13 +27,10 @@
               ref="file"
               @change="UPLOAD_PIC()"
             />
-            <img :src="user.profile_picture" v-if="user.profile_picture" />
-            <img
-              src="/img/default_profile_picture.png"
-              v-if="!user.profile_picture"
-            />
+             <img :src="user.profile_picture" v-if="user.profile_picture" /> 
+            <img src="/img/default_profile_picture.png" />
           </div>
-        </div>
+        </div> 
         <div class="form-button-container" v-if="isEdit.photo == true">
           <div class="button-set">
             <button class="grey" v-on:click="BTN_CANCEL()">
@@ -40,8 +38,8 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="form" style="grid-row: span 2" v-if="this.user.role != 'ceo'">
+      </div> -->
+      <div class="form" style="grid-row: span 2">
         <div class="page-section-button">
           <h2 class="page-section-label">Personal Informations</h2>
           <v-ons-toolbar-button
@@ -79,13 +77,13 @@
           <div class="input-set">
             <p class="label">Role:</p>
             <p class="info">
-              {{ user.role }}
+              {{ user.role_desc }}
             </p>
           </div>
           <div class="input-set">
             <p class="label">Employee No:</p>
             <p class="info">
-              {{ user.employee_no }}
+              {{ user.emp_no }}
             </p>
           </div>
           <div class="input-set">
@@ -229,39 +227,39 @@ export default {
   },
   created() {
     this.$emit(`update:layout`, ViewLayout);
+    this.$store.commit("CLEAR_CURRENT_CLIENT");
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "My Account",
       icon: "",
     });
-    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
-    this.user = JSON.parse(localStorage.getItem("user"));
+    if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
   },
   mounted() {},
   methods: {
     FETCH_USER_INFO() {
       this.isLoading = true;
       setTimeout(() => {
-        var id_user = JSON.parse(localStorage.getItem("user")).id_user;
+        var id_account = JSON.parse(localStorage.getItem("user")).id_account;
         axios({
           method: "post",
-          url: "/user/get-info",
+          url: "/account-user/get-info",
           headers: {
             Authorization:
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
-          data: { id_user },
+          data: { id_account },
         })
           .then((res) => {
             // console.log(res);
             if (res.status == 200) {
-              var user = res.data.user;
+              var user = res.data[0];
               this.user = user;
-              if (user.profile_picture == null) {
-                this.user.profile_picture = null;
-              } else {
-                this.user.profile_picture =
-                  this.baseURL + this.user.profile_picture;
-              }
+              // if (user.profile_picture == null) {
+              //   this.user.profile_picture = null;
+              // } else {
+              //   this.user.profile_picture =
+              //     this.baseURL + this.user.profile_picture;
+              // }
               console.log("==> Fetch User Info : Account View <==");
             }
           })

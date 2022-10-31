@@ -37,6 +37,14 @@ export default new Vuex.Store({
         },
         {
           id: 105,
+          name: "Client Company Manager",
+          icon: "/img/icon_sidebar/client/client.png",
+          icon_menu: '/img/icon_menu/client/client.png',
+          link: "/client-company-manager",
+          isActive: true,
+        },
+        {
+          id: 108,
           name: "User Account Manager",
           icon: "/img/icon_sidebar/account/account.png",
           icon_menu: '/img/icon_menu/account/account.png',

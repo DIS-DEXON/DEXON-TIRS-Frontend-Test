@@ -30,10 +30,13 @@
             caption="ID"
           />
           <DxColumn data-field="emp_no" caption="Employee No" />
+          <DxColumn data-field="prefix_desc" caption="Prefix" :width="80" />
           <DxColumn data-field="first_name" caption="First Name" />
           <DxColumn data-field="last_name" caption="Last Name" />
           <DxColumn data-field="role_desc" caption="Role" />
           <DxColumn data-field="username" caption="Username" />
+          <DxColumn data-field="position_desc" caption="Position" />
+          <DxColumn data-field="department_desc" caption="Department" />
           <DxColumn
             caption="Password"
             :width="150"
@@ -41,10 +44,13 @@
           />
           <DxColumn :width="90" caption="" cell-template="option-btn-set" />
           <template #option-btn-password="{ data }">
-            <div class="table-btn-group" v-if="data.data.role != 'super user'">
+            <div
+              class="table-btn-group"
+              v-if="data.data.role_desc != 'super user'"
+            >
               <div
                 class="table-btn table-btn-none"
-                v-on:click="TOGGLE_POPUP('edit', data)"
+                v-on:click="RESET_PASSWORD(data)"
               >
                 <i class="las la-undo-alt red"></i>
                 <span class="red">reset password</span>
@@ -52,7 +58,10 @@
             </div>
           </template>
           <template #option-btn-set="{ data }">
-            <div class="table-btn-group" v-if="data.data.role != 'super user'">
+            <div
+              class="table-btn-group"
+              v-if="data.data.role_desc != 'super user'"
+            >
               <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
                 <i class="las la-search blue"></i>
               </div> -->
@@ -123,7 +132,10 @@ import toolbar from "@/components/app-structures/app-toolbar.vue";
 import popupAdd from "@/views/Applications/UserAccountManager/account-add.vue";
 import popupEdit from "@/views/Applications/UserAccountManager/account-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+
+//JS
 import clone from "just-clone";
+import { sha256 } from "js-sha256";
 
 export default {
   name: "ViewAccountList",
@@ -143,7 +155,7 @@ export default {
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "User Account Manager",
-      icon: "/img/icon_menu/contact/client.png",
+      icon: "/img/icon_menu/account/account.png",
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
@@ -213,7 +225,8 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_CLIENT() {
+    EDIT_ACCOUNT() {},
+    DELETE_ACCOUNT() {
       let rowID = this.currentViewRow.id_client;
       this.$ons.notification.confirm("Confirm delete?").then((res) => {
         if (res == 1) {
@@ -242,6 +255,30 @@ export default {
             .finally(() => {});
         }
       });
+    },
+    RESET_PASSWORD(row_data) {
+      console.log(row_data);
+      axios({
+        method: "put",
+        url: "/account-user/change-password",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_account: row_data.id_account,
+          password: sha256("dex0n7845"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            this.accountList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
     },
   },
 };

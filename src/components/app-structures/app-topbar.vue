@@ -33,7 +33,7 @@
           style="padding-right: 0px"
         >
           <span>
-            {{ user.first_name }} {{ user.middle_name }}
+            {{ user.prefix_desc }} {{ user.first_name }} {{ user.middle_name }}
             {{ user.last_name }}
           </span>
           <div class="topbar-photo">
@@ -115,29 +115,28 @@ export default {
     };
   },
   created() {
-    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
-    this.user = JSON.parse(localStorage.getItem("user"));
+    if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
   },
   mounted() {},
   updated() {},
   methods: {
     FETCH_USER_INFO() {
       if (JSON.parse(localStorage.getItem("user"))) {
-        var id_user = JSON.parse(localStorage.getItem("user")).id_user;
+        var id_account = JSON.parse(localStorage.getItem("user")).id_account;
       }
-      if (id_user) {
+      if (id_account) {
         axios({
           method: "post",
-          url: "/user/get-info",
+          url: "/account-user/get-info",
           headers: {
             Authorization:
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
-          data: { id_user },
+          data: { id_account },
         })
           .then((res) => {
             if (res.status == 200) {
-              var user = res.data.user;
+              var user = res.data[0];
               this.user = user;
               if (user.profile_picture == null) {
                 this.user.profile_picture = null;

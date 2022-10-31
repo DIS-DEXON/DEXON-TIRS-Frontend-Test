@@ -29,7 +29,12 @@
         </div>
       </div>
     </div>
-    <div class="page-container" v-if="this.user.role == 'admin'">
+    <div
+      class="page-container"
+      v-if="
+        this.user.role_desc == 'admin' || this.user.role_desc == 'super user'
+      "
+    >
       <div class="section-label" v-if="showSectionLabel == true">
         <h2 class="page-section-label">Management</h2>
       </div>
@@ -177,14 +182,9 @@ export default {
   created() {
     this.$emit(`update:layout`, ViewLayout);
     this.$store.commit("CLEAR_CURRENT_INAPP");
-    // if (this.$store.state.status.server == true) this.FETCH_USER_INFO();
     this.user = JSON.parse(localStorage.getItem("user"));
   },
-  beforeMount() {
-    // if (this.$store.state.user) {
-    //   this.user = this.$store.state.user;
-    // }
-  },
+  beforeMount() {},
   mounted() {},
   methods: {
     // FETCH_USER_INFO() {
