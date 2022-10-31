@@ -140,10 +140,10 @@ import moment from "moment";
 
 //Components
 import VueTabsChrome from "vue-tabs-chrome";
-import shellCourse from "@/views/Applications/TankList/Pages/Info-shell-course.vue";
-import drawingTable from "@/views/Applications/TankList/Pages/Info-drawing.vue";
-import pidTable from "@/views/Applications/TankList/Pages/Info-pid.vue";
-import generalDocTable from "@/views/Applications/TankList/Pages/Info-generalDoc.vue";
+import shellCourse from "@/views/Applications/TankList/Pages/Information/table-shell-course.vue";
+import drawingTable from "@/views/Applications/TankList/Pages/Information/table-drawing.vue";
+import pidTable from "@/views/Applications/TankList/Pages/Information/table-pid.vue";
+import generalDocTable from "@/views/Applications/TankList/Pages/Information/table-generalDoc.vue";
 
 //DataGrid
 
