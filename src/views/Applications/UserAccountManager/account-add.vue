@@ -4,7 +4,7 @@
       <div class="popup-header">
         <label>Create New Account</label>
       </div>
-      <div class="popup-content form">
+      <div class="popup-content form" v-if="all_form_select_loaded == true">
         <div class="form-item-container">
           <label class="section-text" style="grid-column: span 2; margin-top: 0"
             >Log-in Informations</label
@@ -144,9 +144,19 @@
           </div>
         </div>
       </div>
+      <div
+        class="popup-content loading-section"
+        v-if="all_form_select_loaded == false"
+      >
+        <contentLoading text="Loading, please wait..." color="#fc9b21" />
+      </div>
       <div class="popup-footer">
         <div class="button-set">
-          <button class="blue" v-on:click="SAVE()">
+          <button
+            class="blue"
+            v-on:click="SAVE()"
+            v-if="all_form_select_loaded == true"
+          >
             <label>Save</label>
           </button>
           <button class="grey" v-on:click="CANCEL()">
@@ -162,6 +172,7 @@
 import axios from "/axios.js";
 // import clone from "just-clone";
 import DxSelectBox from "devextreme-vue/select-box";
+import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
 import { sha256 } from "js-sha256";
@@ -170,6 +181,7 @@ export default {
   name: "popup-add-account",
   components: {
     DxSelectBox,
+    contentLoading,
   },
   created() {
     this.FETCH_DROPDOWN_LIST();
@@ -216,7 +228,7 @@ export default {
             })
               .then((res) => {
                 if (res.status == 200) {
-                  this.$ons.notification.alert("Client Add successful");
+                  this.$ons.notification.alert("Add successful");
                   this.$emit("btn-cancel-add");
                   this.$emit("refreshList");
                 }
@@ -234,9 +246,7 @@ export default {
       }
     },
     CANCEL() {
-      console.log(this.formData);
       let form = this.formData;
-      console.log(form);
       if (this.formData != form) {
         this.$ons.notification
           .confirm("Your unsaved changes will be lost")
@@ -328,6 +338,18 @@ export default {
         .finally(() => {});
     },
   },
+  computed: {
+    all_form_select_loaded() {
+      if (
+        this.formSelect.roleList.length > 0 &&
+        this.formSelect.departmentList.length > 0 &&
+        this.formSelect.positionList.length > 0 &&
+        this.formSelect.prefixList.length > 0
+      ) {
+        return true;
+      } else return false;
+    },
+  },
 };
 </script>
 
@@ -343,5 +365,17 @@ export default {
 textarea {
   max-width: 610px;
   min-width: 610px;
+}
+
+.loading-section {
+  height: 222px;
+  margin-top: -51px;
+  padding: 0;
+  width: 350px;
+  .app-content-loading {
+    top: 51px;
+    left: 0;
+    height: 211px;
+  }
 }
 </style>

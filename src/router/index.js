@@ -72,6 +72,16 @@ const routes = [
     // },
   },
   {
+    // CLIENT COMPANY MANAGER
+    path: '/client-company-manager',
+    name: 'Client Company Manager',
+    component: () => import('../views/Applications/ClientCompany/ClientCompanyList.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (store.state.user.role == 'manager' || store.state.user.role == 'admin') next()
+    //   else next('/')
+    // },
+  },
+  {
     // MASTER DATA
     path: '/md',
     name: 'MasterData',

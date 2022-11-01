@@ -2,10 +2,10 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="User Account"
+        pageName="Client Company"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="true"
-        newBtnLabel="New Account"
+        newBtnLabel="New Client"
         @newBtnFn="TOGGLE_POPUP('add')"
         :isBack="true"
       />
@@ -14,7 +14,7 @@
       <div class="page-content page-list">
         <DxDataGrid
           id="data-grid-style"
-          :data-source="accountList"
+          :data-source="clientCompanyList"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="false"
@@ -24,25 +24,32 @@
           @exporting="EXPORT_DATA"
         >
           <DxColumn
-            data-field="id_account"
+            data-field="id_company"
             alignment="center"
             :width="50"
             caption="ID"
           />
-          <DxColumn data-field="emp_no" caption="Employee No" />
-          <DxColumn data-field="prefix_desc" caption="Prefix" :width="80" />
-          <DxColumn data-field="first_name" caption="First Name" />
-          <DxColumn data-field="last_name" caption="Last Name" />
-          <DxColumn data-field="role_desc" caption="Role" />
-          <DxColumn data-field="username" caption="Username" />
-          <DxColumn data-field="position_desc" caption="Position" />
-          <DxColumn data-field="department_desc" caption="Department" />
+          <DxColumn :width="100" cell-template="column-logo" caption="Logo" />
           <DxColumn
-            caption="Password"
-            :width="150"
-            cell-template="option-btn-password"
+            :width="300"
+            data-field="company_name"
+            caption="Company Name"
           />
+          <DxColumn data-field="location" caption="Location" />
+          <DxColumn data-field="address" caption="Address" />
+          <DxColumn data-field="phone_no" caption="Phone No" />
+          <DxColumn
+            :width="150"
+            data-field="is_domestic"
+            caption="Located in Thailand"
+          />
+
           <DxColumn :width="90" caption="" cell-template="option-btn-set" />
+          <template #column-logo="{ data }">
+            <div class="client-logo">
+              <img :src="baseURL + data.data.logo" />
+            </div>
+          </template>
           <template #option-btn-password="{ data }">
             <div
               class="table-btn-group"
@@ -129,16 +136,16 @@ import axios from "/axios.js";
 
 //Pages & Structures
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/UserAccountManager/account-add.vue";
-import popupEdit from "@/views/Applications/UserAccountManager/account-edit.vue";
+import popupAdd from "@/views/Applications/ClientCompany/client-add.vue";
+import popupEdit from "@/views/Applications/ClientCompany/client-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
 import clone from "just-clone";
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 
 export default {
-  name: "ViewAccountList",
+  name: "ViewClientList",
   components: {
     toolbar,
     DxDataGrid,
@@ -154,14 +161,14 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "User Account Manager",
-      icon: "/img/icon_menu/account/account.png",
+      name: "Client Company Manager",
+      icon: "/img/icon_menu/client/client.png",
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
   data() {
     return {
-      accountList: [],
+      clientCompanyList: [],
       isAdd: false,
       isEdit: false,
       isLoading: false,
@@ -170,7 +177,14 @@ export default {
       editInfo: "",
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    },
+  },
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();
@@ -204,15 +218,15 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "/account-user/account-list",
+        url: "/MdClientCompany",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           if (res.data) {
-            this.accountList = res.data;
+            this.clientCompanyList = res.data;
           }
         })
         .catch((error) => {
@@ -222,24 +236,22 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_ACCOUNT() {
-      let rowID = this.currentViewRow.id_client;
+    DELETE_CLIENT(data) {
+      let rowID = data.data.id_company;
       this.$ons.notification.confirm("Confirm delete?").then((res) => {
         if (res == 1) {
           axios({
             method: "delete",
-            url: "/contact-client/client-delete",
+            url: "/MdClientCompany/delete-client",
             headers: {
               Authorization:
                 "Bearer " + JSON.parse(localStorage.getItem("token")),
             },
-            data: { id_client: rowID },
+            data: { id_company: rowID },
           })
             .then((res) => {
-              if (res.status == 200) {
-                this.$ons.notification.alert(
-                  "Client contact delete successful"
-                );
+              if (res.status == 204) {
+                this.$ons.notification.alert("Delete successful");
                 this.FETCH_LIST();
               }
             })
@@ -247,36 +259,6 @@ export default {
               this.$ons.notification.alert(
                 error.code + " " + error.response.status
               );
-            })
-            .finally(() => {});
-        }
-      });
-    },
-    RESET_PASSWORD(row_data) {
-      // console.log(row_data);
-      // console.log("Reset account id: " + row_data.data.id_account);
-      this.$ons.notification.confirm("Confirm password reset?").then((res) => {
-        if (res == 1) {
-          axios({
-            method: "put",
-            url: "/account-user/change-password",
-            headers: {
-              Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
-            },
-            data: {
-              id_account: row_data.data.id_account,
-              password: sha256("dex0n7845"),
-            },
-          })
-            .then((res) => {
-              if (res.status == 200) {
-                this.$ons.notification.alert("Password reset successful");
-              }
-              this.FETCH_LIST();
-            })
-            .catch((error) => {
-              console.log(error);
             })
             .finally(() => {});
         }
@@ -306,18 +288,14 @@ export default {
 
     .page-content {
       width: 100%;
-      height: 100%;
+      height: fit-content;
       margin: 0 auto;
+      padding: 20px;
     }
     .page-nodata {
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-    .page-list {
-      width: auto;
-      padding: 20px;
-      margin-bottom: 80px;
     }
     .page-info {
       width: auto;
@@ -334,57 +312,22 @@ export default {
   padding: 0 !important;
   height: calc(100vh - 139px) !important;
 }
-.pm-info-sidebar {
-  width: 360px;
-  height: 100%;
-  background: #fff;
-  padding: 0 20px;
-  overflow-y: scroll;
-  position: relative;
-  .pm-section-label {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.75em;
-    line-height: 16px;
-    letter-spacing: -0.08px;
-    color: $web-font-color-black;
-    padding: 20px 0 10px 0;
-    margin: 0;
-    user-select: text;
-  }
-  .form-item-container {
-    display: block;
-  }
-  .pm-sidebar-close-btn {
-    width: 40px;
-    height: 20px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f3f0f0;
-    border-radius: 20px;
-    cursor: pointer;
-    i {
-      font-size: 1.75em;
-    }
-  }
 
-  .pm-sidebar-close-btn:hover {
-    background: #f6f6f6;
-  }
-  .pm-sidebar-close-btn:active {
-    background: #f3f0f0;
+.client-logo {
+  width: 85px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 
-.pm-info-sidebar::-webkit-scrollbar {
-  display: none;
-}
-
-.form-item-container:last-child {
-  margin-bottom: 40px;
+.dx-datagrid-content .dx-datagrid-table .dx-row > td,
+.dx-datagrid-content .dx-datagrid-table .dx-row > tr > td {
+  vertical-align: middle !important;
 }
 </style>

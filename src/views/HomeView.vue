@@ -77,10 +77,10 @@
           class="client-card"
           v-for="item in clientList"
           :key="item.id"
-          v-on:click="VIEW_INFO(item.id_client)"
+          v-on:click="VIEW_INFO(item.id_company)"
         >
           <div class="client_logo">
-            <img :src="item.logo" alt="client logo" />
+            <img :src="baseURL + item.logo" alt="client logo" />
           </div>
           <div class="title">{{ item.company_name }}</div>
         </v-ons-card>
@@ -90,10 +90,10 @@
           class="client-card"
           v-for="item in clientListFiltered"
           :key="item.id"
-          v-on:click="VIEW_INFO(item.id_client)"
+          v-on:click="VIEW_INFO(item.id_company)"
         >
           <div class="client_logo">
-            <img :src="item.logo" alt="client logo" />
+            <img :src="baseURL + item.logo" alt="client logo" />
           </div>
           <div class="title">{{ item.company_name }}</div>
         </v-ons-card>
@@ -110,7 +110,7 @@
 
 <script>
 //API
-// import axios from "/axios.js";
+import axios from "/axios.js";
 import moment from "moment";
 
 //UI
@@ -132,49 +132,13 @@ export default {
       openingApp: "",
       showSectionLabel: true,
       user: null,
-      clientList: [
-        {
-          id_client: 1,
-          logo: "/img/mockup/client.png",
-          company_name: "PTT LNG Company Limited",
-        },
-        {
-          id_client: 2,
-          logo: "/img/mockup/client2.jpg",
-          company_name: "IRPC Public Company Limited",
-        },
-        {
-          id_client: 3,
-          logo: "/img/mockup/client3.png",
-          company_name: "Indorama Eleme Petrochemicals Limited",
-        },
-        {
-          id_client: 4,
-          logo: "/img/mockup/client.png",
-          company_name: "PTTEP Siam Limited",
-        },
-        {
-          id_client: 5,
-          logo: "/img/mockup/client2.jpg",
-          company_name: "PTT Exploration and Production Public Company Limited",
-        },
-        {
-          id_client: 6,
-          logo: "/img/mockup/client3.png",
-          company_name: "Petrofac South East Asia Pte. Ltd",
-        },
-        {
-          id_client: 7,
-          logo: "/img/mockup/client3.png",
-          company_name: "Petrofac South East Asia Pte. Ltd",
-        },
-      ],
+      clientList: [],
       clientListFiltered: [],
       search_key: "",
     };
   },
   watch: {
-    // whenever question changes, this function will run
+    // whenever search_key change, this function will run
     search_key() {
       this.SEARCH_GET(this.search_key);
     },
@@ -183,48 +147,35 @@ export default {
     this.$emit(`update:layout`, ViewLayout);
     this.$store.commit("CLEAR_CURRENT_INAPP");
     this.user = JSON.parse(localStorage.getItem("user"));
+    this.FETCH_CLIENT_LIST();
   },
   beforeMount() {},
   mounted() {},
   methods: {
-    // FETCH_USER_INFO() {
-    //   this.isLoading = true;
-    //   setTimeout(() => {
-    //     var id_user = JSON.parse(localStorage.getItem("user")).id_user;
-    //     axios({
-    //       method: "post",
-    //       url: "/user/get-info",
-    //       headers: {
-    //         Authorization:
-    //           "Bearer " + JSON.parse(localStorage.getItem("token")),
-    //       },
-    //       data: { id_user },
-    //     })
-    //       .then((res) => {
-    //         if (res.status == 200) {
-    //           var user = res.data.user;
-    //           this.user = user;
-    //           if (user.profile_picture == null) {
-    //             this.user.profile_picture = null;
-    //           } else {
-    //             this.user.profile_picture =
-    //               this.baseURL + this.user.profile_picture;
-    //           }
-
-    //           console.log("==> Fetch User Info : Home View <==");
-    //           if (this.user.role == "ceo") {
-    //             this.$router.push("/executive-report");
-    //           }
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       })
-    //       .finally(() => {
-    //         this.isLoading = false;
-    //       });
-    //   }, 100);
-    // },
+    FETCH_CLIENT_LIST() {
+      this.isLoading = true;
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: "/MdClientCompany",
+          headers: {
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              this.clientList = res.data;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }, 100);
+    },
     OPEN_APP(item) {
       if (item.isActive == true) {
         this.openingApp = item;

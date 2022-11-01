@@ -162,7 +162,7 @@ export default {
     FETCH_LIST() {
       this.isLoading = true;
       var id_client = this.$route.params.id_client;
-      console.log("ID CLIENT: " + id_client);
+      // console.log("ID CLIENT: " + id_client);
       axios({
         method: "post",
         url: "/tank-info/tank-info-by-client",
@@ -174,7 +174,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.tankList = res.data;
           }
