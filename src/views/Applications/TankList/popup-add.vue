@@ -2,162 +2,153 @@
   <div class="popup-wrapper">
     <div class="popup-card">
       <div class="popup-header">
-        <label>Add New Tank Information</label>
+        <label>Add New Tank</label>
       </div>
       <div class="popup-content form">
         <div class="form-item-container">
-          <label class="section-text" style="grid-column: span 2"
-            >Project Informations</label
+          <label class="section-text" style="margin-top: 0"
+            >General Information</label
           >
 
-          <div class="input-set" style="grid-column: span 2">
+          <div class="input-set">
             <div class="label-box">
-              <p class="label">Project Name:</p>
+              <p class="label">Tag No:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Tank No:</p>
               <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
-              v-model="formData.project_name"
-              placeholder="Project Name"
+              v-model="formData.tank_no"
+              placeholder="Tank No"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Project No:</p>
+              <p class="label">Location:</p>
               <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
-            <input
-              type="text"
-              v-model="formData.project_no"
-              placeholder="Project Number"
-            />
-          </div>
-          <div class="input-set">
-            <div class="label-box">
-              <p class="label">Project Value (Baht):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
-            </div>
-            <input
-              type="text"
-              v-model="formData.project_value"
-              placeholder="Project Value (Baht)"
-            />
-          </div>
-
-          <div class="input-set">
-            <p class="label">Purchase Order No:</p>
-            <input
-              type="text"
-              v-model="formData.po_no"
-              placeholder="Purchase Order No"
-            />
-          </div>
-          <div class="input-set">
-            <p class="label">Quotation No:</p>
-            <input
-              type="text"
-              v-model="formData.quotation_no"
-              placeholder="Quotation No"
-            />
+            <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
           </div>
 
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Job Start Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
-            </div>
-            <DxDateBox
-              :value="formSelect.now"
-              type="date"
-              v-model="formData.job_start_date"
-              placeholder="Job Start Date"
-            />
-          </div>
-          <div class="input-set">
-            <div class="label-box">
-              <p class="label">Job End Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
-            </div>
-            <DxDateBox
-              :value="formSelect.now"
-              type="date"
-              v-model="formData.job_end_date"
-              placeholder="Job End Date"
-            />
-          </div>
-          <div class="input-set">
-            <p class="label">Job Type:</p>
-            <input
-              type="text"
-              v-model="formData.job_type"
-              placeholder="Ex: H-N-D-RBI"
-            />
-          </div>
-          <div class="input-set">
-            <div class="label-box">
-              <p class="label">Service Type:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <p class="label">Tank Status:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
-              v-model="formData.service_type"
-              :data-source="formSelect.serviceTypeList"
-              display-expr="service_type_desc"
-              value-expr="id_service_type"
+              v-model="formData.id_tank_status"
+              :data-source="formSelect.tank_status"
+              display-expr="code"
+              value-expr="id"
             />
           </div>
-          <hr style="grid-column: span 2" />
-          <label class="section-text" style="grid-column: span 2"
-            >Client Informations</label
-          >
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Construction Code:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.construction_code"
+              placeholder="Construction Code"
+            />
+          </div>
 
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Client:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <p class="label">Inspection Code:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <!-- <DxSelectBox
-              style="border: 0; font-size: 14px"
-              :items="formSelect.clientList"
-              placeholder="Select Client"
-              v-model="formData.id_client"
-              display-expr="client_name"
-              value-expr="id_client"
-              item-template="item"
-            /> -->
-            <DxLookup
-              :items="formSelect.clientList"
-              v-model="formData.id_client"
-              formSelect.clientList
-              value="Select Client"
-              value-expr="id_client"
-              display-expr="client_name"
-            >
-              <DxDropDownOptions :show-title="false" />
-            </DxLookup>
-          </div>
-          <div class="input-set">
-            <p class="label">Contact Name:</p>
             <input
               type="text"
-              v-model="formData.client_contact_name"
-              placeholder="Contact Name"
+              v-model="formData.inspection_code"
+              placeholder="Inspection Code"
+            />
+          </div>
+          <label class="section-text">Tank Specification</label>
+
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Tank Capacity (Litre):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.tank_capacity_litre"
+              placeholder="Capacity (Litre)"
             />
           </div>
           <div class="input-set">
-            <p class="label">Phone No:</p>
+            <div class="label-box">
+              <p class="label">Tank Height (m):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
             <input
               type="text"
-              v-model="formData.client_contact_phone_no"
-              placeholder="Contact Phone No"
+              v-model="formData.tank_height_m"
+              placeholder="Height (m)"
             />
           </div>
           <div class="input-set">
-            <p class="label">Email:</p>
+            <div class="label-box">
+              <p class="label">Joint Efficiency:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
             <input
               type="text"
-              v-model="formData.client_contact_email"
-              placeholder="Contact Email"
+              v-model="formData.joint_efficiency"
+              placeholder="Joint Efficiency"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Max. Liquid Level (m):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.max_liquid_level_m"
+              placeholder="Liquid Level (m)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Bottom Nominal Thk. (mm):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.bottom_nominal_thk_mm"
+              placeholder="Thickness (mm)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Diameter (m):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.diameter_m"
+              placeholder="Diameter (m)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Diameter (m):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.diameter_m"
+              placeholder="Diameter (m)"
             />
           </div>
         </div>
@@ -179,40 +170,23 @@
 <script>
 import axios from "/axios.js";
 import DxSelectBox from "devextreme-vue/select-box";
-import DxDateBox from "devextreme-vue/date-box";
-import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
+// import DxDateBox from "devextreme-vue/date-box";
+// import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
 export default {
   name: "popup-add-project",
   components: {
     DxSelectBox,
-    DxDateBox,
-    DxLookup,
-    DxDropDownOptions,
+    // DxDateBox,
+    // DxLookup,
+    // DxDropDownOptions,
   },
   data() {
     return {
       formData: {
-        project_no: "",
-        project_name: "",
-        po_no: "",
-        quotation_no: "",
-        job_type: "",
-        job_confirm_date: "",
-        job_start_date: "",
-        job_end_date: "",
-        job_start_hour: "",
-        job_end_hour: "",
-        est_work_finish: "",
-        id_client: "",
-        client_contact_name: "",
-        client_contact_phone_no: "",
-        client_contact_email: "",
+        id_client: this.$route.params.id_company,
       },
       formSelect: {
-        jobType: [],
-        serviceTypeList: [],
-        now: new Date(),
-        clientList: [{}],
+        tank_status: [],
       },
     };
   },
@@ -316,26 +290,18 @@ export default {
       }
     },
     FETCH_DROPDOWN() {
+      this.FETCH_DROPDOWN_TANK_STATUS();
+    },
+    FETCH_DROPDOWN_TANK_STATUS() {
       axios({
         method: "get",
-        url: "/project-manager/client-list",
+        url: "/MdTankStatus",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
       }).then((res) => {
         if (res.data) {
-          this.formSelect.clientList = res.data;
-        }
-      });
-      axios({
-        method: "get",
-        url: "/service-type/service-type-list",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
-        if (res.data) {
-          this.formSelect.serviceTypeList = res.data;
+          this.formSelect.tank_status = res.data;
         }
       });
     },
@@ -351,7 +317,7 @@ export default {
 .form-item-container {
   width: auto;
   display: grid;
-  grid-template-columns: repeat(2, 300px);
+  grid-template-columns: repeat(3, 300px);
   grid-gap: 10px;
 }
 
@@ -369,7 +335,7 @@ hr {
   margin: 0 !important;
 }
 
-.form .form-item-container .section-text {
-  margin-top: 0px !important;
+.section-text {
+  grid-column: span 3;
 }
 </style>

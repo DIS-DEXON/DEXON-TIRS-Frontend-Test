@@ -130,6 +130,11 @@
     <div v-if="tabCurrent == 'doc'">
       <generalDocTable />
     </div>
+    <contentLoading
+      text="Loading, please wait..."
+      v-if="isLoading == true"
+      color="#fc9b21"
+    />
   </div>
 </template> 
 
@@ -144,6 +149,7 @@ import shellCourse from "@/views/Applications/TankList/Pages/Information/table-s
 import drawingTable from "@/views/Applications/TankList/Pages/Information/table-drawing.vue";
 import pidTable from "@/views/Applications/TankList/Pages/Information/table-pid.vue";
 import generalDocTable from "@/views/Applications/TankList/Pages/Information/table-generalDoc.vue";
+import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //DataGrid
 
@@ -155,6 +161,7 @@ export default {
     drawingTable,
     pidTable,
     generalDocTable,
+    contentLoading,
   },
   created() {
     if (this.$store.state.status.server == true) {
@@ -204,11 +211,11 @@ export default {
         },
         {
           desc: "Tank Capacity (Litre)",
-          value: this.infoTank.tank_capacity,
+          value: this.infoTank.tank_capacity_litre,
         },
         {
           desc: "Tank Height (m)",
-          value: this.infoTank.tank_height,
+          value: this.infoTank.tank_height_m,
         },
         {
           desc: "Joint Efficiency",
@@ -216,19 +223,19 @@ export default {
         },
         {
           desc: "Max. Liquid Level (m)",
-          value: this.infoTank.max_liquid_level,
+          value: this.infoTank.max_liquid_level_m,
         },
         {
           desc: "Bottom Nominal Thk. (mm)",
-          value: this.infoTank.bottom_nominal_thk,
+          value: this.infoTank.bottom_nominal_thk_mm,
         },
         {
           desc: "Diameter (m)",
-          value: this.infoTank.diameter,
+          value: this.infoTank.diameter_m,
         },
         {
           desc: "Annular Nominal Thk. (mm)",
-          value: this.infoTank.annualar_nonimal_thk,
+          value: this.infoTank.annular_nominal_thk_mm,
         },
         {
           desc: "No. of Shell Course",
@@ -236,7 +243,7 @@ export default {
         },
         {
           desc: "Roof Nominal Thk. (mm)",
-          value: this.infoTank.roof_nominal_thk,
+          value: this.infoTank.roof_nominal_thk_mm,
         },
         {
           desc: "Tank Internal Pressure ",
@@ -244,15 +251,15 @@ export default {
         },
         {
           desc: "Design Pressure Shell (psig)",
-          value: this.infoTank.design_pressure_shell,
+          value: this.infoTank.design_pressure_shell_psi,
         },
         {
           desc: "Roof Type",
-          value: this.infoTank.design_pressure_shell,
+          value: this.infoTank.roof_type,
         },
         {
           desc: "Operating Pressure Shell (psig)",
-          value: this.infoTank.operating_pressure_shell,
+          value: this.infoTank.ope_pressure_shell_psi,
         },
         {
           desc: "Roof Shape",
@@ -260,15 +267,15 @@ export default {
         },
         {
           desc: "Design Pressure Coil (psig)",
-          value: this.infoTank.design_pressure_coil,
+          value: this.infoTank.design_pressure_coil_psi,
         },
         {
           desc: "Bottom",
-          value: this.infoTank.bottom,
+          value: this.infoTank.bottom_type,
         },
         {
           desc: "Operating Pressure Coil (psig)",
-          value: this.infoTank.operating_pressure_coil,
+          value: this.infoTank.ope_pressure_coil_psi,
         },
         {
           desc: "Insulation ",
@@ -280,7 +287,7 @@ export default {
         },
         {
           desc: "Insulation Thickness (mm)",
-          value: this.infoTank.insulation_thk,
+          value: this.infoTank.insulation_thk_mm,
         },
         {
           desc: "In-service Date ",
@@ -288,11 +295,11 @@ export default {
         },
         {
           desc: "Product",
-          value: this.infoTank.product,
+          value: this.infoTank.product_code,
         },
         {
           desc: "Previous Inspection Date",
-          value: moment(this.infoTank.prev_inspection_date).format("LL"),
+          value: moment(this.infoTank.last_inspection_date).format("LL"),
         },
         {
           desc: "SG of Product",
@@ -300,7 +307,7 @@ export default {
         },
         {
           desc: "In-service Age of Tank",
-          value: this.infoTank.inservice_age_of_tank,
+          value: this.infoTank.inservice_age_of_tank_yrs,
         },
       ];
       return info;
