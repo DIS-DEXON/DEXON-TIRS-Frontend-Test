@@ -14,20 +14,20 @@
       <div class="toolbar-info" v-if="infoTank">
         <div class="info-item">
           <label class="desc">Tank No: </label>
-          <label class="value">{{ infoTank.tag_no }}</label>
+          <label class="value">{{ infoTank.tank_no }}</label>
         </div>
         <div class="info-item">
           <label class="desc">Product: </label>
-          <label class="value">{{ infoTank.product }}</label>
+          <label class="value">{{ infoTank.product_code }}</label>
         </div>
 
         <div class="info-item">
           <label class="desc">Location:</label>
-          <label class="value"> {{ infoTank.location }}</label>
+          <label class="value"> {{ infoTank.site_name }}</label>
         </div>
         <div class="info-item">
           <label class="desc">Site: </label>
-          <label class="value">{{ infoTank.plant }}</label>
+          <label class="value">{{ infoTank.site_desc }}</label>
         </div>
         <div class="info-item">
           <label class="desc">Client:</label>

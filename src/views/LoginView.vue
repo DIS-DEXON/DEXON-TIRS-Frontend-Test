@@ -225,7 +225,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 30px;
-  z-index: 999;
+  z-index: 9;
   img {
     width: 100%;
     object-fit: contain;

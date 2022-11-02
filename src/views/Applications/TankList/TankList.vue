@@ -2,7 +2,7 @@
   <div class="pm-page">
     <toolbar
       pageName="Tank List"
-      @refreshInfo="FETCH_LIST()"
+      @refreshInfo="FETCH_TANK_LIST()"
       @newBtnFn="TOGGLE_POPUP()"
       :isBackPath="true"
       isBack_specificPath="/"
@@ -29,9 +29,11 @@
             caption=""
             sort-order="asc"
           />
-          <DxColumn data-field="tag_no" caption="Tag No" />
-          <DxColumn data-field="tank_no" caption="Tank No" />
-          <DxColumn data-field="site_desc" caption="Site" />
+          <DxColumn :width="200" data-field="tag_no" caption="Tag No" />
+          <DxColumn :width="200" data-field="tank_no" caption="Tank No" />
+          <DxColumn :width="200" data-field="site_name" caption="Location" />
+          <DxColumn :width="200" data-field="site_desc" caption="Site" />
+          <DxColumn data-field="description" caption="Description" />
 
           <DxColumn :width="50" caption="" cell-template="cell-button-set" />
           <template #cell-button-set="{ data }">
@@ -109,35 +111,29 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_CLIENT", {
-      name: this.infoClient.company_name,
-      logo: this.infoClient.logo,
-    });
-
-    if (this.$store.state.status.server == true) this.FETCH_LIST();
+    this.$store.commit("CLEAR_CURRENT_CLIENT");
+    if (this.$store.state.status.server == true) {
+      this.FETCH_CLIENT_INFO();
+      this.FETCH_TANK_LIST();
+    }
   },
   data() {
     return {
-      projectList: "",
       isAdd: false,
       isEdit: false,
       isLoading: false,
-      errorMessage: "",
       editInfo: "",
-      infoClient: {
-        id_client: 1,
-        logo: "/img/mockup/client.png",
-        company_name: "PTT LNG Company Limited",
-      },
+      infoClient: {},
       tankList: [],
     };
   },
   computed: {},
   methods: {
     VIEW_INFO(e) {
-      const rowID = e.data.id_tank;
-      if (rowID != null) {
-        this.$router.push("/tank/info/info/" + rowID);
+      const id_tag = e.data.id_tag;
+      const id_company = e.data.id_client;
+      if (id_tag != null) {
+        this.$router.push("/tank/client/" + id_company + "/info/" + id_tag);
       }
     },
     EXPORT_DATA(e) {
@@ -159,10 +155,10 @@ export default {
     TOGGLE_POPUP() {
       this.isAdd = !this.isAdd;
     },
-    FETCH_LIST() {
+    FETCH_TANK_LIST() {
       this.isLoading = true;
-      var id_client = this.$route.params.id_client;
-      console.log("ID CLIENT: " + id_client);
+      var id_company = this.$route.params.id_company;
+      // console.log("ID CLIENT: " + id_company);
       axios({
         method: "post",
         url: "/tank-info/tank-info-by-client",
@@ -170,13 +166,41 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_client: id_client,
+          id_client: id_company,
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.tankList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CLIENT_INFO() {
+      this.isLoading = true;
+      var id_company = this.$route.params.id_company;
+      // console.log("ID CLIENT: " + id_company);
+      axios({
+        method: "get",
+        url: "/MdClientCompany/" + id_company,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          if (res.status == 200 && res.data) {
+            this.infoClient = res.data;
+            this.$store.commit("UPDATE_CURRENT_CLIENT", {
+              name: this.infoClient.company_name,
+              logo: this.infoClient.logo,
+            });
           }
         })
         .catch((error) => {
