@@ -135,7 +135,7 @@
 
 <script>
 //API
-// import axios from "/axios.js";
+import axios from "/axios.js";
 import moment from "moment";
 
 //Components
@@ -156,43 +156,16 @@ export default {
     pidTable,
     generalDocTable,
   },
-  created() {},
+  created() {
+    if (this.$store.state.status.server == true) {
+      this.FETCH_TANK_INFO();
+      this.FETCH_CLIENT_INFO();
+    }
+  },
   data() {
     return {
-      infoTank: {
-        id_tank: 12,
-        construction_code: "API 650",
-        inspection_code: "API 653 & Thai Law",
-        tank_status: "Operational",
-        tank_capacity: 1660103.0,
-        tank_height: 10.973,
-        joint_efficiency: 1.0,
-        max_liquid_level: 10.97,
-        bottom_nominal_thk: 6.35,
-        diameter: 14.63,
-        annualar_nonimal_thk: 9.53,
-        no_of_shell_course: 6,
-        roof_nominal_thk: 4.76,
-        tank_internal_pressure: "Atmospheric",
-        design_pressure_shell: 14.7,
-        roof_type: "Fixed",
-        roof_shape: "Coned",
-        bottom: "Coned down",
-        insulation: "Not Insulated",
-        insulation_thk: null,
-        product: "Crude Oil",
-        sg_of_product: 1.0,
-        operating_pressure_shell: 14.7,
-        design_pressure_coil: null,
-        operating_pressure_coil: null,
-        installation_date: "2022-10-09",
-        inservice_date: "2022-10-01",
-        prev_inspection_date: "2022-11-02",
-        inservice_age_of_tank: 5,
-        foundation: null,
-        pic_overview: "/img/mockup/img.png",
-        pic_nameplate: null,
-      },
+      infoTank: {},
+      infoClient: {},
       tabCurrent: "info",
       tabs: [
         {
@@ -211,6 +184,7 @@ export default {
           closable: false,
         },
       ],
+      isLoading: false,
     };
   },
   computed: {
@@ -332,7 +306,63 @@ export default {
       return info;
     },
   },
-  methods: {},
+  methods: {
+    FETCH_TANK_INFO() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      console.log("ID TAG: " + id_tag);
+      axios({
+        method: "post",
+        url: "tank-info/tank-info-by-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          if (res.status == 200 && res.data) {
+            this.infoTank = res.data[0];
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CLIENT_INFO() {
+      this.isLoading = true;
+      var id_company = this.$route.params.id_company;
+      console.log("ID COMPANY: " + id_company);
+      axios({
+        method: "get",
+        url: "/MdClientCompany/" + id_company,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          if (res.status == 200 && res.data) {
+            this.infoClient = res.data;
+            this.$store.commit("UPDATE_CURRENT_CLIENT", {
+              name: this.infoClient.company_name,
+              logo: this.infoClient.logo,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+  },
 };
 </script>
 

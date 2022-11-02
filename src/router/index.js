@@ -38,22 +38,22 @@ const routes = [
     // },
     children: [
       {
-        path: 'list/:id_client',
+        path: 'client/:id_company',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
       },
       {
-        path: 'info',
+        path: 'client/:id_company',
         alias: 'Tank Info',
         component: () => import('../views/Applications/TankList/Pages/router-template.vue'),
         children: [
           {
-            path: 'info/:id_tank',
+            path: 'info/:id_tag',
             alias: 'Tank Info',
             component: () => import('../views/Applications/TankList/Pages/Information/Page.vue'),
           },
           {
-            path: 'inspection-record/:id_tank',
+            path: 'inspection-record/:id_tag',
             alias: 'Tank Inspection Record',
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
