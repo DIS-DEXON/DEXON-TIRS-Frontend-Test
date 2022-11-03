@@ -53,7 +53,7 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Information/Page.vue'),
           },
           {
-            path: 'inspection-record/:id_tag',
+            path: 'inspection/:id_tag',
             alias: 'Tank Inspection Record',
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },

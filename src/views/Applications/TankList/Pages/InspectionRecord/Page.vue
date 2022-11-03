@@ -1,338 +1,301 @@
 <template>
   <div class="page-container">
-    <div class="tab-wrapper">
-      <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
-    </div>
-    <div class="page-section info-tab-display" v-if="tabCurrent == 'info'">
-      <div id="report-sheet">
-        <div class="report-container">
-          <div class="sheet-body">
-            <div class="section-label" style="grid-column: span 2">
-              <label>tank specification</label>
-            </div>
-            <div class="form-item" v-for="item in generalInfo" :key="item.desc">
-              <div class="form-item-label">
-                <label>{{ item.desc }}</label>
-              </div>
-              <div class="form-item-value">
-                <label>{{ item.value }}</label>
-              </div>
-            </div>
-            <div
-              class="form-item"
-              style="grid-column: span 2; grid-row: span 2"
-            >
-              <div class="form-item-label">
-                <label>Foundation</label>
-              </div>
-              <div class="form-item-value">
-                <label>{{ infoTank.foundation }}</label>
-              </div>
-            </div>
+    <div class="page-section" style="padding-top: 0px">
+      <DxDataGrid
+      id="dataGridInspRecord"
+      key-expr="id_inspection_record"
+      :data-source="inspRecordList"
+      :selection="{ mode: 'single' }"
+      :hover-state-enabled="true"
+      :allow-column-reordering="true"
+      :show-borders="true"
+      :show-row-lines="true"
+      :row-alternation-enabled="false"
+      @exporting="EXPORT_DATA"
+      :word-wrap-enabled="true"
+      @row-inserted="CREATE_RECORD"
+      @row-updated="UPDATE_RECORD"
+      @row-removed="DELETE_RECORD"
+    >
+      <DxEditing
+        :allow-updating="true"
+        :allow-deleting="true"
+        :allow-adding="true"
+        mode="row"
+      />
+      <!-- <DxColumn
+        data-field="created_time"
+        :width="0"
+        caption=""
+        sort-order="asc"
+      /> -->
+      <DxColumn
+        data-field="inspection_date"
+        caption="Inspection date"
+        data-type="date"
+        format="dd MMM yyyy"
+        sort-order="desc" />
+
+      <DxColumn
+        data-field="report_no"
+        caption="Report number"
+      />
+
+      <DxColumn 
+        data-field="id_campaign" 
+        caption="Campaign">
+        <DxLookup
+          :data-source="campaigeList"
+          value-expr="id_campaign"
+          display-expr="campaign_desc"
+        />
+      </DxColumn>
+      <DxColumn
+        data-field="remark" 
+        caption="Remark"
+      />
+
+      <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+
+      <!-- <template #cell-button-set="{ data }">
+        <div class="table-btn-group">
+          <div class="table-btn" v-on:click="EDIT_INFO(data)">
+            <i class="las la-pen blue"></i>
+          </div>
+          <div class="table-btn" v-on:click="DELETE_INFO(data)">
+            <i class="las la-trash red"></i>
           </div>
         </div>
-      </div>
-      <div
-        id="report-sheet"
-        style="width: 500px; height: 100%; margin-left: 20px"
-      >
-        <div class="report-container" style="height: 100%">
-          <div class="sheet-body" style="display: block; height: 100%">
-            <div style="height: 50%">
-              <div class="section-label">
-                <label>overview picture</label>
-              </div>
-
-              <div class="form-item-picture-log">
-                <div class="img-box">
-                  <div class="btn-panel">
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_overview"
-                    >
-                      <i class="las la-expand-arrows-alt"></i>
-                    </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_overview"
-                    >
-                      <i class="las la-trash"></i>
-                    </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="!infoTank.pic_overview"
-                    >
-                      <i class="las la-plus"></i>
-                    </v-ons-toolbar-button>
-                  </div>
-                  <img
-                    :src="infoTank.pic_overview"
-                    v-if="infoTank.pic_overview"
-                  />
-                  <div class="">
-                    <i class="las la-image" v-if="!infoTank.pic_overview"></i>
-                    <label v-if="!infoTank.pic_overview">No Image</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="section-label">
-                <label>name plate</label>
-              </div>
-
-              <div class="form-item-picture-log">
-                <div class="img-box">
-                  <div class="btn-panel">
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_nameplate"
-                    >
-                      <i class="las la-expand-arrows-alt"></i>
-                    </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_nameplate"
-                    >
-                      <i class="las la-trash"></i>
-                    </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="!infoTank.pic_nameplate"
-                    >
-                      <i class="las la-plus"></i>
-                    </v-ons-toolbar-button>
-                  </div>
-                  <img
-                    :src="infoTank.pic_nameplate"
-                    v-if="infoTank.pic_nameplate"
-                  />
-                  <i class="las la-image" v-if="!infoTank.pic_nameplate"></i>
-                  <label v-if="!infoTank.pic_nameplate">No Image</label>
-                </div>
-              </div>
-            </div>
-          </div>
+      </template> -->
+      <template #table-header>
+        <div>
+          <div class="page-section-label">Shell Course</div>
         </div>
-      </div>
-    </div>
-    <shellCourse v-if="tabCurrent == 'info'" />
-    <div v-if="tabCurrent == 'drawing'">
-      <drawingTable />
-      <pidTable />
-    </div>
-    <div v-if="tabCurrent == 'doc'">
-      <generalDocTable />
+      </template>
+      <!-- <template #table-header-button-set>
+        <div>
+          <v-ons-toolbar-button>
+            <i class="las la-plus"></i>
+            <span>Add New Tank Course</span>
+          </v-ons-toolbar-button>
+        </div>
+      </template> -->
+      <!-- Configuration goes here -->
+      <!-- <DxFilterRow :visible="true" /> -->
+      <DxScrolling mode="standard" />
+      <DxSearchPanel :visible="true" />
+      <DxPaging :page-size="10" :page-index="0" />
+      <DxPager
+        :show-page-size-selector="true"
+        :allowed-page-sizes="[5, 10, 20]"
+        :show-navigation-buttons="true"
+        :show-info="true"
+        info-text="Page {0} of {1} ({2} items)"
+      />
+      <DxExport :enabled="true" />
+    </DxDataGrid>
     </div>
   </div>
 </template> 
 
 <script>
 //API
-// import axios from "/axios.js";
-import moment from "moment";
+import axios from "/axios.js";
+// import moment from "moment";
 
 //Components
-import VueTabsChrome from "vue-tabs-chrome";
-import shellCourse from "@/views/Applications/TankList/Pages/Information/table-shell-course.vue";
-import drawingTable from "@/views/Applications/TankList/Pages/Information/table-drawing.vue";
-import pidTable from "@/views/Applications/TankList/Pages/Information/table-pid.vue";
-import generalDocTable from "@/views/Applications/TankList/Pages/Information/table-generalDoc.vue";
+//import VueTabsChrome from "vue-tabs-chrome";
 
 //DataGrid
+import "devextreme/dist/css/dx.light.css";
+import { Workbook } from "exceljs";
+import saveAs from "file-saver";
+import { exportDataGrid } from "devextreme/excel_exporter";
+import {
+  DxDataGrid,
+  DxSearchPanel,
+  DxPaging,
+  DxPager,
+  DxScrolling,
+  DxColumn,
+  DxExport,
+  //DxToolbar,
+  //DxItem,
+  DxEditing,
+  DxLookup,
+} from "devextreme-vue/data-grid";
+
+//Structures
 
 export default {
-  name: "ViewProjectList",
+  name: "inspection-record",
   components: {
-    VueTabsChrome,
-    shellCourse,
-    drawingTable,
-    pidTable,
-    generalDocTable,
+    DxDataGrid,
+    DxSearchPanel,
+    DxPaging,
+    DxPager,
+    DxScrolling,
+    DxColumn,
+    DxExport,
+    //DxToolbar,
+    //DxItem,
+    DxEditing,
+    DxLookup,
   },
-  created() {},
+  created() {
+    this.$store.commit("UPDATE_CURRENT_INAPP", {
+      name: "Master Data Manager",
+      icon: "/img/icon_menu/master_data/table.png",
+    });
+    if (this.$store.state.status.server == true) {
+      this.FETCH_CAMPAIGN();
+      this.FETCH_INSP_RECORD();
+    }
+  },
   data() {
     return {
-      infoTank: {
-        id_tank: 12,
-        construction_code: "API 650",
-        inspection_code: "API 653 & Thai Law",
-        tank_status: "Operational",
-        tank_capacity: 1660103.0,
-        tank_height: 10.973,
-        joint_efficiency: 1.0,
-        max_liquid_level: 10.97,
-        bottom_nominal_thk: 6.35,
-        diameter: 14.63,
-        annualar_nonimal_thk: 9.53,
-        no_of_shell_course: 6,
-        roof_nominal_thk: 4.76,
-        tank_internal_pressure: "Atmospheric",
-        design_pressure_shell: 14.7,
-        roof_type: "Fixed",
-        roof_shape: "Coned",
-        bottom: "Coned down",
-        insulation: "Not Insulated",
-        insulation_thk: null,
-        product: "Crude Oil",
-        sg_of_product: 1.0,
-        operating_pressure_shell: 14.7,
-        design_pressure_coil: null,
-        operating_pressure_coil: null,
-        installation_date: "2022-10-09",
-        inservice_date: "2022-10-01",
-        prev_inspection_date: "2022-11-02",
-        inservice_age_of_tank: 5,
-        foundation: null,
-        pic_overview: "/img/mockup/img.png",
-        pic_nameplate: null,
-      },
-      tabCurrent: "info",
-      tabs: [
-        {
-          label: "General Information",
-          key: "info",
-          closable: false,
-        },
-        {
-          label: "Drawing and P&ID",
-          key: "drawing",
-          closable: false,
-        },
-        {
-          label: "General Document",
-          key: "doc",
-          closable: false,
-        },
-      ],
+      inspRecordList: {},
+      campaigeList: {}
     };
   },
   computed: {
-    generalInfo() {
-      var info = [
-        {
-          desc: "Construction Code",
-          value: this.infoTank.construction_code,
+  },
+  methods: {
+    EXPORT_DATA(e) {
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet("Projects");
+      exportDataGrid({
+        worksheet: worksheet,
+        component: e.component,
+      }).then(function () {
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+          saveAs(
+            new Blob([buffer], { type: "application/octet-stream" }),
+            "Projects.xlsx"
+          );
+        });
+      });
+      e.cancel = true;
+    },
+    FETCH_INSP_RECORD() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "insp-record/insp-record-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        {
-          desc: "Tank Status",
-          value: this.infoTank.tank_status,
+        data: {
+          id_tag: id_tag,
         },
-        {
-          desc: "Inspection Code",
-          value: this.infoTank.inspection_code,
+      })
+        .then((res) => {
+          console.log("insp record:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.inspRecordList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CAMPAIGN() {
+      axios({
+        method: "get",
+        url: "insp-record/campaign-list",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        {
-          desc: "Tank Capacity (Litre)",
-          value: this.infoTank.tank_capacity,
+      })
+        .then((res) => {
+          console.log("campaign:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.campaigeList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_RECORD(e) {
+      e.data.id_tag = this.$route.params.id_tag;
+      e.data.id_inspection_record = 0;
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "/insp-record/add-insp-record",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        {
-          desc: "Tank Height (m)",
-          value: this.infoTank.tank_height,
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("create success");
+            this.FETCH_INSP_RECORD();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
+    },
+    UPDATE_RECORD(e) {
+      axios({
+        method: "put",
+        url: "/insp-record/edit-insp-record",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        {
-          desc: "Joint Efficiency",
-          value: this.infoTank.joint_efficiency,
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("update success");
+            this.FETCH_INSP_RECORD();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
+    },
+    DELETE_RECORD(e) {
+      axios({
+        method: "delete",
+        url: "/insp-record/delete-insp-record",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        {
-          desc: "Max. Liquid Level (m)",
-          value: this.infoTank.max_liquid_level,
-        },
-        {
-          desc: "Bottom Nominal Thk. (mm)",
-          value: this.infoTank.bottom_nominal_thk,
-        },
-        {
-          desc: "Diameter (m)",
-          value: this.infoTank.diameter,
-        },
-        {
-          desc: "Annular Nominal Thk. (mm)",
-          value: this.infoTank.annualar_nonimal_thk,
-        },
-        {
-          desc: "No. of Shell Course",
-          value: this.infoTank.no_of_shell_course,
-        },
-        {
-          desc: "Roof Nominal Thk. (mm)",
-          value: this.infoTank.roof_nominal_thk,
-        },
-        {
-          desc: "Tank Internal Pressure ",
-          value: this.infoTank.tank_internal_pressure,
-        },
-        {
-          desc: "Design Pressure Shell (psig)",
-          value: this.infoTank.design_pressure_shell,
-        },
-        {
-          desc: "Roof Type",
-          value: this.infoTank.design_pressure_shell,
-        },
-        {
-          desc: "Operating Pressure Shell (psig)",
-          value: this.infoTank.operating_pressure_shell,
-        },
-        {
-          desc: "Roof Shape",
-          value: this.infoTank.roof_shape,
-        },
-        {
-          desc: "Design Pressure Coil (psig)",
-          value: this.infoTank.design_pressure_coil,
-        },
-        {
-          desc: "Bottom",
-          value: this.infoTank.bottom,
-        },
-        {
-          desc: "Operating Pressure Coil (psig)",
-          value: this.infoTank.operating_pressure_coil,
-        },
-        {
-          desc: "Insulation ",
-          value: this.infoTank.insulation,
-        },
-        {
-          desc: "Installation Date ",
-          value: moment(this.infoTank.installation_date).format("LL"),
-        },
-        {
-          desc: "Insulation Thickness (mm)",
-          value: this.infoTank.insulation_thk,
-        },
-        {
-          desc: "In-service Date ",
-          value: moment(this.infoTank.inservice_date).format("LL"),
-        },
-        {
-          desc: "Product",
-          value: this.infoTank.product,
-        },
-        {
-          desc: "Previous Inspection Date",
-          value: moment(this.infoTank.prev_inspection_date).format("LL"),
-        },
-        {
-          desc: "SG of Product",
-          value: this.infoTank.sg_of_product,
-        },
-        {
-          desc: "In-service Age of Tank",
-          value: this.infoTank.inservice_age_of_tank,
-        },
-      ];
-      return info;
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("delete success");
+            this.FETCH_TANK_COURSE();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
     },
   },
-  methods: {},
 };
 </script>
 
