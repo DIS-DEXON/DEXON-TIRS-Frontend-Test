@@ -1,28 +1,66 @@
 <template>
   <div class="app-sidebar">
     <div class="item-container">
+      <!-- SECTION INFO -->
       <div class="section-label"><label>Information</label></div>
-      <router-link
-        v-for="item in sidebarList.info"
-        :key="item.id"
-        :to="item.link + currentTankID"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/info/' + id_tag">
         <v-ons-toolbar-button class="item">
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
+          <img src="/img/icon_sidebar/tank/info.png" />
+          <span>Tank Information</span>
         </v-ons-toolbar-button>
       </router-link>
-    </div>
-    <div class="item-container">
+      <router-link :to="'/tank/client/' + id_company + '/inspection/' + id_tag">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/inspection-record.png" />
+          <span>Inspection Record</span>
+        </v-ons-toolbar-button>
+      </router-link>
+
+      <!-- SECTION INSPECTION -->
       <div class="section-label"><label>Inspection</label></div>
       <router-link
-        v-for="item in sidebarList.inspection"
-        :key="item.id"
-        :to="item.link + currentTankID"
+        :to="'/tank/client/' + id_company + '/marked-up-drawing/' + id_tag"
       >
         <v-ons-toolbar-button class="item">
-          <img :src="item.icon" />
-          <span>{{ item.name }}</span>
+          <img src="/img/icon_sidebar/tank/drawing.png" />
+          <span>Marked-up Drawing</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link :to="'/tank/client/' + id_company + '/checklist/' + id_tag">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/checklist.png" />
+          <span>Checklist</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link
+        :to="'/tank/client/' + id_company + '/thickness-inspection/' + id_tag"
+      >
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/thickness.png" />
+          <span>Thickness Inspection</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link
+        :to="'/tank/client/' + id_company + '/visual-inspection/' + id_tag"
+      >
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/visual.png" />
+          <span>Visual Inspection</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link :to="'/tank/client/' + id_company + '/evaluation/' + id_tag">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/evaluation.png" />
+          <span>Evaluation</span>
+        </v-ons-toolbar-button>
+      </router-link>
+
+      <!-- SECTION REPORT -->
+      <div class="section-label"><label>Report</label></div>
+      <router-link :to="'/tank/client/' + id_company + '/report/' + id_tag">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/report.png" />
+          <span>Report</span>
         </v-ons-toolbar-button>
       </router-link>
     </div>
@@ -32,72 +70,14 @@
 <script>
 export default {
   name: "app-sidebar",
-  mounted() {
-    console.log("==> Sidebar: id_tank: " + this.currentTankID);
-  },
+  mounted() {},
   props: {
     id_tank: Number,
   },
   data() {
     return {
-      currentTankID: this.$route.params.id_tank,
-      sidebarList: {
-        info: [
-          {
-            id: 0,
-            name: "Tank Information",
-            icon: "/img/icon_sidebar/tank/info.png",
-            link: "/tank/info/info/",
-            isActive: true,
-          },
-        ],
-        inspection: [
-          {
-            id: 0,
-            name: "Inspection Record",
-            icon: "/img/icon_sidebar/tank/inspection-record.png",
-            link: "/tank/info/inspection-record/",
-            isActive: true,
-          },
-          {
-            id: 1,
-            name: "Marked-up Drawing",
-            icon: "/img/icon_sidebar/tank/drawing.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-          {
-            id: 2,
-            name: "API Checklist",
-            icon: "/img/icon_sidebar/tank/checklist.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-          {
-            id: 3,
-            name: "Thickness",
-            icon: "/img/icon_sidebar/executive_management/summary.png",
-            icon_menu: "/img/icon_menu/executive_management/summary.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-          {
-            id: 4,
-            name: "Visual Inspection",
-            icon: "/img/icon_sidebar/tank/visual.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-          {
-            id: 5,
-            name: "Evaluation",
-            icon: "/img/icon_sidebar/executive_management/summary.png",
-            icon_menu: "/img/icon_menu/executive_management/summary.png",
-            link: "/tank/info/operation-process/",
-            isActive: true,
-          },
-        ],
-      },
+      id_tag: this.$route.params.id_tag,
+      id_company: this.$route.params.id_company,
     };
   },
   computed: {},
@@ -124,7 +104,12 @@ export default {
       font-weight: 600;
       color: #ffffff92;
       margin-left: 20px;
+      margin-top: 20px;
       font-style: normal;
+    }
+
+    .section-label:first-child {
+      margin-top: 0px;
     }
 
     .item {

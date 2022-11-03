@@ -35,7 +35,7 @@
       <DxColumn data-field="height_hydro" caption="Height Hydro" />
       <DxColumn data-field="height_prod" caption="Height Prod" />
       <DxColumn data-field="tretire_hydro" caption="tretire Prod" />
-      <DxColumn data-field="height_prod" caption="tretire Prod" />
+      <DxColumn data-field="tretire_prod" caption="tretire Prod" />
       <DxColumn :width="80" caption="" cell-template="cell-button-set" />
       <template #cell-button-set="{ data }">
         <div class="table-btn-group">

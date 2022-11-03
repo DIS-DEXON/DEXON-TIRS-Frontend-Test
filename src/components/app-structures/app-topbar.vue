@@ -21,7 +21,7 @@
             <div class="btn-group-separater-client">
               <i class="las la-angle-right"></i>
             </div>
-            <img :src="this.$store.state.currentClient.logo" />
+            <img :src="baseURL + this.$store.state.currentClient.logo" />
             <label for="">{{ this.$store.state.currentClient.name }}</label>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default {
                   this.baseURL + this.user.profile_picture;
               }
               this.$store.commit("SIGN_IN", this.user);
-              console.log("==> Fetch User Info : Top Bar <==");
+              // console.log("==> Fetch User Info : Top Bar <==");
             }
           })
           .catch((error) => {
