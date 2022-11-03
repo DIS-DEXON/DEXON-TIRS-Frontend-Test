@@ -2,6 +2,7 @@
   <div class="page-section" style="padding-top: 0px">
     <DxDataGrid
       id="data-grid-style"
+      key-expr="id_tank_course"
       :data-source="courseList"
       :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
@@ -11,33 +12,131 @@
       :row-alternation-enabled="false"
       @exporting="EXPORT_DATA"
       :word-wrap-enabled="true"
+      @row-inserted="CREATE_COURSE"
+      @row-updated="UPDATE_COURSE"
+      @row-removed="DELETE_COURSE"
     >
-      <DxToolbar>
+      <DxEditing
+        :allow-updating="true"
+        :allow-deleting="true"
+        :allow-adding="true"
+        mode="row"
+      />
+      <!-- <DxToolbar>
         <DxItem location="before" template="table-header" />
         <DxItem location="after" template="table-header-button-set" />
-      </DxToolbar>
+      </DxToolbar> -->
       <DxColumn
         data-field="created_time"
         :width="0"
         caption=""
         sort-order="asc"
       />
-      <DxColumn data-field="course_no" caption="Course No" />
       <DxColumn
-        data-field="nominal_shell_thk"
+        data-field="course_no"
+        caption="Course No" />
+      <DxColumn
+        data-field="t_nom_plate_mm"
         caption="Nominal Shell Thk (mm)"
+        format="#,##0.00"
+        header-cell-template="headerTnom"
       />
-      <DxColumn data-field="accu_height" caption="Accumulate Height" />
-      <DxColumn data-field="tank_material" caption="Tank Material" />
-      <DxColumn data-field="material_type" caption="Material Type" />
-      <DxColumn data-field="y" caption="y" />
-      <DxColumn data-field="t" caption="t" />
-      <DxColumn data-field="height_hydro" caption="Height Hydro" />
-      <DxColumn data-field="height_prod" caption="Height Prod" />
-      <DxColumn data-field="tretire_hydro" caption="tretire Prod" />
-      <DxColumn data-field="tretire_prod" caption="tretire Prod" />
-      <DxColumn :width="80" caption="" cell-template="cell-button-set" />
-      <template #cell-button-set="{ data }">
+      <DxColumn
+        data-field="height_of_course_m"
+        caption="Height of course (m)"
+        format="#,##0.00"
+        header-cell-template="headerHofC"
+      />
+      <DxColumn
+        data-field="height_accumulate_course_m"
+        caption="Accumulate Height (m)"
+        format="#,##0.00"
+        header-cell-template="headerAccuH"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="id_material" 
+        caption="Tank Material">
+        <DxLookup
+          :data-source="matList"
+          value-expr="id_material"
+          display-expr="mat_spec"
+        />
+      </DxColumn>
+      <DxColumn
+        data-field="mat_type" 
+        caption="Material Type"
+        :allow-editing="false"
+      />
+      <DxColumn
+        data-field="y_value"
+        caption="Y"
+        header-cell-template="headerY"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="t_value" 
+        caption="T" 
+        header-cell-template="headerT"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="height_of_course_hydro_m" 
+        caption="Height Hydro (m)" 
+        format="#,##0.00"
+        header-cell-template="headerHhydro"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="height_of_course_prod_m" 
+        caption="Height Prod (m)"
+        format="#,##0.00"
+        header-cell-template="headerHprod"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="tmin_hydro_mm" 
+        caption="tretire Hydro (mm)"
+        format="#,##0.00"
+        header-cell-template="headerTrHydro"
+        :allow-editing="false"
+      />
+      <DxColumn 
+        data-field="tmin_prod_mm" 
+        caption="tretire Prod (mm)" 
+        format="#,##0.00"
+        header-cell-template="headerTrProd"
+        :allow-editing="false"
+      />
+      <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+      <template #headerTnom>
+        <div>Nominal shell thk<BR/>(mm)</div>
+      </template>
+      <template #headerHofC>
+        <div>Height of course<BR/>(m)</div>
+      </template>
+      <template #headerAccuH>
+        <div>Accumulate height<BR/>(m)</div>
+      </template>
+      <template #headerY>
+        <div>Y<BR/>(lbf/in<sup>2</sup>)</div>
+      </template>
+      <template #headerT>
+        <div>T<BR/>(lbf/in<sup>2</sup>)</div>
+      </template>
+      <template #headerHhydro>
+        <div>Height hydro<BR/>(m)</div>
+      </template>
+      <template #headerHprod>
+        <div>Height prod<BR/>(m)</div>
+      </template>
+      <template #headerTrHydro>
+        <div>tmin hydro<BR/>(mm)</div>
+      </template>
+      <template #headerTrProd>
+        <div>tmin prod<BR/>(mm)</div>
+      </template>
+      <!-- <template #cell-button-set="{ data }">
         <div class="table-btn-group">
           <div class="table-btn" v-on:click="EDIT_INFO(data)">
             <i class="las la-pen blue"></i>
@@ -46,20 +145,20 @@
             <i class="las la-trash red"></i>
           </div>
         </div>
-      </template>
+      </template> -->
       <template #table-header>
         <div>
           <div class="page-section-label">Shell Course</div>
         </div>
       </template>
-      <template #table-header-button-set>
+      <!-- <template #table-header-button-set>
         <div>
           <v-ons-toolbar-button>
             <i class="las la-plus"></i>
             <span>Add New Tank Course</span>
           </v-ons-toolbar-button>
         </div>
-      </template>
+      </template> -->
       <!-- Configuration goes here -->
       <!-- <DxFilterRow :visible="true" /> -->
       <DxScrolling mode="standard" />
@@ -79,8 +178,8 @@
 
 <script>
 //API
-// import axios from "/axios.js";
-// import moment from "moment";
+import axios from "/axios.js";
+//import moment from "moment";
 
 //Components
 
@@ -97,8 +196,10 @@ import {
   DxScrolling,
   DxColumn,
   DxExport,
-  DxToolbar,
-  DxItem,
+  //DxToolbar,
+  //DxItem,
+  DxEditing,
+  DxLookup,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -111,44 +212,21 @@ export default {
     DxScrolling,
     DxColumn,
     DxExport,
-    DxToolbar,
-    DxItem,
+    //DxToolbar,
+    //DxItem,
+    DxEditing,
+    DxLookup,
   },
-  created() {},
+  created() {
+    if (this.$store.state.status.server == true) {
+      this.FETCH_MAT();
+      this.FETCH_TANK_COURSE();
+    }
+  },
   data() {
     return {
-      courseList: [
-        {
-          id: 1,
-          course_no: 1,
-          nominal_shell_thk: 6.35,
-          height: 1.828,
-          accu_height: 1.83,
-          tank_material: null,
-          material_type: "CS",
-          y: 30000,
-          t: 55000,
-          height_hydro: 10.97,
-          height_prod: 10.97,
-          tretire_hydro: 0.17,
-          tretire_prod: 0.19,
-        },
-        {
-          id: 2,
-          course_no: 2,
-          nominal_shell_thk: 6.35,
-          height: 1.828,
-          accu_height: 3.66,
-          tank_material: null,
-          material_type: "CS",
-          y: 30000,
-          t: 55000,
-          height_hydro: 10.97,
-          height_prod: 10.97,
-          tretire_hydro: 0.17,
-          tretire_prod: 0.19,
-        },
-      ],
+      courseList: {},
+      matList: {},
     };
   },
   computed: {},
@@ -169,7 +247,126 @@ export default {
       });
       e.cancel = true;
     },
+    FETCH_TANK_COURSE() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      console.log("ID TAG: " + id_tag);
+      axios({
+        method: "post",
+        url: "tank-course/tank-course-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          console.log("tank course:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.courseList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_MAT() {
+      axios({
+        method: "get",
+        url: "MdTankMaterial",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          console.log("material:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.matList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_COURSE(e) {
+      e.data.id_tag = this.$route.params.id_tag;
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "/tank-course/add-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("create success");
+            this.FETCH_TANK_COURSE();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
+    },
+    UPDATE_COURSE(e) {
+      axios({
+        method: "put",
+        url: "/tank-course/edit-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("update success");
+            this.FETCH_TANK_COURSE();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
+    },
+    DELETE_COURSE(e) {
+      axios({
+        method: "delete",
+        url: "/tank-course/delete-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("delete success");
+            this.FETCH_TANK_COURSE();
+          }
+        })
+        .catch((error) => {
+          this.$ons.notification.alert(
+            error.code + " " + error.response.status + " " + error.message
+          );
+        })
+        .finally(() => {});
+    },
   },
+  
 };
 </script>
 
