@@ -57,6 +57,16 @@ const routes = [
             alias: 'Tank Inspection Record',
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
+          {
+            path: 'checklist/:id_tag',
+            alias: 'Checklist',
+            component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
+          },
+          {
+            path: 'marked-up-drawing/:id_tag',
+            alias: 'Marked-up Drawing',
+            component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
+          },
         ]
       },
     ]
