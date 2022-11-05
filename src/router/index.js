@@ -53,9 +53,19 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Information/Page.vue'),
           },
           {
-            path: 'inspection-record/:id_tag',
+            path: 'inspection/:id_tag',
             alias: 'Tank Inspection Record',
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
+          },
+          {
+            path: 'checklist/:id_tag',
+            alias: 'Checklist',
+            component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
+          },
+          {
+            path: 'marked-up-drawing/:id_tag',
+            alias: 'Marked-up Drawing',
+            component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
           },
         ]
       },
@@ -165,7 +175,17 @@ const routes = [
         path: 'list/:id_client',
         alias: 'Tank List',
         component: () => import('../views/Applications/TankList/TankList.vue'),
-      }
+      },
+      {
+        path: 'tank-material',
+        alias: 'Tank Material',
+        component: () => import('../views/Applications/MasterData/TankMaterial.vue'),
+      },
+      {
+        path: 'insulation',
+        alias: 'Insulation',
+        component: () => import('../views/Applications/MasterData/Insulation.vue'),
+      },
     ]
   }
 ]

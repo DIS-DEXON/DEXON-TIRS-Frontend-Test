@@ -166,6 +166,22 @@ export default new Vuex.Store({
         link: "/md/tank-status",
         isActive: true,
       },
+      {
+        id: 100,
+        name: "Tank Material",
+        icon: "/img/icon_sidebar/executive_management/summary.png",
+        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        link: "/md/tank-material",
+        isActive: true,
+      },
+      {
+        id: 100,
+        name: "Insulation",
+        icon: "/img/icon_sidebar/executive_management/summary.png",
+        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        link: "/md/insulation",
+        isActive: true,
+      },
     ],
     sidebarList: {
     },

@@ -329,7 +329,8 @@ export default {
         },
       })
         .then((res) => {
-          // console.log(res);
+          console.log("info:");
+          console.log(res);
           if (res.status == 200 && res.data) {
             this.infoTank = res.data[0];
           }
@@ -353,7 +354,8 @@ export default {
         },
       })
         .then((res) => {
-          // console.log(res);
+          console.log("client:");
+          console.log(res);
           if (res.status == 200 && res.data) {
             this.infoClient = res.data;
             this.$store.commit("UPDATE_CURRENT_CLIENT", {
