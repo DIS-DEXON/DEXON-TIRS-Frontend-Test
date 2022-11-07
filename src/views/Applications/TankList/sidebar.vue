@@ -20,6 +20,7 @@
       <div class="section-label"><label>Inspection</label></div>
       <router-link
         :to="'/tank/client/' + id_company + '/marked-up-drawing/' + id_tag"
+        v-on:click="SHOW_POPOVER($event, 'down', true, 'markup-drawing')"
       >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/drawing.png" />
@@ -63,6 +64,30 @@
           <span>Report</span>
         </v-ons-toolbar-button>
       </router-link>
+
+      <!-- POPUP MENUS -->
+      <v-ons-popover
+        cancelable
+        :visible.sync="popoverVisible"
+        :target="popoverTarget"
+        :direction="popoverDirection"
+        :cover-target="coverTarget"
+      >
+        <v-ons-toolbar-button class="popover-button" v-on:click="GO_TO('/')">
+          <span>Home</span>
+          <i class="las la-home"></i>
+        </v-ons-toolbar-button>
+
+        <hr />
+
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-on:click="GO_TO('/account')"
+        >
+          <span>My Account</span>
+          <i class="las la-user-circle"></i>
+        </v-ons-toolbar-button>
+      </v-ons-popover>
     </div>
   </div>
 </template>
@@ -76,11 +101,27 @@ export default {
   },
   data() {
     return {
+      popoverVisible: {
+        mark_up_drawing: false,
+      },
+      popoverTarget: null,
+      popoverDirection: "right",
+      coverTarget: false,
       id_tag: this.$route.params.id_tag,
       id_company: this.$route.params.id_company,
     };
   },
   computed: {},
+  methods: {
+    SHOW_POPOVER(event, direction, coverTarget = false, component) {
+      this.popoverTarget = event;
+      this.popoverDirection = direction;
+      this.coverTarget = coverTarget;
+      if (component == "markup-drawing") {
+        this.popoverVisible.mark_up_drawing = true;
+      }
+    },
+  },
 };
 </script>
 
