@@ -7,19 +7,13 @@
           <div class="list-item-wrapper">
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ item.id_campaign }}
+              {{ SET_CAMPAIGN(item.id_campaign) }}
             </div>
             <div class="contents">
               <v-ons-toolbar-button
                 class="btn"
                 v-on:click="VIEW_DWG(item.id_inspection_record)"
-                style="
-                  width: 50px;
-                  background-color: #f6f6f6;
-                  color: #303030;
-                  padding: 5px 0;
-                  text-align: right;
-                "
+                style="width: 50px; background-color: #f6f6f6; color: #303030; padding: 5px 0; text-align: right;"
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -43,6 +37,8 @@
         @row-inserted="CREATE_DWG"
         @row-updated="UPDATE_DWG"
         @row-removed="DELETE_DWG"
+        @editing-start="EDITING_START_DWG"
+        @init-new-row="INIT_NEW_ROW_DWG"
       >
         <DxEditing
           :allow-updating="true"
@@ -53,8 +49,14 @@
           <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
           </DxPopup>
           <DxForm>
-            <DxItem data-field="path_dwg" />
-            <DxItem data-field="file_name" />
+            <DxItem
+              :col-count="2"
+              :col-span="2"
+              item-type="group"
+            >
+              <DxItem data-field="path_dwg" :col-span="2"/>
+              <DxItem data-field="file_name" :col-span="2"/>
+            </DxItem>
           </DxForm>
         </DxEditing>
 
@@ -72,12 +74,13 @@
           <img :src="data.value" width="500" />
         </template>
 
-        <template #dwg-img-editor="{ data }">
+        <template #dwg-img-editor>
           <div>
-            <img :src="data.value" width="500" />
+            <img :src="imgDwg" width="500" v-if="imgDwg!=null" />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
+              v-if="imgDwg==''"
             />
 
             <DxFileUploader
@@ -85,6 +88,7 @@
               label-text=""
               accept="image/*"
               upload-mode="useForm"
+              @value-changed="ON_DWG_CHANGE"
             />
 
             <!-- <DxFileUploader :ref="fileUploaderRef" 
@@ -150,6 +154,8 @@ import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
 const imgRef = "img";
+const imgDwg = "";
+const file = [];
 
 export default {
   name: "ViewProjectList",
@@ -172,6 +178,7 @@ export default {
   },
   created() {
     if (this.$store.state.status.server == true) {
+      this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
     }
   },
@@ -180,21 +187,28 @@ export default {
       drawingList: [
         {
           id_dwg: 1,
+          id_tag: 5,
+          id_inspection_record: 2,
           path_dwg:
             "https://localhost:44338/wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
           file_name: "4-GC-H12N-0206101_Page_1",
         },
         {
           id_dwg: 2,
+          id_tag: 5,
+          id_inspection_record: 2,
           path_dwg:
             "https://localhost:44338/wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
           file_name: "4-GC-H12N-0206101_Page_2",
         },
       ],
       inspRecordList: {},
+      campaignList: {},
       isLoading: false,
       fileUploaderRef,
       imgRef,
+      imgDwg,
+      file,
     };
   },
   computed: {},
@@ -250,13 +264,75 @@ export default {
     },
     CREATE_DWG(e) {
       console.log(e);
+      var formData = new FormData();
+      formData.append('id_tag', e.data.id_tag);
+      formData.append('file_name', e.data.file_name);
+      for (const file of this.file) {
+        formData.append('file', file, file.name);
+      }
     },
     UPDATE_DWG(e) {
       console.log(e);
+      var formData = new FormData();
+      formData.append('id_tag', e.data.id_tag);
+      formData.append('file_name', e.data.file_name);
+      for (const file of this.file) {
+        formData.append('file', file, file.name);
+      }
     },
     DELETE_DWG(e) {
       console.log(e);
     },
+    ON_DWG_CHANGE(e) {
+      console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {
+        this.imgDwg = reader.result;
+      }
+      // reader.onload = (args) => {
+      //   this.imageElement.setAttribute('src', args.target.result);
+      // }
+      // reader.readAsDataURL(e.value[0]); // convert to base64 string
+    },
+    EDITING_START_DWG(e) {
+      console.log(e);
+      this.imgDwg = e.data.path_dwg;
+      this.file = [];
+    },
+    INIT_NEW_ROW_DWG() {
+      this.imgDwg = "";
+      this.file = [];
+    },
+    FETCH_CAMPAIGN() {
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url: "/insp-record/campaign-list",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.campaignList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    SET_CAMPAIGN(id) {
+      var data = this.campaignList.filter(function(e) {
+        return e.id_campaign == id;
+      });
+      console.log(data);
+      return data[0].campaign_desc;
+    }
   },
 };
 </script>
