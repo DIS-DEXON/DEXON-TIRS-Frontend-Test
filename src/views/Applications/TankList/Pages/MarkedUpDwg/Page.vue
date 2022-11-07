@@ -71,7 +71,10 @@
         <DxColumn data-field="file_name" caption="File Name" :width="300" />
 
         <template #dwg-img="{ data }">
-          <img :src="data.value" width="500" />
+          <div style="position: relative;">
+            <img :src="data.value" width="500" /><br>
+            <a :href="data.value" download="dwg" target="_blank" class="btn-view-dwg">VIEW</a>
+          </div>
         </template>
 
         <template #dwg-img-editor>
@@ -91,14 +94,6 @@
               @value-changed="ON_DWG_CHANGE"
             />
 
-            <!-- <DxFileUploader :ref="fileUploaderRef" 
-                                :multiple="false" 
-                                accept="image/*" 
-                                upload-mode="instantly"
-                                :upload-url="backendURL + 'FileUpload/post'" 
-                                @value-changed="onValueChanged"
-                                @uploaded="(e) => onUploaded(e, data)" 
-                                @upload-error="onUploadError"/> -->
           </div>
         </template>
 
@@ -374,5 +369,16 @@ export default {
 }
 #data-grid-style {
   width: 100%;
+}
+
+.btn-view-dwg {
+  padding: 8px;
+  text-align: center;
+  background-color: #eb1851;
+  color: #fff;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 </style>
