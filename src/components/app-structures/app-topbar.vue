@@ -339,32 +339,6 @@ export default {
     }
   }
 }
-.popover-button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 6px;
-  padding: 6px 18px;
-  min-height: 30px;
-  color: $dexon-primary-blue;
-  i {
-    width: 20px;
-    text-align: center;
-    color: $dexon-primary-blue;
-  }
-}
-.popover-button:hover {
-  border-radius: 0px;
-}
-.popover-button-red {
-  i,
-  span {
-    color: #ff4438;
-  }
-}
-.list-item {
-  padding: 0 14px;
-}
 
 hr {
   margin: 0 auto;
