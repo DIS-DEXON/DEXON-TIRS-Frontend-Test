@@ -13,7 +13,13 @@
               <v-ons-toolbar-button
                 class="btn"
                 v-on:click="VIEW_DWG(item.id_inspection_record)"
-                style="width: 50px; background-color: #f6f6f6; color: #303030; padding: 5px 0; text-align: right;"
+                style="
+                  width: 50px;
+                  background-color: #f6f6f6;
+                  color: #303030;
+                  padding: 5px 0;
+                  text-align: right;
+                "
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -49,13 +55,9 @@
           <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
           </DxPopup>
           <DxForm>
-            <DxItem
-              :col-count="2"
-              :col-span="2"
-              item-type="group"
-            >
-              <DxItem data-field="path_dwg" :col-span="2"/>
-              <DxItem data-field="file_name" :col-span="2"/>
+            <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="path_dwg" :col-span="2" />
+              <DxItem data-field="file_name" :col-span="2" />
             </DxItem>
           </DxForm>
         </DxEditing>
@@ -71,19 +73,25 @@
         <DxColumn data-field="file_name" caption="File Name" :width="300" />
 
         <template #dwg-img="{ data }">
-          <div style="position: relative;">
-            <img :src="data.value" width="500" /><br>
-            <a :href="data.value" download="dwg" target="_blank" class="btn-view-dwg">VIEW</a>
+          <div style="position: relative">
+            <img :src="baseURL + data.value" width="500" /><br />
+            <a
+              :href="baseURL + data.value"
+              download="dwg"
+              target="_blank"
+              class="btn-view-dwg"
+              >VIEW</a
+            >
           </div>
         </template>
 
         <template #dwg-img-editor>
           <div>
-            <img :src="imgDwg" width="500" v-if="imgDwg!=null" />
+            <img :src="baseURL + imgDwg" width="500" v-if="imgDwg != null" />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
-              v-if="imgDwg==''"
+              v-if="imgDwg == ''"
             />
 
             <DxFileUploader
@@ -93,7 +101,6 @@
               upload-mode="useForm"
               @value-changed="ON_DWG_CHANGE"
             />
-
           </div>
         </template>
 
@@ -186,16 +193,14 @@ export default {
           id_dwg: 1,
           id_tag: 5,
           id_inspection_record: 2,
-          path_dwg:
-            "https://localhost:44338/wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
+          path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
           file_name: "4-GC-H12N-0206101_Page_1",
         },
         {
           id_dwg: 2,
           id_tag: 5,
           id_inspection_record: 2,
-          path_dwg:
-            "https://localhost:44338/wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
+          path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
           file_name: "4-GC-H12N-0206101_Page_2",
         },
       ],
@@ -208,7 +213,14 @@ export default {
       file,
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    },
+  },
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();
@@ -262,19 +274,19 @@ export default {
     CREATE_DWG(e) {
       console.log(e);
       var formData = new FormData();
-      formData.append('id_tag', e.data.id_tag);
-      formData.append('file_name', e.data.file_name);
+      formData.append("id_tag", e.data.id_tag);
+      formData.append("file_name", e.data.file_name);
       for (const file of this.file) {
-        formData.append('file', file, file.name);
+        formData.append("file", file, file.name);
       }
     },
     UPDATE_DWG(e) {
       console.log(e);
       var formData = new FormData();
-      formData.append('id_tag', e.data.id_tag);
-      formData.append('file_name', e.data.file_name);
+      formData.append("id_tag", e.data.id_tag);
+      formData.append("file_name", e.data.file_name);
       for (const file of this.file) {
-        formData.append('file', file, file.name);
+        formData.append("file", file, file.name);
       }
     },
     DELETE_DWG(e) {
@@ -286,7 +298,7 @@ export default {
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
         this.imgDwg = reader.result;
-      }
+      };
       // reader.onload = (args) => {
       //   this.imageElement.setAttribute('src', args.target.result);
       // }
@@ -324,12 +336,12 @@ export default {
         });
     },
     SET_CAMPAIGN(id) {
-      var data = this.campaignList.filter(function(e) {
+      var data = this.campaignList.filter(function (e) {
         return e.id_campaign == id;
       });
       console.log(data);
       return data[0].campaign_desc;
-    }
+    },
   },
 };
 </script>
