@@ -1,63 +1,56 @@
 <template>
   <div class="page-container">
-    <div class="page-section" style="padding-top: 0px">
+    <div class="page-section">
       <DxDataGrid
-      id="dataGridInspRecord"
-      key-expr="id_inspection_record"
-      :data-source="inspRecordList"
-      :selection="{ mode: 'single' }"
-      :hover-state-enabled="true"
-      :allow-column-reordering="true"
-      :show-borders="true"
-      :show-row-lines="true"
-      :row-alternation-enabled="false"
-      @exporting="EXPORT_DATA"
-      :word-wrap-enabled="true"
-      @row-inserted="CREATE_RECORD"
-      @row-updated="UPDATE_RECORD"
-      @row-removed="DELETE_RECORD"
-    >
-      <DxEditing
-        :allow-updating="true"
-        :allow-deleting="true"
-        :allow-adding="true"
-        mode="row"
-      />
-      <!-- <DxColumn
+        id="data-grid-style"
+        key-expr="id_inspection_record"
+        :data-source="inspRecordList"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        @exporting="EXPORT_DATA"
+        :word-wrap-enabled="true"
+        @row-inserted="CREATE_RECORD"
+        @row-updated="UPDATE_RECORD"
+        @row-removed="DELETE_RECORD"
+      >
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="true"
+          mode="row"
+        />
+        <!-- <DxColumn
         data-field="created_time"
         :width="0"
         caption=""
         sort-order="asc"
       /> -->
-      <DxColumn
-        data-field="inspection_date"
-        caption="Inspection date"
-        data-type="date"
-        format="dd MMM yyyy"
-        sort-order="desc" />
-
-      <DxColumn
-        data-field="report_no"
-        caption="Report number"
-      />
-
-      <DxColumn 
-        data-field="id_campaign" 
-        caption="Campaign">
-        <DxLookup
-          :data-source="campaigeList"
-          value-expr="id_campaign"
-          display-expr="campaign_desc"
+        <DxColumn
+          data-field="inspection_date"
+          caption="Inspection date"
+          data-type="date"
+          format="dd MMM yyyy"
+          sort-order="desc"
         />
-      </DxColumn>
-      <DxColumn
-        data-field="remark" 
-        caption="Remark"
-      />
 
-      <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+        <DxColumn data-field="report_no" caption="Report number" />
 
-      <!-- <template #cell-button-set="{ data }">
+        <DxColumn data-field="id_campaign" caption="Campaign">
+          <DxLookup
+            :data-source="campaigeList"
+            value-expr="id_campaign"
+            display-expr="campaign_desc"
+          />
+        </DxColumn>
+        <DxColumn data-field="remark" caption="Remark" />
+
+        <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+
+        <!-- <template #cell-button-set="{ data }">
         <div class="table-btn-group">
           <div class="table-btn" v-on:click="EDIT_INFO(data)">
             <i class="las la-pen blue"></i>
@@ -67,12 +60,12 @@
           </div>
         </div>
       </template> -->
-      <template #table-header>
-        <div>
-          <div class="page-section-label">Shell Course</div>
-        </div>
-      </template>
-      <!-- <template #table-header-button-set>
+        <template #table-header>
+          <div>
+            <div class="page-section-label">Shell Course</div>
+          </div>
+        </template>
+        <!-- <template #table-header-button-set>
         <div>
           <v-ons-toolbar-button>
             <i class="las la-plus"></i>
@@ -80,20 +73,20 @@
           </v-ons-toolbar-button>
         </div>
       </template> -->
-      <!-- Configuration goes here -->
-      <!-- <DxFilterRow :visible="true" /> -->
-      <DxScrolling mode="standard" />
-      <DxSearchPanel :visible="true" />
-      <DxPaging :page-size="10" :page-index="0" />
-      <DxPager
-        :show-page-size-selector="true"
-        :allowed-page-sizes="[5, 10, 20]"
-        :show-navigation-buttons="true"
-        :show-info="true"
-        info-text="Page {0} of {1} ({2} items)"
-      />
-      <DxExport :enabled="true" />
-    </DxDataGrid>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
   </div>
 </template> 
@@ -155,11 +148,10 @@ export default {
   data() {
     return {
       inspRecordList: {},
-      campaigeList: {}
+      campaigeList: {},
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();

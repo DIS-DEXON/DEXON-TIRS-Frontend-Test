@@ -1134,3 +1134,31 @@ hr {
     color: $web-font-color-grey;
     padding-bottom: 60px;
 }
+
+.list-panel {
+    display: block;
+    height: 100%;
+    border: 1px solid #000;
+    border-width: 0 1px 0 1px;
+
+    .column-header {
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px;
+        background-color: #140a4b;
+        color: #fff;
+    }
+
+    .list-item-wrapper {
+        display: grid;
+        grid-template-columns: calc(100% - 50px) 50px;
+        padding: 10px;
+        border-bottom: 1px solid #000;
+    }
+}
+
+.list-page {
+    display: block;
+    width: calc(100% - 40px);
+    padding: 20px;
+}
