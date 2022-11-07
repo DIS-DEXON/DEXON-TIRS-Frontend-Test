@@ -174,6 +174,8 @@ export default {
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
     }
+    var id_component = this.$route.params.id_component;
+    console.log(id_component);
   },
   data() {
     return {

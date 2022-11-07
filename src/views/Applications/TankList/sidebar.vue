@@ -20,9 +20,14 @@
       <div class="section-label"><label>Inspection</label></div>
       <router-link
         :to="'/tank/client/' + id_company + '/marked-up-drawing/' + id_tag"
-        v-on:click="SHOW_POPOVER($event, 'down', true, 'markup-drawing')"
+        tag="button"
+        :disabled="true"
+        class="popup-button-caller"
       >
-        <v-ons-toolbar-button class="item">
+        <v-ons-toolbar-button
+          class="item"
+          v-on:click="SHOW_POPOVER($event, 'right', true, 'drawing')"
+        >
           <img src="/img/icon_sidebar/tank/drawing.png" />
           <span>Marked-up Drawing</span>
         </v-ons-toolbar-button>
@@ -68,24 +73,19 @@
       <!-- POPUP MENUS -->
       <v-ons-popover
         cancelable
-        :visible.sync="popoverVisible"
+        :visible.sync="popoverVisible.markup_drawing"
         :target="popoverTarget"
         :direction="popoverDirection"
         :cover-target="coverTarget"
       >
-        <v-ons-toolbar-button class="popover-button" v-on:click="GO_TO('/')">
-          <span>Home</span>
-          <i class="las la-home"></i>
-        </v-ons-toolbar-button>
-
-        <hr />
-
         <v-ons-toolbar-button
           class="popover-button"
-          v-on:click="GO_TO('/account')"
+          v-for="item in sidebarSubmenu"
+          :key="item.id"
+          v-on:click="GO_TO(item, 'drawing')"
         >
-          <span>My Account</span>
-          <i class="las la-user-circle"></i>
+          <span>{{ item.component_code }}</span>
+          <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
     </div>
@@ -93,34 +93,117 @@
 </template>
 
 <script>
+//API
+// import axios from "/axios.js";
+
 export default {
   name: "app-sidebar",
-  mounted() {},
-  props: {
-    id_tank: Number,
+  created() {
+    // this.FETCH_SUBMENU_DRAWING();
   },
+  props: {},
   data() {
     return {
+      id_tag: this.$route.params.id_tag,
+      id_company: this.$route.params.id_company,
       popoverVisible: {
-        mark_up_drawing: false,
+        markup_drawing: false,
       },
       popoverTarget: null,
       popoverDirection: "right",
       coverTarget: false,
-      id_tag: this.$route.params.id_tag,
-      id_company: this.$route.params.id_company,
+      sidebarSubmenu: [
+        {
+          id: 1,
+          component_code: "Annular",
+        },
+        {
+          id: 2,
+          component_code: "Bottom",
+        },
+        {
+          id: 3,
+          component_code: "Coil",
+        },
+        {
+          id: 4,
+          component_code: "Critical Zone",
+        },
+        {
+          id: 5,
+          component_code: "Piping",
+        },
+        {
+          id: 6,
+          component_code: "Roof",
+        },
+        {
+          id: 7,
+          component_code: "Roof Nozzle",
+        },
+        {
+          id: 8,
+          component_code: "Sump",
+        },
+        {
+          id: 9,
+          component_code: "Shell",
+        },
+        {
+          id: 10,
+          component_code: "Shell Nozzle",
+        },
+        {
+          id: 11,
+          component_code: "Projection Plate",
+        },
+      ],
     };
   },
   computed: {},
   methods: {
-    SHOW_POPOVER(event, direction, coverTarget = false, component) {
+    SHOW_POPOVER(event, direction, coverTarget = false, target) {
       this.popoverTarget = event;
       this.popoverDirection = direction;
       this.coverTarget = coverTarget;
-      if (component == "markup-drawing") {
-        this.popoverVisible.mark_up_drawing = true;
+      if (target == "drawing" && this.sidebarSubmenu.length > 0) {
+        this.popoverVisible.markup_drawing = true;
       }
     },
+    GO_TO(item, target) {
+      if (target == "drawing") {
+        this.$router.push({
+          path:
+            "/tank/client/" +
+            this.id_company +
+            "/marked-up-drawing/" +
+            this.id_tag +
+            "/component/" +
+            item.id,
+          replace: true,
+        });
+        this.popoverVisible.markup_drawing = false;
+      }
+      this.FETCH_INSP_RECORD();
+    },
+    // FETCH_SUBMENU_DRAWING() {
+    //   axios({
+    //     method: "get",
+    //     url: "MdComponent",
+    //     headers: {
+    //       Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+    //     },
+    //   })
+    //     .then((res) => {
+    //       if (res.status == 200 && res.data) {
+    //         this.sidebarSubmenu = res.data;
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     })
+    //     .finally(() => {});
+    // },
   },
 };
 </script>
@@ -211,5 +294,23 @@ export default {
       }
     }
   }
+}
+.popup-button-caller {
+  width: 100%;
+  background-color: unset;
+  border: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: -10px;
+}
+
+.popover-button {
+  padding: 6px 5px 6px 18px;
+  border: 1px solid #e6e6e6;
+  border-width: 0 0 1px 0;
+}
+
+.popover-button:last-child {
+  border: 0;
 }
 </style>

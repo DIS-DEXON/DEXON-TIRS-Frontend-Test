@@ -63,7 +63,7 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
           },
           {
-            path: 'marked-up-drawing/:id_tag',
+            path: 'marked-up-drawing/:id_tag/component/:id_component',
             alias: 'Marked-up Drawing',
             component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
           },
