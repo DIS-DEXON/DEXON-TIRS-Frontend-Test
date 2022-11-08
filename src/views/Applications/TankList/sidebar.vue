@@ -32,8 +32,16 @@
           <span>Marked-up Drawing</span>
         </v-ons-toolbar-button>
       </router-link>
-      <router-link :to="'/tank/client/' + id_company + '/checklist/' + id_tag">
-        <v-ons-toolbar-button class="item">
+      <router-link
+        :to="'/tank/client/' + id_company + '/checklist/' + id_tag"
+        tag="button"
+        :disabled="true"
+        class="popup-button-caller"
+      >
+        <v-ons-toolbar-button
+          class="item"
+          v-on:click="SHOW_POPOVER($event, 'right', true, 'checklist')"
+        >
           <img src="/img/icon_sidebar/tank/checklist.png" />
           <span>Checklist</span>
         </v-ons-toolbar-button>
@@ -80,11 +88,28 @@
       >
         <v-ons-toolbar-button
           class="popover-button"
-          v-for="item in sidebarSubmenu"
+          v-for="item in sidebarSubmenu.markup_drawing"
           :key="item.id"
           v-on:click="GO_TO(item, 'drawing')"
         >
           <span>{{ item.component_code }}</span>
+          <i class="las la-angle-right"></i>
+        </v-ons-toolbar-button>
+      </v-ons-popover>
+      <v-ons-popover
+        cancelable
+        :visible.sync="popoverVisible.checklist"
+        :target="popoverTarget"
+        :direction="popoverDirection"
+        :cover-target="coverTarget"
+      >
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-for="item in sidebarSubmenu.checklist"
+          :key="item.id"
+          v-on:click="GO_TO(item, 'checklist')"
+        >
+          <span>{{ item.checklist_code }}</span>
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
@@ -108,56 +133,73 @@ export default {
       id_company: this.$route.params.id_company,
       popoverVisible: {
         markup_drawing: false,
+        checklist: false,
       },
       popoverTarget: null,
       popoverDirection: "right",
       coverTarget: false,
-      sidebarSubmenu: [
-        {
-          id: 1,
-          component_code: "Annular",
-        },
-        {
-          id: 2,
-          component_code: "Bottom",
-        },
-        {
-          id: 3,
-          component_code: "Coil",
-        },
-        {
-          id: 4,
-          component_code: "Critical Zone",
-        },
-        {
-          id: 5,
-          component_code: "Piping",
-        },
-        {
-          id: 6,
-          component_code: "Roof",
-        },
-        {
-          id: 7,
-          component_code: "Roof Nozzle",
-        },
-        {
-          id: 8,
-          component_code: "Sump",
-        },
-        {
-          id: 9,
-          component_code: "Shell",
-        },
-        {
-          id: 10,
-          component_code: "Shell Nozzle",
-        },
-        {
-          id: 11,
-          component_code: "Projection Plate",
-        },
-      ],
+      sidebarSubmenu: {
+        markup_drawing: [
+          {
+            id: 1,
+            component_code: "Annular",
+          },
+          {
+            id: 2,
+            component_code: "Bottom",
+          },
+          {
+            id: 3,
+            component_code: "Coil",
+          },
+          {
+            id: 4,
+            component_code: "Critical Zone",
+          },
+          {
+            id: 5,
+            component_code: "Piping",
+          },
+          {
+            id: 6,
+            component_code: "Roof",
+          },
+          {
+            id: 7,
+            component_code: "Roof Nozzle",
+          },
+          {
+            id: 8,
+            component_code: "Sump",
+          },
+          {
+            id: 9,
+            component_code: "Shell",
+          },
+          {
+            id: 10,
+            component_code: "Shell Nozzle",
+          },
+          {
+            id: 11,
+            component_code: "Projection Plate",
+          },
+        ],
+        checklist: [
+          {
+            id: 1,
+            checklist_code: "Generic",
+          },
+          {
+            id: 2,
+            checklist_code: "ILAST External",
+          },
+          {
+            id: 3,
+            checklist_code: "ILAST Internal",
+          },
+        ],
+      },
     };
   },
   computed: {},
@@ -166,8 +208,16 @@ export default {
       this.popoverTarget = event;
       this.popoverDirection = direction;
       this.coverTarget = coverTarget;
-      if (target == "drawing" && this.sidebarSubmenu.length > 0) {
+      if (
+        target == "drawing" &&
+        this.sidebarSubmenu.markup_drawing.length > 0
+      ) {
         this.popoverVisible.markup_drawing = true;
+      } else if (
+        target == "checklist" &&
+        this.sidebarSubmenu.checklist.length > 0
+      ) {
+        this.popoverVisible.checklist = true;
       }
     },
     GO_TO(item, target) {
@@ -183,8 +233,19 @@ export default {
           replace: true,
         });
         this.popoverVisible.markup_drawing = false;
+      } else if (target == "checklist") {
+        this.$router.push({
+          path:
+            "/tank/client/" +
+            this.id_company +
+            "/checklist/" +
+            this.id_tag +
+            "/form/" +
+            item.id,
+          replace: true,
+        });
+        this.popoverVisible.checklist = false;
       }
-      this.FETCH_INSP_RECORD();
     },
     // FETCH_SUBMENU_DRAWING() {
     //   axios({
@@ -308,6 +369,13 @@ export default {
   padding: 6px 5px 6px 18px;
   border: 1px solid #e6e6e6;
   border-width: 0 0 1px 0;
+
+  i {
+    font-size: 14px;
+  }
+}
+.popover-button:hover {
+  background-color: #140a4b12;
 }
 
 .popover-button:last-child {

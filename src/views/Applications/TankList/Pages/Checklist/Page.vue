@@ -2,12 +2,12 @@
   <div class="page-container">
     <div class="list-panel">
       <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList" height="100%">
+      <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div class="list-item-wrapper">
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ item.id_campaign }}
+              ID Campaign: {{ item.id_campaign }}
             </div>
             <div class="contents">
               <v-ons-toolbar-button
@@ -28,16 +28,112 @@
         </template>
       </DxList>
     </div>
-    <div>
-      <div class="tab-wrapper">
-        <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
+    <div class="page-section">
+      <div id="report-sheet">
+        <div class="report-container">
+          <div class="sheet-header">
+            <div class="logo"><img src="/img/logo.png" /></div>
+            <div class="title">Generic Checklist Form</div>
+            <div class="docno"></div>
+          </div>
+          <div class="sheet-body" v-for="item in genericList" :key="item.id">
+            <div class="section-label header-label" style="grid-row: span 2">
+              <label>{{ item.header_content }}</label>
+            </div>
+            <div class="section-label rating-label" style="grid-column: span 6">
+              <label style="width: 100%; text-align: center">Rating</label>
+            </div>
+            <div class="section-label comment-label" style="grid-row: span 2">
+              <label>Comments:</label>
+            </div>
+
+            <div class="section-label rating-option">
+              <label style="padding-left: 5px">OK</label>
+            </div>
+            <div class="section-label rating-option">
+              <label>Minor Observation</label>
+            </div>
+            <div class="section-label rating-option">
+              <label>Evaluation Required</label>
+            </div>
+            <div class="section-label rating-option">
+              <label>Monitoring Required</label>
+            </div>
+            <div class="section-label rating-option">
+              <label>Not Acceptable</label>
+            </div>
+            <div class="section-label rating-option">
+              <label>Not Applicable</label>
+            </div>
+            <!-- LOOP DISPLAY SUB HEADER -->
+            <div
+              v-for="item2 in item.sub_header"
+              :key="item2.id"
+              style="grid-column: span 8"
+            >
+              <div class="section-label subheader-label">
+                <label>{{ item2.subheader_content }}</label>
+              </div>
+              <div
+                class="topic-item"
+                v-for="item3 in item2.topic"
+                :key="item3.id"
+              >
+                <div class="form-item-value">
+                  <label>{{ item3.topic }}</label>
+                </div>
+                <div class="form-item-value">
+                  <input type="radio" value="OK" :name="item3.id" />
+                </div>
+                <div class="form-item-value">
+                  <input
+                    type="radio"
+                    value="Minor Observation"
+                    :name="item3.id"
+                  />
+                </div>
+                <div class="form-item-value">
+                  <input
+                    type="radio"
+                    value="Evaluation Required"
+                    :name="item3.id"
+                  />
+                </div>
+                <div class="form-item-value">
+                  <input
+                    type="radio"
+                    value="Monitoring Required"
+                    :name="item3.id"
+                  />
+                </div>
+                <div class="form-item-value">
+                  <input type="radio" value="Not Acceptable" :name="item3.id" />
+                </div>
+                <div class="form-item-value">
+                  <input type="radio" value="Not Applicable" :name="item3.id" />
+                </div>
+                <div class="form-item-value">
+                  <textarea
+                    placeholder="comment..."
+                    style="min-height: auto; padding: 0"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="section-label subheader-label"
+              style="grid-column: span 8"
+            >
+              <label>Remarks and Recommendations:</label>
+            </div>
+            <div class="form-item-textarea" style="grid-column: span 8">
+              <textarea
+                placeholder="Type remarks and recommendations here..."
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div
-        class="page-section info-tab-display"
-        v-if="tabCurrent == 'generic'"
-      ></div>
-      <div v-if="tabCurrent == 'ilast-ext'"></div>
-      <div v-if="tabCurrent == 'ilast-in'"></div>
     </div>
   </div>
 </template> 
@@ -48,8 +144,7 @@ import axios from "/axios.js";
 import moment from "moment";
 
 //Components
-import VueTabsChrome from "vue-tabs-chrome";
-import TableDrawing from "../Information/table-drawing.vue";
+
 import "devextreme/dist/css/dx.light.css";
 //DataGrid
 
@@ -59,11 +154,9 @@ import { DxList } from "devextreme-vue/list";
 export default {
   name: "ViewProjectList",
   components: {
-    VueTabsChrome,
     DxList,
   },
   created() {
-    TableDrawing;
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_GENERIC();
@@ -92,6 +185,7 @@ export default {
         },
       ],
       isLoading: false,
+      rating_radio: "OK2",
     };
   },
   computed: {},
@@ -164,17 +258,18 @@ export default {
 @import "@/style/main.scss";
 
 .page-container {
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
+  height: calc(100vh - 139px);
+  overflow-y: hidden;
   display: grid;
   grid-template-columns: 300px calc(100% - 300px);
+  width: 100%;
+  background-color: #d9d9d9;
 }
 
 .page-section {
   padding: 20px;
+  overflow-y: scroll;
 }
-
 .page-section:last-child {
   padding-bottom: 20px;
 }
@@ -187,9 +282,6 @@ export default {
   background-color: #d9d9d9;
   font-size: 14px;
 }
-.info-tab-display {
-  display: flex;
-}
 
 .insp-record-header {
   font-size: 16px;
@@ -200,5 +292,99 @@ export default {
 
 .dx-list-item-content::before {
   content: none;
+}
+
+.page-section-label {
+  font-size: 16px;
+  padding: 10px;
+  background-color: #140a4b;
+  color: #fff;
+  border: 1px solid #000;
+}
+
+#report-sheet {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #000;
+  box-shadow: none;
+  .report-container {
+    .sheet-header {
+      padding-bottom: 0px;
+      .logo {
+        width: 120px;
+        margin-left: 10px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+    .sheet-body {
+      grid-template-columns: 40% 40px 40px 40px 40px 40px 40px auto;
+      .rating-option {
+        position: relative;
+        height: 70px;
+        label {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform-origin: 0 50%;
+          transform: rotate(270deg);
+          font-size: 10px;
+          text-transform: capitalize;
+          font-weight: 500;
+        }
+      }
+      .header-label {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        label {
+          font-size: 16px;
+        }
+      }
+      .rating-label,
+      .comment-label,
+      .subheader-label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        label {
+          font-size: 12px;
+          text-transform: capitalize;
+        }
+      }
+      .comment-label {
+        justify-content: flex-start;
+      }
+
+      .subheader-label {
+        background-color: #d5d5d5;
+        justify-content: flex-start;
+        label {
+          color: $web-font-color-black;
+        }
+      }
+
+      .topic-item {
+        display: grid;
+        grid-template-columns: 40% 40px 40px 40px 40px 40px 40px auto;
+        .form-item-value {
+          grid-column: auto;
+          border-width: 0.5px;
+          label {
+            text-transform: none;
+          }
+        }
+      }
+      // .section-label {
+      //   background-color: #cbcbcb;
+      //   label {
+      //     color: #000;
+      //   }
+      // }
+    }
+  }
 }
 </style>
