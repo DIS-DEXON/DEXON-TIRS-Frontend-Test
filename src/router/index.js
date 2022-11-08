@@ -58,7 +58,7 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
           {
-            path: 'checklist/:id_tag',
+            path: 'checklist/:id_tag/form/:id_checklist',
             alias: 'Checklist',
             component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
           },

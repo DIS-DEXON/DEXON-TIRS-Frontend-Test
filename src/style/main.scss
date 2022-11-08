@@ -653,6 +653,7 @@ hr {
                 text-transform: uppercase;
                 color: #000;
                 grid-column: span 4;
+                letter-spacing: 1pt;
             }
 
             .docno {
@@ -707,7 +708,9 @@ hr {
                 }
             }
 
-            .form-item-value {
+            .form-item-value,
+            .form-item-textarea,
+            .form-item-input {
                 background-color: #fff;
                 border: 0.5px solid #000;
                 border-width: 0.5px 0.5px 0.5px 0;
@@ -722,6 +725,25 @@ hr {
                     font-weight: 400;
                     text-transform: capitalize;
                     color: #000;
+                }
+
+                textarea {
+                    border: 0;
+                    padding: 10px;
+                    width: -webkit-fill-available;
+                    min-width: -webkit-fill-available;
+                    max-width: -webkit-fill-available;
+                    min-height: 80px;
+                    border-width: 0.5px;
+                }
+
+                input {
+                    border: 0;
+                    width: -webkit-fill-available;
+                    min-width: -webkit-fill-available;
+                    max-width: -webkit-fill-available;
+                    border-width: 0.5px;
+
                 }
             }
 
@@ -1140,6 +1162,7 @@ hr {
     height: 100%;
     border: 1px solid #000;
     border-width: 0 1px 0 1px;
+    background-color: #fff;
 
     .column-header {
         font-size: 14px;
