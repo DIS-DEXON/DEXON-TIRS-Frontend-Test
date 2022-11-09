@@ -154,46 +154,34 @@ export default {
   methods: {
     FETCH_CLIENT_LIST() {
       this.isLoading = true;
-      setTimeout(() => {
-        axios({
-          method: "get",
-          url: "/MdClientCompany",
-          headers: {
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
-          },
+
+      axios({
+        method: "get",
+        url: "/MdClientCompany",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            this.clientList = res.data;
+          }
         })
-          .then((res) => {
-            if (res.status == 200) {
-              this.clientList = res.data;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
-      }, 100);
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     OPEN_APP(item) {
       if (item.isActive == true) {
         this.openingApp = item;
         this.isOpening = true;
         let link = this.openingApp.link;
-        setTimeout(() => {
-          if (link) this.$router.push(link);
-          this.isOpening = false;
-        }, 1000);
+        if (link) this.$router.push(link);
+        this.isOpening = false;
       }
-    },
-    GO_TO(path) {
-      if (path == "dos") {
-        window.open(
-          "https://dos.dexon-technology.com/fmi/webd/Dexon",
-          "_blank"
-        );
-      } else this.$router.push({ path: path, replace: true });
     },
     VIEW_INFO(id_client) {
       if (id_client) {
