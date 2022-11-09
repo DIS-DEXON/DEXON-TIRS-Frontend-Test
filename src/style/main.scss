@@ -1272,13 +1272,20 @@ hr {
                 justify-content: flex-start;
             }
 
-            .subheader-label {
-                background-color: #d5d5d5;
-                justify-content: flex-start;
+            .topic-label {
+                display: grid;
 
-                label {
-                    color: $web-font-color-black;
+                .subheader-label {
+                    background-color: #d5d5d5;
+                    justify-content: flex-start;
+
+                    label {
+                        color: $web-font-color-black;
+                    }
                 }
+
+
+
             }
 
             .rating-option {
@@ -1312,6 +1319,12 @@ hr {
             // }
             .form-item-textarea {
                 border-width: 0.5px;
+            }
+
+            .label-align-center {
+                display: flex;
+                justify-content: center !important;
+                align-items: center;
             }
         }
     }

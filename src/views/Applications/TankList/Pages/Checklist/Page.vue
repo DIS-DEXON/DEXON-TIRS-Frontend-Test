@@ -7,7 +7,7 @@
           <div class="list-item-wrapper">
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
-              ID Campaign: {{ item.id_campaign }}
+              ID Inspection: {{ item.id_inspection_record }}
             </div>
             <div class="contents">
               <v-ons-toolbar-button
@@ -35,6 +35,9 @@
       <div v-if="this.checklistList.ilast_ext.length > 0">
         <checklistIlastExt :checklistInfo="this.checklistList.ilast_ext" />
       </div>
+      <div v-if="this.checklistList.ilast_int.length > 0">
+        <checklistIlastInt :checklistInfo="this.checklistList.ilast_int" />
+      </div>
       <Loading v-if="isLoading == true" text="Loading" />
     </div>
   </div>
@@ -52,6 +55,7 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form-generic.vue";
 import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
+import checklistIlastInt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-int.vue";
 
 //DataGrid
 
@@ -63,6 +67,7 @@ export default {
   components: {
     checklistGeneric,
     checklistIlastExt,
+    checklistIlastInt,
     DxList,
     Loading,
   },
@@ -70,6 +75,7 @@ export default {
     return {
       id_tag: this.$route.params.id_tag,
       id_checklist: this.$route.params.id_checklist,
+      id_insp_record: "",
       checklistList: {
         generic: [],
         ilast_ext: [],
@@ -90,11 +96,13 @@ export default {
     //triggered whenever the route path changes
     $route() {
       this.CLEAR_CURRENT_VIEW();
-      this.id_checklist = this.$route.params.id_checklist; //
+      this.id_checklist = this.$route.params.id_checklist;
+      this.id_insp_record = "";
     },
   },
   methods: {
     VIEW_CHECKLIST(id_insp_record) {
+      this.id_insp_record = id_insp_record;
       this.CLEAR_CURRENT_VIEW();
       if (this.id_checklist == 1) this.FETCH_CHECKLIST_GENERIC(id_insp_record);
       else if (this.id_checklist == 2)
@@ -104,6 +112,7 @@ export default {
       else console.log("view checklist failed");
     },
     FETCH_CHECKLIST_GENERIC(id_insp_record) {
+      console.log("INSPECTION RECORD: " + id_insp_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -159,7 +168,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "chk-ilast-ex/get-chkilastex-by-insp-id",
+        url: "chk-ilast-in/get-chkilastin-by-insp-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
