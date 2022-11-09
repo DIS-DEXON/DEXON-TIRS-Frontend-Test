@@ -29,170 +29,82 @@
       </DxList>
     </div>
     <div class="page-section">
-      <div id="report-sheet">
-        <div class="report-container">
-          <div class="sheet-header">
-            <div class="logo"><img src="/img/logo.png" /></div>
-            <div class="title">Generic Checklist Form</div>
-            <div class="docno"></div>
-          </div>
-          <div class="sheet-body" v-for="item in genericList" :key="item.id">
-            <div class="section-label header-label" style="grid-row: span 2">
-              <label>{{ item.header_content }}</label>
-            </div>
-            <div class="section-label rating-label" style="grid-column: span 6">
-              <label style="width: 100%; text-align: center">Rating</label>
-            </div>
-            <div class="section-label comment-label" style="grid-row: span 2">
-              <label>Comments:</label>
-            </div>
-
-            <div class="section-label rating-option">
-              <label style="padding-left: 5px">OK</label>
-            </div>
-            <div class="section-label rating-option">
-              <label>Minor Observation</label>
-            </div>
-            <div class="section-label rating-option">
-              <label>Evaluation Required</label>
-            </div>
-            <div class="section-label rating-option">
-              <label>Monitoring Required</label>
-            </div>
-            <div class="section-label rating-option">
-              <label>Not Acceptable</label>
-            </div>
-            <div class="section-label rating-option">
-              <label>Not Applicable</label>
-            </div>
-            <!-- LOOP DISPLAY SUB HEADER -->
-            <div
-              v-for="item2 in item.sub_header"
-              :key="item2.id"
-              style="grid-column: span 8"
-            >
-              <div class="section-label subheader-label">
-                <label>{{ item2.subheader_content }}</label>
-              </div>
-              <div
-                class="topic-item"
-                v-for="item3 in item2.topic"
-                :key="item3.id"
-              >
-                <div class="form-item-value">
-                  <label>{{ item3.topic }}</label>
-                </div>
-                <div class="form-item-value">
-                  <input type="radio" value="OK" :name="item3.id" />
-                </div>
-                <div class="form-item-value">
-                  <input
-                    type="radio"
-                    value="Minor Observation"
-                    :name="item3.id"
-                  />
-                </div>
-                <div class="form-item-value">
-                  <input
-                    type="radio"
-                    value="Evaluation Required"
-                    :name="item3.id"
-                  />
-                </div>
-                <div class="form-item-value">
-                  <input
-                    type="radio"
-                    value="Monitoring Required"
-                    :name="item3.id"
-                  />
-                </div>
-                <div class="form-item-value">
-                  <input type="radio" value="Not Acceptable" :name="item3.id" />
-                </div>
-                <div class="form-item-value">
-                  <input type="radio" value="Not Applicable" :name="item3.id" />
-                </div>
-                <div class="form-item-value">
-                  <textarea
-                    placeholder="comment..."
-                    style="min-height: auto; padding: 0"
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              class="section-label subheader-label"
-              style="grid-column: span 8"
-            >
-              <label>Remarks and Recommendations:</label>
-            </div>
-            <div class="form-item-textarea" style="grid-column: span 8">
-              <textarea
-                placeholder="Type remarks and recommendations here..."
-              />
-            </div>
-          </div>
-        </div>
+      <div v-if="this.checklistList.generic.length > 0">
+        <checklistGeneric :checklistInfo="this.checklistList.generic" />
       </div>
+      <div v-if="this.checklistList.ilast_ext.length > 0">
+        <checklistIlastExt :checklistInfo="this.checklistList.ilast_ext" />
+      </div>
+      <Loading v-if="isLoading == true" text="Loading" />
     </div>
   </div>
 </template> 
 
 <script>
+//UI
+import Loading from "@/components/app-structures/app-loading.vue";
+
 //API
 import axios from "/axios.js";
 import moment from "moment";
 
 //Components
-
 import "devextreme/dist/css/dx.light.css";
+import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form-generic.vue";
+import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
+
 //DataGrid
 
 //List
 import { DxList } from "devextreme-vue/list";
 
 export default {
-  name: "ViewProjectList",
+  name: "ViewChecklistList",
   components: {
+    checklistGeneric,
+    checklistIlastExt,
     DxList,
-  },
-  created() {
-    if (this.$store.state.status.server == true) {
-      this.FETCH_INSP_RECORD();
-      this.FETCH_GENERIC();
-    }
+    Loading,
   },
   data() {
     return {
-      genericList: {},
+      id_tag: this.$route.params.id_tag,
+      id_checklist: this.$route.params.id_checklist,
+      checklistList: {
+        generic: [],
+        ilast_ext: [],
+        ilast_int: [],
+      },
       inspRecordList: {},
-      tabCurrent: "generic",
-      tabs: [
-        {
-          label: "Generic",
-          key: "generic",
-          closable: false,
-        },
-        {
-          label: "ILAST External",
-          key: "ilast-ext",
-          closable: false,
-        },
-        {
-          label: "ILAST Internal",
-          key: "ilast-in",
-          closable: false,
-        },
-      ],
       isLoading: false,
-      rating_radio: "OK2",
     };
   },
   computed: {},
+  created() {
+    if (this.$store.state.status.server == true) {
+      this.FETCH_INSP_RECORD();
+    }
+  },
+  mounted() {},
+  watch: {
+    //triggered whenever the route path changes
+    $route() {
+      this.CLEAR_CURRENT_VIEW();
+      this.id_checklist = this.$route.params.id_checklist; //
+    },
+  },
   methods: {
-    FETCH_GENERIC() {
+    VIEW_CHECKLIST(id_insp_record) {
+      this.CLEAR_CURRENT_VIEW();
+      if (this.id_checklist == 1) this.FETCH_CHECKLIST_GENERIC(id_insp_record);
+      else if (this.id_checklist == 2)
+        this.FETCH_CHECKLIST_ILAST_EXT(id_insp_record);
+      else if (this.id_checklist == 3)
+        this.FETCH_CHECKLIST_ILAST_INT(id_insp_record);
+      else console.log("view checklist failed");
+    },
+    FETCH_CHECKLIST_GENERIC(id_insp_record) {
       this.isLoading = true;
-      //var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
         url: "chk-generic/get-chkgeneric-by-insp-id",
@@ -200,14 +112,66 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: 0,
+          id_insp_record: id_insp_record,
         },
       })
         .then((res) => {
-          console.log("generic:");
+          console.log("FETCH_CHECKLIST_GENERAL:");
           console.log(res);
           if (res.status == 200 && res.data) {
-            this.genericList = res.data;
+            this.checklistList.generic = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CHECKLIST_ILAST_EXT(id_insp_record) {
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-ilast-ex/get-chkilastex-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_insp_record,
+        },
+      })
+        .then((res) => {
+          console.log("FETCH_CHECKLIST_ILAST_EXT:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.checklistList.ilast_ext = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CHECKLIST_ILAST_INT(id_insp_record) {
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-ilast-ex/get-chkilastex-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_insp_record,
+        },
+      })
+        .then((res) => {
+          console.log("FETCH_CHECKLIST_ILAST_INT:");
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.checklistList.ilast_int = res.data;
           }
         })
         .catch((error) => {
@@ -231,8 +195,8 @@ export default {
         },
       })
         .then((res) => {
-          console.log("insp record:");
-          console.log(res.data);
+          // console.log("insp record:");
+          // console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
@@ -244,8 +208,12 @@ export default {
           this.isLoading = false;
         });
     },
-    VIEW_CHECKLIST(id) {
-      console.log(id);
+    CLEAR_CURRENT_VIEW() {
+      this.checklistList = {
+        generic: [],
+        ilast_ext: [],
+        ilast_int: [],
+      };
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
@@ -269,6 +237,7 @@ export default {
 .page-section {
   padding: 20px;
   overflow-y: scroll;
+  position: relative;
 }
 .page-section:last-child {
   padding-bottom: 20px;
@@ -302,89 +271,7 @@ export default {
   border: 1px solid #000;
 }
 
-#report-sheet {
-  width: 100%;
-  margin: 0 auto;
-  border: 1px solid #000;
-  box-shadow: none;
-  .report-container {
-    .sheet-header {
-      padding-bottom: 0px;
-      .logo {
-        width: 120px;
-        margin-left: 10px;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-      }
-    }
-    .sheet-body {
-      grid-template-columns: 40% 40px 40px 40px 40px 40px 40px auto;
-      .rating-option {
-        position: relative;
-        height: 70px;
-        label {
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform-origin: 0 50%;
-          transform: rotate(270deg);
-          font-size: 10px;
-          text-transform: capitalize;
-          font-weight: 500;
-        }
-      }
-      .header-label {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        label {
-          font-size: 16px;
-        }
-      }
-      .rating-label,
-      .comment-label,
-      .subheader-label {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        label {
-          font-size: 12px;
-          text-transform: capitalize;
-        }
-      }
-      .comment-label {
-        justify-content: flex-start;
-      }
-
-      .subheader-label {
-        background-color: #d5d5d5;
-        justify-content: flex-start;
-        label {
-          color: $web-font-color-black;
-        }
-      }
-
-      .topic-item {
-        display: grid;
-        grid-template-columns: 40% 40px 40px 40px 40px 40px 40px auto;
-        .form-item-value {
-          grid-column: auto;
-          border-width: 0.5px;
-          label {
-            text-transform: none;
-          }
-        }
-      }
-      // .section-label {
-      //   background-color: #cbcbcb;
-      //   label {
-      //     color: #000;
-      //   }
-      // }
-    }
-  }
+.app-loading {
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 </style>

@@ -28,7 +28,7 @@
         </template>
       </DxList>
     </div>
-    <div class="list-page">
+    <div class="list-page" style="overflow-y: scroll;">
       <DxDataGrid
         id="data-grid-style"
         key-expr="id_dwg"
@@ -87,7 +87,8 @@
 
         <template #dwg-img-editor>
           <div>
-            <img :src="baseURL + imgDwg" width="500" v-if="imgDwg != null" />
+            <img :src="baseURL + imgDwg" width="500" v-if="imgDwg != '' && isInitEdit == 0" />
+            <img :src="imgDwg" width="500" v-if="imgDwg != '' && isInitEdit == 1" />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
@@ -158,6 +159,7 @@ const fileUploaderRef = "fu";
 const imgRef = "img";
 const imgDwg = "";
 const file = [];
+const isInitEdit = "";
 
 export default {
   name: "ViewProjectList",
@@ -211,6 +213,7 @@ export default {
       imgRef,
       imgDwg,
       file,
+      isInitEdit,
     };
   },
   computed: {
@@ -294,6 +297,7 @@ export default {
     },
     ON_DWG_CHANGE(e) {
       console.log(e);
+      this.isInitEdit = 1;
       let reader = new FileReader();
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
@@ -308,10 +312,12 @@ export default {
       console.log(e);
       this.imgDwg = e.data.path_dwg;
       this.file = [];
+      this.isInitEdit = 0;
     },
     INIT_NEW_ROW_DWG() {
       this.imgDwg = "";
       this.file = [];
+      this.isInitEdit = 1;
     },
     FETCH_CAMPAIGN() {
       this.isLoading = true;

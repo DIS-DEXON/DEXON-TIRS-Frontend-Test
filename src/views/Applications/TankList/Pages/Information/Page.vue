@@ -4,7 +4,7 @@
       <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
     </div>
     <div class="page-section info-tab-display" v-if="tabCurrent == 'info'">
-      <div id="report-sheet">
+      <div class="report-sheet">
         <div class="report-container">
           <div class="sheet-body">
             <div class="section-label" style="grid-column: span 2">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div
-        id="report-sheet"
+        class="report-sheet"
         style="width: 500px; height: 100%; margin-left: 20px"
       >
         <div class="report-container" style="height: 100%">
@@ -154,7 +154,7 @@ import contentLoading from "@/components/app-structures/app-content-loading.vue"
 //DataGrid
 
 export default {
-  name: "ViewProjectList",
+  name: "ViewTankInformation",
   components: {
     VueTabsChrome,
     shellCourse,
@@ -384,7 +384,7 @@ export default {
 
   overflow-y: scroll;
 }
-#report-sheet {
+.report-sheet {
   max-width: 100%;
   width: 100%;
   font-family: $web-default-font;
