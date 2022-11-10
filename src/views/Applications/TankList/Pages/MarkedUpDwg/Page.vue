@@ -31,7 +31,7 @@
     <div class="list-page" style="overflow-y: scroll">
       <DxDataGrid
         id="data-grid-style"
-        key-expr="id_dwg"
+        key-expr="id"
         :data-source="drawingList"
         :selection="{ mode: 'single' }"
         :hover-state-enabled="true"
@@ -49,21 +49,21 @@
         <DxEditing
           :allow-updating="true"
           :allow-deleting="true"
-          :allow-adding="true"
+          :allow-adding="IS_VISIBLE_ADD()"
           mode="popup"
         >
           <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
           </DxPopup>
           <DxForm>
             <DxItem :col-count="2" :col-span="2" item-type="group">
-              <DxItem data-field="path_dwg" :col-span="2" />
+              <DxItem data-field="file_path" :col-span="2" />
               <DxItem data-field="file_name" :col-span="2" />
             </DxItem>
           </DxForm>
         </DxEditing>
 
         <DxColumn
-          data-field="path_dwg"
+          data-field="file_path"
           caption="Marked-up Drawing"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor"
@@ -85,10 +85,10 @@
           </div>
         </template>
 
-        <template #dwg-img-editor>
+        <template #dwg-img-editor="{ data }">
           <div>
             <img
-              :src="baseURL + imgDwg"
+              :src="baseURL + data.value"
               width="500"
               v-if="imgDwg != '' && isInitEdit == 0"
             />
@@ -165,9 +165,6 @@ import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
 const imgRef = "img";
-const imgDwg = "";
-const file = [];
-const isInitEdit = "";
 
 export default {
   name: "ViewProjectList",
@@ -193,35 +190,35 @@ export default {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
     }
-    var id_component = this.$route.params.id_component;
-    console.log(id_component);
   },
   data() {
     return {
       drawingList: [
-        {
-          id_dwg: 1,
-          id_tag: 5,
-          id_inspection_record: 2,
-          path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
-          file_name: "4-GC-H12N-0206101_Page_1",
-        },
-        {
-          id_dwg: 2,
-          id_tag: 5,
-          id_inspection_record: 2,
-          path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
-          file_name: "4-GC-H12N-0206101_Page_2",
-        },
+        // {
+        //   id_dwg: 1,
+        //   id_tag: 5,
+        //   id_inspection_record: 2,
+        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
+        //   file_name: "4-GC-H12N-0206101_Page_1",
+        // },
+        // {
+        //   id_dwg: 2,
+        //   id_tag: 5,
+        //   id_inspection_record: 2,
+        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
+        //   file_name: "4-GC-H12N-0206101_Page_2",
+        // },
       ],
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
       fileUploaderRef,
       imgRef,
-      imgDwg,
-      file,
-      isInitEdit,
+      imgDwg: "",
+      file: [],
+      isInitEdit: 0,
+      id_component: 0,
+      id_inspection_record: 0,
     };
   },
   computed: {
@@ -276,8 +273,35 @@ export default {
           this.isLoading = false;
         });
     },
-    VIEW_DWG(id) {
-      console.log(id);
+    VIEW_DWG(id_inspection_record) {
+      this.id_component = this.$route.params.id_component;
+      this.id_inspection_record = id_inspection_record;
+      console.log("id_insp:" + id_inspection_record);
+      console.log("id_component:" + this.id_component);
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_component: this.id_component,
+          id_inspection_record: id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log("insp record:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
@@ -285,23 +309,90 @@ export default {
     CREATE_DWG(e) {
       console.log(e);
       var formData = new FormData();
-      formData.append("id_tag", e.data.id_tag);
+      formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_component", this.id_component);
+      formData.append("id_inspection_record", this.id_inspection_record);
       formData.append("file_name", e.data.file_name);
-      for (const file of this.file) {
-        formData.append("file", file, file.name);
-      }
+      formData.append("file", this.file);
+
+      axios({
+        method: "post",
+        url: "layout-drawing/add-layout-drawing",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: formData,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 201 && res.data) {
+            console.log(res.data);
+            this.VIEW_DWG(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     UPDATE_DWG(e) {
       console.log(e);
-      var formData = new FormData();
-      formData.append("id_tag", e.data.id_tag);
-      formData.append("file_name", e.data.file_name);
-      for (const file of this.file) {
-        formData.append("file", file, file.name);
-      }
+      axios({
+        method: "put",
+        url: "layout-drawing/edit-layout-drawing",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id: e.key,
+          id_tag: this.$route.params.id_tag,
+          id_component: this.id_component,
+          id_inspection_record: this.id_inspection_record,
+          file_name: e.data.file_name,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_DWG(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     DELETE_DWG(e) {
       console.log(e);
+      axios({
+        method: "delete",
+        url: "layout-drawing/delete-layout-drawing",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_DWG(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     ON_DWG_CHANGE(e) {
       console.log(e);
@@ -311,10 +402,7 @@ export default {
       reader.onload = () => {
         this.imgDwg = reader.result;
       };
-      // reader.onload = (args) => {
-      //   this.imageElement.setAttribute('src', args.target.result);
-      // }
-      // reader.readAsDataURL(e.value[0]); // convert to base64 string
+      this.file = e.value[0];
     },
     EDITING_START_DWG(e) {
       console.log(e);
@@ -355,6 +443,13 @@ export default {
       });
       console.log(data);
       return data[0].campaign_desc;
+    },
+    IS_VISIBLE_ADD() {
+      if (this.id_inspection_record == 0) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
 };
