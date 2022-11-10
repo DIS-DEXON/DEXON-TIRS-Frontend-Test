@@ -54,10 +54,26 @@
               <label>{{ item3.topic }}</label>
             </div>
             <div class="form-item-value">
-              <input type="radio" value="E" :name="item3.id" />
+              <input
+                type="radio"
+                value="E"
+                :name="item3.id"
+                v-model="item3.result[0].result_desc"
+                v-on:click="
+                  UPDATE_RESULT(item3.result[0], 'E', item3.result[0].comments)
+                "
+              />
             </div>
             <div class="form-item-value">
-              <input type="radio" value="OK" :name="item3.id" />
+              <input
+                type="radio"
+                value="OK"
+                :name="item3.id"
+                v-model="item3.result[0].result_desc"
+                v-on:click="
+                  UPDATE_RESULT(item3.result[0], 'OK', item3.result[0].comments)
+                "
+              />
             </div>
             <div class="form-item-value">
               <input
@@ -65,12 +81,24 @@
                 value="
                 NA"
                 :name="item3.id"
+                v-model="item3.result[0].result_desc"
+                v-on:click="
+                  UPDATE_RESULT(item3.result[0], 'NA', item3.result[0].comments)
+                "
               />
             </div>
             <div class="form-item-value">
               <textarea
                 placeholder="comment..."
                 style="min-height: auto; padding: 0"
+                v-model="item3.result[0].comments"
+                @focusout="
+                  UPDATE_RESULT(
+                    item3.result[0],
+                    item3.result[0].result_desc,
+                    item3.result[0].comments
+                  )
+                "
               />
             </div>
           </div>
@@ -92,10 +120,50 @@
 </template>
 
 <script>
+//API
+import axios from "/axios.js";
+
 export default {
   name: "checklist-ilast-ext",
   props: {
     checklistInfo: Array,
+  },
+  data() {
+    return {
+      formData: {
+        id: null,
+        result_desc: null,
+        comments: null,
+      },
+    };
+  },
+  methods: {
+    UPDATE_RESULT(result_item, new_result_desc, comment) {
+      console.log("==> RESULT UPDATE START");
+      this.formData.id = result_item.id;
+      this.formData.result_desc = new_result_desc;
+      this.formData.comments = comment;
+      axios({
+        method: "put",
+        url: "chk-ilast-in/edit-chkilastin",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: this.formData,
+      })
+        .then((res) => {
+          if (res.status == 200 && res.data) {
+            console.log("==> RESULT UPDATED (internal)");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$ons.notification.alert(
+            "Update Failed!<br/>Please try again later"
+          );
+        })
+        .finally(() => {});
+    },
   },
 };
 </script>

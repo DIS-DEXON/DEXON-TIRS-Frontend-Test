@@ -66,11 +66,7 @@
                 :name="item3.id"
                 v-model="item3.result[0].result_desc"
                 v-on:click="
-                  UPDATE_RESULT(
-                    item3.result[0].id,
-                    'OK',
-                    item3.result[0].comments
-                  )
+                  UPDATE_RESULT(item3.result[0], 'OK', item3.result[0].comments)
                 "
               />
             </div>
@@ -83,7 +79,7 @@
                 v-model="item3.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     'Minor Observation',
                     item3.result[0].comments
                   )
@@ -99,7 +95,7 @@
                 v-model="item3.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     'Evaluation Required',
                     item3.result[0].comments
                   )
@@ -115,7 +111,7 @@
                 v-model="item3.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     'Monitoring Required',
                     item3.result[0].comments
                   )
@@ -131,7 +127,7 @@
                 v-model="item3.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     'Not Acceptable',
                     item3.result[0].comments
                   )
@@ -147,7 +143,7 @@
                 v-model="item3.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     'Not Applicable',
                     item3.result[0].comments
                   )
@@ -161,7 +157,7 @@
                 v-model="item3.result[0].comments"
                 @focusout="
                   UPDATE_RESULT(
-                    item3.result[0].id,
+                    item3.result[0],
                     item3.result[0].result_desc,
                     item3.result[0].comments
                   )
@@ -205,12 +201,11 @@ export default {
     };
   },
   methods: {
-    UPDATE_RESULT(id_result, result_desc, comment) {
+    UPDATE_RESULT(result_item, new_result_desc, comment) {
       console.log("==> RESULT UPDATE START");
-      this.formData.id = id_result;
-      if (result_desc != null) this.formData.result_desc = null;
+      this.formData.id = result_item.id;
+      this.formData.result_desc = new_result_desc;
       this.formData.comments = comment;
-      console.log(this.formData);
       axios({
         method: "put",
         url: "chk-generic/edit-chkgeneric",
@@ -221,7 +216,7 @@ export default {
       })
         .then((res) => {
           if (res.status == 200 && res.data) {
-            console.log("==> RESULT UPDATED");
+            console.log("==> RESULT UPDATED (generic)");
           }
         })
         .catch((error) => {

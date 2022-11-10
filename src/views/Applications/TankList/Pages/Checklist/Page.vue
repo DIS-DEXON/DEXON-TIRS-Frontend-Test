@@ -4,8 +4,12 @@
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
-          <div class="list-item-wrapper" :class="{ 'active' : item.id_inspection_record == id_insp_record}">
+          <div
+            class="list-item-wrapper"
+            :class="{ active: item.id_inspection_record == id_insp_record }"
+          >
             <div class="contents">
+              id:{{ item.id_inspection_record }}
               {{ DATE_FORMAT(item.inspection_date) }}<br />
               {{ SET_CAMPAIGN(item.id_campaign) }}
             </div>
@@ -28,15 +32,37 @@
         </template>
       </DxList>
     </div>
-    <div class="page-section">
-      <div v-if="this.checklistList.generic.length > 0">
-        <checklistGeneric :checklistInfo="this.checklistList.generic" />
+    <div id="page-container-view" class="page-section">
+      <div v-if="this.checklistList_existance.general == true">
+        <checklistGeneric
+          :checklistInfo="this.checklistList.generic"
+          v-if="this.checklistList.generic.length > 0"
+        />
       </div>
-      <div v-if="this.checklistList.ilast_ext.length > 0">
-        <checklistIlastExt :checklistInfo="this.checklistList.ilast_ext" />
+      <div v-if="this.checklistList_existance.ilast_ext == true">
+        <checklistIlastExt
+          :checklistInfo="this.checklistList.ilast_ext"
+          v-if="this.checklistList.ilast_ext.length > 0"
+        />
       </div>
-      <div v-if="this.checklistList.ilast_int.length > 0">
-        <checklistIlastInt :checklistInfo="this.checklistList.ilast_int" />
+      <div v-if="this.checklistList_existance.ilast_int == true">
+        <checklistIlastInt
+          :checklistInfo="this.checklistList.ilast_int"
+          v-if="this.checklistList.ilast_int.length > 0"
+        />
+      </div>
+      <div
+        class="checklist-button-wrapper"
+        v-if="
+          this.checklistList_existance.general == false &&
+          this.checklistList_existance.ilast_ext == false &&
+          this.checklistList_existance.ilast_int == false
+        "
+      >
+        <v-ons-toolbar-button v-on:click="CREATE_NEW_CHECKLIST()">
+          <i class="las la-plus"></i>
+          <span>Create New Checklist Form</span>
+        </v-ons-toolbar-button>
       </div>
       <Loading v-if="isLoading == true" text="Loading" />
     </div>
@@ -81,6 +107,11 @@ export default {
         ilast_ext: [],
         ilast_int: [],
       },
+      checklistList_existance: {
+        general: false,
+        ilast_ext: false,
+        ilast_int: false,
+      },
       inspRecordList: {},
       isLoading: false,
       campaignList: {},
@@ -104,14 +135,101 @@ export default {
   },
   methods: {
     VIEW_CHECKLIST(id_insp_record) {
-      this.id_insp_record = id_insp_record;
       this.CLEAR_CURRENT_VIEW();
-      if (this.id_checklist == 1) this.FETCH_CHECKLIST_GENERIC(id_insp_record);
-      else if (this.id_checklist == 2)
-        this.FETCH_CHECKLIST_ILAST_EXT(id_insp_record);
+      this.id_insp_record = id_insp_record;
+      this.SCROLL_TOP("page-container-view");
+      if (this.id_checklist == 1) {
+        this.CHECK_EXIST_RESULT_GENERIC(id_insp_record);
+      } else if (this.id_checklist == 2)
+        this.CHECK_EXIST_RESULT_ILAST_EXT(id_insp_record);
       else if (this.id_checklist == 3)
-        this.FETCH_CHECKLIST_ILAST_INT(id_insp_record);
+        this.CHECK_EXIST_RESULT_ILAST_INT(id_insp_record);
       else console.log("view checklist failed");
+    },
+    CREATE_NEW_CHECKLIST() {
+      console.log("CREATE NEW CHECKLIST SHEET: " + this.id_insp_record);
+      var form = this.id_checklist;
+      if (form == 1) {
+        this.isLoading = true;
+        axios({
+          method: "post",
+          url: "chk-generic/add-all-chkgeneric",
+          headers: {
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            id_insp_record: this.id_insp_record,
+          },
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              console.log(res.data);
+              console.log("NEW CHECKLIST SHEET CREATED (generic)");
+              this.VIEW_CHECKLIST(this.id_insp_record);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else if (form == 2) {
+        this.isLoading = true;
+        axios({
+          method: "post",
+          url: "chk-ilast-ex/add-all-chkilastex",
+          headers: {
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            id_insp_record: this.id_insp_record,
+          },
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              console.log(res.data);
+              console.log("NEW CHECKLIST SHEET CREATED (ilast ext)");
+              this.VIEW_CHECKLIST(this.id_insp_record);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else if (form == 3) {
+        this.isLoading = true;
+        axios({
+          method: "post",
+          url: "chk-ilast-in/add-all-chkilastin",
+          headers: {
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            id_insp_record: this.id_insp_record,
+          },
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              console.log(res.data);
+              console.log("NEW CHECKLIST SHEET CREATED (ilast int)");
+              this.VIEW_CHECKLIST(this.id_insp_record);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        console.log("err: wrong form parameter");
+      }
     },
     FETCH_CHECKLIST_GENERIC(id_insp_record) {
       console.log("INSPECTION RECORD: " + id_insp_record);
@@ -131,6 +249,35 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.checklistList.generic = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CHECK_EXIST_RESULT_GENERIC(id_insp_record) {
+      console.log("CHECK RESULT EXIST (General): " + id_insp_record);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-generic/check-chkgeneric",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_insp_record,
+        },
+      })
+        .then((res) => {
+          if (res.data == true) {
+            this.checklistList_existance.general = true;
+            this.FETCH_CHECKLIST_GENERIC(id_insp_record);
+          } else {
+            this.checklistList_existance.general = false;
+            console.log("CHECK RESULT EXIST (General): FALSE");
           }
         })
         .catch((error) => {
@@ -166,6 +313,35 @@ export default {
           this.isLoading = false;
         });
     },
+    CHECK_EXIST_RESULT_ILAST_EXT(id_insp_record) {
+      console.log("CHECK RESULT EXIST (ilast ext): " + id_insp_record);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-ilast-ex/check-chkilastex",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_insp_record,
+        },
+      })
+        .then((res) => {
+          if (res.data == true) {
+            this.checklistList_existance.ilast_ext = true;
+            this.FETCH_CHECKLIST_ILAST_EXT(id_insp_record);
+          } else {
+            this.checklistList_existance.ilast_ext = false;
+            console.log("CHECK RESULT EXIST(ilast ext): FALSE");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_CHECKLIST_ILAST_INT(id_insp_record) {
       this.isLoading = true;
       axios({
@@ -183,6 +359,35 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.checklistList.ilast_int = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CHECK_EXIST_RESULT_ILAST_INT(id_insp_record) {
+      console.log("CHECK RESULT EXIST (ilast ext): " + id_insp_record);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-ilast-in/check-chkilastin",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_insp_record,
+        },
+      })
+        .then((res) => {
+          if (res.data == true) {
+            this.checklistList_existance.ilast_int = true;
+            this.FETCH_CHECKLIST_ILAST_INT(id_insp_record);
+          } else {
+            this.checklistList_existance.ilast_int = false;
+            console.log("CHECK RESULT EXIST(ilast int): FALSE");
           }
         })
         .catch((error) => {
@@ -219,13 +424,6 @@ export default {
           this.isLoading = false;
         });
     },
-    CLEAR_CURRENT_VIEW() {
-      this.checklistList = {
-        generic: [],
-        ilast_ext: [],
-        ilast_int: [],
-      };
-    },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
@@ -252,11 +450,30 @@ export default {
         });
     },
     SET_CAMPAIGN(id) {
-      var data = this.campaignList.filter(function (e) {
-        return e.id_campaign == id;
-      });
-      console.log(data);
-      return data[0].campaign_desc;
+      if (this.campaignList) {
+        var data = this.campaignList.filter(function (e) {
+          return e.id_campaign == id;
+        });
+        // console.log(data);
+        return data[0].campaign_desc;
+      }
+    },
+    SCROLL_TOP(container_id) {
+      document
+        .getElementById(container_id)
+        .scroll({ top: 0, behavior: "smooth" });
+    },
+    CLEAR_CURRENT_VIEW() {
+      this.checklistList = {
+        generic: [],
+        ilast_ext: [],
+        ilast_int: [],
+      };
+      this.checklistList_existance = {
+        general: false,
+        ilast_ext: false,
+        ilast_int: false,
+      };
     },
   },
 };
@@ -313,5 +530,29 @@ export default {
 
 .app-loading {
   background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.toolbar-button {
+  width: fit-content;
+  background-color: #f6f6f6;
+  padding: 0;
+  padding-right: 15px;
+  height: 34px;
+  border: 0px;
+  color: #303030;
+}
+
+.toolbar-button:hover,
+.toolbar-button:active {
+  background-color: #140a4b;
+  color: #fff;
+}
+
+.checklist-button-wrapper {
+  width: 100%;
+  height: calc(100vh - 179px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

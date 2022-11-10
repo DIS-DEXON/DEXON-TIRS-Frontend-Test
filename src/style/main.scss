@@ -1179,7 +1179,7 @@ hr {
     .list-item-wrapper {
         display: grid;
         grid-template-columns: calc(100% - 50px) 50px;
-        // padding: 10px;
+        padding: 10px;
         // border-bottom: 1px solid #000;
     }
 }
@@ -1330,6 +1330,14 @@ hr {
     }
 }
 
+.list-item-wrapper {
+    .contents:last-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .list-item-wrapper.active {
     background-color: #eb1851;
     color: #fff;
@@ -1339,4 +1347,3 @@ hr {
     background-color: #fff;
     color: #333;
 }
-

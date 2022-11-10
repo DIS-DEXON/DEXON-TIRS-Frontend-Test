@@ -4,7 +4,12 @@
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
-          <div class="list-item-wrapper" :class="{ 'active' : item.id_inspection_record == id_inspection_record}">
+          <div
+            class="list-item-wrapper"
+            :class="{
+              active: item.id_inspection_record == id_inspection_record,
+            }"
+          >
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
               {{ SET_CAMPAIGN(item.id_campaign) }}
@@ -438,11 +443,13 @@ export default {
         });
     },
     SET_CAMPAIGN(id) {
-      var data = this.campaignList.filter(function (e) {
-        return e.id_campaign == id;
-      });
-      console.log(data);
-      return data[0].campaign_desc;
+      if (this.campaignList) {
+        var data = this.campaignList.filter(function (e) {
+          return e.id_campaign == id;
+        });
+        console.log(data);
+        return data[0].campaign_desc;
+      }
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
