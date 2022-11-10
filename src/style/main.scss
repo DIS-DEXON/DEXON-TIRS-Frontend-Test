@@ -606,6 +606,7 @@ hr {
 
 .dx-list-item-content {
     font-family: $web-default-font;
+    padding: 0;
 }
 
 .report-sheet {
@@ -1341,6 +1342,7 @@ hr {
 .list-item-wrapper.active {
     background-color: #eb1851;
     color: #fff;
+    padding: 10px;
 }
 
 .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-focused {
