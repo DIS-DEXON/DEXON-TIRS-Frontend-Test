@@ -28,7 +28,7 @@
         </template>
       </DxList>
     </div>
-    <div class="list-page" style="overflow-y: scroll;">
+    <div class="list-page" style="overflow-y: scroll">
       <DxDataGrid
         id="data-grid-style"
         key-expr="id_dwg"
@@ -87,8 +87,16 @@
 
         <template #dwg-img-editor>
           <div>
-            <img :src="baseURL + imgDwg" width="500" v-if="imgDwg != '' && isInitEdit == 0" />
-            <img :src="imgDwg" width="500" v-if="imgDwg != '' && isInitEdit == 1" />
+            <img
+              :src="baseURL + imgDwg"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 0"
+            />
+            <img
+              :src="imgDwg"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 1"
+            />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
@@ -375,11 +383,7 @@ export default {
 .tab-wrapper {
   height: 48px;
 }
-.vue-tabs-chrome {
-  padding-top: 10px;
-  background-color: #d9d9d9;
-  font-size: 14px;
-}
+
 .info-tab-display {
   display: flex;
 }

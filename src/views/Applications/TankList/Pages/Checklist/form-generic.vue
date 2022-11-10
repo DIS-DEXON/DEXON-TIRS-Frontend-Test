@@ -61,7 +61,7 @@
             <div class="form-item-value">
               <input
                 :id="item3.id"
-                type="radio"
+                type="checkbox"
                 value="OK"
                 :name="item3.id"
                 v-model="item3.result[0].result_desc"
@@ -77,7 +77,7 @@
             <div class="form-item-value">
               <input
                 id="2"
-                type="radio"
+                type="checkbox"
                 value="Minor Observation"
                 :name="item3.id"
                 v-model="item3.result[0].result_desc"
@@ -208,8 +208,9 @@ export default {
     UPDATE_RESULT(id_result, result_desc, comment) {
       console.log("==> RESULT UPDATE START");
       this.formData.id = id_result;
-      this.formData.result_desc = result_desc;
+      if (result_desc == null) this.formData.result_desc = result_desc;
       this.formData.comments = comment;
+      console.log(this.formData);
       axios({
         method: "put",
         url: "chk-generic/edit-chkgeneric",
