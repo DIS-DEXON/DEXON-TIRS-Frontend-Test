@@ -65,6 +65,15 @@
           <span>Create New Checklist Form</span>
         </v-ons-toolbar-button>
       </div>
+      <div class="checklist-button-wrapper" v-if="this.id_insp_record == ''">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record<br />
+            to view checklist sheet</span
+          >
+        </div>
+      </div>
       <Loading v-if="isLoading == true" text="Loading" />
     </div>
   </div>
