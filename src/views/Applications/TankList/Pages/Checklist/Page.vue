@@ -54,6 +54,7 @@
       <div
         class="checklist-button-wrapper"
         v-if="
+          this.id_insp_record != '' &&
           this.checklistList_existance.general == false &&
           this.checklistList_existance.ilast_ext == false &&
           this.checklistList_existance.ilast_int == false
@@ -554,5 +555,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.dx-list .dx-empty-message,
+.dx-list-item-content {
+  padding: 10px;
 }
 </style>

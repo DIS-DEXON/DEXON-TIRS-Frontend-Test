@@ -103,14 +103,6 @@
             </div>
           </div>
         </div>
-        <div class="topic-label" style="grid-column: span 7">
-          <div
-            class="section-label subheader-label"
-            style="grid-column: span 2"
-          >
-            <label>Remarks and Recommendations:</label>
-          </div>
-        </div>
         <div class="form-item-textarea" style="grid-column: span 7">
           <textarea placeholder="Type remarks and recommendations here..." />
         </div>
@@ -138,9 +130,9 @@ export default {
     };
   },
   methods: {
-    UPDATE_RESULT(result_item, new_result_desc, comment) {
+    UPDATE_RESULT(item, new_result_desc, comment) {
       console.log("==> RESULT UPDATE START");
-      this.formData.id = result_item.id;
+      this.formData.id = item.id;
       this.formData.result_desc = new_result_desc;
       this.formData.comments = comment;
       axios({

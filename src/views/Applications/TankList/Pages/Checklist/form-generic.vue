@@ -175,7 +175,17 @@
           </div>
         </div>
         <div class="form-item-textarea" style="grid-column: span 9">
-          <textarea placeholder="Type remarks and recommendations here..." />
+          <textarea
+            placeholder="Type remarks and recommendations here..."
+            v-model="item.remark_desc"
+            @focusout="
+              UPDATE_RESULT(
+                item3.result[0],
+                item3.result[0].result_desc,
+                item3.result[0].comments
+              )
+            "
+          />
         </div>
       </div>
     </div>
@@ -198,12 +208,16 @@ export default {
         result_desc: null,
         comments: null,
       },
+      formDataRemark: {
+        id_header: null,
+        remark_desc: null,
+      },
     };
   },
   methods: {
-    UPDATE_RESULT(result_item, new_result_desc, comment) {
+    UPDATE_RESULT(item, new_result_desc, comment) {
       console.log("==> RESULT UPDATE START");
-      this.formData.id = result_item.id;
+      this.formData.id = item.id;
       this.formData.result_desc = new_result_desc;
       this.formData.comments = comment;
       axios({
@@ -217,6 +231,31 @@ export default {
         .then((res) => {
           if (res.status == 200 && res.data) {
             console.log("==> RESULT UPDATED (generic)");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$ons.notification.alert(
+            "Update Failed!<br/>Please try again later"
+          );
+        })
+        .finally(() => {});
+    },
+    UPDATE_REMARK(item, new_remark) {
+      console.log("==> REMARK UPDATE START");
+      this.formDataRemark.id = item.id;
+      this.formDataRemark.remark_desc = new_remark;
+      axios({
+        method: "put",
+        url: "",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: this.formDataRemark,
+      })
+        .then((res) => {
+          if (res.status == 200 && res.data) {
+            console.log("==> REMARK UPDATED (generic)");
           }
         })
         .catch((error) => {
