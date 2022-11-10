@@ -4,7 +4,7 @@
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
-          <div class="list-item-wrapper">
+          <div class="list-item-wrapper" :class="{ 'active' : item.id_inspection_record == id_inspection_record}">
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
               {{ SET_CAMPAIGN(item.id_campaign) }}
