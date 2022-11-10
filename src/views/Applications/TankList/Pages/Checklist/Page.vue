@@ -4,10 +4,10 @@
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
-          <div class="list-item-wrapper">
+          <div class="list-item-wrapper" :class="{ 'active' : item.id_inspection_record == id_insp_record}">
             <div class="contents">
               {{ DATE_FORMAT(item.inspection_date) }}<br />
-              ID Inspection: {{ item.id_inspection_record }}
+              {{ SET_CAMPAIGN(item.id_campaign) }}
             </div>
             <div class="contents">
               <v-ons-toolbar-button
@@ -83,11 +83,13 @@ export default {
       },
       inspRecordList: {},
       isLoading: false,
+      campaignList: {},
     };
   },
   computed: {},
   created() {
     if (this.$store.state.status.server == true) {
+      this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
     }
   },
@@ -226,6 +228,35 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+    FETCH_CAMPAIGN() {
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url: "/insp-record/campaign-list",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.campaignList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    SET_CAMPAIGN(id) {
+      var data = this.campaignList.filter(function (e) {
+        return e.id_campaign == id;
+      });
+      console.log(data);
+      return data[0].campaign_desc;
     },
   },
 };
