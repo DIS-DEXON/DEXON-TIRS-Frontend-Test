@@ -1329,3 +1329,14 @@ hr {
         }
     }
 }
+
+.list-item-wrapper.active {
+    background-color: #eb1851;
+    color: #fff;
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-focused {
+    background-color: #fff;
+    color: #333;
+}
+
