@@ -1347,3 +1347,24 @@ hr {
     background-color: #fff;
     color: #333;
 }
+
+.page-content-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    i,
+    span {
+        color: $web-font-color-grey;
+    }
+
+    i {
+        font-size: 24px;
+    }
+
+    span {
+        margin-top: 6px;
+        font-size: 14px;
+        text-align: center;
+    }
+}
