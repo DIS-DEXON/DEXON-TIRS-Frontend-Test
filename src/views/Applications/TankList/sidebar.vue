@@ -47,9 +47,15 @@
         </v-ons-toolbar-button>
       </router-link>
       <router-link
-        :to="'/tank/client/' + id_company + '/thickness-inspection/' + id_tag"
+        :to="'/tank/client/' + id_company + '/thickness/' + id_tag"
+        tag="button"
+        :disabled="true"
+        class="popup-button-caller"
       >
-        <v-ons-toolbar-button class="item">
+        <v-ons-toolbar-button
+          class="item"
+          v-on:click="SHOW_POPOVER($event, 'right', true, 'thickness')"
+        >
           <img src="/img/icon_sidebar/tank/thickness.png" />
           <span>Thickness Inspection</span>
         </v-ons-toolbar-button>
@@ -79,6 +85,8 @@
       </router-link>
 
       <!-- POPUP MENUS -->
+
+      <!-- Markup Drawing -->
       <v-ons-popover
         cancelable
         :visible.sync="popoverVisible.markup_drawing"
@@ -96,6 +104,8 @@
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
+
+      <!-- Checklist -->
       <v-ons-popover
         cancelable
         :visible.sync="popoverVisible.checklist"
@@ -110,6 +120,25 @@
           v-on:click="GO_TO(item, 'checklist')"
         >
           <span>{{ item.checklist_code }}</span>
+          <i class="las la-angle-right"></i>
+        </v-ons-toolbar-button>
+      </v-ons-popover>
+
+      <!-- Thickness -->
+      <v-ons-popover
+        cancelable
+        :visible.sync="popoverVisible.thickness"
+        :target="popoverTarget"
+        :direction="popoverDirection"
+        :cover-target="coverTarget"
+      >
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-for="item in sidebarSubmenu.thickness"
+          :key="item.id"
+          v-on:click="GO_TO(item, 'thickness')"
+        >
+          <span>{{ item.code }}</span>
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
@@ -134,6 +163,7 @@ export default {
       popoverVisible: {
         markup_drawing: false,
         checklist: false,
+        thickness: false,
       },
       popoverTarget: null,
       popoverDirection: "right",
@@ -199,6 +229,78 @@ export default {
             checklist_code: "ILAST Internal",
           },
         ],
+        thickness: [
+          {
+            id: 1,
+            code: "Roof",
+            path: "roof",
+          },
+          {
+            id: 2,
+            code: "Roof Nozzle",
+            path: "roof-nozzle",
+          },
+          {
+            id: 3,
+            code: "Shell",
+            path: "shell",
+          },
+          {
+            id: 4,
+            code: "Shell API Calculation",
+            path: "shell-api-calculation",
+          },
+          {
+            id: 5,
+            code: "Shell Nozzle",
+            path: "shell-nozzle",
+          },
+          {
+            id: 6,
+            code: "Coil",
+            path: "coil",
+          },
+          {
+            id: 7,
+            code: "Piping",
+            path: "piping",
+          },
+          {
+            id: 8,
+            code: "Bottom",
+            path: "bottom",
+          },
+          {
+            id: 9,
+            code: "Annular",
+            path: "annular",
+          },
+          {
+            id: 10,
+            code: "Critical Zone",
+            path: "critical-zone",
+          },
+          {
+            id: 11,
+            code: "Projection Plate",
+            path: "project-plate",
+          },
+          {
+            id: 12,
+            code: "MFL - Bottom",
+            path: "mfl-bottom",
+          },
+          {
+            id: 13,
+            code: "MFL - Annular",
+            path: "mfl-annular",
+          },
+          {
+            id: 14,
+            code: "Sump",
+            path: "sump",
+          },
+        ],
       },
     };
   },
@@ -218,9 +320,17 @@ export default {
         this.sidebarSubmenu.checklist.length > 0
       ) {
         this.popoverVisible.checklist = true;
+      } else if (
+        target == "thickness" &&
+        this.sidebarSubmenu.thickness.length > 0
+      ) {
+        this.popoverVisible.thickness = true;
       }
     },
     GO_TO(item, target) {
+      this.popoverVisible.markup_drawing = false;
+      this.popoverVisible.checklist = false;
+      this.popoverVisible.thickness = false;
       if (target == "drawing") {
         this.$router.push({
           path:
@@ -232,7 +342,6 @@ export default {
             item.id,
           replace: true,
         });
-        this.popoverVisible.markup_drawing = false;
       } else if (target == "checklist") {
         this.$router.push({
           path:
@@ -244,7 +353,17 @@ export default {
             item.id,
           replace: true,
         });
-        this.popoverVisible.checklist = false;
+      } else if (target == "thickness") {
+        this.$router.push({
+          path:
+            "/tank/client/" +
+            this.id_company +
+            "/thickness/" +
+            this.id_tag +
+            "/" +
+            item.path,
+          replace: true,
+        });
       }
     },
     // FETCH_SUBMENU_DRAWING() {

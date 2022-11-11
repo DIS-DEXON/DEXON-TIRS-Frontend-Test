@@ -67,6 +67,11 @@ const routes = [
             alias: 'Marked-up Drawing',
             component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
           },
+          {
+            path: 'thickness/:id_tag/roof',
+            alias: 'Thickness Roof',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Roof/Page.vue'),
+          },
         ]
       },
     ]
