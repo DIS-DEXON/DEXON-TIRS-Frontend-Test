@@ -27,10 +27,10 @@ export default {
     FullscreenAlertView,
   },
   created() {
-    // if (this.$store.state.status.server == true) {
-    //   if (JSON.parse(localStorage.getItem("token")))
-    //     this.$store.commit("VALIDATE_TOKEN");
-    // }
+    if (this.$store.state.status.server == true) {
+      if (JSON.parse(localStorage.getItem("token")))
+        this.$store.commit("VALIDATE_TOKEN");
+    }
   },
   data() {
     return {

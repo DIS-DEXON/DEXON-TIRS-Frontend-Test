@@ -33,45 +33,64 @@
       </DxList>
     </div>
     <div id="page-container-view" class="page-section">
-      <div v-if="this.checklistList_existance.general == true">
-        <checklistGeneric
-          :checklistInfo="this.checklistList.generic"
-          v-if="this.checklistList.generic.length > 0"
-        />
-      </div>
-      <div v-if="this.checklistList_existance.ilast_ext == true">
-        <checklistIlastExt
-          :checklistInfo="this.checklistList.ilast_ext"
-          v-if="this.checklistList.ilast_ext.length > 0"
-        />
-      </div>
-      <div v-if="this.checklistList_existance.ilast_int == true">
-        <checklistIlastInt
-          :checklistInfo="this.checklistList.ilast_int"
-          v-if="this.checklistList.ilast_int.length > 0"
-        />
-      </div>
-      <div
-        class="checklist-button-wrapper"
-        v-if="
-          this.id_insp_record != '' &&
-          this.checklistList_existance.general == false &&
-          this.checklistList_existance.ilast_ext == false &&
-          this.checklistList_existance.ilast_int == false
-        "
-      >
-        <v-ons-toolbar-button v-on:click="CREATE_NEW_CHECKLIST()">
-          <i class="las la-plus"></i>
-          <span>Create New Checklist Form</span>
-        </v-ons-toolbar-button>
-      </div>
-      <div class="checklist-button-wrapper" v-if="this.id_insp_record == ''">
-        <div class="page-content-message-wrapper">
-          <i class="las la-search"></i>
-          <span>
-            Select inspection record<br />
-            to view checklist sheet</span
-          >
+      <div v-if="isLoading == false">
+        <div v-if="this.checklistList_existance.general == true">
+          <checklistGeneric
+            :checklistInfo="this.checklistList.generic"
+            v-if="this.checklistList.generic.length > 0"
+          />
+        </div>
+        <div v-if="this.checklistList_existance.ilast_ext == true">
+          <checklistIlastExt
+            :checklistInfo="this.checklistList.ilast_ext"
+            v-if="this.checklistList.ilast_ext.length > 0"
+          />
+        </div>
+        <div v-if="this.checklistList_existance.ilast_int == true">
+          <checklistIlastInt
+            :checklistInfo="this.checklistList.ilast_int"
+            v-if="this.checklistList.ilast_int.length > 0"
+          />
+        </div>
+        <div
+          class="center-box-wrapper"
+          v-if="
+            this.id_insp_record != '' &&
+            this.checklistList_existance.general == false &&
+            this.checklistList_existance.ilast_ext == false &&
+            this.checklistList_existance.ilast_int == false
+          "
+        >
+          <v-ons-toolbar-button v-on:click="CREATE_CHECKLIST()">
+            <i class="las la-plus"></i>
+            <span>Create New Checklist Form</span>
+          </v-ons-toolbar-button>
+        </div>
+        <div class="center-box-wrapper" v-if="this.id_insp_record == ''">
+          <div class="page-content-message-wrapper">
+            <i class="las la-search"></i>
+            <span>
+              Select inspection record<br />
+              to view checklist sheet</span
+            >
+          </div>
+        </div>
+        <div
+          class="hover-button-wrapper"
+          v-if="
+            this.checklistList.generic.length > 0 ||
+            this.checklistList.ilast_ext.length > 0 ||
+            this.checklistList.ilast_int.length > 0
+          "
+        >
+          <div class="btn-panel">
+            <v-ons-toolbar-button class="btn" v-on:click="DELETE_CHECKLIST()">
+              <i class="las la-trash"></i>
+            </v-ons-toolbar-button>
+            <v-ons-toolbar-button class="btn">
+              <i class="las la-download"></i>
+            </v-ons-toolbar-button>
+          </div>
         </div>
       </div>
       <Loading v-if="isLoading == true" text="Loading" />
@@ -156,7 +175,7 @@ export default {
         this.CHECK_EXIST_RESULT_ILAST_INT(id_insp_record);
       else console.log("view checklist failed");
     },
-    CREATE_NEW_CHECKLIST() {
+    CREATE_CHECKLIST() {
       console.log("CREATE NEW CHECKLIST SHEET: " + this.id_insp_record);
       var form = this.id_checklist;
       if (form == 1) {
@@ -240,6 +259,99 @@ export default {
       } else {
         console.log("err: wrong form parameter");
       }
+    },
+    DELETE_CHECKLIST() {
+      this.$ons.notification
+        .confirm(
+          "Confirm delete checklist sheet? <br/> This operation cannot be undone"
+        )
+        .then((res) => {
+          if (res == 1) {
+            console.log("DELETE CHECKLIST SHEET: " + this.id_insp_record);
+            var form = this.id_checklist;
+            if (form == 1) {
+              this.isLoading = true;
+              axios({
+                method: "delete",
+                url: "chk-generic/delete-chkgeneric-by-insp-id",
+                headers: {
+                  Authorization:
+                    "Bearer " + JSON.parse(localStorage.getItem("token")),
+                },
+                data: {
+                  id_insp_record: this.id_insp_record,
+                },
+              })
+                .then((res) => {
+                  if (res.status == 200) {
+                    console.log(res.data);
+                    console.log("CHECKLIST SHEET DELETED (generic)");
+                    this.CLEAR_CURRENT_VIEW();
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .finally(() => {
+                  this.isLoading = false;
+                });
+            } else if (form == 2) {
+              this.isLoading = true;
+              axios({
+                method: "delete",
+                url: "chk-ilast-ex/delete-chkilastex-by-insp-id",
+                headers: {
+                  Authorization:
+                    "Bearer " + JSON.parse(localStorage.getItem("token")),
+                },
+                data: {
+                  id_insp_record: this.id_insp_record,
+                },
+              })
+                .then((res) => {
+                  if (res.status == 200) {
+                    console.log(res.data);
+                    console.log("CHECKLIST SHEET DELETED (ilast ext)");
+                    this.CLEAR_CURRENT_VIEW();
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .finally(() => {
+                  this.isLoading = false;
+                });
+            } else if (form == 3) {
+              this.isLoading = true;
+              axios({
+                method: "delete",
+                url: "chk-ilast-in/delete-chkilastin-by-insp-id",
+                headers: {
+                  Authorization:
+                    "Bearer " + JSON.parse(localStorage.getItem("token")),
+                },
+                data: {
+                  id_insp_record: this.id_insp_record,
+                },
+              })
+                .then((res) => {
+                  if (res.status == 200) {
+                    console.log(res.data);
+                    console.log("CHECKLIST SHEET DELETED (ilast int)");
+                    this.CLEAR_CURRENT_VIEW();
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .finally(() => {
+                  this.isLoading = false;
+                });
+            } else {
+              console.log("err: wrong form parameter");
+            }
+          }
+        });
     },
     FETCH_CHECKLIST_GENERIC(id_insp_record) {
       console.log("INSPECTION RECORD: " + id_insp_record);
@@ -558,7 +670,7 @@ export default {
   color: #fff;
 }
 
-.checklist-button-wrapper {
+.center-box-wrapper {
   width: 100%;
   height: calc(100vh - 179px);
   display: flex;
