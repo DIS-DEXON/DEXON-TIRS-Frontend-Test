@@ -1368,3 +1368,39 @@ hr {
         text-align: center;
     }
 }
+
+.hover-button-wrapper {
+    position: fixed;
+    top: 135px;
+    right: 20px;
+
+    .btn-panel {
+        display: flex;
+        flex-direction: column;
+
+        .btn {
+            width: 42px;
+            height: 30px;
+            margin-top: 10px;
+            border: 1px solid rgb(218, 218, 218);
+            background-color: #fff;
+            padding: 0px !important;
+
+            i {
+                color: $web-font-color-grey;
+            }
+        }
+
+        .btn:first-child {
+            margin-top: 0px;
+        }
+
+        .btn:hover {
+            background-color: $web-font-color-blue;
+
+            i {
+                color: #fff;
+            }
+        }
+    }
+}
