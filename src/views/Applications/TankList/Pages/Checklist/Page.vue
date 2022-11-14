@@ -148,6 +148,10 @@ export default {
   },
   computed: {},
   created() {
+    this.$store.commit("UPDATE_CURRENT_INAPP", {
+      name: "Tank Management",
+      icon: "/img/icon_menu/tank/tank.png",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();

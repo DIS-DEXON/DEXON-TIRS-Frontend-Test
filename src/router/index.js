@@ -43,34 +43,39 @@ const routes = [
         component: () => import('../views/Applications/TankList/TankList.vue'),
       },
       {
-        path: 'client/:id_company',
+        path: 'client/:id_company/tag/:id_tag',
         alias: 'Tank Info',
         component: () => import('../views/Applications/TankList/Pages/router-template.vue'),
         children: [
           {
-            path: 'info/:id_tag',
+            path: 'info',
             alias: 'Tank Info',
             component: () => import('../views/Applications/TankList/Pages/Information/Page.vue'),
           },
           {
-            path: 'inspection/:id_tag',
+            path: 'insp-record',
             alias: 'Tank Inspection Record',
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
           {
-            path: 'checklist/:id_tag/form/:id_checklist',
-            alias: 'Checklist',
-            component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
-          },
-          {
-            path: 'marked-up-drawing/:id_tag/component/:id_component',
+            path: 'marked-up-drawing/component/:id_component',
             alias: 'Marked-up Drawing',
             component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
           },
           {
-            path: 'thickness/:id_tag/roof',
+            path: 'checklist/form/:id_checklist',
+            alias: 'Checklist',
+            component: () => import('../views/Applications/TankList/Pages/Checklist/Page.vue'),
+          },
+          {
+            path: 'thickness/roof',
             alias: 'Thickness Roof',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Roof/Page.vue'),
+          },
+          {
+            path: 'thickness/shell',
+            alias: 'Thickness Roof',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Shell/Page.vue'),
           },
         ]
       },
