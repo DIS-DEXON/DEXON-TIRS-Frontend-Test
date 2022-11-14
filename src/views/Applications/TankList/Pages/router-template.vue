@@ -5,7 +5,6 @@
       @refreshInfo="FETCH_LIST()"
       :isBackPath="true"
       :isBack_specificPath="'/tank/client/' + infoTank.id_client"
-      :isEdit="true"
       newBtnLabel="New Project Info"
       style="grid-column: span 3"
       :infoTank="infoTank"

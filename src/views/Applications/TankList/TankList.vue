@@ -112,6 +112,7 @@ export default {
       icon: "/img/icon_menu/tank/tank.png",
     });
     this.$store.commit("CLEAR_CURRENT_CLIENT");
+    this.$store.commit("CLEAR_CURRENT_PAGENAME");
     if (this.$store.state.status.server == true) {
       this.FETCH_CLIENT_INFO();
       this.FETCH_TANK_LIST();
@@ -133,7 +134,9 @@ export default {
       const id_tag = e.data.id_tag;
       const id_company = e.data.id_client;
       if (id_tag != null) {
-        this.$router.push("/tank/client/" + id_company + "/info/" + id_tag);
+        this.$router.push(
+          "/tank/client/" + id_company + "/tag/" + id_tag + "/info"
+        );
       }
     },
     EXPORT_DATA(e) {

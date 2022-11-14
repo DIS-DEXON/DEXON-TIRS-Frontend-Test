@@ -25,25 +25,15 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="roof_row" 
-            caption="Roof row"
-          />
+          <DxColumn data-field="roof_row" caption="Roof row" />
 
-          <DxColumn 
-            data-field="roof_column" 
-            caption="Roof column" 
-          />
+          <DxColumn data-field="roof_column" caption="Roof column" />
 
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
+          <DxColumn
+            data-field="t_req"
+            caption="treq (mm)"
             format="#,##0.00"
             :allow-editing="false"
           />
@@ -66,19 +56,10 @@
               :on-click="VIEW_TP"
             />
 
-            <DxButton
-              name="edit"
-              hint="Edit"
-              icon="edit"
-            />
+            <DxButton name="edit" hint="Edit" icon="edit" />
 
-            <DxButton
-              name="delete"
-              hint="Delete"
-              icon="trash"
-            />
+            <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
-
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -253,7 +234,6 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
-
           <DxColumn
             data-field="inspection_date"
             caption="Inspection date"
@@ -342,6 +322,11 @@ export default {
     DxButton,
   },
   created() {
+    this.$store.commit("UPDATE_CURRENT_INAPP", {
+      name: "Tank Management",
+      icon: "/img/icon_menu/tank/tank.png",
+    });
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_CML();
@@ -350,7 +335,30 @@ export default {
   data() {
     return {
       dataList: {
-        cml: [],
+        cml: [
+          {
+            id_cml: 1,
+            id_tag: 5,
+            roof_row: 1,
+            roof_column: 1,
+            roof_no: "",
+            plate_desc: "",
+            t_nom: 6.5,
+            t_req: 2.29,
+            inservice_date: "2012-01-01T00:00:00",
+          },
+          {
+            id_cml: 2,
+            id_tag: 5,
+            roof_row: 1,
+            roof_column: 3,
+            roof_no: "1-2",
+            plate_desc: null,
+            t_nom: 6.5,
+            t_req: 2.29,
+            inservice_date: "2012-01-01T00:00:00",
+          },
+        ],
         tp: [],
         thk: [],
       },
@@ -677,7 +685,7 @@ export default {
       return moment(e.inspection_date).format("DD MMM yyyy");
     }
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

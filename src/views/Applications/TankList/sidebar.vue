@@ -3,13 +3,17 @@
     <div class="item-container">
       <!-- SECTION INFO -->
       <div class="section-label"><label>Information</label></div>
-      <router-link :to="'/tank/client/' + id_company + '/info/' + id_tag">
+      <router-link
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/info'"
+      >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/info.png" />
           <span>Tank Information</span>
         </v-ons-toolbar-button>
       </router-link>
-      <router-link :to="'/tank/client/' + id_company + '/inspection/' + id_tag">
+      <router-link
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/insp-record'"
+      >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/inspection-record.png" />
           <span>Inspection Record</span>
@@ -19,7 +23,9 @@
       <!-- SECTION INSPECTION -->
       <div class="section-label"><label>Inspection</label></div>
       <router-link
-        :to="'/tank/client/' + id_company + '/marked-up-drawing/' + id_tag"
+        :to="
+          '/tank/client/' + id_company + '/tag/' + id_tag + '/marked-up-drawing'
+        "
         tag="button"
         :disabled="true"
         class="popup-button-caller"
@@ -29,11 +35,13 @@
           v-on:click="SHOW_POPOVER($event, 'right', true, 'drawing')"
         >
           <img src="/img/icon_sidebar/tank/drawing.png" />
+
           <span>Marked-up Drawing</span>
+          <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
       <router-link
-        :to="'/tank/client/' + id_company + '/checklist/' + id_tag"
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/checklist'"
         tag="button"
         :disabled="true"
         class="popup-button-caller"
@@ -44,10 +52,11 @@
         >
           <img src="/img/icon_sidebar/tank/checklist.png" />
           <span>Checklist</span>
+          <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
       <router-link
-        :to="'/tank/client/' + id_company + '/thickness/' + id_tag"
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/thickness'"
         tag="button"
         :disabled="true"
         class="popup-button-caller"
@@ -57,7 +66,8 @@
           v-on:click="SHOW_POPOVER($event, 'right', true, 'thickness')"
         >
           <img src="/img/icon_sidebar/tank/thickness.png" />
-          <span>Thickness Inspection</span>
+          <span>Thickness</span>
+          <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
       <router-link
@@ -336,9 +346,9 @@ export default {
           path:
             "/tank/client/" +
             this.id_company +
-            "/marked-up-drawing/" +
+            "/tag/" +
             this.id_tag +
-            "/component/" +
+            "/marked-up-drawing/component/" +
             item.id,
           replace: true,
         });
@@ -347,9 +357,9 @@ export default {
           path:
             "/tank/client/" +
             this.id_company +
-            "/checklist/" +
+            "/tag/" +
             this.id_tag +
-            "/form/" +
+            "/checklist/form/" +
             item.id,
           replace: true,
         });
@@ -358,9 +368,9 @@ export default {
           path:
             "/tank/client/" +
             this.id_company +
-            "/thickness/" +
+            "/tag/" +
             this.id_tag +
-            "/" +
+            "/thickness/" +
             item.path,
           replace: true,
         });
@@ -397,7 +407,7 @@ export default {
   border: 1px solid #e6e6e6;
   border-width: 0 1px 0 0;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .item-container {
     width: 100%;
@@ -405,7 +415,7 @@ export default {
 
     .section-label {
       font-size: 1.5em;
-      font-weight: 600;
+      font-weight: 400;
       color: #ffffff92;
       margin-left: 20px;
       margin-top: 20px;
@@ -424,6 +434,7 @@ export default {
       border-radius: 6px;
       margin: 10px auto;
       border: 0px;
+      position: relative;
       i {
         margin-left: 15px;
         color: $web-font-color-white;
@@ -439,6 +450,13 @@ export default {
         object-fit: contain;
         margin-left: 10px;
         margin-right: 10px;
+      }
+      i.right-arrow {
+        position: absolute;
+        top: 50%;
+        right: -6px;
+        transform: translateY(-50%);
+        font-size: 14px;
       }
     }
 

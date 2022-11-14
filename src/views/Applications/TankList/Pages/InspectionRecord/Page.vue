@@ -137,9 +137,10 @@ export default {
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Master Data Manager",
-      icon: "/img/icon_menu/master_data/table.png",
+      name: "Tank Management",
+      icon: "/img/icon_menu/tank/tank.png",
     });
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Inspection Record");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
