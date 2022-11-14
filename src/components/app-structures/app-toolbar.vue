@@ -12,6 +12,10 @@
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
       <div class="toolbar-info" v-if="infoTank">
+        <!-- <div class="info-item">
+          <label class="desc">Tag No: </label>
+          <label class="value">{{ infoTank.tag_no }}</label>
+        </div> -->
         <div class="info-item">
           <label class="desc">Tank No: </label>
           <label class="value">{{ infoTank.tank_no }}</label>
@@ -40,6 +44,20 @@
       </div>
     </div>
     <div class="right-col">
+      <div class="search-box">
+        <i class="las la-search search"></i>
+        <input
+          v-model="searchKeyword"
+          type="text"
+          placeholder="search tag no."
+          v-on:keyup.enter="GET_SEARCH()"
+        />
+        <i
+          class="las la-times clear"
+          v-if="searchKeyword != ''"
+          v-on:click="CLEAR_SEARCH()"
+        ></i>
+      </div>
       <v-ons-toolbar-button
         v-if="isSave"
         class="highlight-btn"
@@ -59,7 +77,7 @@
 
       <div class="btn-group-separater" v-if="isPrint || isDownload"></div>
 
-      <v-ons-toolbar-button v-on:click="$emit('refreshInfo')">
+      <v-ons-toolbar-button v-if="isRefresh" v-on:click="$emit('refreshInfo')">
         <i class="las la-sync"></i>
         <span>Refresh</span>
       </v-ons-toolbar-button>
@@ -101,12 +119,36 @@ export default {
     isPrint: Boolean,
     isDownload: Boolean,
     isNewBtn: Boolean,
+    isRefresh: Boolean,
     newBtnLabel: String,
     infoTank: Object,
+  },
+  data() {
+    return {
+      searchKeyword: "",
+    };
   },
   methods: {
     GO_BACK_TO() {
       this.$router.push(this.isBack_specificPath);
+    },
+    GET_SEARCH() {
+      // var keyword = this.searchKeyword;
+      //axios GET result {id_client, id_tag}
+      var result = {
+        // id_client: 16,
+        // id_tag: 5,
+      };
+      if (result.id_client && result.id_tag) {
+        this.$router.push(
+          "/tank/client/" + result.id_client + "/tag/" + result.id_tag + "/info"
+        );
+      } else {
+        this.$ons.notification.alert("Tag number not found");
+      }
+    },
+    CLEAR_SEARCH() {
+      this.searchKeyword = "";
     },
   },
   computed: {
@@ -271,5 +313,48 @@ export default {
       font-weight: 600;
     }
   }
+}
+
+.search-box {
+  width: 250px;
+  height: 34px;
+  position: relative;
+  margin-right: 10px;
+  i {
+    font-size: 14px;
+    color: #5b5b5b;
+  }
+  input {
+    width: 100%;
+    height: 32px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    cursor: text;
+    font-size: 14px;
+    text-indent: 30px;
+    color: $web-font-color-black;
+    font-weight: 500;
+  }
+  .search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    cursor: text;
+  }
+  .clear {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+.search-box:last-child {
+  margin-right: 0px;
 }
 </style>

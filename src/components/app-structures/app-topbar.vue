@@ -24,6 +24,17 @@
             <img :src="baseURL + this.$store.state.currentClient.logo" />
             <label for="">{{ this.$store.state.currentClient.name }}</label>
           </div>
+          <div
+            class="inapp-logo client-logo"
+            v-if="this.$store.state.currentPageName"
+          >
+            <div class="btn-group-separater-client">
+              <i class="las la-angle-right"></i>
+            </div>
+            <label for="" style="margin-left: 0px; font-weight: 600">{{
+              this.$store.state.currentPageName
+            }}</label>
+          </div>
         </div>
       </div>
 

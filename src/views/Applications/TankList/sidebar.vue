@@ -66,7 +66,7 @@
           v-on:click="SHOW_POPOVER($event, 'right', true, 'thickness')"
         >
           <img src="/img/icon_sidebar/tank/thickness.png" />
-          <span>Thickness Inspection</span>
+          <span>Thickness</span>
           <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
@@ -407,7 +407,7 @@ export default {
   border: 1px solid #e6e6e6;
   border-width: 0 1px 0 0;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .item-container {
     width: 100%;

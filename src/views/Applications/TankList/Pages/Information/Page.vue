@@ -168,6 +168,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Tank Information");
     if (this.$store.state.status.server == true) {
       this.FETCH_TANK_INFO();
       this.FETCH_CLIENT_INFO();

@@ -112,6 +112,7 @@ export default {
       icon: "/img/icon_menu/tank/tank.png",
     });
     this.$store.commit("CLEAR_CURRENT_CLIENT");
+    this.$store.commit("CLEAR_CURRENT_PAGENAME");
     if (this.$store.state.status.server == true) {
       this.FETCH_CLIENT_INFO();
       this.FETCH_TANK_LIST();

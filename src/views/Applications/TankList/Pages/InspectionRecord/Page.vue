@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Inspection Record" />
     <div class="page-section">
       <DxDataGrid
         id="data-grid-style"
@@ -99,7 +98,6 @@ import axios from "/axios.js";
 
 //Components
 //import VueTabsChrome from "vue-tabs-chrome";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -136,13 +134,13 @@ export default {
     //DxItem,
     DxEditing,
     DxLookup,
-    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Inspection Record");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
