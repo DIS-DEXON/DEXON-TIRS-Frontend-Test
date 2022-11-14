@@ -452,24 +452,22 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
-}
-
-.page-section {
-  padding: 20px;
-  height: calc(100% - 40px);
-  // height: 100%;
-  overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 40% 30% 30%;
-  grid-template-rows: 500px 500px;
-  grid-gap: 10px;
-  width: calc(100% - 60px);
+  overflow: auto;
+  .page-section {
+    height: fit-content;
+    margin-bottom: 20px;
+    width: calc(100% - 20px);
+    padding: 20px 10px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 40% 30% 30%;
+    grid-template-rows: 500px 500px;
+    // grid-gap: 10px;
+  }
 }
 
 .table-wrapper {
-  // border: 1px solid #cecece;
-  // padding: 20px;
+  padding: 0 10px;
 }
 
 #data-grid-style {
