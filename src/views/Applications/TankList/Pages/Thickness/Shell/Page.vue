@@ -337,7 +337,7 @@
           <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
-      <div class="table-wrapper" style="grid-column: span 3">
+      <div class="table-wrapper" style="grid-column: span 4">
         <DxDataGrid
           id="data-grid-style"
           key-expr="id_inspection_record"
@@ -353,6 +353,7 @@
           @row-inserted="CREATE_RECORD"
           @row-updated="UPDATE_RECORD"
           @row-removed="DELETE_RECORD"
+          style="margin-top: 20px"
         >
           <DxEditing
             :allow-updating="true"
@@ -532,24 +533,22 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
-}
-
-.page-section {
-  padding: 20px;
-  height: calc(100% - 40px);
-  // height: 100%;
-  overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 20% 40% 20% 20%;
-  grid-template-rows: 500px 500px;
-  grid-gap: 10px;
-  width: calc(100% - 70px);
+  overflow: auto;
+  .page-section {
+    height: fit-content;
+    margin-bottom: 20px;
+    width: calc(100% - 20px);
+    padding: 20px 10px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 20% 40% 20% 20%;
+    grid-template-rows: 500px 500px;
+    // grid-gap: 10px;
+  }
 }
 
 .table-wrapper {
-  // border: 1px solid #cecece;
-  // padding: 20px;
+  padding: 0 10px;
 }
 
 #data-grid-style {

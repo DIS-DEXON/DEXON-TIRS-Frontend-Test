@@ -9,7 +9,6 @@
             :class="{ active: item.id_inspection_record == id_insp_record }"
           >
             <div class="contents">
-              id:{{ item.id_inspection_record }}
               {{ DATE_FORMAT(item.inspection_date) }}<br />
               {{ SET_CAMPAIGN(item.id_campaign) }}
             </div>
@@ -622,6 +621,10 @@ export default {
   padding: 20px;
   overflow-y: scroll;
   position: relative;
+  @media screen and (max-width: 1600px) {
+    padding: 10px;
+    padding-top: 50px;
+  }
 }
 .page-section:last-child {
   padding-bottom: 20px;

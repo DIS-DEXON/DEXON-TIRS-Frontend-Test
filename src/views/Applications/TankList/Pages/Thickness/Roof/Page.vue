@@ -6,8 +6,8 @@
           id="cml-grid"
           key-expr="id_cml"
           :data-source="dataList.cml"
-          :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
+          :focused-row-enabled="false"
           :allow-column-reordering="true"
           :show-borders="true"
           :show-row-lines="true"
@@ -25,11 +25,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="roof_row" caption="Roof row" />
+          <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
           <DxColumn data-field="roof_column" caption="Roof column" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn 
+            data-field="t_nom" 
+            caption="tnom (mm)" 
+            format="#,##0.00"
+          />
 
           <DxColumn
             data-field="t_req"
@@ -43,7 +47,6 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            sort-order="desc"
             :width="120"
           />
 
@@ -81,7 +84,7 @@
           id="tp-grid"
           key-expr="id_tp"
           :data-source="dataList.tp"
-          :selection="{ mode: 'single' }"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
@@ -143,7 +146,7 @@
             :allowed-page-sizes="[5, 10, 20]"
             :show-navigation-buttons="true"
             :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
+            info-text="Page {0} of {1} ({2} i tems)"
           />
           <DxExport :enabled="true" />
         </DxDataGrid>
@@ -153,7 +156,7 @@
           id="thk-grid"
           key-expr="id_thk"
           :data-source="dataList.thk"
-          :selection="{ mode: 'single' }"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
@@ -223,10 +226,10 @@
       </div>
       <div class="table-wrapper" style="grid-column: span 3">
         <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
-          :data-source="dataList.thk"
-          :selection="{ mode: 'single' }"
+          id="view-grid"
+          key-expr="id_thk"
+          :data-source="dataList.view"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
@@ -234,23 +237,99 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
+
           <DxColumn
-            data-field="inspection_date"
-            caption="Inspection date"
-            data-type="date"
-            format="dd MMM yyyy"
-            sort-order="desc"
+            data-field="roof_row" 
+            caption="Roof row" 
+            sort-order="asc"
           />
 
-          <DxColumn data-field="report_no" caption="Report number" />
+          <DxColumn 
+            data-field="roof_column" 
+            caption="Roof column"
+          />
 
-          <DxColumn data-field="remark" caption="Remark" />
+          <DxColumn 
+            data-field="tp_name" 
+            caption="TP name" 
+          />
 
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
+          <DxColumn
+            data-field="inservice_date"
+            caption="In-service date"
+            data-type="date"
+            format="dd MMM yyyy"
+          />
+
+          <DxColumn 
+            data-field="t_nom" 
+            caption="tnom (mm)" 
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="t_req"
+            caption="treq (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="first_insp_date"
+            caption="First date"
+            data-type="date"
+            format="dd MMM yyyy"
+          />
+
+          <DxColumn
+            data-field="first_t_actual"
+            caption="First thickness (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="previous_insp_date"
+            caption="Previous date"
+            data-type="date"
+            format="dd MMM yyyy"
+          />
+
+          <DxColumn
+            data-field="previous_t_actual"
+            caption="Previous thickness (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="inspection_date"
+            caption="Last date"
+            data-type="date"
+            format="dd MMM yyyy"
+          />
+
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="crs"
+            caption="ST_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="crl"
+            caption="LT_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="rl"
+            caption="RL (yrs)"
+            format="#,##0.00"
+          />
+
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -330,37 +409,16 @@ export default {
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_CML();
+      this.FETCH_VIEW();
     }
   },
   data() {
     return {
       dataList: {
-        cml: [
-          {
-            id_cml: 1,
-            id_tag: 5,
-            roof_row: 1,
-            roof_column: 1,
-            roof_no: "",
-            plate_desc: "",
-            t_nom: 6.5,
-            t_req: 2.29,
-            inservice_date: "2012-01-01T00:00:00",
-          },
-          {
-            id_cml: 2,
-            id_tag: 5,
-            roof_row: 1,
-            roof_column: 3,
-            roof_no: "1-2",
-            plate_desc: null,
-            t_nom: 6.5,
-            t_req: 2.29,
-            inservice_date: "2012-01-01T00:00:00",
-          },
-        ],
+        cml: [],
         tp: [],
         thk: [],
+        view: [],
       },
       isLoading: false,
       id_cml: 0,
@@ -451,6 +509,33 @@ export default {
           this.isLoading = false;
         });
     },
+    FETCH_VIEW() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "roof-thickness/roof-thk-view-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          console.log("view:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.view = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_INSP_RECORD() {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
@@ -497,6 +582,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -521,6 +607,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -550,6 +637,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -574,6 +662,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -607,6 +696,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -635,6 +725,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -661,6 +752,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -694,24 +786,22 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
-}
-
-.page-section {
-  padding: 20px;
-  height: calc(100% - 40px);
-  // height: 100%;
-  overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 40% 30% 30%;
-  grid-template-rows: 500px 500px;
-  grid-gap: 10px;
-  width: calc(100% - 60px);
+  overflow: auto;
+  .page-section {
+    height: fit-content;
+    margin-bottom: 20px;
+    width: calc(100% - 20px);
+    padding: 20px 10px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 40% 30% 30%;
+    grid-template-rows: 500px 500px;
+    // grid-gap: 10px;
+  }
 }
 
 .table-wrapper {
-  // border: 1px solid #cecece;
-  // padding: 20px;
+  padding: 0 10px;
 }
 
 #data-grid-style {
