@@ -2,7 +2,6 @@
   <div class="page-container">
     <div class="page-section">
       <div class="table-wrapper">
-        <button v-on:click="VIEW_TP()">ffffffS</button>
         <DxDataGrid
           id="cml-grid"
           key-expr="id_cml"
@@ -64,7 +63,7 @@
             <DxButton
               hint="View TP"
               icon="search"
-              @click="VIEW_TP"
+              :on-click="VIEW_TP"
             />
 
             <DxButton
@@ -98,8 +97,8 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
+          id="tp-grid"
+          key-expr="id_tp"
           :data-source="dataList.tp"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -108,50 +107,51 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_TP"
+          @row-updated="UPDATE_TP"
+          @row-removed="DELETE_TP"
         >
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn
-            data-field="inspection_date"
-            caption="Inspection date"
-            data-type="date"
-            format="dd MMM yyyy"
-            sort-order="desc"
+
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
           />
 
-          <DxColumn data-field="report_no" caption="Report number" />
+          <DxColumn 
+            data-field="tp_name" 
+            caption="TP name" 
+          />
 
-          <DxColumn data-field="remark" caption="Remark" />
+          <DxColumn 
+            data-field="tp_desc" 
+            caption="TP desc" 
+          />
+          
+          <DxColumn 
+            type="buttons"
+          >
+            <DxButton
+              hint="View TP"
+              icon="search"
+              :on-click="VIEW_THK"
+            />
 
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+            <DxButton
+              name="edit"
+              hint="Edit"
+              icon="edit"
+            />
 
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
+            <DxButton
+              name="delete"
+              hint="Delete"
+              icon="trash"
+            />
+          </DxColumn>
+
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
@@ -169,8 +169,8 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
+          id="thk-grid"
+          key-expr="id_thk"
           :data-source="dataList.thk"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -179,49 +179,52 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_THK"
+          @row-updated="UPDATE_THK"
+          @row-removed="DELETE_THK"
         >
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn
-            data-field="inspection_date"
-            caption="Inspection date"
-            data-type="date"
-            format="dd MMM yyyy"
-            sort-order="desc"
+
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
           />
 
-          <DxColumn data-field="report_no" caption="Report number" />
-          <DxColumn data-field="remark" caption="Remark" />
+          <DxColumn
+            data-field="id_inspection_record"
+            caption="Inspection date"
+          >
+            <DxLookup
+              :data-source="inspRecordList"
+              :display-expr="SET_FORMAT_DATE"
+              value-expr="id_inspection_record"
+            />
+          </DxColumn>
 
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+          <DxColumn
+            data-field="t_actual"
+            caption="tactual (mm)"
+            format="#,##0.00"
+          />
 
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
+          <DxColumn 
+            type="buttons"
+          >
+            <DxButton
+              name="edit"
+              hint="Edit"
+              icon="edit"
+            />
+
+            <DxButton
+              name="delete"
+              hint="Delete"
+              icon="trash"
+            />
+          </DxColumn>
+
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
@@ -263,31 +266,12 @@
 
           <DxColumn data-field="remark" caption="Remark" />
 
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
           <template #table-header>
             <div>
               <div class="page-section-label">Shell Course</div>
             </div>
           </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
+
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
@@ -315,7 +299,7 @@
 <script>
 //API
 import axios from "/axios.js";
-// import moment from "moment";
+import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
@@ -336,7 +320,7 @@ import {
   //DxToolbar,
   //DxItem,
   DxEditing,
-  //DxLookup,
+  DxLookup,
   DxButton,
 } from "devextreme-vue/data-grid";
 
@@ -354,11 +338,12 @@ export default {
     //DxToolbar,
     //DxItem,
     DxEditing,
-    //DxLookup,
+    DxLookup,
     DxButton,
   },
   created() {
     if (this.$store.state.status.server == true) {
+      this.FETCH_INSP_RECORD();
       this.FETCH_CML();
     }
   },
@@ -370,6 +355,9 @@ export default {
         thk: [],
       },
       isLoading: false,
+      id_cml: 0,
+      id_tp: 0,
+      inspRecordList: {},
     };
   },
   computed: {},
@@ -392,6 +380,87 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_TP() {
+      console.log(this.id_cml);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "roof-thickness/roof-thk-tp-by-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_cml: this.id_cml,
+        },
+      })
+        .then((res) => {
+          console.log("tp:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.tp = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_THK() {
+      console.log(this.id_tp);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "roof-thickness/roof-thk-data-by-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tp: this.id_tp,
+        },
+      })
+        .then((res) => {
+          console.log("thk:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.thk = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_INSP_RECORD() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "insp-record/insp-record-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          console.log("insp record:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.inspRecordList = res.data;
           }
         })
         .catch((error) => {
@@ -456,8 +525,156 @@ export default {
     DELETE_CML(e) {
       console.log(e);
     },
-    VIEW_TP() {
-      console.log('in');
+    CREATE_TP(e) {
+      e.data.id_cml = this.id_cml;
+      e.data.id_tp = 0;
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "roof-thickness/add-roof-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_TP(e) {
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "roof-thickness/edit-roof-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_TP(e) {
+      console.log(e);
+    },
+    CREATE_THK(e) {
+      e.data.id_thk = 0;
+      e.data.id_tp = this.id_tp;
+      var date = this.inspRecordList.filter(function (v) {
+        return v.id_inspection_record == e.data.id_inspection_record;
+      });
+      e.data.inspection_date = date[0].inspection_date;
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "roof-thickness/add-roof-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_THK();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_THK(e) {
+      var date = this.inspRecordList.filter(function (v) {
+        return v.id_inspection_record == e.data.id_inspection_record;
+      });
+      e.data.inspection_date = date[0].inspection_date;
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "roof-thickness/edit-roof-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_THK(e) {
+      console.log(e);
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "roof-thickness/delete-roof-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          "id_thk":e.key
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_THK();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VIEW_TP(e) {
+      console.log(e);
+      this.id_cml = e.row.key;
+      this.FETCH_TP();
+    },
+    VIEW_THK(e) {
+      console.log(e);
+      this.id_tp = e.row.key;
+      this.FETCH_THK();
+    },
+    SET_FORMAT_DATE(e) {
+      console.log(e);
+      return moment(e.inspection_date).format("DD MMM yyyy");
     }
   },
 }
