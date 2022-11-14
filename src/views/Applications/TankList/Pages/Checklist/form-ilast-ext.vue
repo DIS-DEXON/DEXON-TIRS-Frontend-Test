@@ -103,9 +103,6 @@
             </div>
           </div>
         </div>
-        <div class="form-item-textarea" style="grid-column: span 7">
-          <textarea placeholder="Type remarks and recommendations here..." />
-        </div>
       </div>
     </div>
   </div>

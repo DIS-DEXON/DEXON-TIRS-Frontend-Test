@@ -1225,6 +1225,10 @@ hr {
     border: 1px solid #000;
     box-shadow: none;
 
+    @media screen and (max-width: 1600px) {
+        width: calc(100% - 20px);
+    }
+
     .report-container {
         .sheet-header {
             padding-bottom: 0px;
@@ -1374,7 +1378,7 @@ hr {
 .hover-button-wrapper {
     position: fixed;
     top: 135px;
-    right: 20px;
+    right: 30px;
 
     .btn-panel {
         display: flex;
@@ -1384,6 +1388,8 @@ hr {
             width: 42px;
             height: 30px;
             margin-top: 10px;
+            margin-right: 0px;
+            margin-left: 0px;
             border: 1px solid rgb(218, 218, 218);
             background-color: #fff;
             padding: 0px !important;
@@ -1405,4 +1411,18 @@ hr {
             }
         }
     }
+
+    @media screen and (max-width: 1600px) {
+        top: 124px;
+
+        .btn-panel {
+            flex-direction: row;
+
+            .btn {
+                margin-top: 0;
+                margin-left: 10px;
+            }
+        }
+    }
+
 }
