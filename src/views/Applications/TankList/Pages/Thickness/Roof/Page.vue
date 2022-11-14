@@ -5,6 +5,7 @@
         <DxDataGrid
           id="cml-grid"
           key-expr="id_cml"
+          :element-attr="dataGridAttributes"
           :data-source="dataList.cml"
           :hover-state-enabled="true"
           :focused-row-enabled="false"
@@ -83,6 +84,7 @@
         <DxDataGrid
           id="tp-grid"
           key-expr="id_tp"
+          :element-attr="dataGridAttributes"
           :data-source="dataList.tp"
           :focused-row-enabled="false"
           :hover-state-enabled="true"
@@ -155,6 +157,7 @@
         <DxDataGrid
           id="thk-grid"
           key-expr="id_thk"
+          :element-attr="dataGridAttributes"
           :data-source="dataList.thk"
           :focused-row-enabled="false"
           :hover-state-enabled="true"
@@ -228,6 +231,7 @@
         <DxDataGrid
           id="view-grid"
           key-expr="id_thk"
+          :element-attr="dataGridAttributes"
           :data-source="dataList.view"
           :focused-row-enabled="false"
           :hover-state-enabled="true"
@@ -424,6 +428,9 @@ export default {
       id_cml: 0,
       id_tp: 0,
       inspRecordList: {},
+      dataGridAttributes: {
+          class: 'data-grid-style'
+      }
     };
   },
   computed: {},
@@ -514,7 +521,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-view-by-tank-id",
+        url: "roof-thickness/roof-thk-view-last-insp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -619,6 +626,30 @@ export default {
     },
     DELETE_CML(e) {
       console.log(e);
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "roof-thickness/delete-roof-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          "id_cml":e.key
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     CREATE_TP(e) {
       e.data.id_cml = this.id_cml;
@@ -674,6 +705,29 @@ export default {
     },
     DELETE_TP(e) {
       console.log(e);
+      axios({
+        method: "delete",
+        url: "roof-thickness/delete-roof-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          "id_tp":e.key
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     CREATE_THK(e) {
       e.data.id_thk = 0;
