@@ -56,7 +56,16 @@
           </div>
           <!-- <i class="las la-angle-down"></i> -->
         </v-ons-toolbar-button>
+        <div class="btn-group-separater" style="margin: 0 10px"></div>
+        <v-ons-toolbar-button v-on:click="SIGN_OUT()" style="padding: 0px">
+          <span style="color: #ff4438; font-weight: 500">Sign out</span>
+          <i
+            class="las la-sign-out-alt"
+            style="margin-right: 0px; color: #ff4438"
+          ></i>
+        </v-ons-toolbar-button>
 
+        <!-- POPUP PANEL -->
         <v-ons-popover
           cancelable
           :visible.sync="popoverVisible"
@@ -79,7 +88,7 @@
             <i class="las la-user-circle"></i>
           </v-ons-toolbar-button>
 
-          <!-- <v-ons-toolbar-button
+          <v-ons-toolbar-button
             class="popover-button"
             v-on:click="GO_TO('/helps')"
           >
@@ -87,22 +96,22 @@
             <i class="lar la-question-circle"></i>
           </v-ons-toolbar-button>
 
-          <hr /> -->
+          <hr />
 
-          <!-- <v-ons-toolbar-button class="popover-button">
+          <v-ons-toolbar-button class="popover-button">
             <span>เปลี่ยนเป็นภาษาไทย</span>
             <i class="fas fa-globe"></i>
           </v-ons-toolbar-button>
 
-          <hr /> -->
+          <!-- <hr /> -->
 
-          <v-ons-toolbar-button
+          <!-- <v-ons-toolbar-button
             class="popover-button popover-button-red"
             v-on:click="SIGN_OUT()"
           >
             <span>Log Out</span>
             <i class="las la-sign-out-alt"></i>
-          </v-ons-toolbar-button>
+          </v-ons-toolbar-button> -->
         </v-ons-popover>
       </div>
     </div>
@@ -183,7 +192,7 @@ export default {
     },
     SIGN_OUT() {
       this.popoverVisible = false;
-      this.$ons.notification.confirm("Confirm Log Out?").then((res) => {
+      this.$ons.notification.confirm("Confirm Sign out?").then((res) => {
         if (res == 1) {
           this.$store.commit("SIGN_OUT");
           this.$router.push("/login");
@@ -322,6 +331,9 @@ export default {
     }
   }
   .right-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-right: 20px;
     .toolbar-button {
       height: 34px;
