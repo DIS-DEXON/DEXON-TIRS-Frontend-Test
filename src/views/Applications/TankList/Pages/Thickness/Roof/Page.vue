@@ -30,11 +30,7 @@
 
           <DxColumn data-field="roof_column" caption="Roof column" />
 
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="t_req"
@@ -51,14 +47,8 @@
             :width="120"
           />
 
-          <DxColumn 
-            type="buttons"
-          >
-            <DxButton
-              hint="View TP"
-              icon="search"
-              :on-click="VIEW_TP"
-            />
+          <DxColumn type="buttons">
+            <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" />
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -97,7 +87,6 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
         >
-
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -106,36 +95,16 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP name" 
-          />
+          <DxColumn data-field="tp_name" caption="TP name" />
 
-          <DxColumn 
-            data-field="tp_desc" 
-            caption="TP desc" 
-          />
-          
-          <DxColumn 
-            type="buttons"
-          >
-            <DxButton
-              hint="View TP"
-              icon="search"
-              :on-click="VIEW_THK"
-            />
+          <DxColumn data-field="tp_desc" caption="TP desc" />
 
-            <DxButton
-              name="edit"
-              hint="Edit"
-              icon="edit"
-            />
+          <DxColumn type="buttons">
+            <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" />
 
-            <DxButton
-              name="delete"
-              hint="Delete"
-              icon="trash"
-            />
+            <DxButton name="edit" hint="Edit" icon="edit" />
+
+            <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
 
           <!-- Configuration goes here -->
@@ -170,7 +139,6 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
-
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -179,10 +147,7 @@
             mode="row"
           />
 
-          <DxColumn
-            data-field="id_inspection_record"
-            caption="Inspection date"
-          >
+          <DxColumn data-field="id_inspection_record" caption="Inspection date">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -196,20 +161,10 @@
             format="#,##0.00"
           />
 
-          <DxColumn 
-            type="buttons"
-          >
-            <DxButton
-              name="edit"
-              hint="Edit"
-              icon="edit"
-            />
+          <DxColumn type="buttons">
+            <DxButton name="edit" hint="Edit" icon="edit" />
 
-            <DxButton
-              name="delete"
-              hint="Delete"
-              icon="trash"
-            />
+            <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
 
           <!-- Configuration goes here -->
@@ -240,23 +195,13 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          style="margin-top: 20px"
         >
+          <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
-          <DxColumn
-            data-field="roof_row" 
-            caption="Roof row" 
-            sort-order="asc"
-          />
+          <DxColumn data-field="roof_column" caption="Roof column" />
 
-          <DxColumn 
-            data-field="roof_column" 
-            caption="Roof column"
-          />
-
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP name" 
-          />
+          <DxColumn data-field="tp_name" caption="TP name" />
 
           <DxColumn
             data-field="inservice_date"
@@ -265,17 +210,9 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="t_req"
-            caption="treq (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="first_insp_date"
@@ -328,12 +265,7 @@
             format="#,##0.00"
           />
 
-          <DxColumn
-            data-field="rl"
-            caption="RL (yrs)"
-            format="#,##0.00"
-          />
-
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -429,8 +361,8 @@ export default {
       id_tp: 0,
       inspRecordList: {},
       dataGridAttributes: {
-          class: 'data-grid-style'
-      }
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},
@@ -634,7 +566,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          "id_cml":e.key
+          id_cml: e.key,
         },
       })
         .then((res) => {
@@ -712,7 +644,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          "id_tp":e.key
+          id_tp: e.key,
         },
       })
         .then((res) => {
@@ -799,7 +731,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          "id_thk":e.key
+          id_thk: e.key,
         },
       })
         .then((res) => {
@@ -829,7 +761,7 @@ export default {
     SET_FORMAT_DATE(e) {
       console.log(e);
       return moment(e.inspection_date).format("DD MMM yyyy");
-    }
+    },
   },
 };
 </script>
@@ -858,7 +790,7 @@ export default {
   padding: 0 10px;
 }
 
-#data-grid-style {
+.data-grid-style {
   height: 100%;
 }
 </style>

@@ -6,6 +6,7 @@
           id="data-grid-style"
           key-expr="id_cml"
           :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -86,6 +87,7 @@
           id="data-grid-style"
           key-expr="id_cml"
           :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -166,6 +168,7 @@
           id="data-grid-style"
           key-expr="id_inspection_record"
           :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -254,6 +257,7 @@
           id="data-grid-style"
           key-expr="id_inspection_record"
           :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -342,6 +346,7 @@
           id="data-grid-style"
           key-expr="id_inspection_record"
           :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -518,6 +523,9 @@ export default {
         ],
         tp: [],
         thk: [],
+      },
+      dataGridAttributes: {
+        class: "data-grid-style",
       },
       isLoading: false,
     };
