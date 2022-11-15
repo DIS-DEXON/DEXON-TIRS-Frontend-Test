@@ -26,9 +26,20 @@
             mode="row"
           />
 
-          <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
+          <DxColumn data-field="roofnz_no" caption="Nozzle no." sort-order="asc" />
 
-          <DxColumn data-field="roof_column" caption="Roof column" />
+          <DxColumn data-field="nps" caption="DIA (in)" />
+
+          <DxColumn
+            data-field="material_type"
+            caption="Material type"
+          >
+            <DxLookup
+              :data-source="matList"
+              display-expr="code"
+              value-expr="code"
+            />
+          </DxColumn>
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -363,6 +374,12 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      matList: [
+        { "code" : "CS" },
+        { "code" : "SS" },
+        { "code" : "Duplex" },
+        { "code" : "Unknown" },
+      ]
     };
   },
   computed: {},
@@ -372,7 +389,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-cml-by-tank-id",
+        url: "roofnz-thickness/roofnz-thk-cml-by-tank-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -399,7 +416,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-tp-by-cml",
+        url: "roofnz-thickness/roofnz-thk-tp-by-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -426,7 +443,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-data-by-tp",
+        url: "roofnz-thickness/roofnz-thk-data-by-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -503,16 +520,15 @@ export default {
         });
     },
     CREATE_CML(e) {
-      console.log(e);
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       e.data.id_tag = id_tag;
       e.data.id_cml = 0;
       e.data.inservice_date = moment(e.data.inservice_date).format("L");
-      console.log(e);
+      console.log(e.data);
       axios({
         method: "post",
-        url: "roof-thickness/add-roof-thk-cml",
+        url: "roofnz-thickness/add-roofnz-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -537,7 +553,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roof-thickness/edit-roof-thk-cml",
+        url: "roofnz-thickness/edit-roofnz-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -562,7 +578,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "roof-thickness/delete-roof-thk-cml",
+        url: "roofnz-thickness/delete-roofnz-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -591,7 +607,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roof-thickness/add-roof-thk-tp",
+        url: "roofnz-thickness/add-roofnz-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -616,7 +632,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roof-thickness/edit-roof-thk-tp",
+        url: "roofnz-thickness/edit-roofnz-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -640,7 +656,7 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "roof-thickness/delete-roof-thk-tp",
+        url: "roofnz-thickness/delete-roofnz-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -673,7 +689,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roof-thickness/add-roof-thk-data",
+        url: "roofnz-thickness/add-roofnz-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -702,7 +718,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roof-thickness/edit-roof-thk-data",
+        url: "roofnz-thickness/edit-roofnz-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -727,7 +743,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "roof-thickness/delete-roof-thk-data",
+        url: "roofnz-thickness/delete-roofnz-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
