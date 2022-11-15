@@ -23,14 +23,11 @@ import axios from "/axios.js";
 import toolbar from "@/components/app-structures/app-toolbar.vue";
 import sidebar from "@/views/Applications/TankList/sidebar.vue";
 
-// import sidebarInfo from "@/views/Applications/TankList/sidebar-info.vue";
-
 export default {
   name: "router-template-detail",
   components: {
     toolbar,
     sidebar,
-    // sidebarInfo,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -86,12 +83,25 @@ export default {
 <style lang="scss" scoped>
 .pm-page {
   display: grid;
-  grid-template-columns: 240px calc(100vw - 240px);
-  grid-template-rows: 61px calc(100vh - 139px);
+  grid-template-columns: 200px calc(100vw - 200px);
+  grid-template-rows: 51px calc(100vh - 119px);
   .pm-page-container {
     background-color: #fff;
     // padding: 20px;
     .page-container {
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .pm-page {
+    grid-template-columns: 54px calc(100vw - 54px);
+    grid-template-rows: 61px calc(100vh - 139px);
+    .pm-page-container {
+      background-color: #fff;
+      // padding: 20px;
+      .page-container {
+      }
     }
   }
 }

@@ -5,7 +5,10 @@
         <div class="web-logo" v-on:click="GO_TO('/')">
           <img src="/img/logo.png" alt="" />
         </div>
-        <div class="inapp-menu" v-if="this.$store.state.currentInApp">
+        <div
+          class="inapp-menu mobile-none"
+          v-if="this.$store.state.currentInApp"
+        >
           <div class="home-btn" v-on:click="GO_TO('/')">
             <i class="las la-home"></i>
           </div>
@@ -43,7 +46,7 @@
           v-on:click="SHOW_POPOVER($event, 'down', true)"
           style="padding-right: 0px"
         >
-          <span>
+          <span class="mobile-none">
             {{ user.prefix_desc }} {{ user.first_name }} {{ user.middle_name }}
             {{ user.last_name }}
           </span>
@@ -56,14 +59,19 @@
           </div>
           <!-- <i class="las la-angle-down"></i> -->
         </v-ons-toolbar-button>
-        <div class="btn-group-separater" style="margin: 0 10px"></div>
-        <v-ons-toolbar-button v-on:click="SIGN_OUT()" style="padding: 0px">
-          <span style="color: #ff4438; font-weight: 500">Sign out</span>
-          <i
-            class="las la-sign-out-alt"
-            style="margin-right: 0px; color: #ff4438"
-          ></i>
-        </v-ons-toolbar-button>
+        <div
+          class="btn-group-separater mobile-none"
+          style="margin: 0 10px"
+        ></div>
+        <div class="mobile-none">
+          <v-ons-toolbar-button v-on:click="SIGN_OUT()" style="padding: 0px">
+            <span style="color: #ff4438; font-weight: 500">Sign out</span>
+            <i
+              class="las la-sign-out-alt"
+              style="margin-right: 0px; color: #ff4438"
+            ></i>
+          </v-ons-toolbar-button>
+        </div>
 
         <!-- POPUP PANEL -->
         <v-ons-popover
@@ -223,7 +231,7 @@ export default {
 @import "@/style/main.scss";
 #app-topbar {
   width: 100%;
-  height: 54px;
+  height: 44px;
   position: fixed;
   z-index: 998;
   top: 0;
@@ -238,7 +246,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 54px;
+    height: 100%;
     @media screen and (max-width: 768px) {
       padding: 0;
     }
@@ -272,7 +280,7 @@ export default {
         object-fit: contain;
       }
       @media screen and (max-width: 768px) {
-        width: 60px;
+        width: 80px;
         margint-top: 4px;
       }
     }
@@ -314,7 +322,8 @@ export default {
             center/100% 100% no-repeat;
         }
         label {
-          font-size: 1.75em;
+          font-size: 12px;
+          font-weight: 600;
           margin-left: 10px;
           color: $web-font-color-grey;
         }
@@ -341,8 +350,11 @@ export default {
       border: 0;
       border-radius: 6px;
       display: flex;
+
       span {
         color: $web-font-color-grey;
+        font-size: 12px;
+        font-weight: 500;
       }
     }
     .toolbar-button:hover > span {

@@ -29,13 +29,13 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .app-sidebar {
-  width: 240px;
+  width: 200px;
   height: 100%;
   background-color: #140a4b;
   border: 1px solid #e6e6e6;
   border-width: 0 1px 0 0;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .item-container {
     width: 100%;

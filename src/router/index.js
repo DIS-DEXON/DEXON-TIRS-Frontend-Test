@@ -74,8 +74,13 @@ const routes = [
           },
           {
             path: 'thickness/shell',
-            alias: 'Thickness Roof',
+            alias: 'Thickness Shell',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Shell/Page.vue'),
+          },
+          {
+            path: 'thickness/visual',
+            alias: 'Thickness Visual',
+            component: () => import('../views/Applications/TankList/Pages/Visual/Page.vue'),
           },
         ]
       },

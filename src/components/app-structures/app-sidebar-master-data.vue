@@ -5,7 +5,7 @@
       <router-link v-for="item in sidebarMenu" :key="item.id" :to="item.link">
         <v-ons-toolbar-button class="item">
           <!-- <i :class="item.icon"></i> -->
-          <img :src="item.icon" />
+          <!-- <img :src="item.icon" /> -->
           <span>{{ item.name }}</span>
         </v-ons-toolbar-button>
       </router-link>
@@ -29,20 +29,20 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .app-sidebar {
-  width: 240px;
+  width: 200px;
   height: 100%;
   background-color: #140a4b;
   border: 1px solid #e6e6e6;
   border-width: 0 1px 0 0;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .item-container {
     width: 100%;
     padding-top: 20px;
 
     .section-label {
-      font-size: 1.5em;
+      font-size: 12px;
       font-weight: 600;
       color: #ffffff92;
       margin-left: 20px;
@@ -50,7 +50,7 @@ export default {
     }
 
     .item {
-      width: 200px;
+      width: 160px;
       padding: 0;
       height: 34px;
       justify-content: flex-start;
@@ -62,9 +62,10 @@ export default {
         color: $web-font-color-white;
       }
       span {
+        margin-left: 10px;
         color: $web-font-color-white;
         font-weight: 400;
-        font-size: 14px;
+        font-size: 12px;
       }
       img {
         width: 20px;

@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+    <innerPageName pageName="Thickness: Shell" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -447,6 +448,7 @@
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -482,6 +484,7 @@ export default {
     //DxItem,
     DxEditing,
     DxLookup,
+    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
