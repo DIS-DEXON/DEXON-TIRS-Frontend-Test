@@ -196,6 +196,7 @@ export default {
           closable: false,
         },
       ],
+
       isLoading: false,
     };
   },
@@ -436,6 +437,11 @@ export default {
 .page-section:last-child {
   padding-bottom: 20px;
 }
+.section-label {
+  label {
+    font-size: 12px !important;
+  }
+}
 
 .tab-wrapper {
   height: 48px;
@@ -443,7 +449,8 @@ export default {
 .vue-tabs-chrome {
   padding-top: 10px;
   background-color: #d9d9d9;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 500;
 }
 .info-tab-display {
   display: flex;

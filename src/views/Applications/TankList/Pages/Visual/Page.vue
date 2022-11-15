@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="list-panel">
-      <div class="column-header">Visual Inspection</div>
+      <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div
@@ -18,13 +18,6 @@
               <v-ons-toolbar-button
                 class="btn"
                 v-on:click="VIEW_DWG(item.id_inspection_record)"
-                style="
-                  width: 50px;
-                  background-color: #f6f6f6;
-                  color: #303030;
-                  padding: 5px 0;
-                  text-align: right;
-                "
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -38,6 +31,7 @@
         id="data-grid-style"
         key-expr="id"
         :data-source="drawingList"
+        :element-attr="dataGridAttributes"
         :selection="{ mode: 'single' }"
         :hover-state-enabled="true"
         :allow-column-reordering="true"
@@ -143,7 +137,6 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-
 //DataGrid
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -173,7 +166,7 @@ const fileUploaderRef = "fu";
 const imgRef = "img";
 
 export default {
-  name: "ViewThicknessVisual",
+  name: "ViewProjectList",
   components: {
     //VueTabsChrome,
     DxList,
@@ -196,7 +189,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Visual Inspection");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Marked-Up Drawing");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -230,6 +223,9 @@ export default {
       isInitEdit: 0,
       id_component: 0,
       id_inspection_record: 0,
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {
@@ -477,7 +473,7 @@ export default {
   margin: 0 auto;
   // padding: 20px;
   display: grid;
-  grid-template-columns: 300px calc(100% - 300px);
+  grid-template-columns: 250px calc(100% - 250px);
 }
 
 .page-section {

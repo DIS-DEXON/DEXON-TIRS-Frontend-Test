@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness: Shell" />
+    <innerPageName pageName="Thickness Messurement" breadcrumb1="Shell" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid

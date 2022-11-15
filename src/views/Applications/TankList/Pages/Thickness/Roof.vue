@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+    <innerPageName pageName="Thickness Messurement" breadcrumb1="Roof" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -298,6 +299,7 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -335,6 +337,7 @@ export default {
     DxEditing,
     DxLookup,
     DxButton,
+    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {

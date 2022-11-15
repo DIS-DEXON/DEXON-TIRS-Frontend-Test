@@ -71,7 +71,7 @@
         </v-ons-toolbar-button>
       </router-link>
       <router-link
-        :to="'/tank/client/' + id_company + '/visual-inspection/' + id_tag"
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'"
       >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/visual.png" />

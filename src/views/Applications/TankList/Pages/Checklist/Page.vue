@@ -1,5 +1,10 @@
 <template>
   <div class="page-container">
+    <innerPageName
+      pageName="Checklist"
+      :breadcrumb1="currentPage"
+      style="grid-column: span 2"
+    />
     <div class="list-panel">
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
@@ -16,13 +21,6 @@
               <v-ons-toolbar-button
                 class="btn"
                 v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
-                style="
-                  width: 50px;
-                  background-color: #f6f6f6;
-                  color: #303030;
-                  padding: 5px 0;
-                  text-align: right;
-                "
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -98,18 +96,17 @@
 </template> 
 
 <script>
-//UI
-import Loading from "@/components/app-structures/app-loading.vue";
-
 //API
 import axios from "/axios.js";
 import moment from "moment";
 
 //Components
+import Loading from "@/components/app-structures/app-loading.vue";
 import "devextreme/dist/css/dx.light.css";
 import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form-generic.vue";
 import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
 import checklistIlastInt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-int.vue";
+import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 
@@ -124,6 +121,7 @@ export default {
     checklistIlastInt,
     DxList,
     Loading,
+    innerPageName,
   },
   data() {
     return {
@@ -145,7 +143,15 @@ export default {
       campaignList: {},
     };
   },
-  computed: {},
+  computed: {
+    currentPage() {
+      var current_page = this.$route.params.id_checklist;
+      if (current_page == 1) return "Generic Form";
+      else if (current_page == 2) return "ILAST External Form";
+      else if (current_page == 3) return "ILAST Internal Form";
+      else return "";
+    },
+  },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
@@ -609,10 +615,11 @@ export default {
 @import "@/style/main.scss";
 
 .page-container {
-  height: calc(100vh - 139px);
+  height: calc(100vh - 119px);
   overflow-y: hidden;
   display: grid;
-  grid-template-columns: 300px calc(100% - 300px);
+  grid-template-columns: 250px calc(100% - 250px);
+  grid-auto-rows: 41px auto;
   width: 100%;
   background-color: #d9d9d9;
 }
@@ -662,32 +669,47 @@ export default {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.toolbar-button {
-  width: fit-content;
-  background-color: #f6f6f6;
-  padding: 0;
-  padding-right: 15px;
-  height: 34px;
-  border: 0px;
-  color: #303030;
-}
-
-.toolbar-button:hover,
-.toolbar-button:active {
-  background-color: #140a4b;
-  color: #fff;
-}
-
 .center-box-wrapper {
-  width: 100%;
-  height: calc(100vh - 179px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .toolbar-button {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 2px;
+    border-radius: 6px;
+    background-color: #f6f6f6;
+    padding: 5px 0;
+    text-align: right;
+    i,
+    span {
+      font-size: 18px;
+      color: $web-font-color-blue;
+    }
+    span {
+      font-size: 12px;
+      padding-right: 10px;
+      font-weight: 500;
+    }
+  }
+
+  .toolbar-button:hover,
+  .toolbar-button:active {
+    background-color: #140a4b;
+    i,
+    span {
+      color: #fff;
+    }
+  }
 }
 
-.dx-list .dx-empty-message,
-.dx-list-item-content {
-  padding: 10px;
+.inner-pagename {
+  border: 1px solid #000000;
+  border-width: 0 0 1px 0px;
 }
 </style>

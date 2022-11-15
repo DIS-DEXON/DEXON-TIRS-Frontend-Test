@@ -3,7 +3,7 @@
     <div class="report-container">
       <div class="sheet-header">
         <div class="logo"><img src="/img/logo.png" /></div>
-        <div class="title">ILAST Internal Inspection Checklist Form</div>
+        <div class="title">ILAST Internal Inspection Checklist</div>
         <div class="docno"></div>
       </div>
       <div class="sheet-body" v-for="item in checklistInfo" :key="item.id">
