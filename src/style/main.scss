@@ -511,6 +511,7 @@ hr {
 .data-grid-style {
     // height: 100%;
     font-family: $web-default-font;
+    font-size: 12px;
 
     //select
     .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused)>td,
@@ -546,6 +547,11 @@ hr {
         background-color: #140a4b;
         // color: $web-font-color-black;
         font-weight: 600;
+
+        span {
+            font-family: 'DXIcons' !important;
+            font-size: 10px;
+        }
     }
 
     .dx-datagrid .dx-column-lines>td {

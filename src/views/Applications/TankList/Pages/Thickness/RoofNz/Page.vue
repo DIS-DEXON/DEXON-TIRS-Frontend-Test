@@ -18,6 +18,12 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
         >
+          <DxFilterRow
+            :visible="true"
+          />
+          <DxHeaderFilter
+            :visible="true"
+          />
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -69,7 +75,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -98,6 +104,14 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
         >
+
+          <DxFilterRow
+            :visible="true"
+          />
+          <DxHeaderFilter
+            :visible="true"
+          />
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -150,6 +164,14 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
+
+          <DxFilterRow
+            :visible="true"
+          />
+          <DxHeaderFilter
+            :visible="true"
+          />
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -208,9 +230,16 @@
           :word-wrap-enabled="true"
           style="margin-top: 20px"
         >
-          <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
-          <DxColumn data-field="roof_column" caption="Roof column" />
+          <DxFilterRow
+            :visible="true"
+          />
+          <DxHeaderFilter
+            :visible="true"
+          />
+          
+          <DxColumn data-field="roofnz_no" caption="Nozzle no." sort-order="asc" />
+
 
           <DxColumn data-field="tp_name" caption="TP name" />
 
@@ -328,6 +357,8 @@ import {
   DxEditing,
   DxLookup,
   DxButton,
+  DxHeaderFilter,
+  DxFilterRow,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -346,6 +377,8 @@ export default {
     DxEditing,
     DxLookup,
     DxButton,
+    DxHeaderFilter,
+    DxFilterRow,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -470,7 +503,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-view-last-insp",
+        url: "roofnz-thickness/roofnz-thk-view-last-insp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
