@@ -39,6 +39,12 @@
             }}</label>
           </div>
         </div>
+        <label class="dev-mode-badge" v-if="this.$store.state.mode == 'dev'"
+          >RUNNING IN DEVELOPMENT MODE <br />
+          <span
+            >change mode to 'prod' in store/index.js before deploy</span
+          ></label
+        >
       </div>
 
       <div class="right-col" v-if="user">
@@ -59,7 +65,7 @@
           </div>
           <!-- <i class="las la-angle-down"></i> -->
         </v-ons-toolbar-button>
-        <div
+        <!-- <div
           class="btn-group-separater mobile-none"
           style="margin: 0 10px"
         ></div>
@@ -71,7 +77,7 @@
               style="margin-right: 0px; color: #ff4438"
             ></i>
           </v-ons-toolbar-button>
-        </div>
+        </div> -->
 
         <!-- POPUP PANEL -->
         <v-ons-popover
@@ -103,23 +109,23 @@
             <span>Helps</span>
             <i class="lar la-question-circle"></i>
           </v-ons-toolbar-button>
-
+          <!-- 
           <hr />
 
           <v-ons-toolbar-button class="popover-button">
             <span>เปลี่ยนเป็นภาษาไทย</span>
             <i class="fas fa-globe"></i>
-          </v-ons-toolbar-button>
+          </v-ons-toolbar-button> -->
 
-          <!-- <hr /> -->
+          <hr />
 
-          <!-- <v-ons-toolbar-button
-            class="popover-button popover-button-red"
+          <v-ons-toolbar-button
+            class="popover-button popover-button-red mobile-none"
             v-on:click="SIGN_OUT()"
           >
             <span>Log Out</span>
             <i class="las la-sign-out-alt"></i>
-          </v-ons-toolbar-button> -->
+          </v-ons-toolbar-button>
         </v-ons-popover>
       </div>
     </div>
@@ -388,6 +394,23 @@ hr {
   i {
     font-size: 22px;
     color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dev-mode-badge {
+  text-align: center;
+  font-size: 12px;
+  color: red;
+  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid red;
+  padding: 2px 6px 0 6px;
+  line-height: 12px;
+  span {
+    font-size: 10px;
+    font-weight: 500;
   }
 }
 </style>

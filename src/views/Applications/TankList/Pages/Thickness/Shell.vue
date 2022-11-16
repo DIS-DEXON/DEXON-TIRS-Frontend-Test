@@ -4,7 +4,62 @@
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-grid-style"
+          id="data-table-shellcourse"
+          key-expr="id_tank_course"
+          :data-source="dataList.shellcourse"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+        >
+          <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">Shell Course</div>
+            </div>
+          </template>
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+          <DxColumn data-field="course_no" caption="Shell Course" />
+          <DxColumn data-field="height_of_course_m" caption="Height (m)" />
+          <DxColumn data-field="t_nom_plate_mm" caption="tnom (mm)" />
+          <DxColumn data-field="tmin_prod_mm" caption="tretire (mm)" />
+
+          <DxColumn type="buttons">
+            <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" />
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="true" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper">
+        <DxDataGrid
+          id="data-table-cml"
           key-expr="id_cml"
           :data-source="dataList.cml"
           :element-attr="dataGridAttributes"
@@ -14,60 +69,40 @@
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_RECORD"
-          @row-updated="UPDATE_RECORD"
-          @row-removed="DELETE_RECORD"
         >
+          <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">CML</div>
+            </div>
+          </template>
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
             :allow-adding="true"
+            :use-icons="true"
             mode="row"
           />
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn data-field="plate_desc" caption="Plate No." />
-          <DxColumn data-field="plate_desc" caption="tnom" />
+
+          <DxColumn data-field="plate_no" caption="Plate No." />
+          <DxColumn data-field="plate_desc" caption="Plate Desc." />
           <DxColumn
             data-field="inservice_date"
-            caption="Inspection date"
+            caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            sort-order="desc"
+            :width="120"
           />
-          <DxColumn data-field="remark" caption="Remark" />
 
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
+          <DxColumn type="buttons">
+            <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" />
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
 
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
@@ -80,14 +115,14 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="true" />
+          <!-- <DxExport :enabled="true" /> -->
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_cml"
-          :data-source="dataList.cml"
+          id="data-table-tp"
+          key-expr="id_tp"
+          :data-source="dataList.tp"
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -95,153 +130,182 @@
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_RECORD"
-          @row-updated="UPDATE_RECORD"
-          @row-removed="DELETE_RECORD"
         >
+          <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">TP</div>
+            </div>
+          </template>
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
             :allow-adding="true"
+            :use-icons="true"
             mode="row"
           />
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn data-field="plate_desc" caption="Plate No." />
-          <DxColumn data-field="plate_desc" caption="tnom" />
+
+          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn data-field="tp_desc" caption="Plate Desc." />
+
+          <DxColumn type="buttons">
+            <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" />
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="true" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper">
+        <DxDataGrid
+          id="data-table-thk"
+          key-expr="id_thk"
+          :data-source="dataList.utm"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+        >
+          <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">UTM</div>
+            </div>
+          </template>
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+
+          <DxColumn data-field="plate_no" caption="Plate No." />
+          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn
+            data-field="inspection_date"
+            caption="Inspection Date"
+            data-type="date"
+            format="dd MMM yyyy"
+            :width="120"
+          />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" />
+
+          <DxColumn type="buttons">
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="true" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper" style="grid-column: span 4; margin-top: 20px">
+        <DxDataGrid
+          id="data-table-thk"
+          key-expr="id_tp"
+          :data-source="dataList.last_insp_thk"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+        >
+          <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">Thickness Summary</div>
+            </div>
+          </template>
+
+          <DxColumn data-field="id_tank_course" caption="Shell Course" />
+          <DxColumn data-field="plate_no" caption="Plate No." />
+          <DxColumn data-field="tp_name" caption="TP No." />
           <DxColumn
             data-field="inservice_date"
-            caption="Inspection date"
+            caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            sort-order="desc"
+            :width="120"
           />
-          <DxColumn data-field="remark" caption="Remark" />
-
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
+          <DxColumn data-field="t_nom" caption="tnom (mm)" />
+          <DxColumn data-field="t_req" caption="tretire (mm)" />
+          <DxColumn
+            data-field="first_insp_date"
+            caption="First Insp Date"
+            data-type="date"
+            format="dd MMM yyyy"
+            :width="120"
           />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
-          :data-source="dataList.cml"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_RECORD"
-          @row-updated="UPDATE_RECORD"
-          @row-removed="DELETE_RECORD"
-        >
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            mode="row"
+          <DxColumn
+            data-field="first_t_actual"
+            caption="First Insp Thk. (mm)"
           />
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
+          <DxColumn
+            data-field="previous_insp_date"
+            caption="Prev Insp Date"
+            data-type="date"
+            format="dd MMM yyyy"
+            :width="120"
+          />
+          <DxColumn
+            data-field="previous_t_actual"
+            caption="Prev Insp Thk. (mm)"
+          />
           <DxColumn
             data-field="inspection_date"
-            caption="Inspection date"
+            caption="Last Insp Date"
             data-type="date"
             format="dd MMM yyyy"
-            sort-order="desc"
+            :width="120"
           />
+          <DxColumn data-field="t_actual" caption="Last Insp Thk. (mm)" />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" />
+          <DxColumn data-field="scr" caption="SCR (mm/yr)" />
+          <DxColumn data-field="rl" caption="RL (yr)" />
 
-          <DxColumn data-field="report_no" caption="Report number" />
-
-          <DxColumn data-field="id_campaign" caption="Campaign">
-            <DxLookup
-              :data-source="campaigeList"
-              value-expr="id_campaign"
-              display-expr="campaign_desc"
-            />
-          </DxColumn>
-          <DxColumn data-field="remark" caption="Remark" />
-
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -250,186 +314,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
-          :data-source="dataList.cml"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_RECORD"
-          @row-updated="UPDATE_RECORD"
-          @row-removed="DELETE_RECORD"
-        >
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            mode="row"
-          />
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn
-            data-field="inspection_date"
-            caption="Inspection date"
-            data-type="date"
-            format="dd MMM yyyy"
-            sort-order="desc"
-          />
-
-          <DxColumn data-field="report_no" caption="Report number" />
-
-          <DxColumn data-field="id_campaign" caption="Campaign">
-            <DxLookup
-              :data-source="campaigeList"
-              value-expr="id_campaign"
-              display-expr="campaign_desc"
-            />
-          </DxColumn>
-          <DxColumn data-field="remark" caption="Remark" />
-
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper" style="grid-column: span 4">
-        <DxDataGrid
-          id="data-grid-style"
-          key-expr="id_inspection_record"
-          :data-source="dataList.cml"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_RECORD"
-          @row-updated="UPDATE_RECORD"
-          @row-removed="DELETE_RECORD"
-          style="margin-top: 20px"
-        >
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            mode="row"
-          />
-          <!-- <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      /> -->
-          <DxColumn
-            data-field="inspection_date"
-            caption="Inspection date"
-            data-type="date"
-            format="dd MMM yyyy"
-            sort-order="desc"
-          />
-
-          <DxColumn data-field="report_no" caption="Report number" />
-
-          <DxColumn data-field="id_campaign" caption="Campaign">
-            <DxLookup
-              :data-source="campaigeList"
-              value-expr="id_campaign"
-              display-expr="campaign_desc"
-            />
-          </DxColumn>
-          <DxColumn data-field="remark" caption="Remark" />
-
-          <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-          <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Shell Course</div>
-            </div>
-          </template>
-          <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
+          <!-- <DxExport :enabled="true" /> -->
         </DxDataGrid>
       </div>
     </div>
@@ -443,7 +328,7 @@
 
 <script>
 //API
-// import axios from "/axios.js";
+import axios from "/axios.js";
 // import moment from "moment";
 
 //Components
@@ -462,11 +347,12 @@ import {
   DxPager,
   DxScrolling,
   DxColumn,
-  DxExport,
-  //DxToolbar,
-  //DxItem,
+  // DxExport,
+  DxToolbar,
+  DxItem,
   DxEditing,
-  DxLookup,
+  // DxLookup,
+  DxButton,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -479,11 +365,12 @@ export default {
     DxPager,
     DxScrolling,
     DxColumn,
-    DxExport,
-    //DxToolbar,
-    //DxItem,
+    // DxExport,
+    DxToolbar,
+    DxItem,
     DxEditing,
-    DxLookup,
+    // DxLookup,
+    DxButton,
     innerPageName,
   },
   created() {
@@ -493,48 +380,181 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
     if (this.$store.state.status.server == true) {
-      // this.FETCH_TANK_INFO();
-      // this.FETCH_CLIENT_INFO();
+      this.FETCH_SHELL_COURSE();
+      this.FETCH_LAST_INSP_THK();
     }
   },
   data() {
     return {
       dataList: {
-        cml: [
-          {
-            id_cml: 1,
-            id_tag: 5,
-            roof_row: 1,
-            roof_column: 1,
-            roof_no: "",
-            plate_desc: "",
-            t_nom: 6.5,
-            t_req: 2.29,
-            inservice_date: "2012-01-01T00:00:00",
-          },
-          {
-            id_cml: 2,
-            id_tag: 5,
-            roof_row: 1,
-            roof_column: 3,
-            roof_no: "1-2",
-            plate_desc: null,
-            t_nom: 6.5,
-            t_req: 2.29,
-            inservice_date: "2012-01-01T00:00:00",
-          },
-        ],
+        shellcourse: [],
+        cml: [],
         tp: [],
         thk: [],
+        last_insp_thk: [],
       },
       dataGridAttributes: {
         class: "data-grid-style",
       },
       isLoading: false,
+      current_view_item: {
+        id_tank_course: null,
+        id_cml: null,
+        id_tp: null,
+        id_utm: null,
+      },
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    FETCH_SHELL_COURSE() {
+      this.isLoading = true;
+      var id = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "tank-course/tank-course-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id,
+        },
+      })
+        .then((res) => {
+          console.log("==> SHELL COURSE");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.shellcourse = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CML() {
+      this.isLoading = true;
+      var id = this.current_view_item.id_tank_course;
+      axios({
+        method: "post",
+        url: "shell-thickness/shell-thk-cml-by-Course-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tank_course: id,
+        },
+      })
+        .then((res) => {
+          console.log("==> CML");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.cml = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_TP() {
+      this.isLoading = true;
+      var id = this.current_view_item.id_cml;
+      axios({
+        method: "post",
+        url: "shell-thickness/shell-thk-tp-by-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_cml: id,
+        },
+      })
+        .then((res) => {
+          console.log("==> TP");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.tp = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_UTM() {
+      this.isLoading = true;
+      var id = this.current_view_item.id_tp;
+      axios({
+        method: "post",
+        url: "shell-thickness/shell-thk-data-by-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tp: id,
+        },
+      })
+        .then((res) => {
+          console.log("==> UTM");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.utm = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_LAST_INSP_THK() {
+      this.isLoading = true;
+      var id = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "shell-thickness/shell-thk-view-last-insp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id,
+        },
+      })
+        .then((res) => {
+          console.log("==> LAST INSP THK");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.last_insp_thk = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VIEW_CML(e) {
+      this.current_view_item.id_tank_course = e.row.key;
+      this.FETCH_CML();
+    },
+    VIEW_TP(e) {
+      this.current_view_item.id_cml = e.row.key;
+      this.FETCH_TP();
+    },
+    VIEW_UTM(e) {
+      this.current_view_item.id_tp = e.row.key;
+      this.FETCH_UTM();
+    },
+  },
 };
 </script>
 
@@ -552,7 +572,7 @@ export default {
     padding: 20px 10px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: 20% 40% 20% 20%;
+    grid-template-columns: 30% 20% 20% 30%;
     grid-template-rows: 500px 500px;
     // grid-gap: 10px;
   }
@@ -562,7 +582,11 @@ export default {
   padding: 0 10px;
 }
 
-#data-grid-style {
+.data-grid-style {
   height: 100%;
+}
+
+.page-section-label {
+  padding: 0;
 }
 </style>

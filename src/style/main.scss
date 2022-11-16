@@ -564,7 +564,8 @@ hr {
     //DATA ROW
     .dx-datagrid-borders .dx-datagrid-rowsview,
     .dx-datagrid-headers+.dx-datagrid-rowsview {
-        border: 0.5px solid #000000;
+        border: 1px solid #000000;
+        border-width: 1px 1px 1px 1px;
     }
 
     .dx-datagrid .dx-row-lines>td {
@@ -604,6 +605,15 @@ hr {
     .dx-datagrid .dx-row>td {
         padding: 8px;
         font-weight: 500;
+    }
+
+    // .dx-datagrid-header-panel .dx-toolbar {
+    //     margin-bottom: 0;
+    // }
+
+    .dx-datagrid-content .dx-datagrid-table .dx-row>td:first-child,
+    .dx-datagrid-content .dx-datagrid-table .dx-row>tr>td:first-child {
+        border-left: 1px;
     }
 }
 
