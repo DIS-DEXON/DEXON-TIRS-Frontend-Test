@@ -77,6 +77,16 @@ const routes = [
             alias: 'Thickness Roof',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Shell/Page.vue'),
           },
+          {
+            path: 'thickness/roof-nozzle',
+            alias: 'Thickness Roof Nozzle',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/RoofNz/Page.vue'),
+          },
+          {
+            path: 'thickness/shell-nozzle',
+            alias: 'Thickness Shell Nozzle',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/ShellNz/Page.vue'),
+          },
         ]
       },
     ]
