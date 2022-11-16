@@ -4,6 +4,7 @@
       id="data-grid-style"
       key-expr="id_tank_course"
       :data-source="courseList"
+      :element-attr="dataGridAttributes"
       :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
       :allow-column-reordering="true"
@@ -32,9 +33,7 @@
         caption=""
         sort-order="asc"
       />
-      <DxColumn
-        data-field="course_no"
-        caption="Course No" />
+      <DxColumn data-field="course_no" caption="Course No" />
       <DxColumn
         data-field="t_nom_plate_mm"
         caption="Nominal Shell Thk (mm)"
@@ -54,9 +53,7 @@
         header-cell-template="headerAccuH"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="id_material" 
-        caption="Tank Material">
+      <DxColumn data-field="id_material" caption="Tank Material">
         <DxLookup
           :data-source="matList"
           value-expr="id_material"
@@ -64,7 +61,7 @@
         />
       </DxColumn>
       <DxColumn
-        data-field="mat_type" 
+        data-field="mat_type"
         caption="Material Type"
         :allow-editing="false"
       />
@@ -74,67 +71,67 @@
         header-cell-template="headerY"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="t_value" 
-        caption="T" 
+      <DxColumn
+        data-field="t_value"
+        caption="T"
         header-cell-template="headerT"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="height_of_course_hydro_m" 
-        caption="Height Hydro (m)" 
+      <DxColumn
+        data-field="height_of_course_hydro_m"
+        caption="Height Hydro (m)"
         format="#,##0.00"
         header-cell-template="headerHhydro"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="height_of_course_prod_m" 
+      <DxColumn
+        data-field="height_of_course_prod_m"
         caption="Height Prod (m)"
         format="#,##0.00"
         header-cell-template="headerHprod"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="tmin_hydro_mm" 
+      <DxColumn
+        data-field="tmin_hydro_mm"
         caption="tretire Hydro (mm)"
         format="#,##0.00"
         header-cell-template="headerTrHydro"
         :allow-editing="false"
       />
-      <DxColumn 
-        data-field="tmin_prod_mm" 
-        caption="tretire Prod (mm)" 
+      <DxColumn
+        data-field="tmin_prod_mm"
+        caption="tretire Prod (mm)"
         format="#,##0.00"
         header-cell-template="headerTrProd"
         :allow-editing="false"
       />
       <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
       <template #headerTnom>
-        <div>Nominal shell thk<BR/>(mm)</div>
+        <div>Nominal shell thk<BR />(mm)</div>
       </template>
       <template #headerHofC>
-        <div>Height of course<BR/>(m)</div>
+        <div>Height of course<BR />(m)</div>
       </template>
       <template #headerAccuH>
-        <div>Accumulate height<BR/>(m)</div>
+        <div>Accumulate height<BR />(m)</div>
       </template>
       <template #headerY>
-        <div>Y<BR/>(lbf/in<sup>2</sup>)</div>
+        <div>Y<BR />(lbf/in<sup>2</sup>)</div>
       </template>
       <template #headerT>
-        <div>T<BR/>(lbf/in<sup>2</sup>)</div>
+        <div>T<BR />(lbf/in<sup>2</sup>)</div>
       </template>
       <template #headerHhydro>
-        <div>Height hydro<BR/>(m)</div>
+        <div>Height hydro<BR />(m)</div>
       </template>
       <template #headerHprod>
-        <div>Height prod<BR/>(m)</div>
+        <div>Height prod<BR />(m)</div>
       </template>
       <template #headerTrHydro>
-        <div>tmin hydro<BR/>(mm)</div>
+        <div>tmin hydro<BR />(mm)</div>
       </template>
       <template #headerTrProd>
-        <div>tmin prod<BR/>(mm)</div>
+        <div>tmin prod<BR />(mm)</div>
       </template>
       <!-- <template #cell-button-set="{ data }">
         <div class="table-btn-group">
@@ -227,6 +224,9 @@ export default {
     return {
       courseList: {},
       matList: {},
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},
@@ -366,7 +366,6 @@ export default {
         .finally(() => {});
     },
   },
-  
 };
 </script>
 

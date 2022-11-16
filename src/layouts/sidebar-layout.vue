@@ -19,7 +19,7 @@ export default {
 <style lang="scss" scoped>
 .layout {
   display: grid;
-  grid-template-columns: 240px calc(100% - 240px);
+  grid-template-columns: 200px calc(100% - 200px);
 }
 @media screen and (max-width: 1024px) {
   .layout {

@@ -11,7 +11,7 @@
       </v-ons-toolbar-button>
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
-      <div class="toolbar-info" v-if="infoTank">
+      <div class="toolbar-info mobile-none" v-if="infoTank">
         <!-- <div class="info-item">
           <label class="desc">Tag No: </label>
           <label class="value">{{ infoTank.tag_no }}</label>
@@ -165,7 +165,7 @@ export default {
 @import "@/style/main.scss";
 #app-toolbar {
   width: 100%;
-  height: 60px;
+  height: 50px;
   background: #fff;
   border: 1px solid #e6e6e6;
   border-width: 0 0 1px 0px;
@@ -252,7 +252,7 @@ export default {
     color: $dexon-primary-blue;
   }
   span {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     color: $web-font-color-black;
   }
@@ -294,7 +294,6 @@ export default {
 
     .desc,
     .value {
-      font-size: 12px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -307,10 +306,12 @@ export default {
     }
     .desc {
       color: $web-font-color-grey;
+      font-size: 10px;
     }
     .value {
       color: $web-font-color-black;
       font-weight: 600;
+      font-size: 12px;
     }
   }
 }

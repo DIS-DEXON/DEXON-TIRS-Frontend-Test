@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+    <innerPageName pageName="Thickness Messurement" breadcrumb1="Roof" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -18,12 +19,8 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
         >
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -94,13 +91,8 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
         >
-
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -154,13 +146,8 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
-
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -220,13 +207,8 @@
           :word-wrap-enabled="true"
           style="margin-top: 20px"
         >
-
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
@@ -329,6 +311,7 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -370,6 +353,7 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
+    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
