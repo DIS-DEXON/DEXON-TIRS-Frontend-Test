@@ -408,6 +408,7 @@ hr {
   border: 2px solid red;
   padding: 2px 6px 0 6px;
   line-height: 12px;
+  background-color: #ff000038;
   span {
     font-size: 10px;
     font-weight: 500;
