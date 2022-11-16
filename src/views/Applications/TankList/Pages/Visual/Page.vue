@@ -1,10 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Marked-Up Drawing"
-      :breadcrumb1="currentPage"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
       <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
@@ -142,8 +137,6 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
-
 //DataGrid
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -190,7 +183,6 @@ export default {
     DxItem,
     DxPopup,
     //DxButton,
-    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -237,21 +229,6 @@ export default {
     };
   },
   computed: {
-    currentPage() {
-      var current_page = this.$route.params.id_component;
-      if (current_page == 1) return "Annular";
-      else if (current_page == 2) return "Bottom";
-      else if (current_page == 3) return "Coil";
-      else if (current_page == 4) return "Critical Zone";
-      else if (current_page == 5) return "Piping";
-      else if (current_page == 6) return "Roof";
-      else if (current_page == 7) return "Roof Nozzle";
-      else if (current_page == 8) return "Sump";
-      else if (current_page == 9) return "Shell";
-      else if (current_page == 10) return "Shell Nozzle";
-      else if (current_page == 11) return "Projection Plate";
-      else return "";
-    },
     baseURL() {
       var mode = this.$store.state.mode;
       if (mode == "dev") return this.$store.state.modeURL.dev;
@@ -497,7 +474,6 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 41px auto;
 }
 
 .page-section {

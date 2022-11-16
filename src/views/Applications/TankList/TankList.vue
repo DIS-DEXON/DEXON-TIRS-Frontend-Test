@@ -15,6 +15,7 @@
         <DxDataGrid
           id="data-grid-style"
           :data-source="tankList"
+          :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
@@ -126,6 +127,9 @@ export default {
       editInfo: "",
       infoClient: {},
       tankList: [],
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},

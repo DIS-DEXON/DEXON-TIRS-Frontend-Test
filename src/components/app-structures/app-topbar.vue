@@ -5,7 +5,10 @@
         <div class="web-logo" v-on:click="GO_TO('/')">
           <img src="/img/logo.png" alt="" />
         </div>
-        <div class="inapp-menu" v-if="this.$store.state.currentInApp">
+        <div
+          class="inapp-menu mobile-none"
+          v-if="this.$store.state.currentInApp"
+        >
           <div class="home-btn" v-on:click="GO_TO('/')">
             <i class="las la-home"></i>
           </div>
@@ -36,6 +39,12 @@
             }}</label>
           </div>
         </div>
+        <label class="dev-mode-badge" v-if="this.$store.state.mode == 'dev'"
+          >RUNNING IN DEVELOPMENT MODE <br />
+          <span
+            >change mode to 'prod' in store/index.js before deploy</span
+          ></label
+        >
       </div>
 
       <div class="right-col" v-if="user">
@@ -43,7 +52,7 @@
           v-on:click="SHOW_POPOVER($event, 'down', true)"
           style="padding-right: 0px"
         >
-          <span>
+          <span class="mobile-none">
             {{ user.prefix_desc }} {{ user.first_name }} {{ user.middle_name }}
             {{ user.last_name }}
           </span>
@@ -56,14 +65,19 @@
           </div>
           <!-- <i class="las la-angle-down"></i> -->
         </v-ons-toolbar-button>
-        <div class="btn-group-separater" style="margin: 0 10px"></div>
-        <v-ons-toolbar-button v-on:click="SIGN_OUT()" style="padding: 0px">
-          <span style="color: #ff4438; font-weight: 500">Sign out</span>
-          <i
-            class="las la-sign-out-alt"
-            style="margin-right: 0px; color: #ff4438"
-          ></i>
-        </v-ons-toolbar-button>
+        <!-- <div
+          class="btn-group-separater mobile-none"
+          style="margin: 0 10px"
+        ></div>
+        <div class="mobile-none">
+          <v-ons-toolbar-button v-on:click="SIGN_OUT()" style="padding: 0px">
+            <span style="color: #ff4438; font-weight: 500">Sign out</span>
+            <i
+              class="las la-sign-out-alt"
+              style="margin-right: 0px; color: #ff4438"
+            ></i>
+          </v-ons-toolbar-button>
+        </div> -->
 
         <!-- POPUP PANEL -->
         <v-ons-popover
@@ -95,23 +109,23 @@
             <span>Helps</span>
             <i class="lar la-question-circle"></i>
           </v-ons-toolbar-button>
-
+          <!-- 
           <hr />
 
           <v-ons-toolbar-button class="popover-button">
             <span>เปลี่ยนเป็นภาษาไทย</span>
             <i class="fas fa-globe"></i>
-          </v-ons-toolbar-button>
+          </v-ons-toolbar-button> -->
 
-          <!-- <hr /> -->
+          <hr />
 
-          <!-- <v-ons-toolbar-button
-            class="popover-button popover-button-red"
+          <v-ons-toolbar-button
+            class="popover-button popover-button-red mobile-none"
             v-on:click="SIGN_OUT()"
           >
             <span>Log Out</span>
             <i class="las la-sign-out-alt"></i>
-          </v-ons-toolbar-button> -->
+          </v-ons-toolbar-button>
         </v-ons-popover>
       </div>
     </div>
@@ -223,7 +237,7 @@ export default {
 @import "@/style/main.scss";
 #app-topbar {
   width: 100%;
-  height: 54px;
+  height: 44px;
   position: fixed;
   z-index: 998;
   top: 0;
@@ -238,7 +252,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 54px;
+    height: 100%;
     @media screen and (max-width: 768px) {
       padding: 0;
     }
@@ -272,7 +286,7 @@ export default {
         object-fit: contain;
       }
       @media screen and (max-width: 768px) {
-        width: 60px;
+        width: 80px;
         margint-top: 4px;
       }
     }
@@ -314,7 +328,8 @@ export default {
             center/100% 100% no-repeat;
         }
         label {
-          font-size: 1.75em;
+          font-size: 12px;
+          font-weight: 600;
           margin-left: 10px;
           color: $web-font-color-grey;
         }
@@ -341,8 +356,11 @@ export default {
       border: 0;
       border-radius: 6px;
       display: flex;
+
       span {
         color: $web-font-color-grey;
+        font-size: 12px;
+        font-weight: 500;
       }
     }
     .toolbar-button:hover > span {
@@ -376,6 +394,24 @@ hr {
   i {
     font-size: 22px;
     color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dev-mode-badge {
+  text-align: center;
+  font-size: 12px;
+  color: red;
+  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid red;
+  padding: 2px 6px 0 6px;
+  line-height: 12px;
+  background-color: #ff000038;
+  span {
+    font-size: 10px;
+    font-weight: 500;
   }
 }
 </style>

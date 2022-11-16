@@ -5,6 +5,7 @@
         id="data-grid-style"
         key-expr="id_inspection_record"
         :data-source="inspRecordList"
+        :element-attr="dataGridAttributes"
         :selection="{ mode: 'single' }"
         :hover-state-enabled="true"
         :allow-column-reordering="true"
@@ -150,6 +151,9 @@ export default {
     return {
       inspRecordList: {},
       campaigeList: {},
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},

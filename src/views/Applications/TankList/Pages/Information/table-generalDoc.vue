@@ -3,6 +3,7 @@
     <DxDataGrid
       id="data-grid-style"
       :data-source="pidList"
+      :element-attr="dataGridAttributes"
       :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
       :allow-column-reordering="true"
@@ -126,6 +127,9 @@ export default {
           created_by: 3,
         },
       ],
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},

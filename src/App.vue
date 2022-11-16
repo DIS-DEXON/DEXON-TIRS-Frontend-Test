@@ -56,8 +56,8 @@ export default {
 
 .app-page {
   width: 100%;
-  height: calc(100vh - 78px);
-  padding-top: 54px;
+  height: calc(100vh - 68px);
+  padding-top: 44px;
   overflow: hidden;
 }
 

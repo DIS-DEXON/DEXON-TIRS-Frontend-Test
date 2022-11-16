@@ -2,6 +2,7 @@
   <div class="page-section">
     <DxDataGrid
       id="data-grid-style"
+      :element-attr="dataGridAttributes"
       :data-source="pidList"
       :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
@@ -126,6 +127,9 @@ export default {
           created_by: 3,
         },
       ],
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},

@@ -71,7 +71,7 @@
         </v-ons-toolbar-button>
       </router-link>
       <router-link
-        :to="'/tank/client/' + id_company + '/visual-inspection/' + id_tag"
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'"
       >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/visual.png" />
@@ -401,7 +401,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .app-sidebar {
-  width: 240px;
+  width: 200px;
   height: 100%;
   background-color: #140a4b;
   border: 1px solid #e6e6e6;
@@ -414,7 +414,7 @@ export default {
     padding-top: 20px;
 
     .section-label {
-      font-size: 1.5em;
+      font-size: 12px;
       font-weight: 400;
       color: #ffffff92;
       margin-left: 20px;
@@ -427,7 +427,7 @@ export default {
     }
 
     .item {
-      width: 200px;
+      width: 180px;
       padding: 0;
       height: 34px;
       justify-content: flex-start;
@@ -441,12 +441,12 @@ export default {
       }
       span {
         color: $web-font-color-white;
-        font-weight: 400;
-        font-size: 14px;
+        font-weight: 500;
+        font-size: 12px;
       }
       img {
-        width: 20px;
-        max-height: 20px;
+        width: 18px;
+        max-height: 18px;
         object-fit: contain;
         margin-left: 10px;
         margin-right: 10px;
@@ -484,9 +484,16 @@ export default {
   .app-sidebar {
     width: fit-content;
     .item-container {
+      width: 54px;
+      padding-top: 10px;
+      .section-label {
+        display: none;
+      }
       .item {
         width: fit-content;
-        span {
+        justify-content: center;
+        span,
+        i {
           display: none;
         }
       }
