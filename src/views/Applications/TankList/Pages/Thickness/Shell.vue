@@ -16,6 +16,7 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
+
           <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -70,15 +71,11 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_CML"
+          @row-updated="UPDATE_CML"
+          @row-removed="DELETE_CML"
         >
-          <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">CML</div>
-            </div>
-          </template>
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -106,7 +103,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -131,15 +128,18 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_TP"
+          @row-updated="UPDATE_TP"
+          @row-removed="DELETE_TP"
         >
-          <DxToolbar>
+          <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
           <template #table-header>
             <div>
               <div class="page-section-label">TP</div>
             </div>
-          </template>
+          </template> -->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -160,7 +160,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -329,7 +329,7 @@
 <script>
 //API
 import axios from "/axios.js";
-// import moment from "moment";
+import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
@@ -554,6 +554,167 @@ export default {
       this.current_view_item.id_tp = e.row.key;
       this.FETCH_UTM();
     },
+    CREATE_CML(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_tag = id_tag;
+      e.data.id_cml = 0;
+      e.data.id_tank_course = this.current_view_item.id_tank_course;
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "shell-thickness/add-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            //this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_CML(e) {
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "shell-thickness/edit-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_CML(e) {
+      console.log(e);
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "shell-thickness/delete-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_cml: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_TP(e) {
+      e.data.id_cml = this.current_view_item.id_cml;
+      e.data.id_tp = 0;
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "shell-thickness/add-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_TP(e) {
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "shell-thickness/edit-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_TP(e) {
+      console.log(e);
+      axios({
+        method: "delete",
+        url: "shell-thickness/delete-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tp: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    }
   },
 };
 </script>
