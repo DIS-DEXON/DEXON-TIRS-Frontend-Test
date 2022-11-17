@@ -16,6 +16,7 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
+
           <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -70,15 +71,11 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_CML"
+          @row-updated="UPDATE_CML"
+          @row-removed="DELETE_CML"
         >
-          <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">CML</div>
-            </div>
-          </template>
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -106,7 +103,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -131,15 +128,18 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_TP"
+          @row-updated="UPDATE_TP"
+          @row-removed="DELETE_TP"
         >
-          <DxToolbar>
+          <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
           <template #table-header>
             <div>
               <div class="page-section-label">TP</div>
             </div>
-          </template>
+          </template> -->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -160,7 +160,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -176,7 +176,7 @@
         <DxDataGrid
           id="data-table-thk"
           key-expr="id_thk"
-          :data-source="dataList.utm"
+          :data-source="dataList.thk"
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -185,15 +185,18 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_THK"
+          @row-updated="UPDATE_THK"
+          @row-removed="DELETE_THK"
         >
-          <DxToolbar>
+          <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
           <template #table-header>
             <div>
               <div class="page-section-label">UTM</div>
             </div>
-          </template>
+          </template> -->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -202,26 +205,25 @@
             mode="row"
           />
 
-          <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." />
-          <DxColumn
-            data-field="inspection_date"
-            caption="Inspection Date"
-            data-type="date"
-            format="dd MMM yyyy"
-            :width="120"
-          />
-          <DxColumn data-field="t_actual" caption="tactual (mm)" />
-
-          <DxColumn type="buttons">
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
+          <!-- <DxColumn data-field="plate_no" caption="Plate No." />
+          <DxColumn data-field="tp_name" caption="TP No." /> -->
+          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+            <DxLookup
+              :data-source="inspRecordList"
+              :display-expr="SET_FORMAT_DATE"
+              value-expr="id_inspection_record"
+            />
           </DxColumn>
+
+          <DxColumn 
+            data-field="t_actual" 
+            caption="tactual (mm)"
+          />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -256,9 +258,21 @@
             </div>
           </template>
 
-          <DxColumn data-field="id_tank_course" caption="Shell Course" />
-          <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn
+            data-field="id_tank_course" 
+            caption="Shell course"
+          />
+
+          <DxColumn
+            data-field="plate_no" 
+            caption="Plate no" 
+          />
+
+          <DxColumn 
+            data-field="tp_name" 
+            caption="TP name"
+          />
+
           <DxColumn
             data-field="inservice_date"
             caption="In-service date"
@@ -266,42 +280,84 @@
             format="dd MMM yyyy"
             :width="120"
           />
-          <DxColumn data-field="t_nom" caption="tnom (mm)" />
-          <DxColumn data-field="t_req" caption="tretire (mm)" />
+
+          <DxColumn
+            data-field="t_nom"
+            caption="tnom (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="t_req" 
+            caption="treq (mm)" 
+            format="#,##0.00"
+          />
+
           <DxColumn
             data-field="first_insp_date"
-            caption="First Insp Date"
+            caption="First date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
+
           <DxColumn
             data-field="first_t_actual"
-            caption="First Insp Thk. (mm)"
+            caption="First thickness (mm)"
+            format="#,##0.00"
           />
+
           <DxColumn
             data-field="previous_insp_date"
-            caption="Prev Insp Date"
+            caption="Previous date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
+
           <DxColumn
             data-field="previous_t_actual"
-            caption="Prev Insp Thk. (mm)"
+            caption="Previous thickness (mm)"
+            format="#,##0.00"
           />
+
           <DxColumn
             data-field="inspection_date"
-            caption="Last Insp Date"
+            caption="Last date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
-          <DxColumn data-field="t_actual" caption="Last Insp Thk. (mm)" />
-          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" />
-          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" />
-          <DxColumn data-field="scr" caption="SCR (mm/yr)" />
-          <DxColumn data-field="rl" caption="RL (yr)" />
+
+          <DxColumn 
+            data-field="t_actual" 
+            caption="Last thickness (mm)" 
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="crs" 
+            caption="ST_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="crl" 
+            caption="LT_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="scr" 
+            caption="SCR (mm/yr)" 
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="rl"
+            caption="RL (yrs)"
+            format="#,##0.00"
+          />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -329,7 +385,7 @@
 <script>
 //API
 import axios from "/axios.js";
-// import moment from "moment";
+import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
@@ -351,7 +407,7 @@ import {
   DxToolbar,
   DxItem,
   DxEditing,
-  // DxLookup,
+  DxLookup,
   DxButton,
 } from "devextreme-vue/data-grid";
 
@@ -369,7 +425,7 @@ export default {
     DxToolbar,
     DxItem,
     DxEditing,
-    // DxLookup,
+    DxLookup,
     DxButton,
     innerPageName,
   },
@@ -380,6 +436,7 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
     if (this.$store.state.status.server == true) {
+      this.FETCH_INSP_RECORD();
       this.FETCH_SHELL_COURSE();
       this.FETCH_LAST_INSP_THK();
     }
@@ -403,6 +460,7 @@ export default {
         id_tp: null,
         id_utm: null,
       },
+      inspRecordList: {},
     };
   },
   computed: {},
@@ -505,7 +563,34 @@ export default {
           console.log("==> UTM");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.dataList.utm = res.data;
+            this.dataList.thk = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_INSP_RECORD() {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "insp-record/insp-record-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          console.log("insp record:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.inspRecordList = res.data;
           }
         })
         .catch((error) => {
@@ -553,6 +638,259 @@ export default {
     VIEW_UTM(e) {
       this.current_view_item.id_tp = e.row.key;
       this.FETCH_UTM();
+    },
+    CREATE_CML(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_tag = id_tag;
+      e.data.id_cml = 0;
+      e.data.id_tank_course = this.current_view_item.id_tank_course;
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "shell-thickness/add-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            //this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_CML(e) {
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "shell-thickness/edit-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_CML(e) {
+      console.log(e);
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "shell-thickness/delete-shell-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_cml: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_TP(e) {
+      e.data.id_cml = this.current_view_item.id_cml;
+      e.data.id_tp = 0;
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "shell-thickness/add-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_TP(e) {
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "shell-thickness/edit-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_TP(e) {
+      console.log(e);
+      axios({
+        method: "delete",
+        url: "shell-thickness/delete-shell-thk-tp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tp: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_TP();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_THK(e) {
+      e.data.id_thk = 0;
+      e.data.id_tp = this.current_view_item.id_tp;
+      var date = this.inspRecordList.filter(function (v) {
+        return v.id_inspection_record == e.data.id_inspection_record;
+      });
+      e.data.inspection_date = moment(date[0].inspection_date).format("L");
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "shell-thickness/add-shell-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_UTM();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_THK(e) {
+      console.log(e.data);
+      var date = this.inspRecordList.filter(function (v) {
+        return v.id_inspection_record == e.data.id_inspection_record;
+      });
+      e.data.inspection_date = moment(date[0].inspection_date).format("L");
+      console.log(e.data);
+      this.isLoading = true;
+      axios({
+        method: "put",
+        url: "shell-thickness/edit-shell-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_UTM();
+            //this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_THK(e) {
+      console.log(e);
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "shell-thickness/delete-shell-thk-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_thk: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_UTM();
+            // this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    SET_FORMAT_DATE(e) {
+      // console.log(e);
+      return moment(e.inspection_date).format("DD MMM yyyy");
     },
   },
 };
