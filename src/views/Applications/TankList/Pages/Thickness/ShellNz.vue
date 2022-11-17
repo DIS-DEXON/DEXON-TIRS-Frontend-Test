@@ -760,7 +760,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.FETCH_TP();
+            this.FETCH_THK();
             this.FETCH_VIEW();
           }
         })
