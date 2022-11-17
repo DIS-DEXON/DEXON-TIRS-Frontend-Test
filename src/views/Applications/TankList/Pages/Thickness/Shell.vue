@@ -258,9 +258,21 @@
             </div>
           </template>
 
-          <DxColumn data-field="id_tank_course" caption="Shell Course" />
-          <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn
+            data-field="id_tank_course" 
+            caption="Shell course"
+          />
+
+          <DxColumn
+            data-field="plate_no" 
+            caption="Plate no" 
+          />
+
+          <DxColumn 
+            data-field="tp_name" 
+            caption="TP name"
+          />
+
           <DxColumn
             data-field="inservice_date"
             caption="In-service date"
@@ -268,42 +280,84 @@
             format="dd MMM yyyy"
             :width="120"
           />
-          <DxColumn data-field="t_nom" caption="tnom (mm)" />
-          <DxColumn data-field="t_req" caption="tretire (mm)" />
+
+          <DxColumn
+            data-field="t_nom"
+            caption="tnom (mm)"
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="t_req" 
+            caption="treq (mm)" 
+            format="#,##0.00"
+          />
+
           <DxColumn
             data-field="first_insp_date"
-            caption="First Insp Date"
+            caption="First date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
+
           <DxColumn
             data-field="first_t_actual"
-            caption="First Insp Thk. (mm)"
+            caption="First thickness (mm)"
+            format="#,##0.00"
           />
+
           <DxColumn
             data-field="previous_insp_date"
-            caption="Prev Insp Date"
+            caption="Previous date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
+
           <DxColumn
             data-field="previous_t_actual"
-            caption="Prev Insp Thk. (mm)"
+            caption="Previous thickness (mm)"
+            format="#,##0.00"
           />
+
           <DxColumn
             data-field="inspection_date"
-            caption="Last Insp Date"
+            caption="Last date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
           />
-          <DxColumn data-field="t_actual" caption="Last Insp Thk. (mm)" />
-          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" />
-          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" />
-          <DxColumn data-field="scr" caption="SCR (mm/yr)" />
-          <DxColumn data-field="rl" caption="RL (yr)" />
+
+          <DxColumn 
+            data-field="t_actual" 
+            caption="Last thickness (mm)" 
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="crs" 
+            caption="ST_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn
+            data-field="crl" 
+            caption="LT_CR (mm/yr)"
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="scr" 
+            caption="SCR (mm/yr)" 
+            format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="rl"
+            caption="RL (yrs)"
+            format="#,##0.00"
+          />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
