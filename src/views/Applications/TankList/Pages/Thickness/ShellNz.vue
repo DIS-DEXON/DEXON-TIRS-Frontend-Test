@@ -575,6 +575,7 @@ export default {
     UPDATE_CML(e) {
       console.log(e);
       this.isLoading = true;
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
       axios({
         method: "put",
         url: "shellnz-thickness/edit-shellnz-thk-cml",
@@ -708,7 +709,7 @@ export default {
       var date = this.inspRecordList.filter(function (v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
-      e.data.inspection_date = date[0].inspection_date;
+      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       this.isLoading = true;
       axios({
@@ -737,7 +738,7 @@ export default {
       var date = this.inspRecordList.filter(function (v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
-      e.data.inspection_date = date[0].inspection_date;
+      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       this.isLoading = true;
       axios({
