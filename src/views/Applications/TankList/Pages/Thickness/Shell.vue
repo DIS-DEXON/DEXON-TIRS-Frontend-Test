@@ -356,7 +356,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "ViewTankInformation",
+  name: "ViewThicknessShell",
   components: {
     contentLoading,
     DxDataGrid,

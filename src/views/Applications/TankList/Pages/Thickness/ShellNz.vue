@@ -1,5 +1,9 @@
 <template>
   <div class="page-container">
+    <innerPageName
+      pageName="Thickness Messurement"
+      breadcrumb1="Shell Nozzle"
+    />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -18,12 +22,8 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
         >
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -32,14 +32,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="shellnz_no" caption="Nozzle no." sort-order="asc" />
+          <DxColumn
+            data-field="shellnz_no"
+            caption="Nozzle no."
+            sort-order="asc"
+          />
 
           <DxColumn data-field="nps" caption="DIA (in)" />
 
-          <DxColumn
-            data-field="material_type"
-            caption="Material type"
-          >
+          <DxColumn data-field="material_type" caption="Material type">
             <DxLookup
               :data-source="matList"
               display-expr="code"
@@ -104,13 +105,8 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
         >
-
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -164,13 +160,8 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
-
-          <DxFilterRow
-            :visible="true"
-          />
-          <DxHeaderFilter
-            :visible="true"
-          />
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -230,16 +221,14 @@
           :word-wrap-enabled="true"
           style="margin-top: 20px"
         >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
-          <DxFilterRow
-            :visible="true"
+          <DxColumn
+            data-field="shellnz_no"
+            caption="Nozzle no."
+            sort-order="asc"
           />
-          <DxHeaderFilter
-            :visible="true"
-          />
-          
-          <DxColumn data-field="shellnz_no" caption="Nozzle no." sort-order="asc" />
-
 
           <DxColumn data-field="tp_name" caption="TP name" />
 
@@ -338,6 +327,7 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -362,7 +352,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "ViewTankInformation",
+  name: "ViewThicknessShellNozzle",
   components: {
     contentLoading,
     DxDataGrid,
@@ -379,6 +369,7 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
+    innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -408,11 +399,11 @@ export default {
         class: "data-grid-style",
       },
       matList: [
-        { "code" : "CS" },
-        { "code" : "SS" },
-        { "code" : "Duplex" },
-        { "code" : "Unknown" },
-      ]
+        { code: "CS" },
+        { code: "SS" },
+        { code: "Duplex" },
+        { code: "Unknown" },
+      ],
     };
   },
   computed: {},

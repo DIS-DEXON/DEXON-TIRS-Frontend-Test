@@ -336,7 +336,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "ViewTankInformation",
+  name: "ViewThicknessRoof",
   components: {
     contentLoading,
     DxDataGrid,
@@ -415,7 +415,7 @@ export default {
     },
     FETCH_TP() {
       console.log(this.id_cml);
-      this.isLoading = true;
+
       axios({
         method: "post",
         url: "roof-thickness/roof-thk-tp-by-cml",
@@ -436,13 +436,11 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_THK() {
       console.log(this.id_tp);
-      this.isLoading = true;
+
       axios({
         method: "post",
         url: "roof-thickness/roof-thk-data-by-tp",
@@ -463,16 +461,13 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_VIEW() {
-      this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roof-thickness/roof-thk-view-last-insp",
+        url: "bottom-thickness/bottom-thk-view-by-tank-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -490,9 +485,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_INSP_RECORD() {
       this.isLoading = true;
@@ -689,7 +682,7 @@ export default {
       });
       e.data.inspection_date = date[0].inspection_date;
       console.log(e.data);
-      this.isLoading = true;
+
       axios({
         method: "post",
         url: "roof-thickness/add-roof-thk-data",
@@ -708,9 +701,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     UPDATE_THK(e) {
       var date = this.inspRecordList.filter(function (v) {
@@ -743,7 +734,7 @@ export default {
     },
     DELETE_THK(e) {
       console.log(e);
-      this.isLoading = true;
+
       axios({
         method: "delete",
         url: "roof-thickness/delete-roof-thk-data",
@@ -764,9 +755,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     VIEW_TP(e) {
       console.log(e);

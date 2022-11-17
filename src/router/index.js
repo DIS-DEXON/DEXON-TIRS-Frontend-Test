@@ -92,6 +92,11 @@ const routes = [
             alias: 'Thickness Shell Nozzle',
             component: () => import('../views/Applications/TankList/Pages/Thickness/ShellNz.vue'),
           },
+          {
+            path: 'thickness/bottom',
+            alias: 'Thickness Shell Bottom',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Bottom.vue'),
+          },
         ]
       },
     ]

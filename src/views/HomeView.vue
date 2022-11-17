@@ -533,7 +533,7 @@ h2 {
     }
   }
   .title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -565,7 +565,7 @@ h2 {
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
       "Fira Sans", Roboto, Oxygen, Ubuntu, "Droid Sans", "Arial", sans-serif;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 14px;
     color: #000;
     box-sizing: border-box;
     padding: 0 30px 0 70px;

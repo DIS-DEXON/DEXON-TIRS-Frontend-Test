@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Roof Nozzle" />
+    <innerPageName pageName="Thickness Messurement" breadcrumb1="Bottom" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -21,6 +21,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -30,28 +31,19 @@
           />
 
           <DxColumn
-            data-field="roofnz_no"
-            caption="Nozzle no."
+            data-field="bottom_no"
+            caption="Plate No."
             sort-order="asc"
           />
-
-          <DxColumn data-field="nps" caption="DIA (in)" />
-
-          <DxColumn data-field="material_type" caption="Material type">
-            <DxLookup
-              :data-source="matList"
-              display-expr="code"
-              value-expr="code"
-            />
-          </DxColumn>
+          <DxColumn data-field="bottom_row" caption="Row" />
+          <DxColumn data-field="bottom_column" caption="Column" />
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="t_req"
-            caption="treq (mm)"
+            caption="tretire (mm)"
             format="#,##0.00"
-            :allow-editing="false"
           />
 
           <DxColumn
@@ -113,9 +105,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP Name" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" />
+          <DxColumn data-field="tp_desc" caption="TP Desc" />
 
           <DxColumn type="buttons">
             <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" />
@@ -128,7 +120,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -191,7 +183,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -222,10 +214,14 @@
           <DxHeaderFilter :visible="true" />
 
           <DxColumn
-            data-field="roofnz_no"
-            caption="Nozzle no."
+            data-field="bottom_no"
+            caption="Plate No."
             sort-order="asc"
           />
+
+          <DxColumn data-field="bottom_row" caption="Row" />
+
+          <DxColumn data-field="bottom_column" caption="Column" />
 
           <DxColumn data-field="tp_name" caption="TP name" />
 
@@ -296,7 +292,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -349,7 +345,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "ViewThicknessRoofNozzle",
+  name: "ViewThicknessBottom",
   components: {
     contentLoading,
     DxDataGrid,
@@ -395,12 +391,6 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
-      matList: [
-        { code: "CS" },
-        { code: "SS" },
-        { code: "Duplex" },
-        { code: "Unknown" },
-      ],
     };
   },
   computed: {},
@@ -410,7 +400,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roofnz-thickness/roofnz-thk-cml-by-tank-id",
+        url: "bottom-thickness/bottom-thk-cml-by-tank-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -434,10 +424,10 @@ export default {
     },
     FETCH_TP() {
       console.log(this.id_cml);
-      this.isLoading = true;
+
       axios({
         method: "post",
-        url: "roofnz-thickness/roofnz-thk-tp-by-cml",
+        url: "bottom-thickness/bottom-thk-tp-by-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -455,16 +445,14 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_THK() {
       console.log(this.id_tp);
-      this.isLoading = true;
+
       axios({
         method: "post",
-        url: "roofnz-thickness/roofnz-thk-data-by-tp",
+        url: "bottom-thickness/bottom-thk-data-by-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -482,16 +470,13 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_VIEW() {
-      this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roofnz-thickness/roofnz-thk-view-last-insp",
+        url: "bottom-thickness/bottom-thk-view-last-insp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -509,9 +494,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     FETCH_INSP_RECORD() {
       this.isLoading = true;
@@ -541,15 +524,15 @@ export default {
         });
     },
     CREATE_CML(e) {
-      this.isLoading = true;
+      console.log(e);
       var id_tag = this.$route.params.id_tag;
       e.data.id_tag = id_tag;
       e.data.id_cml = 0;
       e.data.inservice_date = moment(e.data.inservice_date).format("L");
-      console.log(e.data);
+      console.log(e);
       axios({
         method: "post",
-        url: "roofnz-thickness/add-roofnz-thk-cml",
+        url: "bottom-thickness/add-bottom-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -565,16 +548,14 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     UPDATE_CML(e) {
       console.log(e);
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roofnz-thickness/edit-roofnz-thk-cml",
+        url: "bottom-thickness/edit-bottom-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -599,7 +580,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "roofnz-thickness/delete-roofnz-thk-cml",
+        url: "bottom-thickness/delete-bottom-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -628,7 +609,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roofnz-thickness/add-roofnz-thk-tp",
+        url: "bottom-thickness/add-bottom-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -653,7 +634,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roofnz-thickness/edit-roofnz-thk-tp",
+        url: "bottom-thickness/edit-bottom-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -677,7 +658,7 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "roofnz-thickness/delete-roofnz-thk-tp",
+        url: "bottom-thickness/delete-bottom-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -710,7 +691,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "roofnz-thickness/add-roofnz-thk-data",
+        url: "bottom-thickness/add-bottom-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -739,7 +720,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "roofnz-thickness/edit-roofnz-thk-data",
+        url: "bottom-thickness/edit-bottom-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -764,7 +745,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "roofnz-thickness/delete-roofnz-thk-data",
+        url: "bottom-thickness/delete-bottom-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
