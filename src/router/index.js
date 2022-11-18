@@ -102,6 +102,11 @@ const routes = [
             alias: 'Thickness Shell Annular',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Annular.vue'),
           },
+          {
+            path: 'thickness/coil',
+            alias: 'Coil',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Coil.vue'),
+          },
         ]
       },
     ]
