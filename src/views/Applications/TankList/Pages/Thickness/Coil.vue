@@ -46,7 +46,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -60,7 +60,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-table-cml"
+          id="cml-grid"
           key-expr="id_cml"
           :data-source="dataList.cml"
           :element-attr="dataGridAttributes"
@@ -108,6 +108,13 @@
             data-field="t_nom" 
             caption="tnom (mm)" 
             format="#,##0.00"
+          />
+
+          <DxColumn 
+            data-field="t_req" 
+            caption="treq (mm)" 
+            format="#,##0.00"
+            :allow-editing="false"
           />
 
           <DxColumn 
@@ -169,7 +176,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-table-tp"
+          id="tp-grid"
           key-expr="id_tp"
           :data-source="dataList.tp"
           :element-attr="dataGridAttributes"
@@ -232,7 +239,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="data-table-thk"
+          id="thk-grid"
           key-expr="id_thk"
           :data-source="dataList.thk"
           :element-attr="dataGridAttributes"
@@ -295,7 +302,7 @@
       </div>
       <div class="table-wrapper" style="grid-column: span 4; margin-top: 20px">
         <DxDataGrid
-          id="data-table-thk"
+          id="view-grid"
           key-expr="id_tp"
           :data-source="dataList.last_insp_thk"
           :element-attr="dataGridAttributes"
@@ -317,13 +324,13 @@
           </template>
 
           <DxColumn
-            data-field="id_tank_course" 
-            caption="Shell course"
+            data-field="coil_no" 
+            caption="Coil No." 
           />
 
-          <DxColumn
-            data-field="plate_no" 
-            caption="Plate no" 
+          <DxColumn 
+            data-field="cml_name" 
+            caption="CML name"
           />
 
           <DxColumn 
@@ -561,7 +568,7 @@ export default {
       var id = this.current_view_item.id_coil;
       axios({
         method: "post",
-        url: "coil-thickness/coil-thk-cml-by-coil-id",
+        url: "coil-thickness/coil-thk-cml-view-by-coil-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
