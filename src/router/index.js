@@ -97,6 +97,11 @@ const routes = [
             alias: 'Thickness Shell Bottom',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Bottom.vue'),
           },
+          {
+            path: 'thickness/annular',
+            alias: 'Thickness Shell Annular',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Annular.vue'),
+          },
         ]
       },
     ]
