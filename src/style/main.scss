@@ -520,7 +520,8 @@ hr {
     .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover>tr>td {
         background-color: #eb1851;
         color: #fff;
-
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
 
     }
 
