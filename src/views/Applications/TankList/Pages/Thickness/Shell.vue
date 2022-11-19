@@ -15,6 +15,7 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @selection-changed="VIEW_CML"
         >
 
           <DxToolbar>
@@ -25,6 +26,9 @@
               <div class="page-section-label">Shell Course</div>
             </div>
           </template>
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" /> 
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -38,7 +42,7 @@
           <DxColumn data-field="tmin_prod_mm" caption="tretire (mm)" />
 
           <DxColumn type="buttons">
-            <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" />
+            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
             <DxButton name="edit" hint="Edit" icon="edit" />
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
@@ -74,7 +78,12 @@
           @row-inserted="CREATE_CML"
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
+          @selection-changed="VIEW_TP"
         >
+
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" /> 
 
           <DxEditing
             :allow-updating="true"
@@ -95,7 +104,7 @@
           />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
             <DxButton name="edit" hint="Edit" icon="edit" />
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
@@ -131,7 +140,11 @@
           @row-inserted="CREATE_TP"
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
+          @selection-changed="VIEW_UTM"
         >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" /> 
           <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -152,7 +165,7 @@
           <DxColumn data-field="tp_desc" caption="Plate Desc." />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
             <DxButton name="edit" hint="Edit" icon="edit" />
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
@@ -189,14 +202,8 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
-          <!-- <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">UTM</div>
-            </div>
-          </template> -->
+        <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -409,6 +416,9 @@ import {
   DxEditing,
   DxLookup,
   DxButton,
+  DxHeaderFilter,
+  DxFilterRow,
+  DxSelection,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -428,6 +438,9 @@ export default {
     DxLookup,
     DxButton,
     innerPageName,
+    DxHeaderFilter,
+    DxFilterRow,
+    DxSelection,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -628,15 +641,15 @@ export default {
         });
     },
     VIEW_CML(e) {
-      this.current_view_item.id_tank_course = e.row.key;
+      this.current_view_item.id_tank_course = e.selectedRowKeys[0];
       this.FETCH_CML();
     },
     VIEW_TP(e) {
-      this.current_view_item.id_cml = e.row.key;
+      this.current_view_item.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
     },
     VIEW_UTM(e) {
-      this.current_view_item.id_tp = e.row.key;
+      this.current_view_item.id_tp = e.selectedRowKeys[0];
       this.FETCH_UTM();
     },
     CREATE_CML(e) {

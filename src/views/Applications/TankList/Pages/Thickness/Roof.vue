@@ -161,7 +161,11 @@
             mode="row"
           />
 
-          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+          <DxColumn 
+            data-field="id_inspection_record" 
+            caption="Inspection date"
+            sort-order="desc"
+          >
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
