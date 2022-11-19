@@ -36,6 +36,19 @@
             <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
           </div>
 
+          <div class="input-set" style="grid-row: span 2">
+            <div class="label-box">
+              <p class="label">Description:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <textarea
+              type="text"
+              v-model="formData.tag_no"
+              placeholder="Description"
+              style="height: calc(100% - 32px)"
+            />
+          </div>
+
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Status:</p>
