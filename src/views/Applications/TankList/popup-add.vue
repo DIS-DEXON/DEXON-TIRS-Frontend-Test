@@ -39,13 +39,26 @@
           <div class="input-set" style="grid-row: span 2">
             <div class="label-box">
               <p class="label">Description:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <textarea
               type="text"
               v-model="formData.tag_no"
               placeholder="Description"
               style="height: calc(100% - 32px)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Product:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_product"
+              :data-source="formSelect.product"
+              display-expr="code"
+              value-expr="id"
             />
           </div>
 
@@ -166,6 +179,12 @@
           </div>
         </div>
       </div>
+      <div
+        class="popup-content loading-section"
+        v-if="all_form_select_loaded == false"
+      >
+        <contentLoading text="Loading, please wait..." color="#fc9b21" />
+      </div>
       <div class="popup-footer">
         <div class="button-set">
           <button class="blue" v-on:click="SAVE()">
@@ -185,6 +204,8 @@ import axios from "/axios.js";
 import DxSelectBox from "devextreme-vue/select-box";
 // import DxDateBox from "devextreme-vue/date-box";
 // import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
+import contentLoading from "@/components/app-structures/app-content-loading.vue";
+
 export default {
   name: "popup-add-project",
   components: {
@@ -192,6 +213,7 @@ export default {
     // DxDateBox,
     // DxLookup,
     // DxDropDownOptions,
+    contentLoading,
   },
   data() {
     return {
@@ -200,8 +222,19 @@ export default {
       },
       formSelect: {
         tank_status: [],
+        product: [],
       },
     };
+  },
+  computed: {
+    all_form_select_loaded() {
+      if (
+        this.formSelect.tank_status.length > 0 &&
+        this.formSelect.product.length > 0
+      ) {
+        return true;
+      } else return false;
+    },
   },
   created() {
     this.FETCH_DROPDOWN();
@@ -304,6 +337,7 @@ export default {
     },
     FETCH_DROPDOWN() {
       this.FETCH_DROPDOWN_TANK_STATUS();
+      this.FETCH_DROPDOWN_PRODUCT();
     },
     FETCH_DROPDOWN_TANK_STATUS() {
       axios({
@@ -315,6 +349,19 @@ export default {
       }).then((res) => {
         if (res.data) {
           this.formSelect.tank_status = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_PRODUCT() {
+      axios({
+        method: "get",
+        url: "/MdProduct",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.product = res.data;
         }
       });
     },
