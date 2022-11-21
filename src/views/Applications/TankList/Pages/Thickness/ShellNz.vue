@@ -21,9 +21,11 @@
           @row-inserted="CREATE_CML"
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
+          @selection-changed="VIEW_TP"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" /> 
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -66,7 +68,7 @@
           />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -104,9 +106,11 @@
           @row-inserted="CREATE_TP"
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
+          @selection-changed="VIEW_THK"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" /> 
 
           <DxEditing
             :allow-updating="true"
@@ -121,7 +125,7 @@
           <DxColumn data-field="tp_desc" caption="TP desc" />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -131,7 +135,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -194,7 +198,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -299,7 +303,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -349,6 +353,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
+  DxSelection,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -370,6 +375,7 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     innerPageName,
+    DxSelection,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -792,12 +798,12 @@ export default {
     },
     VIEW_TP(e) {
       console.log(e);
-      this.id_cml = e.row.key;
+      this.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
     },
     VIEW_THK(e) {
       console.log(e);
-      this.id_tp = e.row.key;
+      this.id_tp = e.selectedRowKeys[0];
       this.FETCH_THK();
     },
     SET_FORMAT_DATE(e) {

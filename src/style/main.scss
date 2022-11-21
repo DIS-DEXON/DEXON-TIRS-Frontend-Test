@@ -518,9 +518,10 @@ hr {
     .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused)>tr>td,
     .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover>td,
     .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover>tr>td {
-        background-color: #fcfcfc;
-        color: $dexon-primary-blue;
-
+        background-color: #eb1851;
+        color: #fff;
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
 
     }
 
@@ -620,6 +621,23 @@ hr {
     .dx-datagrid-content .dx-datagrid-table .dx-row>tr>td:first-child {
         border-left: 1px;
     }
+
+    .dx-datagrid-rowsview .dx-row-focused.dx-data-row > td:not(.dx-focused) {
+        background-color: #eb1851;
+    }
+
+    .dx-datagrid-rowsview .dx-row-focused.dx-data-row .dx-command-edit:not(.dx-focused) .dx-link {
+        background-color: transparent;
+    }
+
+    .dx-datagrid .dx-link {
+        color: #140a4b;
+    }
+
+    .dx-texteditor-container {
+        border-radius: 0;
+    }
+
 }
 
 .loader-box {
