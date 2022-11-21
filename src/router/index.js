@@ -107,6 +107,11 @@ const routes = [
             alias: 'Coil',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Coil.vue'),
           },
+          {
+            path: 'thickness/piping',
+            alias: 'Coil',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/Piping.vue'),
+          },
         ]
       },
     ]
