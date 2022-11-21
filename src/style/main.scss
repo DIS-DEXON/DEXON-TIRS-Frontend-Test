@@ -622,7 +622,7 @@ hr {
         border-left: 1px;
     }
 
-    .dx-datagrid-rowsview .dx-row-focused.dx-data-row > td:not(.dx-focused) {
+    .dx-datagrid-rowsview .dx-row-focused.dx-data-row>td:not(.dx-focused) {
         background-color: #eb1851;
     }
 
@@ -1500,7 +1500,7 @@ hr {
     }
 
     @media screen and (max-width: 1600px) {
-        top: 124px;
+        top: 144px;
 
         .btn-panel {
             flex-direction: row;
