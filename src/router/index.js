@@ -117,6 +117,11 @@ const routes = [
             alias: 'Sump',
             component: () => import('../views/Applications/TankList/Pages/Thickness/Sump.vue'),
           },
+          {
+            path: 'thickness/critical-zone',
+            alias: 'Sump',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/CriticalZone.vue'),
+          },
         ]
       },
     ]
