@@ -77,13 +77,14 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Construction Code:</p>
+              <p class="label">In-service Date:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.construction_code"
-              placeholder="Construction Code"
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.inservice_date"
+              placeholder="In-service Date"
             />
           </div>
 
@@ -202,7 +203,7 @@
 <script>
 import axios from "/axios.js";
 import DxSelectBox from "devextreme-vue/select-box";
-// import DxDateBox from "devextreme-vue/date-box";
+import DxDateBox from "devextreme-vue/date-box";
 // import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
@@ -210,7 +211,7 @@ export default {
   name: "popup-add-project",
   components: {
     DxSelectBox,
-    // DxDateBox,
+    DxDateBox,
     // DxLookup,
     // DxDropDownOptions,
     contentLoading,
@@ -223,6 +224,7 @@ export default {
       formSelect: {
         tank_status: [],
         product: [],
+        now: [],
       },
     };
   },
