@@ -1,24 +1,24 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Sump" />
+    <innerPageName pageName="Thickness Messurement" breadcrumb1="Critical Zone" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
-          id="sump-grid"
-          key-expr="id_sump"
-          :data-source="dataList.sump"
+          id="cml-grid"
+          key-expr="id_cml"
           :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
+          :data-source="dataList.cml"
           :hover-state-enabled="true"
+          :focused-row-enabled="false"
           :allow-column-reordering="true"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_SUMP"
-          @row-updated="UPDATE_SUMP"
-          @row-removed="DELETE_SUMP"
-          @selection-changed="VIEW_CML"
+          @row-inserted="CREATE_CML"
+          @row-updated="UPDATE_CML"
+          @row-removed="DELETE_CML"
+          @selection-changed="VIEW_TP"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -31,94 +31,21 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn 
-            data-field="sump_no" 
-            caption="Sump no"
+
+          <DxColumn
+            data-field="plate_no"
+            caption="Plate No."
+            sort-order="asc"
           />
+          <DxColumn data-field="plate_row" caption="Row" />
+          <DxColumn data-field="plate_column" caption="Column" />
 
-          <DxColumn 
-            data-field="sump_name" 
-            caption="Sump name"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="cml-grid"
-          key-expr="id_cml"
-          :data-source="dataList.cml"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_CML"
-          @row-updated="UPDATE_CML"
-          @row-removed="DELETE_CML"
-          @selection-changed="VIEW_TP"
-        >
-
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" />
-
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            :use-icons="true"
-            mode="row"
-          />
-
-          <DxColumn 
-            data-field="cml_no" 
-            caption="CML no" 
-          />
-
-          <DxColumn 
-            data-field="cml_name" 
-            caption="CML name" 
-          />
-
-          <DxColumn 
-            data-field="location" 
-            caption="Location" 
-          />
-
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)" 
+          <DxColumn
+            data-field="t_req"
+            caption="tretire (mm)"
             format="#,##0.00"
-          />
-
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
-            format="#,##0.00"
-            :allow-editing="false"
           />
 
           <DxColumn
@@ -131,7 +58,9 @@
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
+
             <DxButton name="edit" hint="Edit" icon="edit" />
+
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
 
@@ -147,16 +76,16 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
         <DxDataGrid
           id="tp-grid"
           key-expr="id_tp"
-          :data-source="dataList.tp"
           :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
+          :data-source="dataList.tp"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
@@ -166,20 +95,12 @@
           @row-inserted="CREATE_TP"
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
-          @selection-changed="VIEW_UTM"
+          @selection-changed="VIEW_THK"
         >
-
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
           <DxSelection mode="single" /> 
-          <!-- <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">TP</div>
-            </div>
-          </template> -->
+
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -188,18 +109,15 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP No."
-          />
-          <DxColumn 
-            data-field="tp_desc" 
-            caption="TP Desc." 
-          />
+          <DxColumn data-field="tp_name" caption="TP Name" />
+
+          <DxColumn data-field="tp_desc" caption="TP Desc" />
 
           <DxColumn type="buttons">
-            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
+
             <DxButton name="edit" hint="Edit" icon="edit" />
+
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
 
@@ -213,18 +131,18 @@
             :allowed-page-sizes="[5, 10, 20]"
             :show-navigation-buttons="true"
             :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
+            info-text="Page {0} of {1} ({2} i tems)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
         <DxDataGrid
           id="thk-grid"
           key-expr="id_thk"
-          :data-source="dataList.thk"
           :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
+          :data-source="dataList.thk"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
@@ -235,6 +153,8 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxEditing
             :allow-updating="true"
@@ -244,10 +164,6 @@
             mode="row"
           />
 
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <!-- <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." /> -->
           <DxColumn data-field="id_inspection_record" caption="Inspection date">
             <DxLookup
               :data-source="inspRecordList"
@@ -256,11 +172,17 @@
             />
           </DxColumn>
 
-          <DxColumn 
-            data-field="t_actual" 
+          <DxColumn
+            data-field="t_actual"
             caption="tactual (mm)"
             format="#,##0.00"
           />
+
+          <DxColumn type="buttons">
+            <DxButton name="edit" hint="Edit" icon="edit" />
+
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -274,45 +196,42 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
-      <div class="table-wrapper" style="grid-column: span 4; margin-top: 20px">
+      <div class="table-wrapper" style="grid-column: span 3">
         <DxDataGrid
           id="view-grid"
-          key-expr="id_tp"
-          :data-source="dataList.last_insp_thk"
+          key-expr="id_thk"
           :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
+          :data-source="dataList.view"
+          :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          style="margin-top: 20px"
         >
-          <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">Thickness Summary</div>
-            </div>
-          </template>
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxColumn
-            data-field="sump_no" 
-            caption="Sump No." 
+            data-field="plate_no"
+            caption="Plate No."
+            sort-order="asc"
           />
 
           <DxColumn 
-            data-field="cml_name" 
-            caption="CML name"
+            data-field="plate_desc" 
+            caption="Plate desc" 
           />
 
           <DxColumn 
             data-field="tp_name" 
-            caption="TP name"
+            caption="TP name" 
+            sort-order="asc"
           />
 
           <DxColumn
@@ -320,27 +239,17 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
-          <DxColumn
-            data-field="t_nom"
-            caption="tnom (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="first_insp_date"
             caption="First date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
           <DxColumn
@@ -354,7 +263,6 @@
             caption="Previous date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
           <DxColumn
@@ -368,42 +276,32 @@
             caption="Last date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
-          <DxColumn 
-            data-field="t_actual" 
-            caption="Last thickness (mm)" 
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="crs" 
+          <DxColumn
+            data-field="crs"
             caption="ST_CR (mm/yr)"
             format="#,##0.00"
           />
 
           <DxColumn
-            data-field="crl" 
+            data-field="crl"
             caption="LT_CR (mm/yr)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="scr" 
-            caption="SCR (mm/yr)" 
-            format="#,##0.00"
-          />
-
-          <DxColumn 
-            data-field="rl"
-            caption="RL (yrs)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="false" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -412,7 +310,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>
@@ -445,9 +343,9 @@ import {
   DxPager,
   DxScrolling,
   DxColumn,
-  // DxExport,
-  DxToolbar,
-  DxItem,
+  DxExport,
+  //DxToolbar,
+  //DxItem,
   DxEditing,
   DxLookup,
   DxButton,
@@ -457,7 +355,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "ViewThicknessSump",
+  name: "ViewThicknessBottom",
   components: {
     contentLoading,
     DxDataGrid,
@@ -466,15 +364,15 @@ export default {
     DxPager,
     DxScrolling,
     DxColumn,
-    // DxExport,
-    DxToolbar,
-    DxItem,
+    DxExport,
+    //DxToolbar,
+    //DxItem,
     DxEditing,
     DxLookup,
     DxButton,
-    innerPageName,
     DxHeaderFilter,
     DxFilterRow,
+    innerPageName,
     DxSelection,
   },
   created() {
@@ -485,82 +383,44 @@ export default {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
-      this.FETCH_SUMP();
-      this.FETCH_LAST_INSP_THK();
+      this.FETCH_CML();
+      this.FETCH_VIEW();
     }
   },
   data() {
     return {
       dataList: {
-        sump: [],
         cml: [],
         tp: [],
         thk: [],
-        last_insp_thk: [],
+        view: [],
       },
+      isLoading: false,
+      id_cml: 0,
+      id_tp: 0,
+      inspRecordList: {},
       dataGridAttributes: {
         class: "data-grid-style",
       },
-      isLoading: false,
-      current_view_item: {
-        id_sump: null,
-        id_cml: null,
-        id_tp: null,
-        id_utm: null,
-      },
-      inspRecordList: {},
-      matList: [
-        { code: "CS" },
-        { code: "SS" },
-        { code: "Duplex" },
-        { code: "Unknown" },
-      ],
     };
   },
   computed: {},
   methods: {
-    FETCH_SUMP() {
-      this.isLoading = true;
-      var id = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "sump-thickness/sump-info-by-tank-id",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id,
-        },
-      })
-        .then((res) => {
-          console.log("==> sump");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.dataList.sump = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
     FETCH_CML() {
       this.isLoading = true;
-      var id = this.current_view_item.id_sump;
+      var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "sump-thickness/sump-thk-cml-by-sump-id",
+        url: "critical-thickness/critical-thk-cml-by-tank-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_sump: id,
+          id_tag: id_tag,
         },
       })
         .then((res) => {
-          console.log("==> CML");
+          console.log("cml:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
@@ -574,20 +434,20 @@ export default {
         });
     },
     FETCH_TP() {
-      this.isLoading = true;
-      var id = this.current_view_item.id_cml;
+      console.log(this.id_cml);
+
       axios({
         method: "post",
-        url: "sump-thickness/sump-thk-tp-by-cml",
+        url: "critical-thickness/critical-thk-tp-by-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_cml: id,
+          id_cml: this.id_cml,
         },
       })
         .then((res) => {
-          console.log("==> TP");
+          console.log("tp:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.tp = res.data;
@@ -596,25 +456,23 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
-    FETCH_UTM() {
-      this.isLoading = true;
-      var id = this.current_view_item.id_tp;
+    FETCH_THK() {
+      console.log(this.id_tp);
+
       axios({
         method: "post",
-        url: "sump-thickness/sump-thk-data-by-tp",
+        url: "critical-thickness/critical-thk-data-by-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_tp: id,
+          id_tp: this.id_tp,
         },
       })
         .then((res) => {
-          console.log("==> UTM");
+          console.log("thk:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.thk = res.data;
@@ -623,9 +481,31 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
+    },
+    FETCH_VIEW() {
+      var id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "critical-thickness/critical-thk-view-last-insp",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+        },
+      })
+        .then((res) => {
+          console.log("view:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.view = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
     },
     FETCH_INSP_RECORD() {
       this.isLoading = true;
@@ -654,115 +534,16 @@ export default {
           this.isLoading = false;
         });
     },
-    FETCH_LAST_INSP_THK() {
-      this.isLoading = true;
-      var id = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "sump-thickness/sump-thk-view-last-insp",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id,
-        },
-      })
-        .then((res) => {
-          console.log("==> LAST INSP THK");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.dataList.last_insp_thk = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    VIEW_CML(e) {
-      this.current_view_item.id_sump = e.selectedRowKeys[0];
-      this.FETCH_CML();
-    },
-    VIEW_TP(e) {
-      this.current_view_item.id_cml = e.selectedRowKeys[0];
-      this.FETCH_TP();
-    },
-    VIEW_UTM(e) {
-      this.current_view_item.id_tp = e.selectedRowKeys[0];
-      this.FETCH_UTM();
-    },
-    CREATE_SUMP(e) {
-      console.log(e);
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_tag = id_tag;
-      e.data.id_sump = 0;
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "sump-thickness/add-sump-info",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            //this.FETCH_CML();
-            this.FETCH_SUMP();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_SUMP(e) {
-      console.log(e.data);
-    },
-    DELETE_SUMP(e) {
-      this.isLoading = true;
-      axios({
-        method: "delete",
-        url: "sump-thickness/delete-sump-info",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_sump: e.key,
-        },
-      })
-        .then((res) => {
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.FETCH_SUMP();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
     CREATE_CML(e) {
-      this.isLoading = true;
+      console.log(e);
       var id_tag = this.$route.params.id_tag;
       e.data.id_tag = id_tag;
       e.data.id_cml = 0;
-      e.data.id_sump = this.current_view_item.id_sump;
-      e.data.actual_od = this.SET_OCTUAL_OD(e.data.nps);
       e.data.inservice_date = moment(e.data.inservice_date).format("L");
-      console.log(e.data);
+      console.log(e);
       axios({
         method: "post",
-        url: "sump-thickness/add-sump-thk-cml",
+        url: "critical-thickness/add-critical-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -772,24 +553,20 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            //this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => {});
     },
     UPDATE_CML(e) {
-      e.data.actual_od = this.SET_OCTUAL_OD(e.data.nps);
-      e.data.inservice_date = moment(e.data.inservice_date).format("L");
-      console.log(e.data);
+      console.log(e);
       this.isLoading = true;
       axios({
         method: "put",
-        url: "sump-thickness/edit-sump-thk-cml",
+        url: "critical-thickness/edit-critical-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -799,7 +576,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -814,7 +591,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "sump-thickness/delete-sump-thk-cml",
+        url: "critical-thickness/delete-critical-thk-cml",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -826,7 +603,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -837,13 +614,13 @@ export default {
         });
     },
     CREATE_TP(e) {
-      e.data.id_cml = this.current_view_item.id_cml;
+      e.data.id_cml = this.id_cml;
       e.data.id_tp = 0;
       console.log(e.data);
       this.isLoading = true;
       axios({
         method: "post",
-        url: "sump-thickness/add-sump-thk-tp",
+        url: "critical-thickness/add-critical-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -853,7 +630,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -868,7 +645,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "sump-thickness/edit-sump-thk-tp",
+        url: "critical-thickness/edit-critical-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -878,7 +655,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -892,7 +669,7 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "sump-thickness/delete-sump-thk-tp",
+        url: "critical-thickness/delete-critical-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -904,7 +681,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -916,16 +693,16 @@ export default {
     },
     CREATE_THK(e) {
       e.data.id_thk = 0;
-      e.data.id_tp = this.current_view_item.id_tp;
+      e.data.id_tp = this.id_tp;
       var date = this.inspRecordList.filter(function (v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
+      e.data.inspection_date = date[0].inspection_date;
       console.log(e.data);
       this.isLoading = true;
       axios({
         method: "post",
-        url: "sump-thickness/add-sump-thk-data",
+        url: "critical-thickness/add-critical-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -934,8 +711,8 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status == 200 && res.data) {
-            this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_THK();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -946,16 +723,15 @@ export default {
         });
     },
     UPDATE_THK(e) {
-      console.log(e.data);
       var date = this.inspRecordList.filter(function (v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
+      e.data.inspection_date = date[0].inspection_date;
       console.log(e.data);
       this.isLoading = true;
       axios({
         method: "put",
-        url: "sump-thickness/edit-sump-thk-data",
+        url: "critical-thickness/edit-critical-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -964,8 +740,8 @@ export default {
         .then((res) => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.FETCH_UTM();
-            //this.FETCH_VIEW();
+            this.FETCH_TP();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -980,7 +756,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "sump-thickness/delete-sump-thk-data",
+        url: "critical-thickness/delete-critical-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -991,8 +767,8 @@ export default {
         .then((res) => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_THK();
+            this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -1002,72 +778,19 @@ export default {
           this.isLoading = false;
         });
     },
-    SET_FORMAT_DATE(e) {
-      // console.log(e);
-      return moment(e.inspection_date).format("DD MMM yyyy");
+    VIEW_TP(e) {
+      console.log(e);
+      this.id_cml = e.selectedRowKeys[0];
+      this.FETCH_TP();
     },
-    SET_OCTUAL_OD(val) {
-      if(val == 0.125) {
-        return 10.3;
-      } else if(val == 0.25) {
-        return 13.7;
-      } else if(val == 0.357) {
-        return 17.1;
-      } else if(val == 0.5) {
-        return 21.3;
-      } else if(val == 0.75) {
-        return 26.7;
-      } else if(val == 1) {
-        return 33.4;
-      } else if(val == 1.25) {
-        return 42.2;
-      } else if(val == 1.5) {
-        return 48.3;
-      } else if(val == 2) {
-        return 60.3;
-      } else if(val == 2.5) {
-        return 73;
-      } else if(val == 3) {
-        return 88.9;
-      } else if(val == 3.5) {
-        return 101.6;
-      } else if(val == 4) {
-        return 114.3;
-      } else if(val == 5) {
-        return 141.3;
-      } else if(val == 6) {
-        return 168.3;
-      } else if(val == 8) {
-        return 219.1;
-      } else if(val == 10) {
-        return 273;
-      } else if(val == 12) {
-        return 323.8;
-      } else if(val == 14) {
-        return 355.6;
-      } else if(val == 16) {
-        return 406.4;
-      } else if(val == 18) {
-        return 457;
-      } else if(val == 20) {
-        return 508;
-      } else if(val == 22) {
-        return 559;
-      } else if(val == 24) {
-        return 610;
-      } else if(val == 30) {
-        return 762;
-      } else if(val == 34) {
-        return 864;
-      } else if(val == 36) {
-        return 914;
-      } else if(val == 38) {
-        return 965;
-      } else if(val == 40) {
-        return 1016;
-      } else if(val == 42) {
-        return 1097;
-      }  
+    VIEW_THK(e) {
+      console.log(e);
+      this.id_tp = e.selectedRowKeys[0];
+      this.FETCH_THK();
+    },
+    SET_FORMAT_DATE(e) {
+      console.log(e);
+      return moment(e.inspection_date).format("DD MMM yyyy");
     },
   },
 };
@@ -1087,7 +810,7 @@ export default {
     padding: 20px 10px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: 15% 50% 15% 20%;
+    grid-template-columns: 40% 30% 30%;
     grid-template-rows: 500px 500px;
     // grid-gap: 10px;
   }
@@ -1099,9 +822,5 @@ export default {
 
 .data-grid-style {
   height: 100%;
-}
-
-.page-section-label {
-  padding: 0;
 }
 </style>
