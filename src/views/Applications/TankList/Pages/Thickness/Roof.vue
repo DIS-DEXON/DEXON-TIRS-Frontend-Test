@@ -477,7 +477,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "bottom-thickness/bottom-thk-view-by-tank-id",
+        url: "roof-thickness/roof-thk-view-last-insp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
