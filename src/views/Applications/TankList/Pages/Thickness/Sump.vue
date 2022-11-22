@@ -301,8 +301,8 @@
           </template>
 
           <DxColumn
-            data-field="coil_no" 
-            caption="Coil No." 
+            data-field="sump_no" 
+            caption="Sump No." 
           />
 
           <DxColumn 

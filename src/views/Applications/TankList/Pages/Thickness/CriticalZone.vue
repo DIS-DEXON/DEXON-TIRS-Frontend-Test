@@ -223,9 +223,16 @@
             sort-order="asc"
           />
 
-          <DxColumn data-field="plate_desc" caption="Plate desc" />
+          <DxColumn 
+            data-field="plate_desc" 
+            caption="Plate desc" 
+          />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn 
+            data-field="tp_name" 
+            caption="TP name" 
+            sort-order="asc"
+          />
 
           <DxColumn
             data-field="inservice_date"
