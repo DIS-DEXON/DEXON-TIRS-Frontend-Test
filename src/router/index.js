@@ -122,6 +122,11 @@ const routes = [
             alias: 'Sump',
             component: () => import('../views/Applications/TankList/Pages/Thickness/CriticalZone.vue'),
           },
+          {
+            path: 'thickness/project-plate',
+            alias: 'Projection Plate',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/ProjectionPlate.vue'),
+          },
         ]
       },
     ]
