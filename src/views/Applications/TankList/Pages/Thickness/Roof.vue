@@ -34,7 +34,7 @@
 
           <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
-          <DxColumn data-field="roof_column" caption="Roof column" />
+          <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" />
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -55,6 +55,11 @@
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
+            <DxButton
+              hint="Clone"
+              icon="copy"
+              :on-click="cloneIconClick"
+            />
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -392,6 +397,7 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      maxID: 0,
     };
   },
   computed: {},
@@ -414,6 +420,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
+            this.maxID = this.dataList.cml[this.dataList.cml.length-1].id_cml;
           }
         })
         .catch((error) => {
@@ -781,6 +788,45 @@ export default {
       console.log(e);
       return moment(e.inspection_date).format("DD MMM yyyy");
     },
+    cloneIconClick(e) {
+      const cmls = [...this.dataList.cml];
+      const clonedItem = { ...e.row.data, id_cml: 999 };
+      console.log(clonedItem);
+
+      cmls.splice(e.row.rowIndex + 1, 0, clonedItem);
+      console.log(cmls);
+      this.dataList.cml = cmls;
+      e.event.preventDefault();
+
+      clonedItem.inservice_date = moment(clonedItem.inservice_date).format("L");
+      console.log(e);
+      axios({
+        method: "post",
+        url: "roof-thickness/add-roof-thk-cml",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: clonedItem,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_CML();
+            this.FETCH_VIEW();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+
+    },
+    getMaxID() {
+      this.maxID += 1;
+      return this.maxID;
+    }
   },
 };
 </script>
