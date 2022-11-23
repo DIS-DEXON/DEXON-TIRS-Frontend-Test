@@ -59,12 +59,12 @@
           <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
-      <contentLoading
-        text="Loading, please wait..."
-        v-if="isLoading == true"
-        color="#fc9b21"
-      />
     </div>
+    <contentLoading
+      text="Loading, please wait..."
+      v-if="isLoading == true"
+      color="#fc9b21"
+    />
     <popupAdd v-if="isAdd == true" @closePopup="TOGGLE_POPUP()" />
   </div>
 </template> 
