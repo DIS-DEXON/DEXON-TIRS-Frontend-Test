@@ -33,7 +33,11 @@
               <p class="label">Location:</p>
               <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
-            <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
+            <input
+              type="text"
+              v-model="formData.id_site"
+              placeholder="Tag No"
+            />
           </div>
 
           <div class="input-set" style="grid-row: span 2">
@@ -43,7 +47,7 @@
             </div>
             <textarea
               type="text"
-              v-model="formData.tag_no"
+              v-model="formData.description"
               placeholder="Description"
               style="height: calc(100% - 32px)"
             />
@@ -77,6 +81,18 @@
           </div>
           <div class="input-set">
             <div class="label-box">
+              <p class="label">Installation Date:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.installation_date"
+              placeholder="Installation Date"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
               <p class="label">In-service Date:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
@@ -88,19 +104,35 @@
             />
           </div>
 
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Tank Specification</label>
+
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Construction Code:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_construction_code"
+              :data-source="formSelect.construction_code"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Inspection Code:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.inspection_code"
-              placeholder="Inspection Code"
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_inspection_code"
+              :data-source="formSelect.inspection_code"
+              display-expr="code"
+              value-expr="id"
             />
           </div>
-          <label class="section-text">Tank Specification</label>
-
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
@@ -120,7 +152,7 @@
             <input
               type="text"
               v-model="formData.tank_height_m"
-              placeholder="Height (m)"
+              placeholder="Tank Height (m)"
             />
           </div>
           <div class="input-set">
@@ -158,13 +190,24 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Diameter (m):</p>
+              <p class="label">Annular Nominal Thk. (mm):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
-              v-model="formData.diameter_m"
-              placeholder="Diameter (m)"
+              v-model="formData.annular_nominal_thk_mm"
+              placeholder="Thickness (mm)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Roof Nominal Thk. (mm):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.roof_nominal_thk_mm"
+              placeholder="Thickness (mm)"
             />
           </div>
           <div class="input-set">
@@ -176,6 +219,161 @@
               type="text"
               v-model="formData.diameter_m"
               placeholder="Diameter (m)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">No. of Shell Course:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.no_of_shell_couse"
+              placeholder="No. of Shell Course"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Tank Internal Pressure:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_internal_pressure"
+              :data-source="formSelect.internal_pressure"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Roof Type:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_roof_type"
+              :data-source="formSelect.roof_type"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Roof Shape:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_roof_shape"
+              :data-source="formSelect.roof_shape"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Bottom Type:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_bottom_type"
+              :data-source="formSelect.bottom_type"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Insulation:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_insulation"
+              :data-source="formSelect.insulation"
+              display-expr="code"
+              value-expr="id"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Insulation Thickness (mm):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.insulation_thk_mm"
+              placeholder="Insulation Thickness (mm)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">SG of Product:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.sg_of_product"
+              placeholder="SG of Product"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Design Pressure Shell (psig):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.design_pressure_shell_psi"
+              placeholder="Design Pressure Shell (psig)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Operating Pressure Shell (psig):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.ope_pressure_shell_psi"
+              placeholder="Operating Pressure Shell (psig)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Design Pressure Coil (psig):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.design_pressure_coil_psi"
+              placeholder="Design Pressure Coil (psig)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Operating Pressure Coil (psig):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.ope_pressure_coil_psi"
+              placeholder="Operating Pressure Coil (psig)"
+            />
+          </div>
+          <div class="input-set" style="grid-column: span 2">
+            <div class="label-box">
+              <p class="label">Foundation:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.id_foundation"
+              :data-source="formSelect.foundation"
+              display-expr="code"
+              value-expr="id"
             />
           </div>
         </div>
@@ -224,6 +422,14 @@ export default {
       formSelect: {
         tank_status: [],
         product: [],
+        construction_code: [],
+        inspection_code: [],
+        internal_pressure: [],
+        roof_type: [],
+        roof_shape: [],
+        bottom_type: [],
+        insulation: [],
+        foundation: [],
         now: [],
       },
     };
@@ -232,7 +438,15 @@ export default {
     all_form_select_loaded() {
       if (
         this.formSelect.tank_status.length > 0 &&
-        this.formSelect.product.length > 0
+        this.formSelect.product.length > 0 &&
+        this.formSelect.construction_code.length > 0 &&
+        this.formSelect.inspection_code.length > 0 &&
+        this.formSelect.internal_pressure.length > 0 &&
+        this.formSelect.roof_type.length > 0 &&
+        this.formSelect.roof_shape.length > 0 &&
+        this.formSelect.bottom_type.length > 0 &&
+        this.formSelect.insulation.length > 0 &&
+        this.formSelect.foundation.length > 0
       ) {
         return true;
       } else return false;
@@ -243,85 +457,43 @@ export default {
   },
   methods: {
     SAVE() {
-      if (this.formData.project_name) {
-        if (this.formData.project_no) {
-          if (isNaN(this.formData.project_no) == false) {
-            if (this.formData.id_client) {
-              if (this.formData.project_value) {
-                if (this.formData.service_type) {
-                  if (
-                    this.formData.job_start_date &&
-                    this.formData.job_end_date
-                  ) {
-                    this.$ons.notification
-                      .confirm("Confirm save?")
-                      .then((res) => {
-                        if (res == 1) {
-                          const data = this.formData;
+      if (this.tag_no) {
+        this.$ons.notification.confirm("Confirm save?").then((res) => {
+          if (res == 1) {
+            const data = this.formData;
 
-                          axios({
-                            method: "post",
-                            url: "/project-manager/project-add",
-                            headers: {
-                              Authorization:
-                                "Bearer " +
-                                JSON.parse(localStorage.getItem("token")),
-                            },
-                            data: data,
-                          })
-                            .then((res) => {
-                              console.log(res.data[0]);
-                              if (res.status == 200) {
-                                this.$ons.notification.alert(
-                                  "Project Add successful"
-                                );
-                                this.$emit("close-popup");
-                                const id = res.data[0].id_project;
-                                if (id) {
-                                  this.$router.push(
-                                    "/projectmanager/projects/" + id
-                                  );
-                                }
-                              }
-                            })
-                            .catch((error) => {
-                              this.$ons.notification.alert(
-                                error.code +
-                                  " " +
-                                  error.response.status +
-                                  " " +
-                                  error.message
-                              );
-                            })
-                            .finally(() => {});
-                        }
-                      });
-                  } else {
-                    this.$ons.notification.alert(
-                      '"Job Start Date and End Date" field cannot be empty'
-                    );
-                  }
-                } else {
-                  this.$ons.notification.alert(
-                    '"Service Type" field cannot be empty'
-                  );
+            axios({
+              method: "post",
+              url: "/tank-info/add-tank-info",
+              headers: {
+                Authorization:
+                  "Bearer " + JSON.parse(localStorage.getItem("token")),
+              },
+              data: data,
+            })
+              .then((res) => {
+                console.log(res.data[0]);
+                if (res.status == 200) {
+                  this.$ons.notification.alert("Tank Add successful");
+                  this.$emit("close-popup");
+                  // const id = res.data[0].id_project;
+                  // if (id) {
+                  //   this.$router.push(
+                  //     "/projectmanager/projects/" + id
+                  //   );
+                  // }
                 }
-              } else {
+              })
+              .catch((error) => {
                 this.$ons.notification.alert(
-                  '"Project Value" field cannot be empty'
+                  error.code + " " + error.response.status + " " + error.message
                 );
-              }
-            } else {
-              this.$ons.notification.alert('"Client" field cannot be empty');
-            }
-          } else {
-            this.$ons.notification.alert('"Project No" must be a number.');
+              })
+              .finally(() => {});
           }
-        } else {
-          this.$ons.notification.alert('"Project No" field cannot be empty.');
-        }
+        });
       } else {
-        this.$ons.notification.alert('"Project Name" field cannot be empty');
+        this.$ons.notification.alert("Please fill all required fields.");
       }
     },
     CANCEL() {
@@ -340,6 +512,14 @@ export default {
     FETCH_DROPDOWN() {
       this.FETCH_DROPDOWN_TANK_STATUS();
       this.FETCH_DROPDOWN_PRODUCT();
+      this.FETCH_DROPDOWN_CONSTRUCTION_CODE();
+      this.FETCH_DROPDOWN_INSPECTION_CODE();
+      this.FETCH_DROPDOWN_INTERNAL_PRESSURE();
+      this.FETCH_DROPDOWN_ROOF_TYPE();
+      this.FETCH_DROPDOWN_ROOF_SHAPE();
+      this.FETCH_DROPDOWN_BOTTOM_TYPE();
+      this.FETCH_DROPDOWN_INSULATION();
+      this.FETCH_DROPDOWN_FOUNDAION();
     },
     FETCH_DROPDOWN_TANK_STATUS() {
       axios({
@@ -367,15 +547,116 @@ export default {
         }
       });
     },
+    FETCH_DROPDOWN_CONSTRUCTION_CODE() {
+      axios({
+        method: "get",
+        url: "/MdConstructionCode",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.construction_code = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_INSPECTION_CODE() {
+      axios({
+        method: "get",
+        url: "/MdInspectionCode",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.inspection_code = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_INTERNAL_PRESSURE() {
+      axios({
+        method: "get",
+        url: "/MdTankInternalPressure",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.internal_pressure = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_ROOF_TYPE() {
+      axios({
+        method: "get",
+        url: "/MdRoofType",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.roof_type = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_ROOF_SHAPE() {
+      axios({
+        method: "get",
+        url: "/MdRoofShape",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.roof_shape = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_BOTTOM_TYPE() {
+      axios({
+        method: "get",
+        url: "/MdBottomType",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.bottom_type = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_INSULATION() {
+      axios({
+        method: "get",
+        url: "/MdInsulation",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.insulation = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_FOUNDAION() {
+      axios({
+        method: "get",
+        url: "/MdFoundation",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.foundation = res.data;
+        }
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
-// .popup-content {
-//   // width: 100%;
-// }
 .form-item-container {
   width: auto;
   display: grid;
@@ -399,5 +680,17 @@ hr {
 
 .section-text {
   grid-column: span 3;
+}
+
+.loading-section {
+  height: 100%;
+  margin-top: -51px;
+  padding: 0;
+  width: 350px;
+  .app-content-loading {
+    top: 51px;
+    left: 0;
+    height: calc(100% - 51px);
+  }
 }
 </style>

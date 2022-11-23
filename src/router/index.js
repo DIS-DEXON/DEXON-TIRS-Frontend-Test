@@ -152,6 +152,16 @@ const routes = [
     // },
   },
   {
+    // CLIENT COMPANY INFO
+    path: '/client-company-manager/client/:id_client',
+    name: 'Client Company Manager',
+    component: () => import('../views/Applications/ClientCompany/ClientCompanyInfo.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (store.state.user.role == 'manager' || store.state.user.role == 'admin') next()
+    //   else next('/')
+    // },
+  },
+  {
     // MASTER DATA
     path: '/md',
     name: 'MasterData',
