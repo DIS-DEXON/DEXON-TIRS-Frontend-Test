@@ -1276,6 +1276,7 @@ hr {
     display: block;
     width: calc(100% - 40px);
     padding: 20px;
+    background-color: #fff;
 }
 
 .popover-button {
@@ -1434,6 +1435,7 @@ hr {
     background-color: #eb1851;
     color: #fff;
     padding: 8px;
+    // border-radius: 6px;
 }
 
 .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-focused {

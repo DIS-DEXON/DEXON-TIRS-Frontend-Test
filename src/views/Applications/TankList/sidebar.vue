@@ -75,7 +75,7 @@
       >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/visual.png" />
-          <span>Visual Inspection</span>
+          <span>Picture Log </span>
         </v-ons-toolbar-button>
       </router-link>
       <router-link :to="'/tank/client/' + id_company + '/evaluation/' + id_tag">

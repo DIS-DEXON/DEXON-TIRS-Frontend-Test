@@ -5,132 +5,134 @@
       :breadcrumb1="currentPage"
       style="grid-column: span 2"
     />
-    <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{
-              active: item.id_inspection_record == id_inspection_record,
-            }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_DWG(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
-          </div>
-        </template>
-      </DxList>
-    </div>
-    <div class="list-page" style="overflow-y: scroll">
-      <DxDataGrid
-        id="data-grid-style"
-        key-expr="id"
-        :data-source="drawingList"
-        :element-attr="dataGridAttributes"
-        :selection="{ mode: 'single' }"
-        :hover-state-enabled="true"
-        :allow-column-reordering="true"
-        :show-borders="true"
-        :show-row-lines="true"
-        :row-alternation-enabled="false"
-        @exporting="EXPORT_DATA"
-        @row-inserted="CREATE_DWG"
-        @row-updated="UPDATE_DWG"
-        @row-removed="DELETE_DWG"
-        @editing-start="EDITING_START_DWG"
-        @init-new-row="INIT_NEW_ROW_DWG"
-      >
-        <DxEditing
-          :allow-updating="true"
-          :allow-deleting="true"
-          :allow-adding="IS_VISIBLE_ADD()"
-          mode="popup"
-        >
-          <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
-          </DxPopup>
-          <DxForm>
-            <DxItem :col-count="2" :col-span="2" item-type="group">
-              <DxItem data-field="file_path" :col-span="2" />
-              <DxItem data-field="file_name" :col-span="2" />
-            </DxItem>
-          </DxForm>
-        </DxEditing>
-
-        <DxColumn
-          data-field="file_path"
-          caption="Marked-up Drawing"
-          cell-template="dwg-img"
-          edit-cell-template="dwg-img-editor"
-          :width="520"
-        />
-
-        <DxColumn data-field="file_name" caption="File Name" :width="300" />
-
-        <template #dwg-img="{ data }">
-          <div style="position: relative">
-            <img :src="baseURL + data.value" width="500" /><br />
-            <a
-              :href="baseURL + data.value"
-              download="dwg"
-              target="_blank"
-              class="btn-view-dwg"
-              >VIEW</a
+    <div class="page-section">
+      <div class="list-panel">
+        <div class="column-header">Inspection Record</div>
+        <DxList :data-source="inspRecordList">
+          <template #item="{ data: item }">
+            <div
+              class="list-item-wrapper"
+              :class="{
+                active: item.id_inspection_record == id_inspection_record,
+              }"
             >
-          </div>
-        </template>
+              <div class="contents">
+                {{ DATE_FORMAT(item.inspection_date) }}<br />
+                {{ SET_CAMPAIGN(item.id_campaign) }}
+              </div>
+              <div class="contents">
+                <v-ons-toolbar-button
+                  class="btn"
+                  v-on:click="VIEW_DWG(item.id_inspection_record)"
+                >
+                  <i class="las la-search"></i>
+                </v-ons-toolbar-button>
+              </div>
+            </div>
+          </template>
+        </DxList>
+      </div>
+      <div class="list-page">
+        <DxDataGrid
+          id="data-grid-style"
+          key-expr="id"
+          :data-source="drawingList"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          @exporting="EXPORT_DATA"
+          @row-inserted="CREATE_DWG"
+          @row-updated="UPDATE_DWG"
+          @row-removed="DELETE_DWG"
+          @editing-start="EDITING_START_DWG"
+          @init-new-row="INIT_NEW_ROW_DWG"
+        >
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="IS_VISIBLE_ADD()"
+            mode="popup"
+          >
+            <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
+            </DxPopup>
+            <DxForm>
+              <DxItem :col-count="2" :col-span="2" item-type="group">
+                <DxItem data-field="file_path" :col-span="2" />
+                <DxItem data-field="file_name" :col-span="2" />
+              </DxItem>
+            </DxForm>
+          </DxEditing>
 
-        <template #dwg-img-editor="{ data }">
-          <div>
-            <img
-              :src="baseURL + data.value"
-              width="500"
-              v-if="imgDwg != '' && isInitEdit == 0"
-            />
-            <img
-              :src="imgDwg"
-              width="500"
-              v-if="imgDwg != '' && isInitEdit == 1"
-            />
-            <img
-              src="http://tmt-solution.com/public/image-empty.png"
-              width="500"
-              v-if="imgDwg == ''"
-            />
+          <DxColumn
+            data-field="file_path"
+            caption="Marked-up Drawing"
+            cell-template="dwg-img"
+            edit-cell-template="dwg-img-editor"
+            :width="520"
+          />
 
-            <DxFileUploader
-              select-button-text="Select photo"
-              label-text=""
-              accept="image/*"
-              upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE"
-            />
-          </div>
-        </template>
+          <DxColumn data-field="file_name" caption="File Name" :width="300" />
 
-        <!-- Configuration goes here -->
-        <!-- <DxFilterRow :visible="true" /> -->
-        <DxScrolling mode="standard" />
-        <DxSearchPanel :visible="true" />
-        <DxPaging :page-size="10" :page-index="0" />
-        <DxPager
-          :show-page-size-selector="true"
-          :allowed-page-sizes="[5, 10, 20]"
-          :show-navigation-buttons="true"
-          :show-info="true"
-          info-text="Page {0} of {1} ({2} items)"
-        />
-        <DxExport :enabled="true" />
-      </DxDataGrid>
+          <template #dwg-img="{ data }">
+            <div style="position: relative">
+              <img :src="baseURL + data.value" width="500" /><br />
+              <a
+                :href="baseURL + data.value"
+                download="dwg"
+                target="_blank"
+                class="btn-view-dwg"
+                >VIEW</a
+              >
+            </div>
+          </template>
+
+          <template #dwg-img-editor="{ data }">
+            <div>
+              <img
+                :src="baseURL + data.value"
+                width="500"
+                v-if="imgDwg != '' && isInitEdit == 0"
+              />
+              <img
+                :src="imgDwg"
+                width="500"
+                v-if="imgDwg != '' && isInitEdit == 1"
+              />
+              <img
+                src="http://tmt-solution.com/public/image-empty.png"
+                width="500"
+                v-if="imgDwg == ''"
+              />
+
+              <DxFileUploader
+                select-button-text="Select photo"
+                label-text=""
+                accept="image/*"
+                upload-mode="useForm"
+                @value-changed="ON_DWG_CHANGE"
+              />
+            </div>
+          </template>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="true" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <DxExport :enabled="true" />
+        </DxDataGrid>
+      </div>
     </div>
   </div>
 </template> 
@@ -493,23 +495,20 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  margin: 0 auto;
-  // padding: 20px;
-  display: grid;
-  grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 41px auto;
-}
 
-.page-section {
-  padding: 20px;
-}
-
-.page-section:last-child {
-  padding-bottom: 20px;
-}
-
-.tab-wrapper {
-  height: 48px;
+  .page-section {
+    width: 100%;
+    height: calc(100% - 41px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 250px calc(100% - 250px);
+    .list-panel {
+      // overflow-y: auto;
+    }
+    .list-page {
+      overflow-y: auto;
+    }
+  }
 }
 
 .info-tab-display {

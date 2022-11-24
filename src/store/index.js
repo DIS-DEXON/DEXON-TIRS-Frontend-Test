@@ -7,14 +7,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mode: 'dev', //dev, prod
+    mode: 'prod', //dev, prod
     modeURL: {
       dev: 'https://localhost:5001/',
-      prod: 'https://ai.dexon-technology.com:443/'
+      prod: 'https://ai.dexon-technology.com:444/'
     },
     urlApi: {
       dev: 'https://localhost:5001/api',
-      prod: 'https://ai.dexon-technology.com:443/api',
+      prod: 'https://ai.dexon-technology.com:444/api',
     },
     user: '',
     appIcon: '/app-icon.png',

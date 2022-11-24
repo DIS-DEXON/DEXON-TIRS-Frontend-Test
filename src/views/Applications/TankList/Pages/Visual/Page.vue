@@ -26,7 +26,7 @@
         </template>
       </DxList>
     </div>
-    <div class="list-page" style="overflow-y: scroll">
+    <div class="list-page" style="overflow-y: auto">
       <DxDataGrid
         id="data-grid-style"
         key-expr="id"
@@ -51,25 +51,34 @@
           :allow-adding="IS_VISIBLE_ADD()"
           mode="popup"
         >
-          <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
+          <DxPopup :show-title="true" :width="700" title="New Picture Log">
           </DxPopup>
           <DxForm>
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path" :col-span="2" />
-              <DxItem data-field="file_name" :col-span="2" />
+              <DxItem data-field="finding" :col-span="2" />
+              <DxItem data-field="recommendation" :col-span="2" />
             </DxItem>
           </DxForm>
         </DxEditing>
 
         <DxColumn
           data-field="file_path"
-          caption="Marked-up Drawing"
+          caption="Overview Picture"
           cell-template="dwg-img"
-          edit-cell-template="dwg-img-editor"
-          :width="520"
+          edit-cell-template="dwg-img-editor1"
+          :width="500"
+        />
+        <DxColumn
+          data-field="file_path"
+          caption="Close-Up Picture"
+          cell-template="dwg-img"
+          edit-cell-template="dwg-img-editor2"
+          :width="500"
         />
 
-        <DxColumn data-field="file_name" caption="File Name" :width="300" />
+        <DxColumn data-field="finding" caption="Finding" />
+        <DxColumn data-field="recomend" caption="Recommendation" />
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
@@ -84,7 +93,34 @@
           </div>
         </template>
 
-        <template #dwg-img-editor="{ data }">
+        <template #dwg-img-editor1="{ data }">
+          <div>
+            <img
+              :src="baseURL + data.value"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 0"
+            />
+            <img
+              :src="imgDwg"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 1"
+            />
+            <img
+              src="http://tmt-solution.com/public/image-empty.png"
+              width="500"
+              v-if="imgDwg == ''"
+            />
+
+            <DxFileUploader
+              select-button-text="Select photo"
+              label-text=""
+              accept="image/*"
+              upload-mode="useForm"
+              @value-changed="ON_DWG_CHANGE"
+            />
+          </div>
+        </template>
+        <template #dwg-img-editor2="{ data }">
           <div>
             <img
               :src="baseURL + data.value"
@@ -137,6 +173,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
+
 //DataGrid
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -189,7 +226,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Marked-Up Drawing");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Picture Log");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();

@@ -44,7 +44,7 @@
             caption="Located in Thailand"
           />
 
-          <DxColumn :width="90" caption="" cell-template="option-btn-set" />
+          <DxColumn :width="120" caption="" cell-template="option-btn-set" />
           <template #column-logo="{ data }">
             <div class="client-logo">
               <img :src="baseURL + data.data.logo" />
@@ -69,9 +69,9 @@
               class="table-btn-group"
               v-if="data.data.role_desc != 'super user'"
             >
-              <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
+              <div class="table-btn" v-on:click="VIEW_INFO(data)">
                 <i class="las la-search blue"></i>
-              </div> -->
+              </div>
               <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
                 <i class="las la-pen green"></i>
               </div>
@@ -263,6 +263,13 @@ export default {
             .finally(() => {});
         }
       });
+    },
+    VIEW_INFO(e) {
+      if (e.data.id_company) {
+        this.$router.push(
+          "/client-company-manager/client/" + e.data.id_company
+        );
+      }
     },
   },
 };

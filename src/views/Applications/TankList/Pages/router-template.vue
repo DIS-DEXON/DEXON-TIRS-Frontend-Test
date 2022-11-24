@@ -88,8 +88,6 @@ export default {
   .pm-page-container {
     background-color: #fff;
     // padding: 20px;
-    .page-container {
-    }
   }
 }
 

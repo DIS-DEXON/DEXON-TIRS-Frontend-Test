@@ -2,9 +2,9 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="Client Company"
+        :pageSubName="companyInfo.company_name"
         @refreshInfo="FETCH_LIST()"
-        :isNewBtn="true"
+        :isNewBtn="false"
         newBtnLabel="New Client"
         @newBtnFn="TOGGLE_POPUP('add')"
         :isBack="true"
@@ -14,7 +14,8 @@
       <div class="page-content page-list">
         <DxDataGrid
           id="data-grid-style"
-          :data-source="clientCompanyList"
+          key-expr="id"
+          :data-source="siteList"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="false"
@@ -22,64 +23,18 @@
           :show-row-lines="false"
           :row-alternation-enabled="true"
           @exporting="EXPORT_DATA"
+          @row-inserted="CREATE_STATUS"
+          @row-updated="UPDATE_STATUS"
+          @row-removed="DELETE_STATUS"
         >
-          <DxColumn
-            data-field="id_company"
-            alignment="center"
-            :width="50"
-            caption="ID"
+          <DxColumn data-field="site_name" caption="Site Name" />
+          <DxColumn data-field="site_desc" caption="Site Description" />
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            mode="row"
           />
-          <DxColumn :width="100" cell-template="column-logo" caption="Logo" />
-          <DxColumn
-            :width="300"
-            data-field="company_name"
-            caption="Company Name"
-          />
-          <DxColumn data-field="location" caption="Location" />
-          <DxColumn data-field="address" caption="Address" />
-          <DxColumn data-field="phone_no" caption="Phone No" />
-          <DxColumn
-            :width="150"
-            data-field="is_domestic"
-            caption="Located in Thailand"
-          />
-
-          <DxColumn :width="90" caption="" cell-template="option-btn-set" />
-          <template #column-logo="{ data }">
-            <div class="client-logo">
-              <img :src="baseURL + data.data.logo" />
-            </div>
-          </template>
-          <template #option-btn-password="{ data }">
-            <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
-            >
-              <div
-                class="table-btn table-btn-none"
-                v-on:click="RESET_PASSWORD(data)"
-              >
-                <i class="las la-undo-alt red"></i>
-                <span class="red">reset password</span>
-              </div>
-            </div>
-          </template>
-          <template #option-btn-set="{ data }">
-            <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
-            >
-              <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
-                <i class="las la-search blue"></i>
-              </div> -->
-              <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
-                <i class="las la-pen green"></i>
-              </div>
-              <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
-                <i class="las la-trash red"></i>
-              </div>
-            </div>
-          </template>
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
@@ -129,6 +84,7 @@ import {
   DxScrolling,
   DxColumn,
   DxExport,
+  DxEditing,
 } from "devextreme-vue/data-grid";
 
 //API
@@ -141,7 +97,7 @@ import popupEdit from "@/views/Applications/ClientCompany/client-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
-import clone from "just-clone";
+// import clone from "just-clone";
 // import { sha256 } from "js-sha256";
 
 export default {
@@ -158,17 +114,22 @@ export default {
     contentLoading,
     popupAdd,
     popupEdit,
+    DxEditing,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Client Company Manager",
       icon: "/img/icon_menu/client/client.png",
     });
-    if (this.$store.state.status.server == true) this.FETCH_LIST();
+    if (this.$store.state.status.server == true) {
+      this.FETCH_COMPANY_INFO();
+      this.FETCH_SITE_LIST();
+    }
   },
   data() {
     return {
-      clientCompanyList: [],
+      siteList: [],
+      companyInfo: {},
       isAdd: false,
       isEdit: false,
       isLoading: false,
@@ -202,23 +163,12 @@ export default {
       });
       e.cancel = true;
     },
-    TOGGLE_POPUP(m, data) {
-      if (m == "add") {
-        if (this.isAdd == true) this.isAdd = false;
-        else this.isAdd = true;
-      } else if (m == "edit") {
-        if (this.isEdit == true) this.isEdit = false;
-        else {
-          this.editInfo = clone(data.data);
-          this.isEdit = true;
-        }
-      }
-    },
-    FETCH_LIST() {
+    FETCH_COMPANY_INFO() {
       this.isLoading = true;
+      var id_client = this.$route.params.id_client;
       axios({
         method: "get",
-        url: "/MdClientCompany",
+        url: "/MdClientCompany/" + id_client,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -226,7 +176,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data) {
-            this.clientCompanyList = res.data;
+            this.companyInfo = res.data;
           }
         })
         .catch((error) => {
@@ -236,33 +186,28 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_CLIENT(data) {
-      let rowID = data.data.id_company;
-      this.$ons.notification.confirm("Confirm delete?").then((res) => {
-        if (res == 1) {
-          axios({
-            method: "delete",
-            url: "/MdClientCompany/delete-client",
-            headers: {
-              Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
-            },
-            data: { id_company: rowID },
-          })
-            .then((res) => {
-              if (res.status == 204) {
-                this.$ons.notification.alert("Delete successful");
-                this.FETCH_LIST();
-              }
-            })
-            .catch((error) => {
-              this.$ons.notification.alert(
-                error.code + " " + error.response.status
-              );
-            })
-            .finally(() => {});
-        }
-      });
+    FETCH_SITE_LIST() {
+      this.isLoading = true;
+      var id_client = this.$route.params.id_client;
+      axios({
+        method: "get",
+        url: "/MdSite/get-md-site-by-client-id?id=" + id_client,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            this.siteList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 };
@@ -284,7 +229,7 @@ export default {
     // padding: 20px 20px 0px 20px;
     height: calc(100vh - 119px);
     display: flex;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .page-content {
       width: 100%;
