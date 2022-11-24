@@ -129,8 +129,13 @@ const routes = [
           },
           {
             path: 'thickness/mfl-bottom',
-            alias: 'Projection Plate',
+            alias: 'MFL Bottom',
             component: () => import('../views/Applications/TankList/Pages/Thickness/MflBottom.vue'),
+          },
+          {
+            path: 'thickness/mfl-annular',
+            alias: 'MFL Annular',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/MflAnnular.vue'),
           },
         ]
       },

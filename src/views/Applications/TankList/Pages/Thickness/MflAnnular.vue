@@ -2,7 +2,7 @@
   <div class="page-container">
     <innerPageName
       pageName="Thickness Messurement"
-      breadcrumb1="MFL Bottom"
+      breadcrumb1="MFL Annular"
       style="grid-column: span 2"
     />
     <div class="list-panel">
@@ -35,7 +35,7 @@
       <DxDataGrid
           id="mfl-grid"
           key-expr="id_thk"
-          :data-source="mflBottom"
+          :data-source="mflAnnular"
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -222,7 +222,7 @@ export default {
   },
   data() {
     return {
-      mflBottom: {},
+      mflAnnular: {},
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -297,7 +297,7 @@ export default {
       this.id_inspection_record = id_inspection_record;
       axios({
         method: "post",
-        url: "mfl-bottom-thickness/get-mfl-bottom-data-by-insp-id",
+        url: "mfl-annular-thickness/get-mfl-annular-data-by-insp-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -309,7 +309,7 @@ export default {
           console.log("mfl:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.mflBottom = res.data;
+            this.mflAnnular = res.data;
           }
         })
         .catch((error) => {
@@ -332,7 +332,7 @@ export default {
       console.log(e.data);
       axios({
         method: "post",
-        url: "mfl-bottom-thickness/add-mfl-bottom-data",
+        url: "mfl-annular-thickness/add-mfl-annular-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -360,7 +360,7 @@ export default {
       console.log(e.data);
       axios({
         method: "put",
-        url: "mfl-bottom-thickness/edit-mfl-bottom-data",
+        url: "mfl-annular-thickness/edit-mfl-annular-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
