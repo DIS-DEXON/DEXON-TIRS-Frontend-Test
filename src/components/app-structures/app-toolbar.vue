@@ -26,11 +26,11 @@
         </div>
 
         <div class="info-item">
-          <label class="desc">Location:</label>
+          <label class="desc">Site Name:</label>
           <label class="value"> {{ infoTank.site_name }}</label>
         </div>
         <div class="info-item">
-          <label class="desc">Site: </label>
+          <label class="desc">Site Description: </label>
           <label class="value">{{ infoTank.site_desc }}</label>
         </div>
         <div class="info-item">

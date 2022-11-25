@@ -30,32 +30,33 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Location:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <p class="label">Site:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
               v-model="formData.id_site"
-              placeholder="Tag No"
+              :data-source="formSelect.site"
+              display-expr="site_name"
+              value-expr="id"
             />
           </div>
 
-          <div class="input-set" style="grid-row: span 2">
+          <div class="input-set">
             <div class="label-box">
               <p class="label">Description:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <textarea
+            <input
               type="text"
               v-model="formData.description"
               placeholder="Description"
-              style="height: calc(100% - 32px)"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Product:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -82,7 +83,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Installation Date:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -94,13 +95,24 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">In-service Date:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <DxDateBox
               :value="formSelect.now"
               type="date"
               v-model="formData.inservice_date"
               placeholder="In-service Date"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Year of In-service (year):</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <input
+              type="text"
+              v-model="formData.inservice_age_of_tank_yrs"
+              placeholder="Year of In-service (year)"
             />
           </div>
 
@@ -136,7 +148,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -147,7 +159,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Height (m):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -169,7 +181,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Max. Liquid Level (m):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -213,7 +225,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Diameter (m):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -287,20 +299,20 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
-              v-model="formData.id_insulation"
+              v-model="formData.insulation"
               :data-source="formSelect.insulation"
               display-expr="code"
-              value-expr="id"
+              value-expr="code"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation Thickness (mm):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -311,7 +323,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">SG of Product:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input
               type="text"
@@ -430,6 +442,7 @@ export default {
         bottom_type: [],
         insulation: [],
         foundation: [],
+        site: [],
         now: [],
       },
     };
@@ -457,7 +470,9 @@ export default {
   },
   methods: {
     SAVE() {
-      if (this.tag_no) {
+      console.log("PACKAGE: ");
+      console.log(this.formData);
+      if (this.formData.tag_no) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
           if (res == 1) {
             const data = this.formData;
@@ -472,16 +487,17 @@ export default {
               data: data,
             })
               .then((res) => {
-                console.log(res.data[0]);
+                // console.log(res.data[0]);
                 if (res.status == 200) {
                   this.$ons.notification.alert("Tank Add successful");
-                  this.$emit("close-popup");
-                  // const id = res.data[0].id_project;
-                  // if (id) {
-                  //   this.$router.push(
-                  //     "/projectmanager/projects/" + id
-                  //   );
-                  // }
+                  this.$emit("closePopup");
+                  const id_tag = res.data[0].id_tag;
+                  const id_client = this.formData.id_client;
+                  if (id_tag) {
+                    this.$router.push(
+                      "/tank/client/" + id_client + "/tag/" + id_tag + "/info"
+                    );
+                  }
                 }
               })
               .catch((error) => {
@@ -520,6 +536,7 @@ export default {
       this.FETCH_DROPDOWN_BOTTOM_TYPE();
       this.FETCH_DROPDOWN_INSULATION();
       this.FETCH_DROPDOWN_FOUNDAION();
+      this.FETCH_DROPDOWN_SITE();
     },
     FETCH_DROPDOWN_TANK_STATUS() {
       axios({
@@ -648,6 +665,20 @@ export default {
       }).then((res) => {
         if (res.data) {
           this.formSelect.foundation = res.data;
+        }
+      });
+    },
+    FETCH_DROPDOWN_SITE() {
+      var id_client = this.formData.id_client;
+      axios({
+        method: "get",
+        url: "/MdSite/get-md-site-by-client-id?id=" + id_client,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      }).then((res) => {
+        if (res.data) {
+          this.formSelect.site = res.data;
         }
       });
     },

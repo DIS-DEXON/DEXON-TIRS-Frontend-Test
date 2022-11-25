@@ -1524,3 +1524,8 @@ hr {
     }
 
 }
+
+td {
+    user-select: text !important;
+    cursor: text !important;
+}
