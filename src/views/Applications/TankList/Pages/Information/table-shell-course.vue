@@ -298,7 +298,8 @@ export default {
         });
     },
     CREATE_COURSE(e) {
-      e.data.id_tag = this.$route.params.id_tag;
+      e.data.id_tag = parseInt(this.$route.params.id_tag);
+      e.data.id_tank_course = 0;
       console.log(e.data);
       axios({
         method: "post",

@@ -3,11 +3,12 @@
     <div class="pm-toolbar">
       <toolbar
         :pageSubName="companyInfo.company_name"
-        @refreshInfo="FETCH_LIST()"
         :isNewBtn="false"
         newBtnLabel="New Client"
         @newBtnFn="TOGGLE_POPUP('add')"
         :isBack="true"
+        :isRefresh="true"
+        @refreshInfo="FETCH_SITE_LIST()"
       />
     </div>
     <div class="pm-page-container">
@@ -23,9 +24,9 @@
           :show-row-lines="false"
           :row-alternation-enabled="true"
           @exporting="EXPORT_DATA"
-          @row-inserted="CREATE_STATUS"
-          @row-updated="UPDATE_STATUS"
-          @row-removed="DELETE_STATUS"
+          @row-inserted="CREATE_SITE"
+          @row-updated="UPDATE_SITE"
+          @row-removed="DELETE_SITE"
         >
           <DxColumn data-field="site_name" caption="Site Name" />
           <DxColumn data-field="site_desc" caption="Site Description" />
@@ -51,17 +52,7 @@
         </DxDataGrid>
       </div>
     </div>
-    <popupAdd
-      v-if="isAdd == true"
-      @btn-cancel-add="TOGGLE_POPUP('add')"
-      @refreshList="FETCH_LIST()"
-    />
-    <popupEdit
-      v-if="isEdit == true"
-      @btn-cancel-edit="TOGGLE_POPUP('edit')"
-      @refreshList="FETCH_LIST()"
-      v-bind:editInfo="editInfo"
-    />
+
     <contentLoading
       text="Loading, please wait..."
       v-if="isLoading == true"
@@ -92,8 +83,6 @@ import axios from "/axios.js";
 
 //Pages & Structures
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/ClientCompany/client-add.vue";
-import popupEdit from "@/views/Applications/ClientCompany/client-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
@@ -111,10 +100,8 @@ export default {
     DxScrolling,
     DxColumn,
     DxExport,
-    contentLoading,
-    popupAdd,
-    popupEdit,
     DxEditing,
+    contentLoading,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -200,6 +187,82 @@ export default {
           console.log(res);
           if (res.data) {
             this.siteList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_SITE(e) {
+      this.isLoading = true;
+      var id_client = this.$route.params.id_client;
+      var formData = {
+        id_client: id_client,
+        site_name: e.data.site_name,
+        site_desc: e.data.site_desc,
+      };
+      axios({
+        method: "post",
+        url: "/MdSite",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: formData,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data && res.status == 200) {
+            this.FETCH_SITE_LIST();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_SITE(e) {
+      this.isLoading = true;
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "/MdSite/" + e.data.id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data && res.status == 201) {
+            this.FETCH_SITE_LIST();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_SITE(e) {
+      this.isLoading = true;
+      axios({
+        method: "delete",
+        url: "/MdSite/" + e.data.id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data && res.status == 200) {
+            this.$ons.notification.alert("Deleted");
+            this.FETCH_SITE_LIST();
           }
         })
         .catch((error) => {
