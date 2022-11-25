@@ -17,7 +17,7 @@
             <div class="contents">
               <v-ons-toolbar-button
                 class="btn"
-                v-on:click="VIEW_DWG(item.id_inspection_record)"
+                v-on:click="VIEW_DWG(item.id_inspection_record,item.inspection_date)"
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -29,7 +29,7 @@
     <div class="list-page" style="overflow-y: auto">
       <DxDataGrid
         id="data-grid-style"
-        key-expr="id"
+        key-expr="id_visual"
         :data-source="drawingList"
         :element-attr="dataGridAttributes"
         :selection="{ mode: 'single' }"
@@ -44,6 +44,7 @@
         @row-removed="DELETE_DWG"
         @editing-start="EDITING_START_DWG"
         @init-new-row="INIT_NEW_ROW_DWG"
+        @saved="SAVE"
       >
         <DxEditing
           :allow-updating="true"
@@ -51,38 +52,46 @@
           :allow-adding="IS_VISIBLE_ADD()"
           mode="popup"
         >
-          <DxPopup :show-title="true" :width="700" title="New Picture Log">
-          </DxPopup>
-          <DxForm>
-            <DxItem :col-count="2" :col-span="2" item-type="group">
-              <DxItem data-field="file_path" :col-span="2" />
-              <DxItem data-field="finding" :col-span="2" />
-              <DxItem data-field="recommendation" :col-span="2" />
-            </DxItem>
-          </DxForm>
+          <DxPopup :show-title="true" :width="popUpWidth" title="New Picture Log"></DxPopup>
+            <DxForm>
+              <DxItem :col-count="2" :col-span="2" item-type="group">
+                <DxItem data-field="file_path_1" :col-span="1" />
+                <DxItem data-field="file_path_2" :col-span="1" />
+                <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
+                <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
+              </DxItem>
+            </DxForm>
+
         </DxEditing>
 
         <DxColumn
-          data-field="file_path"
+          data-field="file_path_1"
           caption="Overview Picture"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor1"
           :width="500"
         />
         <DxColumn
-          data-field="file_path"
+          data-field="file_path_2"
           caption="Close-Up Picture"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor2"
           :width="500"
         />
 
-        <DxColumn data-field="finding" caption="Finding" />
-        <DxColumn data-field="recomend" caption="Recommendation" />
+        <DxColumn 
+          data-field="finding" 
+          caption="Finding"
+        />
+
+        <DxColumn 
+          data-field="recommendation" 
+          caption="Recommendation" 
+        />
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <img :src="baseURL + data.value" width="500" /><br />
+            <img :src="baseURL + data.value" width="100%" height="200" /><br />
             <a
               :href="baseURL + data.value"
               download="dwg"
@@ -98,17 +107,17 @@
             <img
               :src="baseURL + data.value"
               width="500"
-              v-if="imgDwg != '' && isInitEdit == 0"
+              v-if="imgDwg1 != '' && isInitEdit_1 == 0"
             />
             <img
-              :src="imgDwg"
+              :src="imgDwg1"
               width="500"
-              v-if="imgDwg != '' && isInitEdit == 1"
+              v-if="imgDwg1 != '' && isInitEdit_1 == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
-              v-if="imgDwg == ''"
+              v-if="imgDwg1 == ''"
             />
 
             <DxFileUploader
@@ -116,8 +125,10 @@
               label-text=""
               accept="image/*"
               upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE"
+              @value-changed="ON_DWG_CHANGE_1"
             />
+
+            <button type="button" v-on:click="DEL_PIC(1)">ลบ</button>
           </div>
         </template>
         <template #dwg-img-editor2="{ data }">
@@ -125,17 +136,17 @@
             <img
               :src="baseURL + data.value"
               width="500"
-              v-if="imgDwg != '' && isInitEdit == 0"
+              v-if="imgDwg2 != '' && isInitEdit_2 == 0"
             />
             <img
-              :src="imgDwg"
+              :src="imgDwg2"
               width="500"
-              v-if="imgDwg != '' && isInitEdit == 1"
+              v-if="imgDwg2 != '' && isInitEdit_2 == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="500"
-              v-if="imgDwg == ''"
+              v-if="imgDwg2 == ''"
             />
 
             <DxFileUploader
@@ -143,10 +154,22 @@
               label-text=""
               accept="image/*"
               upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE"
+              @value-changed="ON_DWG_CHANGE_2"
             />
+
+            <button type="button" v-on:click="DEL_PIC(2)">ลบ</button>
           </div>
         </template>
+
+        <!-- <template #finding-editor="{ data }">
+          <div>
+            <DxTextArea
+              :height="90"
+              :read-only="false"
+              :value="data.value"
+            />
+          </div>
+        </template> -->
 
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
@@ -173,6 +196,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
+import 'devextreme-vue/text-area';
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -219,6 +243,7 @@ export default {
     DxForm,
     DxItem,
     DxPopup,
+    // DxTextArea,
     //DxButton,
   },
   created() {
@@ -234,35 +259,29 @@ export default {
   },
   data() {
     return {
-      drawingList: [
-        // {
-        //   id_dwg: 1,
-        //   id_tag: 5,
-        //   id_inspection_record: 2,
-        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
-        //   file_name: "4-GC-H12N-0206101_Page_1",
-        // },
-        // {
-        //   id_dwg: 2,
-        //   id_tag: 5,
-        //   id_inspection_record: 2,
-        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
-        //   file_name: "4-GC-H12N-0206101_Page_2",
-        // },
-      ],
+      drawingList: [],
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
       fileUploaderRef,
       imgRef,
-      imgDwg: "",
-      file: [],
-      isInitEdit: 0,
-      id_component: 0,
+      imgDwg1: "",
+      imgDwg2: "",
+      file_path_1: "",
+      file_path_2: "",
+      file_path_1_tmp: "",
+      file_path_2_tmp: "",
+      file1: [],
+      file2: [],
+      isInitEdit_1: 0,
+      isInitEdit_2: 0,
       id_inspection_record: 0,
+      inspection_date: "",
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      popUpWidth: 0,
+      pictureLog: "",
     };
   },
   computed: {
@@ -317,19 +336,18 @@ export default {
           this.isLoading = false;
         });
     },
-    VIEW_DWG(id_inspection_record) {
-      this.id_component = this.$route.params.id_component;
+    VIEW_DWG(id_inspection_record,inspection_date) {
       this.id_inspection_record = id_inspection_record;
-      console.log("id_insp:" + id_inspection_record);
-      console.log("id_component:" + this.id_component);
+      this.inspection_date = inspection_date;
+      console.log("id_insp:" + this.id_inspection_record);
+      console.log("insp_date:" + this.inspection_date);
       axios({
         method: "post",
-        url: "layout-drawing/layout-drawing-by-comp-id",
+        url: "visual-report/layout-visual-report-by-insp-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_component: this.id_component,
           id_inspection_record: id_inspection_record,
         },
       })
@@ -354,14 +372,18 @@ export default {
       console.log(e);
       var formData = new FormData();
       formData.append("id_tag", this.$route.params.id_tag);
-      formData.append("id_component", this.id_component);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append("file_name", e.data.file_name);
-      formData.append("file", this.file);
+      formData.append("inspection_date", moment(this.inspection_date).format("L"));
+      formData.append("finding", e.data.finding);
+      formData.append("recommendation", e.data.recommendation);
+      formData.append("file_1", this.file1);
+      formData.append("file_2", this.file2);
+      formData.append("created_by", this.$store.state.user.id_user);
+      formData.append("updated_by", this.$store.state.user.id_user);
 
       axios({
         method: "post",
-        url: "layout-drawing/add-layout-drawing",
+        url: "visual-report/add-visual-record",
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
@@ -371,8 +393,9 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status == 201 && res.data) {
+            console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record);
+            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
           }
         })
         .catch((error) => {
@@ -384,25 +407,34 @@ export default {
     },
     UPDATE_DWG(e) {
       console.log(e);
+      var formData = new FormData();
+      formData.append("id_visual", e.data.id_visual);
+      formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append("inspection_date", moment(this.inspection_date).format("L"));
+      formData.append("finding", e.data.finding);
+      formData.append("recommendation", e.data.recommendation);
+      formData.append("file_1", this.file1);
+      formData.append("file_2", this.file2);
+      formData.append("file_path_1", this.file_path_1);
+      formData.append("file_path_2", this.file_path_2);
+      formData.append("created_by", e.data.created_by);
+      formData.append("updated_by", this.$store.state.user.id_user);
       axios({
         method: "put",
-        url: "layout-drawing/edit-layout-drawing",
+        url: "visual-report/edit-visual-record",
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        data: {
-          id: e.key,
-          id_tag: this.$route.params.id_tag,
-          id_component: this.id_component,
-          id_inspection_record: this.id_inspection_record,
-          file_name: e.data.file_name,
-        },
+        data: formData,
       })
         .then((res) => {
           console.log(res);
-          if (res.status == 200 && res.data) {
+          if (res.status == 201 && res.data) {
+            console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record);
+            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
           }
         })
         .catch((error) => {
@@ -416,19 +448,19 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "layout-drawing/delete-layout-drawing",
+        url: "visual-report/delete-visual-report",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id: e.key,
+          id_visual: e.key,
         },
       })
         .then((res) => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record);
+            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
           }
         })
         .catch((error) => {
@@ -438,26 +470,49 @@ export default {
           this.isLoading = false;
         });
     },
-    ON_DWG_CHANGE(e) {
+    ON_DWG_CHANGE_1(e) {
       console.log(e);
-      this.isInitEdit = 1;
       let reader = new FileReader();
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
-        this.imgDwg = reader.result;
+        this.imgDwg1 = reader.result;
       };
-      this.file = e.value[0];
+      this.file1 = e.value[0];
+      this.file_path_1 = this.file_path_1_tmp;
+      this.isInitEdit_1 = 1;
+    },
+    ON_DWG_CHANGE_2(e) {
+      console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {
+        this.imgDwg2 = reader.result;
+      };
+      this.file2 = e.value[0];
+      this.file_path_2 = this.file_path_2_tmp;
+      this.isInitEdit_2 = 1;
     },
     EDITING_START_DWG(e) {
       console.log(e);
-      this.imgDwg = e.data.path_dwg;
-      this.file = [];
-      this.isInitEdit = 0;
+      this.pictureLog = e;
+      this.imgDwg1 = e.data.file_path_1;
+      this.imgDwg2 = e.data.file_path_2;
+      this.file_path_1_tmp = e.data.file_path_1;
+      this.file_path_2_tmp = e.data.file_path_2;
+      this.file1 = [];
+      this.file2 = [];
+      this.isInitEdit_1 = 0;
+      this.isInitEdit_2 = 0;
+      this.popUpWidth = this.CHECK_SCREEN("w");
     },
     INIT_NEW_ROW_DWG() {
-      this.imgDwg = "";
-      this.file = [];
-      this.isInitEdit = 1;
+      this.imgDwg1 = "";
+      this.imgDwg2 = "";
+      this.file1 = [];
+      this.file2 = [];
+      this.isInitEdit_1 = 1;
+      this.isInitEdit_2 = 1;
+      this.popUpWidth = this.CHECK_SCREEN("w");
     },
     FETCH_CAMPAIGN() {
       this.isLoading = true;
@@ -497,6 +552,34 @@ export default {
         return true;
       }
     },
+    CHECK_SCREEN(e) {
+      if (e == "w") {
+        var sc_width = window.innerWidth;
+        if (sc_width <= 500) {
+          return sc_width / 1.1;
+        } else {
+          return sc_width / 1.1;
+        }
+      } else if (e == "h") {
+        var sc_height = window.innerHeight;
+        return sc_height / 1.1;
+      }
+    },
+    DEL_PIC(seq) {
+      if(seq == 1) {
+        this.imgDwg1 = "";
+        this.file_path_1 = this.file_path_1_tmp;
+      } else if (seq == 2) {
+        this.imgDwg2 = "";
+        this.file_path_2 = this.file_path_2_tmp;
+      }
+    },
+    SAVE(e) {
+      console.log(e);
+      if(e.changes.length >= 0) {
+        this.UPDATE_DWG(this.pictureLog);
+      }
+    }
   },
 };
 </script>
