@@ -251,7 +251,7 @@ export default {
         // },
       ],
       inspRecordList: {},
-      campaignList: {},
+      campaignList: [],
       isLoading: false,
       fileUploaderRef,
       imgRef,
@@ -304,8 +304,8 @@ export default {
         },
       })
         .then((res) => {
-          console.log("insp record:");
-          console.log(res.data);
+          // console.log("insp record:");
+          // console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
@@ -469,7 +469,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.campaignList = res.data;
           }
@@ -482,11 +482,11 @@ export default {
         });
     },
     SET_CAMPAIGN(id) {
-      if (this.campaignList) {
+      if (this.campaignList.length > 0) {
         var data = this.campaignList.filter(function (e) {
           return e.id_campaign == id;
         });
-        console.log(data);
+        // console.log(data);
         return data[0].campaign_desc;
       }
     },
