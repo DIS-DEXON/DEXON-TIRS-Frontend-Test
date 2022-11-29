@@ -1,6 +1,9 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Projection Plate" />
+    <innerPageName
+      pageName="Thickness Messurement"
+      breadcrumb1="Projection Plate"
+    />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -22,33 +25,22 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
             :allow-adding="true"
             :use-icons="true"
-            mode="row"
+            mode="form"
           />
 
-          <DxColumn
-            data-field="tp_no"
-            caption="TP No."
-            sort-order="asc"
-          />
+          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" />
 
-          <DxColumn
-            data-field="tp_desc"
-            caption="TP desc"
-          />
+          <DxColumn data-field="tp_desc" caption="TP desc" />
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="t_req"
-            caption="treq (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="inservice_date"
@@ -60,9 +52,7 @@
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
-
             <DxButton name="edit" hint="Edit" icon="edit" />
-
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
 
@@ -145,7 +135,7 @@
           <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
-      <div class="table-wrapper" style="grid-column: span 3">
+      <div class="table-wrapper" style="grid-column: span 2">
         <DxDataGrid
           id="view-grid"
           key-expr="id_thk"
@@ -163,16 +153,9 @@
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
 
-          <DxColumn 
-            data-field="tp_no" 
-            caption="TP No."
-            sort-order="asc"
-          />
-          
-          <DxColumn 
-            data-field="tp_desc" 
-            caption="TP desc"
-          />
+          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" />
+
+          <DxColumn data-field="tp_desc" caption="TP desc" />
 
           <DxColumn
             data-field="inservice_date"
@@ -642,7 +625,7 @@ export default {
     padding: 20px 10px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: 40% 30% 30%;
+    grid-template-columns: 60% 40%;
     grid-template-rows: 500px 500px;
     // grid-gap: 10px;
   }

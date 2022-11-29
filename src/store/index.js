@@ -48,7 +48,7 @@ export default new Vuex.Store({
           id: 108,
           name: "User Account Manager",
           icon: "/img/icon_sidebar/account/account.png",
-          icon_menu: '/img/icon_menu/account/account.png',
+          icon_menu: "/img/icon_menu/account/account.png",
           link: "/user-account-manager",
           isActive: true,
         },

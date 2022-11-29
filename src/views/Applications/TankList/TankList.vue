@@ -88,7 +88,7 @@ import {
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import popupAdd from "@/views/Applications/TankList/popup-add.vue";
+import popupAdd from "@/views/Applications/TankList/tank-info-add.vue";
 
 //API
 import axios from "/axios.js";

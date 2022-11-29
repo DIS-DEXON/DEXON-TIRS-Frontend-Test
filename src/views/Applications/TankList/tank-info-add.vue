@@ -418,7 +418,7 @@ import DxDateBox from "devextreme-vue/date-box";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 export default {
-  name: "popup-add-project",
+  name: "popup-add-tank",
   components: {
     DxSelectBox,
     DxDateBox,

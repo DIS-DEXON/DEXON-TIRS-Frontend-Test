@@ -99,14 +99,57 @@
         <i class="las la-plus"></i>
         <span>{{ newBtnLabel }}</span>
       </v-ons-toolbar-button>
+
+      <v-ons-toolbar-button
+        v-if="isMoreBtn"
+        v-on:click="SHOW_POPOVER($event, 'down', true)"
+        style="padding-right: 0px"
+      >
+        <i class="las la-cog"></i>
+        <!-- <span>more</span> -->
+      </v-ons-toolbar-button>
+      <v-ons-popover
+        cancelable
+        :visible.sync="popoverVisible"
+        :target="popoverTarget"
+        :direction="popoverDirection"
+        :cover-target="coverTarget"
+      >
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-on:click="EDIT_TANK_INFO()"
+        >
+          <span>Edit Tank Info</span>
+          <i class="las la-edit"></i>
+        </v-ons-toolbar-button>
+
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-on:click="DELETE_TANK_INFO()"
+        >
+          <span style="color: red">Delete Tank Info</span>
+          <i class="las la-trash" style="color: red"></i>
+        </v-ons-toolbar-button>
+      </v-ons-popover>
     </div>
+    <popupEdit
+      :editInfo="infoTank"
+      v-if="isEditPopup == true"
+      @closePopup="TOGGLE_POPUP()"
+    />
   </div>
 </template>
 
 <script>
 import moment from "moment";
+import popupEdit from "@/views/Applications/TankList/tank-info-edit.vue";
+import axios from "/axios.js";
+
 export default {
   name: "app-toolbar",
+  components: {
+    popupEdit,
+  },
   props: {
     pageName: String,
     pageSubName: String,
@@ -120,12 +163,20 @@ export default {
     isDownload: Boolean,
     isNewBtn: Boolean,
     isRefresh: Boolean,
-    newBtnLabel: String,
+    isMoreBtn: Boolean,
     infoTank: Object,
+    newBtnLabel: String,
   },
   data() {
     return {
       searchKeyword: "",
+      isEditPopup: false,
+
+      //POPUP
+      popoverVisible: false,
+      popoverTarget: null,
+      popoverDirection: "up",
+      coverTarget: false,
     };
   },
   methods: {
@@ -150,6 +201,51 @@ export default {
     CLEAR_SEARCH() {
       this.searchKeyword = "";
     },
+    SHOW_POPOVER(event, direction, coverTarget = true) {
+      this.popoverVisible = true;
+      this.popoverTarget = event;
+      this.popoverDirection = direction;
+      this.coverTarget = coverTarget;
+    },
+    TOGGLE_POPUP() {
+      this.isEditPopup = !this.isEditPopup;
+    },
+    EDIT_TANK_INFO() {
+      this.popoverVisible = false;
+      this.isEditPopup = true;
+    },
+    DELETE_TANK_INFO() {
+      this.popoverVisible = false;
+      const id_tag = this.$route.params.id_tag;
+      const id_client = this.$route.params.id_company;
+      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+        if (res == 1) {
+          axios({
+            method: "put",
+            url: "/tank-info/delete-tank-info",
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
+            },
+            data: {
+              id_tag: id_tag,
+            },
+          })
+            .then((res) => {
+              if (res.status == 200) {
+                this.$ons.notification.alert("Project delete successful");
+                this.$router.push("/tank/client/" + id_client);
+              }
+            })
+            .catch((error) => {
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        }
+      });
+    },
   },
   computed: {
     tank_inservice_date() {
@@ -163,6 +259,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
+
 #app-toolbar {
   width: 100%;
   height: 50px;
@@ -357,5 +454,36 @@ export default {
 
 .search-box:last-child {
   margin-right: 0px;
+}
+
+.popover-button {
+  padding: 6px 5px 6px 18px;
+  border: 1px solid #e6e6e6;
+  border-width: 0 0 1px 0;
+  background-color: #fff;
+
+  i {
+    font-size: 20px;
+    width: 20px;
+    text-align: center;
+    color: $dexon-primary-blue;
+  }
+  span {
+    font-size: 14px;
+    color: $dexon-primary-blue;
+    font-weight: 400;
+  }
+}
+.popover-button:hover {
+  background-color: #140a4b12;
+
+  i,
+  span {
+    color: $dexon-primary-blue;
+  }
+}
+
+.popover-button:last-child {
+  border: 0;
 }
 </style>

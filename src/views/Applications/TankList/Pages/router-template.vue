@@ -8,9 +8,9 @@
       newBtnLabel="New Project Info"
       style="grid-column: span 3"
       :infoTank="infoTank"
+      :isMoreBtn="true"
     />
     <sidebar />
-    <!-- <sidebarInfo /> -->
     <div class="pm-page-container">
       <router-view></router-view>
     </div>
