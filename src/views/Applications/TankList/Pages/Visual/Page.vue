@@ -50,17 +50,17 @@
           :allow-updating="true"
           :allow-deleting="true"
           :allow-adding="IS_VISIBLE_ADD()"
-          mode="popup"
+          mode="form"
         >
-          <DxPopup :show-title="true" :width="popUpWidth" title="New Picture Log"></DxPopup>
-            <DxForm>
-              <DxItem :col-count="2" :col-span="2" item-type="group">
-                <DxItem data-field="file_path_1" :col-span="1" />
-                <DxItem data-field="file_path_2" :col-span="1" />
-                <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
-                <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
-              </DxItem>
-            </DxForm>
+          
+          <DxForm>
+            <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="file_path_1" :col-span="1" />
+              <DxItem data-field="file_path_2" :col-span="1" />
+              <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
+              <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
+            </DxItem>
+          </DxForm>
 
         </DxEditing>
 
@@ -106,17 +106,20 @@
           <div>
             <img
               :src="baseURL + data.value"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg1 != '' && isInitEdit_1 == 0"
             />
             <img
               :src="imgDwg1"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg1 != '' && isInitEdit_1 == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg1 == ''"
             />
 
@@ -135,17 +138,20 @@
           <div>
             <img
               :src="baseURL + data.value"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg2 != '' && isInitEdit_2 == 0"
             />
             <img
               :src="imgDwg2"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg2 != '' && isInitEdit_2 == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
-              width="500"
+              width="100%"
+              height="300"
               v-if="imgDwg2 == ''"
             />
 
@@ -211,7 +217,7 @@ import {
   DxColumn,
   DxExport,
   DxEditing,
-  DxPopup,
+  // DxPopup,
   DxForm,
 } from "devextreme-vue/data-grid";
 
@@ -242,7 +248,7 @@ export default {
     DxFileUploader,
     DxForm,
     DxItem,
-    DxPopup,
+    // DxPopup,
     // DxTextArea,
     //DxButton,
   },
