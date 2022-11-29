@@ -218,6 +218,7 @@ export default {
       this.popoverVisible = false;
       const id_tag = this.$route.params.id_tag;
       const id_client = this.$route.params.id_company;
+      const user = JSON.parse(localStorage.getItem("user"));
       this.$ons.notification.confirm("Confirm delete?").then((res) => {
         if (res == 1) {
           axios({
@@ -229,6 +230,7 @@ export default {
             },
             data: {
               id_tag: id_tag,
+              updated_by: user.id_user,
             },
           })
             .then((res) => {

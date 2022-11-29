@@ -137,6 +137,11 @@ const routes = [
             alias: 'MFL Annular',
             component: () => import('../views/Applications/TankList/Pages/Thickness/MflAnnular.vue'),
           },
+          {
+            path: 'evaluation/shell-settlement',
+            alias: 'Eva Shell Settlement',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/ShellSettlement.vue'),
+          },
         ]
       },
     ]

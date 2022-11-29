@@ -71,17 +71,27 @@
         </v-ons-toolbar-button>
       </router-link>
       <router-link
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/evaluation'"
+        tag="button"
+        :disabled="true"
+        class="popup-button-caller"
+      >
+        <v-ons-toolbar-button
+          class="item"
+          v-on:click="SHOW_POPOVER($event, 'right', true, 'evaluation')"
+        >
+          <img src="/img/icon_sidebar/tank/evaluation.png" />
+          <span>Evaluation</span>
+          <i class="las la-angle-right right-arrow"></i>
+        </v-ons-toolbar-button>
+      </router-link>
+
+      <router-link
         :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'"
       >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/visual.png" />
           <span>Picture Log </span>
-        </v-ons-toolbar-button>
-      </router-link>
-      <router-link :to="'/tank/client/' + id_company + '/evaluation/' + id_tag">
-        <v-ons-toolbar-button class="item">
-          <img src="/img/icon_sidebar/tank/evaluation.png" />
-          <span>Evaluation</span>
         </v-ons-toolbar-button>
       </router-link>
 
@@ -152,6 +162,25 @@
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
+
+      <!-- Evaluation -->
+      <v-ons-popover
+        cancelable
+        :visible.sync="popoverVisible.evaluation"
+        :target="popoverTarget"
+        :direction="popoverDirection"
+        :cover-target="coverTarget"
+      >
+        <v-ons-toolbar-button
+          class="popover-button"
+          v-for="item in sidebarSubmenu.evaluation"
+          :key="item.id"
+          v-on:click="GO_TO(item, 'evaluation')"
+        >
+          <span>{{ item.code }}</span>
+          <i class="las la-angle-right"></i>
+        </v-ons-toolbar-button>
+      </v-ons-popover>
     </div>
   </div>
 </template>
@@ -174,6 +203,7 @@ export default {
         markup_drawing: false,
         checklist: false,
         thickness: false,
+        evaluation: false,
       },
       popoverTarget: null,
       popoverDirection: "right",
@@ -311,6 +341,48 @@ export default {
             path: "sump",
           },
         ],
+        evaluation: [
+          {
+            id: 1,
+            code: "Shell Settlement",
+            path: "shell-settlement",
+          },
+          {
+            id: 2,
+            code: "Shell Plumbness",
+            path: "shell-plumness",
+          },
+          {
+            id: 3,
+            code: "Shell Buckling",
+            path: "shell-buckling",
+          },
+          {
+            id: 4,
+            code: "Local Deviations",
+            path: "local-deviations",
+          },
+          {
+            id: 5,
+            code: "Roundness",
+            path: "roundness",
+          },
+          {
+            id: 6,
+            code: "Grounding Connection",
+            path: "ground-connection",
+          },
+          {
+            id: 7,
+            code: "MRT",
+            path: "mrt",
+          },
+          {
+            id: 8,
+            code: "Floor Gradient",
+            path: "floor-gradient",
+          },
+        ],
       },
     };
   },
@@ -335,12 +407,18 @@ export default {
         this.sidebarSubmenu.thickness.length > 0
       ) {
         this.popoverVisible.thickness = true;
+      } else if (
+        target == "evaluation" &&
+        this.sidebarSubmenu.evaluation.length > 0
+      ) {
+        this.popoverVisible.evaluation = true;
       }
     },
     GO_TO(item, target) {
       this.popoverVisible.markup_drawing = false;
       this.popoverVisible.checklist = false;
       this.popoverVisible.thickness = false;
+      this.popoverVisible.evaluation = false;
       if (target == "drawing") {
         this.$router.push({
           path:
@@ -374,26 +452,19 @@ export default {
             item.path,
           replace: true,
         });
+      } else if (target == "evaluation") {
+        this.$router.push({
+          path:
+            "/tank/client/" +
+            this.id_company +
+            "/tag/" +
+            this.id_tag +
+            "/evaluation/" +
+            item.path,
+          replace: true,
+        });
       }
     },
-    // FETCH_SUBMENU_DRAWING() {
-    //   axios({
-    //     method: "get",
-    //     url: "MdComponent",
-    //     headers: {
-    //       Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-    //     },
-    //   })
-    //     .then((res) => {
-    //       if (res.status == 200 && res.data) {
-    //         this.sidebarSubmenu = res.data;
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     })
-    //     .finally(() => {});
-    // },
   },
 };
 </script>
