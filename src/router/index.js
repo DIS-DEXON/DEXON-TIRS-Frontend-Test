@@ -142,6 +142,11 @@ const routes = [
             alias: 'Eva Shell Settlement',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/ShellSettlement.vue'),
           },
+          {
+            path: 'evaluation/local-deviations',
+            alias: 'Eva Local Deviations',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/LocalDeviations.vue'),
+          },
         ]
       },
     ]
