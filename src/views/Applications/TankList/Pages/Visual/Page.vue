@@ -69,29 +69,31 @@
           caption="Overview Picture"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor1"
-          :width="500"
+          :width="315"
         />
         <DxColumn
           data-field="file_path_2"
           caption="Close-Up Picture"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor2"
-          :width="500"
+          :width="315"
         />
 
         <DxColumn 
           data-field="finding" 
           caption="Finding"
+          cell-template="dxTextArea"
         />
 
         <DxColumn 
           data-field="recommendation" 
           caption="Recommendation" 
+          cell-template="dxTextArea"
         />
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <img :src="baseURL + data.value" width="100%" height="200" /><br />
+            <img :src="baseURL + data.value" width="300" height="200" /><br />
             <a
               :href="baseURL + data.value"
               download="dwg"
@@ -106,20 +108,20 @@
           <div>
             <img
               :src="baseURL + data.value"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg1 != '' && isInitEdit_1 == 0"
             />
             <img
               :src="imgDwg1"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg1 != '' && isInitEdit_1 == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg1 == ''"
             />
 
@@ -131,51 +133,70 @@
               @value-changed="ON_DWG_CHANGE_1"
             />
 
-            <button type="button" v-on:click="DEL_PIC(1)">ลบ</button>
+            <DxButton
+              :width="120"
+              text="Delete"
+              type="normal"
+              styling-mode="contained"
+              @click="DEL_PIC(1)"
+            />
+
           </div>
         </template>
         <template #dwg-img-editor2="{ data }">
           <div>
             <img
               :src="baseURL + data.value"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg2 != '' && isInitEdit_2 == 0"
             />
+
             <img
               :src="imgDwg2"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg2 != '' && isInitEdit_2 == 1"
             />
+
             <img
               src="http://tmt-solution.com/public/image-empty.png"
-              width="100%"
-              height="300"
+              width="300"
+              height="200"
               v-if="imgDwg2 == ''"
             />
 
-            <DxFileUploader
-              select-button-text="Select photo"
-              label-text=""
-              accept="image/*"
-              upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE_2"
-            />
+            <div>
 
-            <button type="button" v-on:click="DEL_PIC(2)">ลบ</button>
+              <DxFileUploader
+                select-button-text="Select photo"
+                label-text=""
+                accept="image/*"
+                upload-mode="useForm"
+                @value-changed="ON_DWG_CHANGE_2"
+              />
+
+              <DxButton
+                :width="120"
+                text="Delete"
+                type="normal"
+                styling-mode="contained"
+                @click="DEL_PIC(2)"
+              />
+
+            </div>
           </div>
         </template>
 
-        <!-- <template #finding-editor="{ data }">
+        <template #dxTextArea="{ data }">
           <div>
             <DxTextArea
-              :height="90"
-              :read-only="false"
+              :height="200"
+              :read-only="true"
               :value="data.value"
             />
           </div>
-        </template> -->
+        </template>
 
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
@@ -202,7 +223,8 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import 'devextreme-vue/text-area';
+import DxTextArea from 'devextreme-vue/text-area';
+import DxButton from 'devextreme-vue/button';
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -248,9 +270,9 @@ export default {
     DxFileUploader,
     DxForm,
     DxItem,
+    DxTextArea,
     // DxPopup,
-    // DxTextArea,
-    //DxButton,
+    DxButton,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -633,6 +655,6 @@ export default {
   border-radius: 8px;
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  right: 5px;
 }
 </style>
