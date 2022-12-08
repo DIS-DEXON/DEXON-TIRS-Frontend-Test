@@ -152,6 +152,11 @@ const routes = [
             alias: 'Eva Grounding Connection',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/GroundingConnection.vue'),
           },
+          {
+            path: 'evaluation/roundness',
+            alias: 'Eva Roundness',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/Roundness.vue'),
+          },
         ]
       },
     ]

@@ -540,6 +540,7 @@ hr {
         overflow: hidden;
         border: 1px solid #000000;
         background-color: #000000;
+        border-radius: 6px 6px 0 0;
     }
 
     .dx-datagrid-headers .dx-datagrid-table .dx-row>td {
@@ -636,6 +637,13 @@ hr {
 
     .dx-texteditor-container {
         border-radius: 0;
+    }
+
+    .dx-datagrid-borders .dx-datagrid-rowsview,
+    .dx-datagrid-headers+.dx-datagrid-rowsview {
+        border: 0.5px solid #000000;
+        border-bottom: 1px solid #000;
+        border-radius: 0 0 6px 6px;
     }
 
 }
@@ -1528,4 +1536,62 @@ hr {
 td {
     user-select: text !important;
     cursor: text !important;
+}
+
+.instruction-table {
+    font-size: 12px;
+    margin: 0 auto;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 4px 10px;
+        border: 1px solid #000;
+        border-collapse: collapse;
+        user-select: text;
+        cursor: text;
+    }
+}
+
+.center-box-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .toolbar-button {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin: 0 2px;
+        border-radius: 6px;
+        background-color: #f6f6f6;
+        padding: 5px 0;
+        text-align: right;
+
+        i,
+        span {
+            font-size: 18px;
+            color: $web-font-color-blue;
+        }
+
+        span {
+            font-size: 12px;
+            padding-right: 10px;
+            font-weight: 500;
+        }
+    }
+
+    .toolbar-button:hover,
+    .toolbar-button:active {
+        background-color: #140a4b;
+
+        i,
+        span {
+            color: #fff;
+        }
+    }
 }

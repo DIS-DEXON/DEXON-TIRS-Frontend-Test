@@ -94,7 +94,7 @@ export default {
 @media screen and (max-width: 1024px) {
   .pm-page {
     grid-template-columns: 54px calc(100vw - 54px);
-    grid-template-rows: 61px calc(100vh - 139px);
+    // grid-template-rows: 61px calc(100vh - 139px);
     .pm-page-container {
       background-color: #fff;
       // padding: 20px;

@@ -669,45 +669,6 @@ export default {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.center-box-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  .toolbar-button {
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    margin: 0 2px;
-    border-radius: 6px;
-    background-color: #f6f6f6;
-    padding: 5px 0;
-    text-align: right;
-    i,
-    span {
-      font-size: 18px;
-      color: $web-font-color-blue;
-    }
-    span {
-      font-size: 12px;
-      padding-right: 10px;
-      font-weight: 500;
-    }
-  }
-
-  .toolbar-button:hover,
-  .toolbar-button:active {
-    background-color: #140a4b;
-    i,
-    span {
-      color: #fff;
-    }
-  }
-}
-
 .inner-pagename {
   border: 1px solid #000000;
   border-width: 0 0 1px 0px;

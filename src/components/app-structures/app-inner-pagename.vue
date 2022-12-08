@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .inner-pagename {
-  height: 40px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,15 +49,15 @@ export default {
     justify-content: center;
     align-items: center;
     h1 {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       margin: 0;
       color: $web-font-color-black;
       user-select: text;
     }
     i {
-      margin: 0 10px;
-      font-size: 16px;
+      margin: 0 6px;
+      font-size: 12px;
       color: $web-font-color-black;
       user-select: text;
     }
