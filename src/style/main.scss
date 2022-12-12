@@ -646,6 +646,11 @@ hr {
         border-radius: 0 0 6px 6px;
     }
 
+    .dx-datagrid-rowsview .dx-datagrid-content:not(.dx-datagrid-content-fixed) {
+        border: 1px solid #000;
+        border-width: 0 0.5px 0 0.5px;
+    }
+
 }
 
 .loader-box {

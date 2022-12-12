@@ -45,9 +45,9 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_GROUND"
-          @row-updated="UPDATE_GROUND"
-          @row-removed="DELETE_GROUND"
+          @row-inserted="CREATE_ROUNDNESS"
+          @row-updated="UPDATE_ROUNDNESS"
+          @row-removed="DELETE_ROUNDNESS"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -61,6 +61,12 @@
           />
 
           <DxColumn data-field="point_no" caption="Point No." />
+
+          <DxColumn
+            data-field="distance_above_bottom"
+            caption="Distance Above Bottom (m)"
+            format="#,##0.00"
+          />
 
           <DxColumn
             data-field="measure_value"
@@ -360,6 +366,84 @@ export default {
       } else {
         return true;
       }
+    },
+    CREATE_ROUNDNESS(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_eval = 0;
+      e.data.id_tag = id_tag;
+      e.data.id_inspection_record = this.id_inspection_record;
+
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "roundness/add-roundness",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ROUNDNESS(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_ROUNDNESS(e) {
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "roundness/edit-roundness",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ROUNDNESS(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_ROUNDNESS(e) {
+      console.log(e.data);
+      axios({
+        method: "delete",
+        url: "roundness/delete-roundness",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ROUNDNESS(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 };
