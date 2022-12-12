@@ -619,7 +619,7 @@ export default {
   overflow-y: hidden;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 41px auto;
+  grid-auto-rows: 27px auto;
   width: 100%;
   background-color: #d9d9d9;
 }

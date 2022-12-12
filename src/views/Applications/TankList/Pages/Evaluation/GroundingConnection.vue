@@ -94,7 +94,7 @@
         <!-- <DxExport :enabled="true" /> -->
       </DxDataGrid>
       <div class="app-instruction">
-        <appInstruction
+        <!-- <appInstruction
           title="Guideline"
           desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
         >
@@ -114,6 +114,17 @@
             <li>
               Flat spots measured in the vertical plane shall not exceed 1/200
               of the total height
+            </li>
+          </ol>
+        </appInstruction> -->
+        <appInstruction title="Instruction" desc="The acceptance criteria">
+          <ol>
+            <li>
+              The distance between grounding connection is between 6 to 30 m.
+            </li>
+            <li>
+              Total resistance from tank to earth not more than 25 ohms (API
+              575) or 10 ohms (Thai regulation) or Customer.
             </li>
           </ol>
         </appInstruction>
@@ -489,8 +500,5 @@ export default {
 
 .app-instruction {
   margin-top: 20px;
-  ol {
-    list-style-type: lower-alpha;
-  }
 }
 </style>

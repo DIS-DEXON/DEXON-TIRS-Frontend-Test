@@ -2,7 +2,7 @@
   <div class="page-container">
     <innerPageName
       pageName="Evaluation"
-      breadcrumb1="Roundness"
+      breadcrumb1="MRT"
       style="grid-column: span 2"
     />
     <div class="list-panel">
@@ -22,7 +22,7 @@
             <div class="contents">
               <v-ons-toolbar-button
                 class="btn"
-                v-on:click="VIEW_ROUNDNESS(item.id_inspection_record)"
+                v-on:click="VIEW_GROUND(item.id_inspection_record)"
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -31,125 +31,91 @@
         </template>
       </DxList>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record != ''">
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="roundness-grid"
-          key-expr="id_eval"
-          :data-source="roundnessList"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_ROUNDNESS"
-          @row-updated="UPDATE_ROUNDNESS"
-          @row-removed="DELETE_ROUNDNESS"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
+    <div
+      class="list-page"
+      style="overflow-y: scroll"
+      v-if="this.id_inspection_record != ''"
+    >
+      <DxDataGrid
+        id="ground-connect-grid"
+        key-expr="id_eval"
+        :data-source="groundConnect"
+        :element-attr="dataGridAttributes"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        :word-wrap-enabled="true"
+        @row-inserted="CREATE_GROUND"
+        @row-updated="UPDATE_GROUND"
+        @row-removed="DELETE_GROUND"
+      >
+        <DxFilterRow :visible="true" />
+        <DxHeaderFilter :visible="true" />
 
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="IS_VISIBLE_ADD()"
-            :use-icons="true"
-            mode="row"
-          />
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
+          mode="row"
+        />
 
-          <DxColumn data-field="point_no" caption="Point No." />
+        <DxColumn data-field="ground_no" caption="Grounding connection no" />
 
-          <DxColumn
-            data-field="distance_above_bottom"
-            caption="Distance Above Bottom (m)"
-            format="#,##0.00"
-          />
+        <DxColumn
+          data-field="measured"
+          caption="The measured resistance to ground (ohms)"
+          format="#,##0.00"
+        />
 
-          <DxColumn
-            data-field="measure_value"
-            caption="Radius Meassured Value (mm)"
-            format="#,##0.00"
-          />
+        <DxColumn data-field="note" caption="Note" />
 
-          <DxColumn
-            data-field="relative_to_nom"
-            caption="Relative to nom. (mm)"
-            format="#,##0.00"
-          />
+        <DxColumn type="buttons">
+          <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+          <DxButton name="edit" hint="Edit" icon="edit" />
+          <DxButton name="delete" hint="Delete" icon="trash" />
+        </DxColumn>
 
-          <DxColumn
-            data-field="radius_tolerance"
-            caption="Radius Tolerance (mm)"
-            format="#,##0.00"
-          />
-
-          <DxColumn data-field="result" caption="Inspection Result" />
-
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
-      </div>
-      <div class="chart-wrapper">
-        <chart :roundnessData="roundnessList" :key="roundnessList" />
-      </div>
-      <div class="app-instruction" style="grid-column: span 2">
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="false" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <!-- <DxExport :enabled="true" /> -->
+      </DxDataGrid>
+      <div class="app-instruction">
         <appInstruction
           title="Instruction"
-          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
+          desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
         >
-          <table class="instruction-table">
-            <tr>
-              <th>Tank Diameter m (ft)</th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (≤ 0.3048 m)
-              </th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (> 0.3048 m)
-              </th>
-            </tr>
-            <tr>
-              <td>&lt; 12 (40)</td>
-              <td>±13 (&#189;)</td>
-              <td>±39 (3&#189;)</td>
-            </tr>
-            <tr>
-              <td>from 12 (40) to &lt; 45 (150)</td>
-              <td>±19 (¾)</td>
-              <td>±57 (3¾)</td>
-            </tr>
-            <tr>
-              <td>from 45 (150) to &lt; 75 (250)</td>
-              <td>±25 (1)</td>
-              <td>±75 (3)</td>
-            </tr>
-            <tr>
-              <td>≥ 75 (250)</td>
-              <td>±32 (1¼)</td>
-              <td>±96 (3¼)</td>
-            </tr>
-          </table>
+          <ol>
+            <li>
+              Deviations (peaking) at vertical weld joints shall not exceed 13
+              mm (1/2 in.). Peaking at vertical weld joints shall be determined
+              using a horizontal sweep board 900 mm (36 in.) long. The sweep
+              board shall be made to the nominal radius of the tank.
+            </li>
+            <li>
+              Deviations (banding) at horizontal weld joints shall not exceed 13
+              mm (1/2 in.). Banding at horizontal weld joints shall be
+              determined using a straight edge vertical sweep board 900 mm (36
+              in.) long.
+            </li>
+            <li>
+              DFlat spots measured in the vertical plane shall not exceed 1/200
+              of the total height.
+            </li>
+          </ol>
         </appInstruction>
       </div>
     </div>
@@ -176,7 +142,6 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
-import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -220,14 +185,13 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     appInstruction,
-    chart,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -235,12 +199,12 @@ export default {
   },
   data() {
     return {
-      roundnessList: {},
-      roundnessListDetail: {},
+      groundConnect: {},
+      groundConnectDetail: {},
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
-      id_inspection_record: "",
+      id_inspection_record: 0,
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -301,25 +265,126 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_ROUNDNESS(id_inspection_record) {
+    VIEW_GROUND(id_inspection_record) {
       this.id_inspection_record = id_inspection_record;
-      const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roundness/get-roundness",
+        url: "grounding-connection/grounding-connection-by-insp-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_tag: id_tag,
           id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
-          console.log("get roundness list:");
+          console.log("ground:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.roundnessList = res.data;
+            this.groundConnect = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VIEW_GROUND_DETAIL(id_inspection_record) {
+      this.id_inspection_record = id_inspection_record;
+      axios({
+        method: "post",
+        url: "grounding-connection/grounding-connection-detail-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_inspection_record: id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log("ground detail:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.groundConnectDetail = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_GROUND(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_tag = id_tag;
+      e.data.id_eval = 0;
+      e.data.id_inspection_record = this.id_inspection_record;
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "grounding-connection/add-grounding-connection",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_GROUND(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_GROUND(e) {
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "grounding-connection/edit-grounding-connection",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_GROUND(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_GROUND(e) {
+      console.log(e.data);
+      axios({
+        method: "delete",
+        url: "grounding-connection/delete-grounding-connection",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_GROUND(this.id_inspection_record);
           }
         })
         .catch((error) => {
@@ -367,84 +432,6 @@ export default {
         return true;
       }
     },
-    CREATE_ROUNDNESS(e) {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_eval = 0;
-      e.data.id_tag = id_tag;
-      e.data.id_inspection_record = this.id_inspection_record;
-
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "roundness/add-roundness",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_ROUNDNESS(e) {
-      console.log(e.data);
-      axios({
-        method: "put",
-        url: "roundness/edit-roundness",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DELETE_ROUNDNESS(e) {
-      console.log(e.data);
-      axios({
-        method: "delete",
-        url: "roundness/delete-roundness",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
   },
 };
 </script>
@@ -473,34 +460,20 @@ export default {
 .tab-wrapper {
   height: 48px;
 }
-.chart-wrapper {
-  padding: 0 10px;
-}
 
 .info-tab-display {
   display: flex;
 }
 
-.list-page {
-  height: fit-content;
-  margin-bottom: 20px;
-  width: calc(100% - 20px);
-  height: calc(100% - 39px);
-  padding: 20px 10px;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: 600px calc(100% - 600px);
-  grid-template-rows: 500px auto;
-  position: relative;
-}
-
 .dx-list-item-content::before {
   content: none;
 }
+#data-grid-style {
+  width: 100%;
+}
 
-.data-grid-style {
-  height: 100%;
-  border-radius: 6px;
+.list-page {
+  position: relative;
 }
 
 .btn-view-dwg {
@@ -515,16 +488,6 @@ export default {
 }
 
 .app-instruction {
-  padding: 20px 10px;
-}
-
-.table-wrapper {
-  padding: 0 10px;
-  height: 100%;
-}
-
-.instruction-table {
-  // width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 </style>
