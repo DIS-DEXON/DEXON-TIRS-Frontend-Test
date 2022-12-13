@@ -31,68 +31,235 @@
         </template>
       </DxList>
     </div>
-    <div
-      class="list-page"
-      style="overflow-y: scroll"
-      v-if="this.id_inspection_record != ''"
-    >
-      <DxDataGrid
-        id="ground-connect-grid"
-        key-expr="id_eval"
-        :data-source="groundConnect"
-        :element-attr="dataGridAttributes"
-        :selection="{ mode: 'single' }"
-        :hover-state-enabled="true"
-        :allow-column-reordering="true"
-        :show-borders="true"
-        :show-row-lines="true"
-        :row-alternation-enabled="false"
-        :word-wrap-enabled="true"
-        @row-inserted="CREATE_GROUND"
-        @row-updated="UPDATE_GROUND"
-        @row-removed="DELETE_GROUND"
-      >
-        <DxFilterRow :visible="true" />
-        <DxHeaderFilter :visible="true" />
-
-        <DxEditing
-          :allow-updating="true"
-          :allow-deleting="true"
-          :allow-adding="IS_VISIBLE_ADD()"
-          :use-icons="true"
-          mode="row"
-        />
-
-        <DxColumn data-field="ground_no" caption="Grounding connection no" />
-
-        <DxColumn
-          data-field="measured"
-          caption="The measured resistance to ground (ohms)"
-          format="#,##0.00"
-        />
-
-        <DxColumn data-field="note" caption="Note" />
-
-        <DxColumn type="buttons">
-          <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-          <DxButton name="edit" hint="Edit" icon="edit" />
-          <DxButton name="delete" hint="Delete" icon="trash" />
-        </DxColumn>
-
-        <!-- Configuration goes here -->
-        <!-- <DxFilterRow :visible="true" /> -->
-        <DxScrolling mode="standard" />
-        <DxSearchPanel :visible="false" />
-        <DxPaging :page-size="10" :page-index="0" />
-        <DxPager
-          :show-page-size-selector="true"
-          :allowed-page-sizes="[5, 10, 20]"
-          :show-navigation-buttons="true"
-          :show-info="true"
-          info-text="Page {0} of {1} ({2} items)"
-        />
-        <!-- <DxExport :enabled="true" /> -->
-      </DxDataGrid>
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <div class="report-sheet">
+        <div class="report-container">
+          <div class="sheet-body">
+            <div class="section-label">
+              <label>Bottom Plate</label>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>RTbc</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.rtbc" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>RTip</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.rtip" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Or</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.or" />
+              </div>
+              <div class="form-item-unit">
+                <label>years</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>StPr</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.stpr" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm/yr</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>UPr</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.upr" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm/yr</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Age of Tank</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.age_of_tank" />
+              </div>
+              <div class="form-item-unit">
+                <label>years</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>MRT</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.mrt" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>tmin</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.tmin" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Result</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.bottom.result" />
+              </div>
+              <div class="form-item-unit">
+                <label></label>
+              </div>
+            </div>
+            <div class="form-item" style="grid-template-rows: 101px">
+              <div class="form-item-label">
+                <label>Recommendation</label>
+              </div>
+              <div class="form-item-textarea">
+                <textarea v-model="dataMRT.bottom.recommendation" />
+              </div>
+            </div>
+          </div>
+          <div class="sheet-body">
+            <div class="section-label">
+              <label>Annular Plate</label>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>RTbc</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.rtbc" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>RTip</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.rtip" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Or</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.or" />
+              </div>
+              <div class="form-item-unit">
+                <label>years</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>StPr</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.stpr" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm/yr</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>UPr</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.upr" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm/yr</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Age of Tank</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.age_of_tank" />
+              </div>
+              <div class="form-item-unit">
+                <label>years</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>MRT</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.mrt" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>tmin</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.tmin" />
+              </div>
+              <div class="form-item-unit">
+                <label>mm</label>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-label">
+                <label>Result</label>
+              </div>
+              <div class="form-item-value">
+                <input v-model="dataMRT.annular.result" />
+              </div>
+              <div class="form-item-unit">
+                <label></label>
+              </div>
+            </div>
+            <div class="form-item" style="grid-template-rows: 101px">
+              <div class="form-item-label">
+                <label>Recommendation</label>
+              </div>
+              <div class="form-item-textarea">
+                <textarea v-model="dataMRT.annular.recommendation" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="app-instruction">
         <appInstruction
           title="Instruction"
@@ -117,6 +284,12 @@
             </li>
           </ol>
         </appInstruction>
+      </div>
+      <div class="center-box-wrapper">
+        <v-ons-toolbar-button v-on:click="CREATE_CHECKLIST()">
+          <i class="las la-plus"></i>
+          <span>Create New MRT Result</span>
+        </v-ons-toolbar-button>
       </div>
     </div>
     <div class="list-page" v-if="this.id_inspection_record == ''">
@@ -143,23 +316,6 @@ import "devextreme/dist/css/dx.light.css";
 import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 
-//DataGrid
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
-import {
-  DxDataGrid,
-  DxSearchPanel,
-  DxPaging,
-  DxPager,
-  DxScrolling,
-  DxColumn,
-  DxEditing,
-  DxButton,
-  DxHeaderFilter,
-  DxFilterRow,
-} from "devextreme-vue/data-grid";
-
 //List
 import { DxList } from "devextreme-vue/list";
 
@@ -173,17 +329,7 @@ export default {
   components: {
     //VueTabsChrome,
     DxList,
-    DxDataGrid,
-    DxSearchPanel,
-    DxPaging,
-    DxPager,
-    DxScrolling,
-    DxColumn,
-    DxEditing,
-    DxButton,
     innerPageName,
-    DxHeaderFilter,
-    DxFilterRow,
     appInstruction,
   },
   created() {
@@ -199,15 +345,36 @@ export default {
   },
   data() {
     return {
-      groundConnect: {},
-      groundConnectDetail: {},
+      dataMRT: {
+        bottom: {
+          rtbc: 10.25,
+          rtip: 11.5,
+          or: 2,
+          stpr: 0.25,
+          upr: 0.5,
+          age_of_tank: 2,
+          mrt: null,
+          tmin: null,
+          result: null,
+          recommendation: "Good condition",
+        },
+        annular: {
+          rtbc: 10.25,
+          rtip: 11.5,
+          or: 2,
+          stpr: 0.25,
+          upr: 0.5,
+          age_of_tank: 2,
+          mrt: null,
+          tmin: null,
+          result: null,
+          recommendation: "Good condition sdfgsdfgsdfs fgsdsdgs  sdgsdsd ",
+        },
+      },
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
       id_inspection_record: 0,
-      dataGridAttributes: {
-        class: "data-grid-style",
-      },
     };
   },
   computed: {
@@ -219,22 +386,6 @@ export default {
     },
   },
   methods: {
-    EXPORT_DATA(e) {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet("Projects");
-      exportDataGrid({
-        worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
-          saveAs(
-            new Blob([buffer], { type: "application/octet-stream" }),
-            "Projects.xlsx"
-          );
-        });
-      });
-      e.cancel = true;
-    },
     FETCH_INSP_RECORD() {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
@@ -317,83 +468,6 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_GROUND(e) {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_tag = id_tag;
-      e.data.id_eval = 0;
-      e.data.id_inspection_record = this.id_inspection_record;
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "grounding-connection/add-grounding-connection",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_GROUND(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_GROUND(e) {
-      console.log(e.data);
-      axios({
-        method: "put",
-        url: "grounding-connection/edit-grounding-connection",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_GROUND(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DELETE_GROUND(e) {
-      console.log(e.data);
-      axios({
-        method: "delete",
-        url: "grounding-connection/delete-grounding-connection",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_GROUND(this.id_inspection_record);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
     FETCH_CAMPAIGN() {
       this.isLoading = true;
       axios({
@@ -457,6 +531,13 @@ export default {
   padding-bottom: 20px;
 }
 
+.section-label {
+  label {
+    font-size: 12px !important;
+    text-transform: none !important;
+  }
+}
+
 .tab-wrapper {
   height: 48px;
 }
@@ -474,6 +555,7 @@ export default {
 
 .list-page {
   position: relative;
+  scroll-y: auto;
 }
 
 .btn-view-dwg {
@@ -489,5 +571,61 @@ export default {
 
 .app-instruction {
   margin-top: 20px;
+}
+
+.report-sheet {
+  max-width: 100%;
+  width: 100%;
+  font-family: $web-default-font;
+  box-shadow: none;
+  padding: 0 !important;
+  margin-top: 0;
+  margin-bottom: 0;
+  .report-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 20px;
+    width: calc(100% - 20px);
+
+    .header {
+      .title {
+        grid-column: span 4;
+      }
+    }
+    .sheet-body {
+      grid-template-columns: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      .form-item {
+        display: grid;
+        grid-template-columns: 220px calc(100% - 320px) 100px;
+        grid-template-rows: 35px;
+        .form-item-label {
+        }
+        .form-item-value {
+          grid-column: span 1;
+          border-right: 0;
+          input {
+            text-align: center;
+            // margin-right: 20px;
+          }
+          label {
+            margin: 0 auto;
+            font-weight: 600;
+          }
+        }
+        .form-item-textarea {
+          textarea {
+            height: auto;
+            max-height: 80px;
+            overflow-y: auto;
+          }
+        }
+      }
+      .form-item-picture-log .img-box {
+        height: 244px;
+      }
+    }
+  }
 }
 </style>

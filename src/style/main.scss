@@ -731,7 +731,8 @@ hr {
 
             .section-label,
             .form-item-label,
-            .form-item-value {
+            .form-item-value,
+            .form-item-unit {
                 padding: 6px 8px;
             }
 
@@ -753,6 +754,23 @@ hr {
                 background-color: #00006513;
                 border: 0.5px solid #000;
                 border-width: 0.5px 0 0.5px 0.5px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                label {
+                    font-size: 12px;
+                    font-family: inherit;
+                    font-weight: 400;
+                    text-transform: none;
+                    color: #000;
+                }
+            }
+
+            .form-item-unit {
+                background-color: #00000000;
+                border: 0.5px solid #000;
+                border-width: 0.5px 0.5px 0.5px 0;
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
