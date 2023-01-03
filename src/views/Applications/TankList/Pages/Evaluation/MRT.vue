@@ -22,7 +22,7 @@
             <div class="contents">
               <v-ons-toolbar-button
                 class="btn"
-                v-on:click="VIEW_GROUND(item.id_inspection_record)"
+                v-on:click="VIEW_MRT(item.id_inspection_record)"
               >
                 <i class="las la-search"></i>
               </v-ons-toolbar-button>
@@ -31,7 +31,7 @@
         </template>
       </DxList>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record != ''">
+    <div class="list-page" v-if="this.dataMRT">
       <div class="report-sheet">
         <div class="report-container">
           <div class="sheet-body">
@@ -43,7 +43,7 @@
                 <label>RTbc</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.rtbc" />
+                <input v-model="dataMRT.bt_RTbc" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -54,7 +54,7 @@
                 <label>RTip</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.rtip" />
+                <input v-model="dataMRT.bt_RTip" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -65,7 +65,7 @@
                 <label>Or</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.or" />
+                <input v-model="dataMRT.bt_Or" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -76,7 +76,7 @@
                 <label>StPr</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.stpr" />
+                <input v-model="dataMRT.bt_StPr" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm/yr</label>
@@ -87,7 +87,7 @@
                 <label>UPr</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.upr" />
+                <input v-model="dataMRT.bt_UPr" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm/yr</label>
@@ -98,7 +98,10 @@
                 <label>Age of Tank</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.age_of_tank" />
+                <input
+                  v-model="dataMRT.bt_age_of_tank"
+                  @focusout="UPDATE_MRT()"
+                />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -109,7 +112,7 @@
                 <label>MRT</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.mrt" />
+                <input v-model="dataMRT.bt_MRT" disabled />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -120,7 +123,7 @@
                 <label>tmin</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.tmin" />
+                <input v-model="dataMRT.bt_tmin" disabled />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -131,7 +134,7 @@
                 <label>Result</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.bottom.result" />
+                <input v-model="dataMRT.bt_result" disabled />
               </div>
               <div class="form-item-unit">
                 <label></label>
@@ -142,7 +145,10 @@
                 <label>Recommendation</label>
               </div>
               <div class="form-item-textarea">
-                <textarea v-model="dataMRT.bottom.recommendation" />
+                <textarea
+                  v-model="dataMRT.bt_recommedation"
+                  @focusout="UPDATE_MRT()"
+                />
               </div>
             </div>
           </div>
@@ -155,7 +161,7 @@
                 <label>RTbc</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.rtbc" />
+                <input v-model="dataMRT.an_RTbc" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -166,7 +172,7 @@
                 <label>RTip</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.rtip" />
+                <input v-model="dataMRT.an_RTip" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -177,7 +183,7 @@
                 <label>Or</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.or" />
+                <input v-model="dataMRT.an_Or" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -188,7 +194,7 @@
                 <label>StPr</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.stpr" />
+                <input v-model="dataMRT.an_StPr" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm/yr</label>
@@ -199,7 +205,7 @@
                 <label>UPr</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.upr" />
+                <input v-model="dataMRT.an_UPr" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>mm/yr</label>
@@ -210,7 +216,10 @@
                 <label>Age of Tank</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.age_of_tank" />
+                <input
+                  v-model="dataMRT.an_age_of_tank"
+                  @focusout="UPDATE_MRT()"
+                />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -221,7 +230,7 @@
                 <label>MRT</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.mrt" />
+                <input v-model="dataMRT.an_MRT" disabled />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -232,7 +241,7 @@
                 <label>tmin</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.tmin" />
+                <input v-model="dataMRT.an_tmin" disabled />
               </div>
               <div class="form-item-unit">
                 <label>mm</label>
@@ -243,7 +252,7 @@
                 <label>Result</label>
               </div>
               <div class="form-item-value">
-                <input v-model="dataMRT.annular.result" />
+                <input v-model="dataMRT.an_result" disabled />
               </div>
               <div class="form-item-unit">
                 <label></label>
@@ -254,7 +263,10 @@
                 <label>Recommendation</label>
               </div>
               <div class="form-item-textarea">
-                <textarea v-model="dataMRT.annular.recommendation" />
+                <textarea
+                  v-model="dataMRT.an_recommedation"
+                  @focusout="UPDATE_MRT()"
+                />
               </div>
             </div>
           </div>
@@ -285,8 +297,13 @@
           </ol>
         </appInstruction>
       </div>
+    </div>
+    <div
+      class="list-page"
+      v-if="!this.dataMRT && this.id_inspection_record != ''"
+    >
       <div class="center-box-wrapper">
-        <v-ons-toolbar-button v-on:click="CREATE_CHECKLIST()">
+        <v-ons-toolbar-button v-on:click="CREATE_MRT()">
           <i class="las la-plus"></i>
           <span>Create New MRT Result</span>
         </v-ons-toolbar-button>
@@ -345,59 +362,7 @@ export default {
   },
   data() {
     return {
-      dataMRT: {
-        bottom: {
-          rtbc: 10.25,
-          rtip: 11.5,
-          or: 2,
-          stpr: 0.25,
-          upr: 0.5,
-          age_of_tank: 2,
-          mrt: null,
-          tmin: null,
-          result: null,
-          recommendation: "Good condition",
-        },
-        annular: {
-          rtbc: 10.25,
-          rtip: 11.5,
-          or: 2,
-          stpr: 0.25,
-          upr: 0.5,
-          age_of_tank: 2,
-          mrt: null,
-          tmin: null,
-          result: null,
-          recommendation: "Good condition sdfgsdfgsdfs fgsdsdgs  sdgsdsd ",
-        },
-      },
-      dataMRT2: {
-        id_eval: 1,
-        id_tag: 5,
-        id_inspection_record: 2,
-        bt_RTbc: null,
-        bt_RTip: null,
-        bt_Or: null,
-        bt_StPr: null,
-        bt_UPr: null,
-        bt_age_of_tank: null,
-        bt_recommedation: null,
-        bt_tmin: 2.54,
-        bt_min_value: null,
-        bt_MRT: null,
-        bt_result: "",
-        an_RTbc: null,
-        an_RTip: null,
-        an_Or: null,
-        an_StPr: null,
-        an_UPr: null,
-        an_age_of_tank: null,
-        an_recommedation: null,
-        an_tmin: 5.9944,
-        an_min_value: null,
-        an_MRT: null,
-        as_result: "",
-      },
+      dataMRT: null,
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -427,8 +392,8 @@ export default {
         },
       })
         .then((res) => {
-          console.log("insp record:");
-          console.log(res.data);
+          // console.log("insp record:");
+          // console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
@@ -443,23 +408,24 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_GROUND(id_inspection_record) {
+    VIEW_MRT(id_inspection_record) {
       this.id_inspection_record = id_inspection_record;
       axios({
         method: "post",
-        url: "grounding-connection/grounding-connection-by-insp-id",
+        url: "mrt/get-mrt",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
           id_inspection_record: id_inspection_record,
+          id_tag: this.$route.params.id_tag,
         },
       })
         .then((res) => {
-          console.log("ground:");
+          console.log("MRT result:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.groundConnect = res.data;
+            this.dataMRT = res.data[0];
           }
         })
         .catch((error) => {
@@ -469,23 +435,46 @@ export default {
           this.isLoading = false;
         });
     },
-    VIEW_GROUND_DETAIL(id_inspection_record) {
-      this.id_inspection_record = id_inspection_record;
+    CREATE_MRT() {
       axios({
         method: "post",
-        url: "grounding-connection/grounding-connection-detail-by-insp-id",
+        url: "mrt/add-mrt",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: this.id_inspection_record,
+          id_tag: this.$route.params.id_tag,
         },
       })
         .then((res) => {
-          console.log("ground detail:");
-          console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.groundConnectDetail = res.data;
+            console.log("MRT Created");
+            console.log(res.data);
+            this.VIEW_MRT(this.id_inspection_record);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_MRT() {
+      axios({
+        method: "put",
+        url: "mrt/edit-mrt",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: this.dataMRT,
+      })
+        .then((res) => {
+          if (res.status == 200 && res.data) {
+            console.log("MRT Updated");
+            console.log(res.data);
+            this.VIEW_MRT(this.id_inspection_record);
           }
         })
         .catch((error) => {
@@ -505,7 +494,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.campaignList = res.data;
           }
@@ -522,15 +511,8 @@ export default {
         var data = this.campaignList.filter(function (e) {
           return e.id_campaign == id;
         });
-        console.log(data);
+        // console.log(data);
         return data[0].campaign_desc;
-      }
-    },
-    IS_VISIBLE_ADD() {
-      if (this.id_inspection_record == 0) {
-        return false;
-      } else {
-        return true;
       }
     },
   },
@@ -582,7 +564,9 @@ export default {
 
 .list-page {
   position: relative;
-  scroll-y: auto;
+  overflow-y: auto;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .btn-view-dwg {
@@ -625,7 +609,7 @@ export default {
       overflow: hidden;
       .form-item {
         display: grid;
-        grid-template-columns: 220px calc(100% - 320px) 100px;
+        grid-template-columns: 150px calc(100% - 250px) 100px;
         grid-template-rows: 35px;
         .form-item-label {
         }
@@ -654,5 +638,13 @@ export default {
       }
     }
   }
+}
+
+input:disabled {
+  background-color: -internal-light-dark(
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.3)
+  ) !important;
+  color: -internal-light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
 }
 </style>
