@@ -1,32 +1,30 @@
 <template>
   <div class="page-container">
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{
-              active: item.id_inspection_record == id_inspection_record,
-            }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_DWG(item.id_inspection_record,item.inspection_date)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
           </div>
-        </template>
-      </DxList>
+          <div class="right">
+            <v-ons-toolbar-button v-on:click="VIEW_DWG(item)">
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
-    <div class="list-page" style="overflow-y: auto">
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
       <DxDataGrid
         id="data-grid-style"
         key-expr="id_visual"
@@ -52,16 +50,22 @@
           :allow-adding="IS_VISIBLE_ADD()"
           mode="form"
         >
-          
           <DxForm>
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path_1" :col-span="1" />
               <DxItem data-field="file_path_2" :col-span="1" />
-              <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
-              <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
+              <DxItem
+                data-field="finding"
+                editor-type="dxTextArea"
+                :col-span="2"
+              />
+              <DxItem
+                data-field="recommendation"
+                editor-type="dxTextArea"
+                :col-span="2"
+              />
             </DxItem>
           </DxForm>
-
         </DxEditing>
 
         <DxColumn
@@ -79,15 +83,15 @@
           :width="315"
         />
 
-        <DxColumn 
-          data-field="finding" 
+        <DxColumn
+          data-field="finding"
           caption="Finding"
           cell-template="dxTextArea"
         />
 
-        <DxColumn 
-          data-field="recommendation" 
-          caption="Recommendation" 
+        <DxColumn
+          data-field="recommendation"
+          caption="Recommendation"
           cell-template="dxTextArea"
         />
 
@@ -140,7 +144,6 @@
               styling-mode="contained"
               @click="DEL_PIC(1)"
             />
-
           </div>
         </template>
         <template #dwg-img-editor2="{ data }">
@@ -167,7 +170,6 @@
             />
 
             <div>
-
               <DxFileUploader
                 select-button-text="Select photo"
                 label-text=""
@@ -183,18 +185,13 @@
                 styling-mode="contained"
                 @click="DEL_PIC(2)"
               />
-
             </div>
           </div>
         </template>
 
         <template #dxTextArea="{ data }">
           <div>
-            <DxTextArea
-              :height="200"
-              :read-only="true"
-              :value="data.value"
-            />
+            <DxTextArea :height="200" :read-only="true" :value="data.value" />
           </div>
         </template>
 
@@ -213,6 +210,17 @@
         <DxExport :enabled="true" />
       </DxDataGrid>
     </div>
+    <div class="list-page" v-if="this.id_inspection_record == ''">
+      <div class="center-box-wrapper">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record <br />
+            to view information</span
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template> 
 
@@ -223,8 +231,8 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import DxTextArea from 'devextreme-vue/text-area';
-import DxButton from 'devextreme-vue/button';
+import DxTextArea from "devextreme-vue/text-area";
+import DxButton from "devextreme-vue/button";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -244,7 +252,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -258,7 +266,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
+    // DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -304,6 +312,7 @@ export default {
       isInitEdit_1: 0,
       isInitEdit_2: 0,
       id_inspection_record: 0,
+      current_view: {},
       inspection_date: "",
       dataGridAttributes: {
         class: "data-grid-style",
@@ -364,11 +373,10 @@ export default {
           this.isLoading = false;
         });
     },
-    VIEW_DWG(id_inspection_record,inspection_date) {
-      this.id_inspection_record = id_inspection_record;
-      this.inspection_date = inspection_date;
-      console.log("id_insp:" + this.id_inspection_record);
-      console.log("insp_date:" + this.inspection_date);
+    VIEW_DWG(item) {
+      this.id_inspection_record = item.id_inspection_record;
+      this.inspection_date = item.inspection_date;
+      this.current_view = item;
       axios({
         method: "post",
         url: "visual-report/layout-visual-report-by-insp-id",
@@ -376,7 +384,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -401,7 +409,10 @@ export default {
       var formData = new FormData();
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append("inspection_date", moment(this.inspection_date).format("L"));
+      formData.append(
+        "inspection_date",
+        moment(this.inspection_date).format("L")
+      );
       formData.append("finding", e.data.finding);
       formData.append("recommendation", e.data.recommendation);
       formData.append("file_1", this.file1);
@@ -423,7 +434,7 @@ export default {
           if (res.status == 201 && res.data) {
             console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
+            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
           }
         })
         .catch((error) => {
@@ -439,7 +450,10 @@ export default {
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append("inspection_date", moment(this.inspection_date).format("L"));
+      formData.append(
+        "inspection_date",
+        moment(this.inspection_date).format("L")
+      );
       formData.append("finding", e.data.finding);
       formData.append("recommendation", e.data.recommendation);
       formData.append("file_1", this.file1);
@@ -462,7 +476,7 @@ export default {
           if (res.status == 201 && res.data) {
             console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
+            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
           }
         })
         .catch((error) => {
@@ -488,7 +502,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record,this.inspection_date);
+            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
           }
         })
         .catch((error) => {
@@ -594,7 +608,7 @@ export default {
       }
     },
     DEL_PIC(seq) {
-      if(seq == 1) {
+      if (seq == 1) {
         this.imgDwg1 = "";
         this.file_path_1 = this.file_path_1_tmp;
       } else if (seq == 2) {
@@ -604,10 +618,10 @@ export default {
     },
     SAVE(e) {
       console.log(e);
-      if(e.changes.length >= 0) {
+      if (e.changes.length >= 0) {
         this.UPDATE_DWG(this.pictureLog);
       }
-    }
+    },
   },
 };
 </script>
@@ -656,5 +670,13 @@ export default {
   position: absolute;
   bottom: 10px;
   right: 5px;
+}
+
+.list-page {
+  position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
 }
 </style>

@@ -48,6 +48,10 @@ export default {
       user-select: text;
       cursor: text;
     }
+
+    ol {
+      margin-top: 5px;
+    }
   }
 }
 </style>

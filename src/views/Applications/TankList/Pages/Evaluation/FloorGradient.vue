@@ -1,30 +1,6 @@
 <template>
   <div class="page-container">
     <div class="list-panel">
-      <!-- <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{
-              active: item.id_inspection_record == id_inspection_record,
-            }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_ROUNDNESS(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
-          </div>
-        </template>
-      </DxList> -->
       <v-ons-list>
         <v-ons-list-header>Inspection Record</v-ons-list-header>
         <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
@@ -33,14 +9,14 @@
             {{ SET_CAMPAIGN(item.id_campaign) }}
           </div>
           <div class="right">
-            <v-ons-toolbar-button v-on:click="VIEW_ROUNDNESS(item)">
+            <v-ons-toolbar-button v-on:click="VIEW_FLOOR(item)">
               <i class="las la-search"></i>
             </v-ons-toolbar-button>
           </div>
         </v-ons-list-item>
       </v-ons-list>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record != ''">
+    <div class="list-page">
       <v-ons-list>
         <v-ons-list-header
           >Inspection Details of
@@ -54,7 +30,7 @@
           <DxDataGrid
             id="roundness-grid"
             key-expr="id_eval"
-            :data-source="roundnessList"
+            :data-source="floorList"
             :element-attr="dataGridAttributes"
             :selection="{ mode: 'single' }"
             :hover-state-enabled="true"
@@ -63,9 +39,9 @@
             :show-row-lines="true"
             :row-alternation-enabled="false"
             :word-wrap-enabled="true"
-            @row-inserted="CREATE_ROUNDNESS"
-            @row-updated="UPDATE_ROUNDNESS"
-            @row-removed="DELETE_ROUNDNESS"
+            @row-inserted="CREATE_FLOOR"
+            @row-updated="UPDATE_FLOOR"
+            @row-removed="DELETE_FLOOR"
           >
             <DxFilterRow :visible="true" />
             <DxHeaderFilter :visible="true" />
@@ -78,33 +54,45 @@
               mode="row"
             />
 
-            <DxColumn data-field="point_no" caption="Point No." />
+            <DxColumn data-field="survey_point" caption="Point No." />
 
             <DxColumn
-              data-field="distance_above_bottom"
-              caption="Distance Above Bottom (m)"
+              data-field="distance"
+              caption="Distance (m)"
               format="#,##0.00"
             />
 
+            <DxColumn data-field="n_s" caption="N to S" format="#,##0.00" />
+
             <DxColumn
-              data-field="measure_value"
-              caption="Radius Meassured Value (mm)"
+              data-field="nne_ssw"
+              caption="NNE to SSW"
               format="#,##0.00"
             />
 
+            <DxColumn data-field="ne_sw" caption="NE to SW" format="#,##0.00" />
+
             <DxColumn
-              data-field="relative_to_nom"
-              caption="Relative to nom. (mm)"
+              data-field="ene_wsw"
+              caption="ENE to WSW"
               format="#,##0.00"
             />
 
+            <DxColumn data-field="e_w" caption="E to W" format="#,##0.00" />
+
             <DxColumn
-              data-field="radius_tolerance"
-              caption="Radius Tolerance (mm)"
+              data-field="ese_wnw"
+              caption="ESE to WNW"
               format="#,##0.00"
             />
 
-            <DxColumn data-field="result" caption="Inspection Result" />
+            <DxColumn data-field="se_nw" caption="SE to NW" format="#,##0.00" />
+
+            <DxColumn
+              data-field="sse_nnw"
+              caption="SSE to NNW"
+              format="#,##0.00"
+            />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -128,51 +116,145 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper">
-          <chart :roundnessData="roundnessList" :key="roundnessList" />
+          <chart :roundnessData="floorList" :key="floorList" />
+        </div>
+        <div class="table-wrapper" style="grid-column: span 2">
+          <DxDataGrid
+            id="roundness-grid"
+            key-expr="id_eval"
+            :data-source="bulgeList"
+            :element-attr="dataGridAttributes"
+            :selection="{ mode: 'single' }"
+            :hover-state-enabled="true"
+            :allow-column-reordering="true"
+            :show-borders="true"
+            :show-row-lines="true"
+            :row-alternation-enabled="false"
+            :word-wrap-enabled="true"
+            @row-inserted="CREATE_BULGE"
+            @row-updated="UPDATE_BULGE"
+            @row-removed="DELETE_BULGE"
+          >
+            <DxFilterRow :visible="true" />
+            <DxHeaderFilter :visible="true" />
+
+            <DxEditing
+              :allow-updating="true"
+              :allow-deleting="true"
+              :allow-adding="IS_VISIBLE_ADD()"
+              :use-icons="true"
+              mode="row"
+            />
+
+            <DxColumn data-field="no" caption="No." width="100" />
+
+            <DxColumn
+              data-field="bulge_depression"
+              caption="Bulge or Depression"
+            />
+
+            <DxColumn
+              data-field="bbm_mm"
+              caption="BBM (mm)"
+              format="#,##0.00"
+              width="100"
+            />
+
+            <DxColumn
+              data-field="bbm_inch"
+              caption="BBM (inch)"
+              format="#,##0.00"
+              width="100"
+            />
+
+            <DxColumn
+              data-field="radius_mm"
+              caption="R (mm)"
+              format="#,##0.00"
+              width="100"
+            />
+
+            <DxColumn
+              data-field="radius_ft"
+              caption="R (ft)"
+              format="#,##0.00"
+              width="100"
+            />
+
+            <DxColumn
+              data-field="bb_inch"
+              caption="BB (inch)"
+              format="#,##0.00"
+              width="100"
+            />
+
+            <DxColumn data-field="result" caption="Result" />
+
+            <DxColumn type="buttons">
+              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+              <DxButton name="edit" hint="Edit" icon="edit" />
+              <DxButton name="delete" hint="Delete" icon="trash" />
+            </DxColumn>
+
+            <!-- Configuration goes here -->
+            <!-- <DxFilterRow :visible="true" /> -->
+            <DxScrolling mode="standard" />
+            <DxSearchPanel :visible="false" />
+            <DxPaging :page-size="10" :page-index="0" />
+            <DxPager
+              :show-page-size-selector="true"
+              :allowed-page-sizes="[5, 10, 20]"
+              :show-navigation-buttons="true"
+              :show-info="true"
+              info-text="Page {0} of {1} ({2} items)"
+            />
+            <!-- <DxExport :enabled="true" /> -->
+          </DxDataGrid>
+        </div>
+        <div class="app-instruction" style="grid-column: span 2">
+          <appInstruction title="Instruction" desc="Floor Gradient Survey">
+            <ol>
+              <li>
+                The number of radials is based on the number specified in table
+                below.
+              </li>
+              <li>
+                Spacing between evaluation locations to be determined following
+                table below.
+              </li>
+            </ol>
+            <table class="instruction-table">
+              <tr>
+                <th>Tank Diameter (m)</th>
+                <th>Number of Radials</th>
+                <th>Distance Between Measurements</th>
+              </tr>
+              <tr>
+                <td>1-5</td>
+                <td>4</td>
+                <td>0.75 m</td>
+              </tr>
+              <tr>
+                <td>6-15</td>
+                <td>4</td>
+                <td>1.0 m</td>
+              </tr>
+              <tr>
+                <td>16-45</td>
+                <td>8</td>
+                <td>1.5 m</td>
+              </tr>
+              <tr>
+                <td>> 45</td>
+                <td>16</td>
+                <td>2.0 m</td>
+              </tr>
+            </table>
+          </appInstruction>
         </div>
       </div>
-      <div class="app-instruction">
-        <appInstruction
-          title="Instruction"
-          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
-        >
-          <table class="instruction-table">
-            <tr>
-              <th>Tank Diameter m (ft)</th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (≤ 0.3048 m)
-              </th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (> 0.3048 m)
-              </th>
-            </tr>
-            <tr>
-              <td>&lt; 12 (40)</td>
-              <td>±13 (&#189;)</td>
-              <td>±39 (3&#189;)</td>
-            </tr>
-            <tr>
-              <td>from 12 (40) to &lt; 45 (150)</td>
-              <td>±19 (¾)</td>
-              <td>±57 (3¾)</td>
-            </tr>
-            <tr>
-              <td>from 45 (150) to &lt; 75 (250)</td>
-              <td>±25 (1)</td>
-              <td>±75 (3)</td>
-            </tr>
-            <tr>
-              <td>≥ 75 (250)</td>
-              <td>±32 (1¼)</td>
-              <td>±96 (3¼)</td>
-            </tr>
-          </table>
-        </appInstruction>
-      </div>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record == ''">
+    <!-- <div class="list-page" v-if="this.id_inspection_record == ''">
       <div class="center-box-wrapper">
         <div class="page-content-message-wrapper">
           <i class="las la-search"></i>
@@ -182,7 +264,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -195,7 +277,7 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
-import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
+import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-floor-gradient-line.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -245,7 +327,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation / Roundness");
+    this.$store.commit(
+      "UPDATE_CURRENT_PAGENAME",
+      "Evaluation / Floor Gradient"
+    );
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -253,8 +338,8 @@ export default {
   },
   data() {
     return {
-      roundnessList: {},
-      roundnessListDetail: {},
+      floorList: {},
+      bulgeList: {},
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -320,13 +405,14 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_ROUNDNESS(item) {
+    VIEW_FLOOR(item) {
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       const id_tag = this.$route.params.id_tag;
+      //floor gradient
       axios({
         method: "post",
-        url: "roundness/get-roundness",
+        url: "floor-gradient/get-floor-gradient",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -336,10 +422,36 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get roundness list:");
+          console.log("get floor list:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.roundnessList = res.data;
+            this.floorList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+
+      //bulge
+      axios({
+        method: "post",
+        url: "floor-gradient/get-bulge-depression",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: item.id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log("get bulge list:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.bulgeList = res.data;
           }
         })
         .catch((error) => {
@@ -376,7 +488,7 @@ export default {
         var data = this.campaignList.filter(function (e) {
           return e.id_campaign == id;
         });
-        console.log(data);
+        // console.log(data);
         return data[0].campaign_desc;
       }
     },
@@ -387,7 +499,85 @@ export default {
         return true;
       }
     },
-    CREATE_ROUNDNESS(e) {
+    CREATE_FLOOR(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_eval = 0;
+      e.data.id_tag = id_tag;
+      e.data.id_inspection_record = this.id_inspection_record;
+
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "floor-gradient/add-floor-gradient",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_FLOOR(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_FLOOR(e) {
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "floor-gradient/edit-floor-gradient",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_FLOOR(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_FLOOR(e) {
+      console.log(e.data);
+      axios({
+        method: "delete",
+        url: "floor-gradient/delete-floor-gradient",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_FLOOR(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_BULGE(e) {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       e.data.id_eval = 0;
@@ -407,7 +597,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
+            this.VIEW_FLOOR(this.current_view);
           }
         })
         .catch((error) => {
@@ -417,7 +607,7 @@ export default {
           this.isLoading = false;
         });
     },
-    UPDATE_ROUNDNESS(e) {
+    UPDATE_BULGE(e) {
       console.log(e.data);
       axios({
         method: "put",
@@ -431,7 +621,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
+            this.VIEW_FLOOR(this.current_view);
           }
         })
         .catch((error) => {
@@ -441,7 +631,7 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_ROUNDNESS(e) {
+    DELETE_BULGE(e) {
       console.log(e.data);
       axios({
         method: "delete",
@@ -455,7 +645,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ROUNDNESS(this.id_inspection_record);
+            this.VIEW_FLOOR(this.current_view);
           }
         })
         .catch((error) => {
@@ -507,7 +697,8 @@ export default {
   .content {
     width: calc(100% - 20px);
     display: grid;
-    grid-template-columns: 600px calc(100% - 600px);
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto 400px;
     grid-gap: 20px;
   }
 }
@@ -532,10 +723,6 @@ export default {
   right: 10px;
 }
 
-.app-instruction {
-  padding-top: 20px;
-}
-
 .table-wrapper {
   height: 100%;
 }
@@ -548,5 +735,6 @@ export default {
 .instruction-table {
   // width: 100%;
   margin-top: 10px;
+  text-align: center;
 }
 </style>

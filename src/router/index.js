@@ -162,6 +162,11 @@ const routes = [
             alias: 'Eva MRT',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/MRT.vue'),
           },
+          {
+            path: 'evaluation/floor-gradient',
+            alias: 'Eva Floor Gradient',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/FloorGradient.vue'),
+          },
         ]
       },
     ]

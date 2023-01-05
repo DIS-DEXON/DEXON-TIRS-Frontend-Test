@@ -302,8 +302,7 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #report-sheet {
   max-width: 100%;

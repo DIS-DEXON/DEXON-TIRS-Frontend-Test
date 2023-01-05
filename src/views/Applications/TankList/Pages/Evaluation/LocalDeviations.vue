@@ -125,6 +125,30 @@
         />
         <!-- <DxExport :enabled="true" /> -->
       </DxDataGrid>
+      <div class="app-instruction">
+        <appInstruction
+          title="Instruction"
+          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
+          ><ol>
+            <li>
+              Deviations (peaking) at vertical weld joints shall not exceed 13
+              mm (1/2 in.). Peaking at vertical weld joints shall be determined
+              using a horizontal sweep board 900 mm (36 in.) long. The sweep
+              board shall be made to the nominal radius of the tank.
+            </li>
+            <li>
+              Deviations (banding) at horizontal weld joints shall not exceed 13
+              mm (1/2 in.). Banding at horizontal weld joints shall be
+              determined using a straight edge vertical sweep board 900 mm (36
+              in.) long.
+            </li>
+            <li>
+              DFlat spots measured in the vertical plane shall not exceed 1/200
+              of the total height.
+            </li>
+          </ol>
+        </appInstruction>
+      </div>
     </div>
     <div class="list-page" v-if="this.id_inspection_record == ''">
       <div class="center-box-wrapper">
@@ -148,6 +172,7 @@ import moment from "moment";
 //Components
 import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -192,6 +217,7 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxLookup,
+    appInstruction,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -475,5 +501,8 @@ export default {
   .list {
     margin: -20px -20px 20px -20px;
   }
+}
+.app-instruction {
+  padding-top: 20px;
 }
 </style>
