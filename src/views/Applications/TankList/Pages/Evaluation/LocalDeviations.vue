@@ -1,12 +1,7 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Evaluation"
-      breadcrumb1="Local Deviations"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
+      <!-- <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div
@@ -29,9 +24,31 @@
             </div>
           </div>
         </template>
-      </DxList>
+      </DxList> -->
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
+          </div>
+          <div class="right">
+            <v-ons-toolbar-button v-on:click="VIEW_LOCAL(item)">
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
-    <div class="list-page" style="overflow-y: scroll">
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
       <DxDataGrid
         id="local-deviation-grid"
         key-expr="id_eval"
@@ -109,6 +126,17 @@
         <!-- <DxExport :enabled="true" /> -->
       </DxDataGrid>
     </div>
+    <div class="list-page" v-if="this.id_inspection_record == ''">
+      <div class="center-box-wrapper">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record <br />
+            to view information</span
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template> 
 
@@ -119,7 +147,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -140,7 +168,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -148,10 +176,10 @@ import { DxList } from "devextreme-vue/list";
 //import { DxItem } from "devextreme-vue/form";
 
 export default {
-  name: "ViewProjectList",
+  name: "LocalDeviationView",
   components: {
     //VueTabsChrome,
-    DxList,
+    // DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -160,7 +188,7 @@ export default {
     DxColumn,
     DxEditing,
     DxButton,
-    innerPageName,
+    // innerPageName,
     DxHeaderFilter,
     DxFilterRow,
     DxLookup,
@@ -187,6 +215,7 @@ export default {
       deviationType: ["Peaking", "Banding", "Flat spots"],
       isLoading: false,
       id_inspection_record: 0,
+      current_view: {},
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -247,9 +276,10 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_LOCAL(id_inspection_record) {
+    VIEW_LOCAL(item) {
       var id_tag = this.$route.params.id_tag;
-      this.id_inspection_record = id_inspection_record;
+      this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
       axios({
         method: "post",
         url: "local-deviation/get-local-deviation",
@@ -258,7 +288,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -401,10 +431,8 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 41px auto;
 }
 
 .page-section {
@@ -439,5 +467,13 @@ export default {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+
+.list-page {
+  position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
 }
 </style>

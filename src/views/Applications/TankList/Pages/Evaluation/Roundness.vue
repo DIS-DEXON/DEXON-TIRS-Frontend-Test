@@ -223,7 +223,7 @@ import {
 //import { DxItem } from "devextreme-vue/form";
 
 export default {
-  name: "ViewProjectList",
+  name: "RoundnessView",
   components: {
     //VueTabsChrome,
     //DxList,
