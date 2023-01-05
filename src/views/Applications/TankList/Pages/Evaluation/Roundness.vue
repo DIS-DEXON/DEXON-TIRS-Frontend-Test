@@ -1,12 +1,7 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Evaluation"
-      breadcrumb1="Roundness"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
+      <!-- <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div
@@ -29,90 +24,114 @@
             </div>
           </div>
         </template>
-      </DxList>
+      </DxList> -->
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
+          </div>
+          <div class="right">
+            <v-ons-toolbar-button v-on:click="VIEW_ROUNDNESS(item)">
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
     <div class="list-page" v-if="this.id_inspection_record != ''">
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="roundness-grid"
-          key-expr="id_eval"
-          :data-source="roundnessList"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_ROUNDNESS"
-          @row-updated="UPDATE_ROUNDNESS"
-          @row-removed="DELETE_ROUNDNESS"
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
         >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
+      </v-ons-list>
+      <div class="content">
+        <div class="table-wrapper">
+          <DxDataGrid
+            id="roundness-grid"
+            key-expr="id_eval"
+            :data-source="roundnessList"
+            :element-attr="dataGridAttributes"
+            :selection="{ mode: 'single' }"
+            :hover-state-enabled="true"
+            :allow-column-reordering="true"
+            :show-borders="true"
+            :show-row-lines="true"
+            :row-alternation-enabled="false"
+            :word-wrap-enabled="true"
+            @row-inserted="CREATE_ROUNDNESS"
+            @row-updated="UPDATE_ROUNDNESS"
+            @row-removed="DELETE_ROUNDNESS"
+          >
+            <DxFilterRow :visible="true" />
+            <DxHeaderFilter :visible="true" />
 
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="IS_VISIBLE_ADD()"
-            :use-icons="true"
-            mode="row"
-          />
+            <DxEditing
+              :allow-updating="true"
+              :allow-deleting="true"
+              :allow-adding="IS_VISIBLE_ADD()"
+              :use-icons="true"
+              mode="row"
+            />
 
-          <DxColumn data-field="point_no" caption="Point No." />
+            <DxColumn data-field="point_no" caption="Point No." />
 
-          <DxColumn
-            data-field="distance_above_bottom"
-            caption="Distance Above Bottom (m)"
-            format="#,##0.00"
-          />
+            <DxColumn
+              data-field="distance_above_bottom"
+              caption="Distance Above Bottom (m)"
+              format="#,##0.00"
+            />
 
-          <DxColumn
-            data-field="measure_value"
-            caption="Radius Meassured Value (mm)"
-            format="#,##0.00"
-          />
+            <DxColumn
+              data-field="measure_value"
+              caption="Radius Meassured Value (mm)"
+              format="#,##0.00"
+            />
 
-          <DxColumn
-            data-field="relative_to_nom"
-            caption="Relative to nom. (mm)"
-            format="#,##0.00"
-          />
+            <DxColumn
+              data-field="relative_to_nom"
+              caption="Relative to nom. (mm)"
+              format="#,##0.00"
+            />
 
-          <DxColumn
-            data-field="radius_tolerance"
-            caption="Radius Tolerance (mm)"
-            format="#,##0.00"
-          />
+            <DxColumn
+              data-field="radius_tolerance"
+              caption="Radius Tolerance (mm)"
+              format="#,##0.00"
+            />
 
-          <DxColumn data-field="result" caption="Inspection Result" />
+            <DxColumn data-field="result" caption="Inspection Result" />
 
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
+            <DxColumn type="buttons">
+              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+              <DxButton name="edit" hint="Edit" icon="edit" />
+              <DxButton name="delete" hint="Delete" icon="trash" />
+            </DxColumn>
 
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
+            <!-- Configuration goes here -->
+            <!-- <DxFilterRow :visible="true" /> -->
+            <DxScrolling mode="standard" />
+            <DxSearchPanel :visible="false" />
+            <DxPaging :page-size="10" :page-index="0" />
+            <DxPager
+              :show-page-size-selector="true"
+              :allowed-page-sizes="[5, 10, 20]"
+              :show-navigation-buttons="true"
+              :show-info="true"
+              info-text="Page {0} of {1} ({2} items)"
+            />
+            <!-- <DxExport :enabled="true" /> -->
+          </DxDataGrid>
+        </div>
+        <div class="chart-wrapper">
+          <chart :roundnessData="roundnessList" :key="roundnessList" />
+        </div>
       </div>
-      <div class="chart-wrapper">
-        <chart :roundnessData="roundnessList" :key="roundnessList" />
-      </div>
-      <div class="app-instruction" style="grid-column: span 2">
+      <div class="app-instruction">
         <appInstruction
           title="Instruction"
           desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
@@ -174,7 +193,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 
@@ -196,7 +215,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -207,7 +226,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
+    //DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -216,7 +235,6 @@ export default {
     DxColumn,
     DxEditing,
     DxButton,
-    innerPageName,
     DxHeaderFilter,
     DxFilterRow,
     appInstruction,
@@ -227,7 +245,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation / Roundness");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -241,6 +259,7 @@ export default {
       campaignList: {},
       isLoading: false,
       id_inspection_record: "",
+      current_view: "",
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -301,8 +320,9 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_ROUNDNESS(id_inspection_record) {
-      this.id_inspection_record = id_inspection_record;
+    VIEW_ROUNDNESS(item) {
+      this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
       const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -312,7 +332,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -459,7 +479,7 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 27px auto;
+  // grid-auto-rows: 27px auto;
 }
 
 .page-section {
@@ -473,25 +493,23 @@ export default {
 .tab-wrapper {
   height: 48px;
 }
-.chart-wrapper {
-  padding: 0 10px;
-}
 
 .info-tab-display {
   display: flex;
 }
 
 .list-page {
-  height: fit-content;
-  margin-bottom: 20px;
-  width: calc(100% - 20px);
-  height: calc(100% - 39px);
-  padding: 20px 10px;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: 600px calc(100% - 600px);
-  grid-template-rows: 500px auto;
   position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
+  .content {
+    width: calc(100% - 20px);
+    display: grid;
+    grid-template-columns: 600px calc(100% - 600px);
+    grid-gap: 20px;
+  }
 }
 
 .dx-list-item-content::before {
@@ -515,14 +533,18 @@ export default {
 }
 
 .app-instruction {
-  padding: 20px 10px;
+  padding-top: 20px;
 }
 
 .table-wrapper {
-  padding: 0 10px;
   height: 100%;
 }
-
+.chart-wrapper {
+  // padding: 0 10px;
+  .chart-item {
+    height: 500px;
+  }
+}
 .instruction-table {
   // width: 100%;
   margin-top: 10px;

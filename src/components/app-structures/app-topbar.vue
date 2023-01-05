@@ -27,7 +27,7 @@
             <img :src="baseURL + this.$store.state.currentClient.logo" />
             <label for="">{{ this.$store.state.currentClient.name }}</label>
           </div>
-          <div
+          <!-- <div
             class="inapp-logo client-logo"
             v-if="this.$store.state.currentPageName"
           >
@@ -37,7 +37,7 @@
             <label for="" style="margin-left: 0px; font-weight: 600">{{
               this.$store.state.currentPageName
             }}</label>
-          </div>
+          </div> -->
         </div>
         <label class="dev-mode-badge" v-if="this.$store.state.mode == 'dev'"
           >RUNNING IN DEVELOPMENT MODE <br />

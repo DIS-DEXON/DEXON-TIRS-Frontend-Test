@@ -33,95 +33,81 @@
     </div>
     <div class="list-page" style="overflow-y: scroll">
       <DxDataGrid
-          id="local-deviation-grid"
-          key-expr="id_eval"
-          :data-source="localDeviation"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_LOCAL"
-          @row-updated="UPDATE_LOCAL"
-          @row-removed="DELETE_LOCAL"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
+        id="local-deviation-grid"
+        key-expr="id_eval"
+        :data-source="localDeviation"
+        :element-attr="dataGridAttributes"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        :word-wrap-enabled="true"
+        @row-inserted="CREATE_LOCAL"
+        @row-updated="UPDATE_LOCAL"
+        @row-removed="DELETE_LOCAL"
+      >
+        <DxFilterRow :visible="true" />
+        <DxHeaderFilter :visible="true" />
 
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="IS_VISIBLE_ADD()"
-            :use-icons="true"
-            mode="row"
-          />
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
+          mode="row"
+        />
 
-          <DxColumn 
-            data-field="no" 
-            caption="No."
-          />
+        <DxColumn data-field="no" caption="No." />
 
-          <DxColumn 
-            data-field="deviation_type" 
-            caption="Deviation type"
-          >
-            <DxLookup
-              :data-source="deviationType"
-            />
-          </DxColumn>
+        <DxColumn data-field="deviation_type" caption="Deviation type">
+          <DxLookup :data-source="deviationType" />
+        </DxColumn>
 
-          <DxColumn 
-            data-field="plate_1" 
-            caption="Between plate"
-          />
+        <DxColumn data-field="plate_1" caption="Between plate" />
 
-          <DxColumn 
-            data-field="plate_2" 
-            caption="And plate"
-          />
+        <DxColumn data-field="plate_2" caption="And plate" />
 
-          <DxColumn 
-            data-field="deviation_mm" 
-            caption="Deviation (mm)"
-            format="#,##0.00"
-          />
+        <DxColumn
+          data-field="deviation_mm"
+          caption="Deviation (mm)"
+          format="#,##0.00"
+        />
 
-          <DxColumn 
-            data-field="tolerance" 
-            caption="Radius tolerance (mm)"
-            format="#,##0.00"
-            :allow-editing="false"
-          />
+        <DxColumn
+          data-field="tolerance"
+          caption="Radius tolerance (mm)"
+          format="#,##0.00"
+          :allow-editing="false"
+        />
 
-          <DxColumn 
-            data-field="result" 
-            caption="Inspection result"
-            :allow-editing="false"
-          />
-          
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
+        <DxColumn
+          data-field="result"
+          caption="Inspection result"
+          :allow-editing="false"
+        />
 
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
+        <DxColumn type="buttons">
+          <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+          <DxButton name="edit" hint="Edit" icon="edit" />
+          <DxButton name="delete" hint="Delete" icon="trash" />
+        </DxColumn>
+
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="false" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <!-- <DxExport :enabled="true" /> -->
+      </DxDataGrid>
     </div>
   </div>
 </template> 
@@ -184,7 +170,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit(
+      "UPDATE_CURRENT_PAGENAME",
+      "Evaluation / Local Deviations"
+    );
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -195,7 +184,7 @@ export default {
       localDeviation: {},
       inspRecordList: {},
       campaignList: {},
-      deviationType: ["Peaking","Banding","Flat spots"],
+      deviationType: ["Peaking", "Banding", "Flat spots"],
       isLoading: false,
       id_inspection_record: 0,
       dataGridAttributes: {

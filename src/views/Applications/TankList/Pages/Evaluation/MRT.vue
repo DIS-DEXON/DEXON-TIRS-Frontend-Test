@@ -1,12 +1,7 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Evaluation"
-      breadcrumb1="MRT"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
+      <!-- <div class="column-header">Inspection Record</div>
       <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div
@@ -29,9 +24,31 @@
             </div>
           </div>
         </template>
-      </DxList>
+      </DxList> -->
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
+          </div>
+          <div class="right">
+            <v-ons-toolbar-button v-on:click="VIEW_MRT(item)">
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
     <div class="list-page" v-if="this.dataMRT">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
       <div class="report-sheet">
         <div class="report-container">
           <div class="sheet-body">
@@ -330,11 +347,11 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -345,8 +362,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
-    innerPageName,
+    // DxList,
     appInstruction,
   },
   created() {
@@ -354,7 +370,7 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation / MRT");
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -367,6 +383,7 @@ export default {
       campaignList: {},
       isLoading: false,
       id_inspection_record: 0,
+      current_view: null,
     };
   },
   computed: {
@@ -408,8 +425,9 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_MRT(id_inspection_record) {
-      this.id_inspection_record = id_inspection_record;
+    VIEW_MRT(item) {
+      this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
       axios({
         method: "post",
         url: "mrt/get-mrt",
@@ -417,7 +435,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
           id_tag: this.$route.params.id_tag,
         },
       })
@@ -529,7 +547,6 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 27px auto;
 }
 
 .page-section {
@@ -564,9 +581,6 @@ export default {
 
 .list-page {
   position: relative;
-  overflow-y: auto;
-  max-width: 1024px;
-  margin: 0 auto;
 }
 
 .btn-view-dwg {
@@ -646,5 +660,13 @@ input:disabled {
     rgba(255, 255, 255, 0.3)
   ) !important;
   color: -internal-light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+}
+
+.list-page {
+  position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
 }
 </style>

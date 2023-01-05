@@ -12,10 +12,10 @@
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
       <div class="toolbar-info mobile-none" v-if="infoTank">
-        <!-- <div class="info-item">
+        <div class="info-item">
           <label class="desc">Tag No: </label>
           <label class="value">{{ infoTank.tag_no }}</label>
-        </div> -->
+        </div>
         <div class="info-item">
           <label class="desc">Tank No: </label>
           <label class="value">{{ infoTank.tank_no }}</label>
@@ -33,10 +33,10 @@
           <label class="desc">Site Description: </label>
           <label class="value">{{ infoTank.site_desc }}</label>
         </div>
-        <div class="info-item">
+        <!-- <div class="info-item">
           <label class="desc">Client:</label>
           <label class="value"> {{ infoTank.company_name }}</label>
-        </div>
+        </div> -->
         <div class="info-item">
           <label class="desc">In-service Date : </label>
           <label class="value">{{ tank_inservice_date }}</label>

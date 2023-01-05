@@ -1,13 +1,13 @@
 <template>
   <div class="page-container">
-    <innerPageName
+    <!-- <innerPageName
       pageName="Evaluation"
       breadcrumb1="Grounding Connection"
       style="grid-column: span 2"
-    />
+    /> -->
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
+      <!-- <div class="column-header">Inspection Record</div> -->
+      <!-- <DxList :data-source="inspRecordList">
         <template #item="{ data: item }">
           <div
             class="list-item-wrapper"
@@ -16,9 +16,12 @@
             }"
           >
             <div class="contents">
+              <span style="font-weight: bold; color: red; border-radius: 4px"
+                >ID: {{ item.id_inspection_record }}</span
+              >
+              <br />
               {{ DATE_FORMAT(item.inspection_date) }}<br />
               {{ SET_CAMPAIGN(item.id_campaign) }}
-              insp_id: {{ item.id_inspection_record }}
             </div>
             <div class="contents">
               <v-ons-toolbar-button
@@ -30,13 +33,29 @@
             </div>
           </div>
         </template>
-      </DxList>
+      </DxList> -->
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
+          </div>
+          <div class="right">
+            <v-ons-toolbar-button v-on:click="VIEW_GROUND(item)">
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
-    <div
-      class="list-page"
-      style="overflow-y: scroll"
-      v-if="this.id_inspection_record != ''"
-    >
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          {{ DATE_FORMAT(current_view.inspection_date) }}</v-ons-list-header
+        >
+      </v-ons-list>
       <div class="report-sheet">
         <div class="report-container">
           <div class="sheet-body" style="border: 0">
@@ -107,26 +126,36 @@
             </div>
             <div class="form-item">
               <div class="form-item-label">
-                <label>RTbc</label>
+                <label>Total Resistance (ohms)</label>
               </div>
               <div class="form-item-value">
-                <input @focusout="UPDATE_MRT()" />
+                <input
+                  v-model="groundConnectDetail.total"
+                  @focusout="UPDATE_GC()"
+                />
               </div>
             </div>
             <div class="form-item">
               <div class="form-item-label">
-                <label>RTip</label>
+                <label>Acceptance Criteria (ohms)</label>
               </div>
               <div class="form-item-value">
-                <input @focusout="UPDATE_MRT()" />
+                <input
+                  @focusout="UPDATE_GC()"
+                  v-model="groundConnectDetail.acceptance_criteria"
+                />
               </div>
             </div>
-            <div class="form-item">
+
+            <div class="form-item" style="grid-template-rows: 101px">
               <div class="form-item-label">
                 <label>Result</label>
               </div>
-              <div class="form-item-value">
-                <input @focusout="UPDATE_MRT()" />
+              <div class="form-item-textarea">
+                <textarea
+                  @focusout="UPDATE_GC()"
+                  v-model="groundConnectDetail.result"
+                />
               </div>
             </div>
             <div class="form-item" style="grid-template-rows: 101px">
@@ -134,36 +163,16 @@
                 <label>Measurement Summary</label>
               </div>
               <div class="form-item-textarea">
-                <textarea @focusout="UPDATE_MRT()" />
+                <textarea
+                  @focusout="UPDATE_GC()"
+                  v-model="groundConnectDetail.measurement_summary"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="app-instruction">
-        <!-- <appInstruction
-          title="Guideline"
-          desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
-        >
-          <ol>
-            <li>
-              Deviations (peaking) at vertical weld joints shall not exceed 13
-              mm (1/2 in.). Peaking at vertical weld joints shall be determined
-              using a horizontal sweep board 900 mm (36 in.) long. The sweep
-              board shall be made to the nominal radius of the tank.
-            </li>
-            <li>
-              Deviations (banding) at horizontal weld joints shall not exceed 13
-              mm (1/2 in.). Banding at horizontal weld joints shall be
-              determined using a straight edge vertical sweep board 900 mm (36
-              in.) long.
-            </li>
-            <li>
-              Flat spots measured in the vertical plane shall not exceed 1/200
-              of the total height
-            </li>
-          </ol>
-        </appInstruction> -->
         <appInstruction title="Instruction" desc="The acceptance criteria">
           <ol>
             <li>
@@ -198,7 +207,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 
 //DataGrid
@@ -219,7 +228,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -230,7 +239,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
+    // DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -239,7 +248,7 @@ export default {
     DxColumn,
     DxEditing,
     DxButton,
-    innerPageName,
+    // innerPageName,
     DxHeaderFilter,
     DxFilterRow,
     appInstruction,
@@ -249,7 +258,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation");
+    this.$store.commit(
+      "UPDATE_CURRENT_PAGENAME",
+      "Evaluation / Grounding Connection"
+    );
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -263,6 +275,7 @@ export default {
       campaignList: {},
       isLoading: false,
       id_inspection_record: 0,
+      current_view: null,
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -323,8 +336,11 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    VIEW_GROUND(id_inspection_record) {
-      this.id_inspection_record = id_inspection_record;
+    VIEW_GROUND(item) {
+      this.groundConnectDetail = {};
+      this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
+      //GG Table
       axios({
         method: "post",
         url: "grounding-connection/grounding-connection-by-insp-id",
@@ -332,7 +348,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -348,9 +364,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    VIEW_GROUND_DETAIL(id_inspection_record) {
-      this.id_inspection_record = id_inspection_record;
+      //CG Detail
       axios({
         method: "post",
         url: "grounding-connection/grounding-connection-detail-by-insp-id",
@@ -358,14 +372,14 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
           console.log("ground detail:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.groundConnectDetail = res.data;
+            this.groundConnectDetail = res.data[0];
           }
         })
         .catch((error) => {
@@ -462,7 +476,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.campaignList = res.data;
           }
@@ -479,7 +493,7 @@ export default {
         var data = this.campaignList.filter(function (e) {
           return e.id_campaign == id;
         });
-        console.log(data);
+        // console.log(data);
         return data[0].campaign_desc;
       }
     },
@@ -490,7 +504,29 @@ export default {
         return true;
       }
     },
-    EDIT_DETAIL() {},
+    UPDATE_GC() {
+      axios({
+        method: "put",
+        url: "grounding-connection/edit-grounding-connection-detail",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: this.groundConnectDetail,
+      })
+        .then((res) => {
+          if (res.status == 200 && res.data) {
+            console.log("GC Updated");
+            console.log(res.data);
+            // this.VIEW_GROUND(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
   },
 };
 </script>
@@ -505,7 +541,7 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 27px auto;
+  // grid-auto-rows: 27px auto;
 }
 
 .page-section {
@@ -533,17 +569,10 @@ export default {
 
 .list-page {
   position: relative;
-}
-
-.btn-view-dwg {
-  padding: 8px;
-  text-align: center;
-  background-color: #eb1851;
-  color: #fff;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
 }
 
 .app-instruction {
@@ -575,7 +604,7 @@ export default {
       overflow: hidden;
       .form-item {
         display: grid;
-        grid-template-columns: 150px calc(100% - 150px);
+        grid-template-columns: 200px calc(100% - 200px);
         grid-template-rows: 35px;
         .form-item-label {
         }

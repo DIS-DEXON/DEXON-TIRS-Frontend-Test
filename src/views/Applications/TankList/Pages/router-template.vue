@@ -1,7 +1,7 @@
 <template>
   <div class="pm-page">
     <toolbar
-      :pageSubName="'Tag No. ' + infoTank.tag_no"
+      :pageSubName="this.$store.state.currentPageName"
       @refreshInfo="FETCH_LIST()"
       :isBackPath="true"
       :isBack_specificPath="'/tank/client/' + infoTank.id_client"
