@@ -16,7 +16,7 @@
         </v-ons-list-item>
       </v-ons-list>
     </div>
-    <div class="list-page">
+    <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header
           >Inspection Details of
@@ -116,7 +116,7 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper">
-          <chart :roundnessData="floorList" :key="floorList" />
+          <chart :floorGradientData="floorList" :key="floorList" />
         </div>
         <div class="table-wrapper" style="grid-column: span 2">
           <DxDataGrid
@@ -254,7 +254,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="list-page" v-if="this.id_inspection_record == ''">
+    <div class="list-page" v-if="this.id_inspection_record == ''">
       <div class="center-box-wrapper">
         <div class="page-content-message-wrapper">
           <i class="las la-search"></i>
@@ -264,7 +264,7 @@
           >
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -587,7 +587,7 @@ export default {
       console.log(e.data);
       axios({
         method: "post",
-        url: "roundness/add-roundness",
+        url: "floor-gradient/add-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -611,7 +611,7 @@ export default {
       console.log(e.data);
       axios({
         method: "put",
-        url: "roundness/edit-roundness",
+        url: "floor-gradient/edit-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -635,7 +635,6 @@ export default {
       console.log(e.data);
       axios({
         method: "delete",
-        url: "roundness/delete-roundness",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },

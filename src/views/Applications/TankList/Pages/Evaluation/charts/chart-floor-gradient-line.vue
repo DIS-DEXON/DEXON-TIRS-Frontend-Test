@@ -15,7 +15,7 @@
 export default {
   name: "chart-floor-gradient-line",
   props: {
-    floorGradientData: Object,
+    floorGradientData: Array,
   },
   created() {},
   data() {
@@ -168,18 +168,23 @@ export default {
     };
   },
   mounted() {
+    console.log("Have data: PROPS");
+    console.log(this.floorGradientData);
     if (this.floorGradientData && this.floorGradientData.length > 0) {
       this.dataList = this.floorGradientData;
-      console.log("Have data");
+      console.log("Have data: DATA LIST");
       console.log(this.dataList);
 
       if (this.dataList.length > 0) {
         for (var i = 0; i < this.dataList.length; i++) {
-          this.chartOptions.series[0].data.push(this.dataList[i].measure_value);
-          this.chartOptions.series[1].data.push(this.dataList[i].rad_max);
-          this.chartOptions.series[2].data.push(this.dataList[i].rad_nom);
-          this.chartOptions.series[3].data.push(this.dataList[i].rad_min);
-          this.chartOptions.xAxis.categories.push(this.dataList[i].point_no);
+          this.chartOptions.series[0].data.push(this.dataList[i].n_s);
+          this.chartOptions.series[1].data.push(this.dataList[i].nne_ssw);
+          this.chartOptions.series[2].data.push(this.dataList[i].ne_sw);
+          this.chartOptions.series[3].data.push(this.dataList[i].ene_wsw);
+          this.chartOptions.series[4].data.push(this.dataList[i].e_w);
+          this.chartOptions.xAxis.categories.push(
+            this.dataList[i].survey_point
+          );
         }
       }
     }
