@@ -1,30 +1,6 @@
 <template>
   <div class="page-container">
     <div class="list-panel">
-      <!-- <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{
-              active: item.id_inspection_record == id_inspection_record,
-            }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_ROUNDNESS(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
-          </div>
-        </template>
-      </DxList> -->
       <v-ons-list>
         <v-ons-list-header>Inspection Record</v-ons-list-header>
         <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
@@ -245,7 +221,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation / Roundness");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Evaluation",
+      subpageInnerName: "Roundness",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();

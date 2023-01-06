@@ -258,10 +258,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit(
-      "UPDATE_CURRENT_PAGENAME",
-      "Evaluation / Grounding Connection"
-    );
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Evaluation",
+      subpageInnerName: "Grounding Connection",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();

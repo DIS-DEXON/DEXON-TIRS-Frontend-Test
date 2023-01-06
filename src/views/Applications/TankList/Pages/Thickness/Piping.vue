@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Piping" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -22,7 +21,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -31,15 +30,9 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn 
-            data-field="piping_no" 
-            caption="Piping no"
-          />
+          <DxColumn data-field="piping_no" caption="Piping no" />
 
-          <DxColumn 
-            data-field="piping_name" 
-            caption="Piping name"
-          />
+          <DxColumn data-field="piping_name" caption="Piping name" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -80,7 +73,6 @@
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
         >
-
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
           <DxSelection mode="single" />
@@ -93,60 +85,30 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="cml_no" 
-            caption="CML no" 
-          />
+          <DxColumn data-field="cml_no" caption="CML no" />
 
-          <DxColumn 
-            data-field="cml_name" 
-            caption="CML name" 
-          />
+          <DxColumn data-field="cml_name" caption="CML name" />
 
-          <DxColumn 
-            data-field="part" 
-            caption="Part" 
-          />
+          <DxColumn data-field="part" caption="Part" />
 
-          <DxColumn 
-            data-field="nps" 
-            caption="NPS" 
-          />
+          <DxColumn data-field="nps" caption="NPS" />
 
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
+          <DxColumn
+            data-field="t_req"
+            caption="treq (mm)"
             format="#,##0.00"
             :allow-editing="false"
           />
 
-          <DxColumn 
-            data-field="P" 
-            caption="P (psi)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="P" caption="P (psi)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="S" 
-            caption="S (psi)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="S" caption="S (psi)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="E" 
-            caption="E" 
-          />
+          <DxColumn data-field="E" caption="E" />
 
-          <DxColumn 
-            data-field="material_type" 
-            caption="Material type"
-          >
+          <DxColumn data-field="material_type" caption="Material type">
             <DxLookup
               :data-source="matList"
               display-expr="code"
@@ -201,10 +163,9 @@
           @row-removed="DELETE_TP"
           @selection-changed="VIEW_UTM"
         >
-
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
           <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -221,14 +182,8 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP No."
-          />
-          <DxColumn 
-            data-field="tp_desc" 
-            caption="TP Desc." 
-          />
+          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn data-field="tp_desc" caption="TP Desc." />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
@@ -294,10 +249,7 @@
             />
           </DxColumn>
 
-          <DxColumn 
-            data-field="t_actual" 
-            caption="tactual (mm)"
-          />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -337,20 +289,11 @@
             </div>
           </template>
 
-          <DxColumn
-            data-field="coil_no" 
-            caption="Coil No." 
-          />
+          <DxColumn data-field="coil_no" caption="Coil No." />
 
-          <DxColumn 
-            data-field="cml_name" 
-            caption="CML name"
-          />
+          <DxColumn data-field="cml_name" caption="CML name" />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP name"
-          />
+          <DxColumn data-field="tp_name" caption="TP name" />
 
           <DxColumn
             data-field="inservice_date"
@@ -360,17 +303,9 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="t_nom"
-            caption="tnom (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="first_insp_date"
@@ -408,35 +343,27 @@
             :width="120"
           />
 
-          <DxColumn 
-            data-field="t_actual" 
-            caption="Last thickness (mm)" 
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="crs" 
+          <DxColumn
+            data-field="crs"
             caption="ST_CR (mm/yr)"
             format="#,##0.00"
           />
 
           <DxColumn
-            data-field="crl" 
+            data-field="crl"
             caption="LT_CR (mm/yr)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="scr" 
-            caption="SCR (mm/yr)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="rl"
-            caption="RL (yrs)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -468,7 +395,6 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -509,7 +435,6 @@ export default {
     DxEditing,
     DxLookup,
     DxButton,
-    innerPageName,
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
@@ -519,7 +444,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Thickness Messurement",
+      subpageInnerName: "Piping",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_PIPING();
@@ -1044,67 +972,67 @@ export default {
       return moment(e.inspection_date).format("DD MMM yyyy");
     },
     SET_OCTUAL_OD(val) {
-      if(val == 0.125) {
+      if (val == 0.125) {
         return 10.3;
-      } else if(val == 0.25) {
+      } else if (val == 0.25) {
         return 13.7;
-      } else if(val == 0.357) {
+      } else if (val == 0.357) {
         return 17.1;
-      } else if(val == 0.5) {
+      } else if (val == 0.5) {
         return 21.3;
-      } else if(val == 0.75) {
+      } else if (val == 0.75) {
         return 26.7;
-      } else if(val == 1) {
+      } else if (val == 1) {
         return 33.4;
-      } else if(val == 1.25) {
+      } else if (val == 1.25) {
         return 42.2;
-      } else if(val == 1.5) {
+      } else if (val == 1.5) {
         return 48.3;
-      } else if(val == 2) {
+      } else if (val == 2) {
         return 60.3;
-      } else if(val == 2.5) {
+      } else if (val == 2.5) {
         return 73;
-      } else if(val == 3) {
+      } else if (val == 3) {
         return 88.9;
-      } else if(val == 3.5) {
+      } else if (val == 3.5) {
         return 101.6;
-      } else if(val == 4) {
+      } else if (val == 4) {
         return 114.3;
-      } else if(val == 5) {
+      } else if (val == 5) {
         return 141.3;
-      } else if(val == 6) {
+      } else if (val == 6) {
         return 168.3;
-      } else if(val == 8) {
+      } else if (val == 8) {
         return 219.1;
-      } else if(val == 10) {
+      } else if (val == 10) {
         return 273;
-      } else if(val == 12) {
+      } else if (val == 12) {
         return 323.8;
-      } else if(val == 14) {
+      } else if (val == 14) {
         return 355.6;
-      } else if(val == 16) {
+      } else if (val == 16) {
         return 406.4;
-      } else if(val == 18) {
+      } else if (val == 18) {
         return 457;
-      } else if(val == 20) {
+      } else if (val == 20) {
         return 508;
-      } else if(val == 22) {
+      } else if (val == 22) {
         return 559;
-      } else if(val == 24) {
+      } else if (val == 24) {
         return 610;
-      } else if(val == 30) {
+      } else if (val == 30) {
         return 762;
-      } else if(val == 34) {
+      } else if (val == 34) {
         return 864;
-      } else if(val == 36) {
+      } else if (val == 36) {
         return 914;
-      } else if(val == 38) {
+      } else if (val == 38) {
         return 965;
-      } else if(val == 40) {
+      } else if (val == 40) {
         return 1016;
-      } else if(val == 42) {
+      } else if (val == 42) {
         return 1097;
-      }  
+      }
     },
   },
 };

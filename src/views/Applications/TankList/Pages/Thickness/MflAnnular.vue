@@ -1,156 +1,124 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Thickness Messurement"
-      breadcrumb1="MFL Annular"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{
-              active: item.id_inspection_record == id_inspection_record,
-            }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_MLF(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
           </div>
-        </template>
-      </DxList>
+          <div class="right">
+            <v-ons-toolbar-button
+              v-on:click="VIEW_MLF(item.id_inspection_record)"
+            >
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
-    <div class="list-page" style="overflow-y: scroll">
+    <div class="list-page" v-if="this.id_inspection_record != ''">
       <DxDataGrid
-          id="mfl-grid"
-          key-expr="id_thk"
-          :data-source="mflAnnular"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_MFL"
-          @row-updated="UPDATE_MFL"
-          @row-removed="DELETE_MFL"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
+        id="mfl-grid"
+        key-expr="id_thk"
+        :data-source="mflAnnular"
+        :element-attr="dataGridAttributes"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        :word-wrap-enabled="true"
+        @row-inserted="CREATE_MFL"
+        @row-updated="UPDATE_MFL"
+        @row-removed="DELETE_MFL"
+      >
+        <DxFilterRow :visible="true" />
+        <DxHeaderFilter :visible="true" />
 
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="IS_VISIBLE_ADD()"
-            :use-icons="true"
-            mode="row"
-          />
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
+          mode="row"
+        />
 
-          <DxColumn 
-            data-field="plate_no" 
-            caption="Plate no"
-          />
+        <DxColumn data-field="plate_no" caption="Plate no" />
 
-          <DxColumn 
-            data-field="t_nom" 
-            caption="tnom (mm)"
-          />
+        <DxColumn data-field="t_nom" caption="tnom (mm)" />
 
-          <DxColumn 
-            data-field="metal_loss_top" 
-            caption="%Metal loss (top side)"
-          />
+        <DxColumn
+          data-field="metal_loss_top"
+          caption="%Metal loss (top side)"
+        />
 
-          <DxColumn 
-            data-field="metal_loss_bottom" 
-            caption="%Metal loss (bottom side)"
-          />
+        <DxColumn
+          data-field="metal_loss_bottom"
+          caption="%Metal loss (bottom side)"
+        />
 
-          <DxColumn 
-            data-field="lowest_remaining_thk_top" 
-            caption="Remaining thk top side (mm)"
-            :allow-editing="false"
-          />
+        <DxColumn
+          data-field="lowest_remaining_thk_top"
+          caption="Remaining thk top side (mm)"
+          :allow-editing="false"
+        />
 
-          <DxColumn 
-            data-field="lowest_remaining_thk_bottom" 
-            caption="Remaining thk bottom side (mm)"
-            :allow-editing="false"
-          />
+        <DxColumn
+          data-field="lowest_remaining_thk_bottom"
+          caption="Remaining thk bottom side (mm)"
+          :allow-editing="false"
+        />
 
-          <DxColumn 
-            data-field="defect_x" 
-            caption="X (mm)"
-          />
+        <DxColumn data-field="defect_x" caption="X (mm)" />
 
-          <DxColumn 
-            data-field="defect_y" 
-            caption="Y (mm)"
-          />
+        <DxColumn data-field="defect_y" caption="Y (mm)" />
 
-          <DxColumn 
-            data-field="type_of_repair" 
-            caption="Type of repair"
-          />
+        <DxColumn data-field="type_of_repair" caption="Type of repair" />
 
-          <DxColumn 
-            data-field="repair_width" 
-            caption="Width"
-          />
+        <DxColumn data-field="repair_width" caption="Width" />
 
-          <DxColumn 
-            data-field="repair_length" 
-            caption="Length"
-          />
+        <DxColumn data-field="repair_length" caption="Length" />
 
-          <DxColumn 
-            data-field="repair_thick" 
-            caption="Thick"
-          />
+        <DxColumn data-field="repair_thick" caption="Thick" />
 
-          <DxColumn 
-            data-field="repair_radius" 
-            caption="Radius"
-          />
+        <DxColumn data-field="repair_radius" caption="Radius" />
 
-          <DxColumn 
-            data-field="repair_status" 
-            caption="Repair status"
-          />
-          
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
+        <DxColumn data-field="repair_status" caption="Repair status" />
 
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
+        <DxColumn type="buttons">
+          <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+          <DxButton name="edit" hint="Edit" icon="edit" />
+          <DxButton name="delete" hint="Delete" icon="trash" />
+        </DxColumn>
+
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="false" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <!-- <DxExport :enabled="true" /> -->
+      </DxDataGrid>
+    </div>
+    <div class="list-page" v-if="this.id_inspection_record == ''">
+      <div class="center-box-wrapper">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record <br />
+            to view information</span
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template> 
@@ -162,7 +130,6 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -181,9 +148,6 @@ import {
   DxFilterRow,
 } from "devextreme-vue/data-grid";
 
-//List
-import { DxList } from "devextreme-vue/list";
-
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
@@ -196,7 +160,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
+    // DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -205,16 +169,18 @@ export default {
     DxColumn,
     DxEditing,
     DxButton,
-    innerPageName,
     DxHeaderFilter,
-  DxFilterRow,
+    DxFilterRow,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Thickness Messurement",
+      subpageInnerName: "MFL - Annular",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -435,11 +401,16 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 41px auto;
+  // grid-auto-rows: 41px auto;
 }
 
 .page-section {
   padding: 20px;
+}
+
+.list-page {
+  position: relative;
+  overflow-y: auto;
 }
 
 .page-section:last-child {

@@ -1,35 +1,29 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Checklist"
-      :breadcrumb1="currentPage"
-      style="grid-column: span 2"
-    />
     <div class="list-panel">
-      <div class="column-header">Inspection Record</div>
-      <DxList :data-source="inspRecordList">
-        <template #item="{ data: item }">
-          <div
-            class="list-item-wrapper"
-            :class="{ active: item.id_inspection_record == id_insp_record }"
-          >
-            <div class="contents">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="contents">
-              <v-ons-toolbar-button
-                class="btn"
-                v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
+      <v-ons-list>
+        <v-ons-list-header>Inspection Record</v-ons-list-header>
+        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
+          <div class="center">
+            {{ DATE_FORMAT(item.inspection_date) }}<br />
+            {{ SET_CAMPAIGN(item.id_campaign) }}
           </div>
-        </template>
-      </DxList>
+          <div class="right">
+            <v-ons-toolbar-button
+              v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
+            >
+              <i class="las la-search"></i>
+            </v-ons-toolbar-button>
+          </div>
+        </v-ons-list-item>
+      </v-ons-list>
     </div>
-    <div id="page-container-view" class="page-section">
+    <div id="page-container-view" class="list-page">
+      <v-ons-list>
+        <v-ons-list-header
+          ><b>{{ currentPage }}</b></v-ons-list-header
+        >
+      </v-ons-list>
       <div v-if="isLoading == false">
         <div v-if="this.checklistList_existance.general == true">
           <checklistGeneric
@@ -106,12 +100,8 @@ import "devextreme/dist/css/dx.light.css";
 import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form-generic.vue";
 import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
 import checklistIlastInt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-int.vue";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
-
-//List
-import { DxList } from "devextreme-vue/list";
 
 export default {
   name: "ViewChecklistList",
@@ -119,9 +109,7 @@ export default {
     checklistGeneric,
     checklistIlastExt,
     checklistIlastInt,
-    DxList,
     Loading,
-    innerPageName,
   },
   data() {
     return {
@@ -157,7 +145,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Checklist");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Checklist",
+      subpageInnerName: null,
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -619,21 +610,24 @@ export default {
   overflow-y: hidden;
   display: grid;
   grid-template-columns: 250px calc(100% - 250px);
-  grid-auto-rows: 27px auto;
+  // grid-auto-rows: 27px auto;
   width: 100%;
-  background-color: #d9d9d9;
+  background-color: #ffffff;
 }
 
-.page-section {
+.list-page {
   padding: 20px;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
   @media screen and (max-width: 1600px) {
     padding: 10px;
     padding-top: 50px;
   }
 }
-.page-section:last-child {
+.list-page:last-child {
   padding-bottom: 20px;
 }
 

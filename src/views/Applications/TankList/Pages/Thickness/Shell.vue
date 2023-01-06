@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Shell" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -17,7 +16,6 @@
           :word-wrap-enabled="true"
           @selection-changed="VIEW_CML"
         >
-
           <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -28,7 +26,7 @@
           </template>
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -80,10 +78,9 @@
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
         >
-
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -144,7 +141,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
           <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -202,7 +199,7 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
-        <DxFilterRow :visible="true" />
+          <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
           <DxEditing
             :allow-updating="true"
@@ -222,10 +219,7 @@
             />
           </DxColumn>
 
-          <DxColumn 
-            data-field="t_actual" 
-            caption="tactual (mm)"
-          />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -265,20 +259,11 @@
             </div>
           </template>
 
-          <DxColumn
-            data-field="id_tank_course" 
-            caption="Shell course"
-          />
+          <DxColumn data-field="id_tank_course" caption="Shell course" />
 
-          <DxColumn
-            data-field="plate_no" 
-            caption="Plate no" 
-          />
+          <DxColumn data-field="plate_no" caption="Plate no" />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP name"
-          />
+          <DxColumn data-field="tp_name" caption="TP name" />
 
           <DxColumn
             data-field="inservice_date"
@@ -288,17 +273,9 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="t_nom"
-            caption="tnom (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="t_req" 
-            caption="treq (mm)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="first_insp_date"
@@ -336,35 +313,27 @@
             :width="120"
           />
 
-          <DxColumn 
-            data-field="t_actual" 
-            caption="Last thickness (mm)" 
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="crs" 
+          <DxColumn
+            data-field="crs"
             caption="ST_CR (mm/yr)"
             format="#,##0.00"
           />
 
           <DxColumn
-            data-field="crl" 
+            data-field="crl"
             caption="LT_CR (mm/yr)"
             format="#,##0.00"
           />
 
-          <DxColumn 
-            data-field="scr" 
-            caption="SCR (mm/yr)" 
-            format="#,##0.00"
-          />
+          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn 
-            data-field="rl"
-            caption="RL (yrs)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -396,7 +365,6 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -437,7 +405,6 @@ export default {
     DxEditing,
     DxLookup,
     DxButton,
-    innerPageName,
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
@@ -447,7 +414,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Thickness Messurement",
+      subpageInnerName: "Shell",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_SHELL_COURSE();

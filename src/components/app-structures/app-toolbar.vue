@@ -11,6 +11,12 @@
       </v-ons-toolbar-button>
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
+      <div class="sub-page-box" v-if="pageSubInnerName">
+        <div class="btn-group-separater-client">
+          <i class="las la-angle-right"></i>
+        </div>
+        <h2>{{ pageSubInnerName }}</h2>
+      </div>
       <div class="toolbar-info mobile-none" v-if="infoTank">
         <div class="info-item">
           <label class="desc">Tag No: </label>
@@ -153,6 +159,7 @@ export default {
   props: {
     pageName: String,
     pageSubName: String,
+    pageSubInnerName: String,
     isBack: Boolean,
     isBack_specificPath: String,
     isBackPath: Boolean,
@@ -302,7 +309,6 @@ export default {
       font-size: 2em;
       color: $web-font-color-black;
       width: auto;
-      padding-right: 30px;
     }
     .toolbar-button {
       margin-left: 0;
@@ -385,6 +391,7 @@ export default {
 }
 
 .toolbar-info {
+  padding-left: 40px;
   display: flex;
   .info-item {
     display: block;
@@ -487,5 +494,18 @@ export default {
 
 .popover-button:last-child {
   border: 0;
+}
+
+.sub-page-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .btn-group-separater-client {
+    margin: 0 4px;
+    i {
+      font-size: 22px;
+      color: rgba(0, 0, 0, 0.1);
+    }
+  }
 }
 </style>

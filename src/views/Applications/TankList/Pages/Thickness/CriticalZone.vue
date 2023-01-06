@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Critical Zone" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -22,7 +21,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -99,7 +98,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -223,16 +222,9 @@
             sort-order="asc"
           />
 
-          <DxColumn 
-            data-field="plate_desc" 
-            caption="Plate desc" 
-          />
+          <DxColumn data-field="plate_desc" caption="Plate desc" />
 
-          <DxColumn 
-            data-field="tp_name" 
-            caption="TP name" 
-            sort-order="asc"
-          />
+          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" />
 
           <DxColumn
             data-field="inservice_date"
@@ -329,7 +321,6 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -372,7 +363,6 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
-    innerPageName,
     DxSelection,
   },
   created() {
@@ -380,7 +370,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Thickness Messurement",
+      subpageInnerName: "Critical Zone",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_CML();

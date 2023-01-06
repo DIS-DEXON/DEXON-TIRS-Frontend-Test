@@ -417,7 +417,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Evaluation");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Evaluation",
+      subpageInnerName: "Shell Settlement",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_SHELL_COURSE();

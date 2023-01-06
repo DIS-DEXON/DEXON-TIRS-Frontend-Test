@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <innerPageName pageName="Thickness Messurement" breadcrumb1="Roof" />
     <div class="page-section">
       <div class="table-wrapper">
         <DxDataGrid
@@ -22,7 +21,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -34,7 +33,11 @@
 
           <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
-          <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" />
+          <DxColumn
+            data-field="roof_column"
+            caption="Roof column"
+            sort-order="asc"
+          />
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -55,11 +58,7 @@
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
-            <DxButton
-              hint="Clone"
-              icon="copy"
-              :on-click="cloneIconClick"
-            />
+            <DxButton hint="Clone" icon="copy" :on-click="cloneIconClick" />
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -101,7 +100,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" /> 
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -166,8 +165,8 @@
             mode="row"
           />
 
-          <DxColumn 
-            data-field="id_inspection_record" 
+          <DxColumn
+            data-field="id_inspection_record"
             caption="Inspection date"
             sort-order="desc"
           >
@@ -324,7 +323,6 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -367,7 +365,6 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
-    innerPageName,
     DxSelection,
   },
   created() {
@@ -375,7 +372,10 @@ export default {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Thickness Messurement");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Thickness Messurement",
+      subpageInnerName: "Roof",
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_CML();
@@ -420,7 +420,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
-            this.maxID = this.dataList.cml[this.dataList.cml.length-1].id_cml;
+            this.maxID = this.dataList.cml[this.dataList.cml.length - 1].id_cml;
           }
         })
         .catch((error) => {
@@ -821,12 +821,11 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-
     },
     getMaxID() {
       this.maxID += 1;
       return this.maxID;
-    }
+    },
   },
 };
 </script>

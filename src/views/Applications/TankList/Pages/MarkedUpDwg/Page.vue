@@ -1,38 +1,34 @@
 <template>
   <div class="page-container">
-    <innerPageName
-      pageName="Marked-Up Drawing"
-      :breadcrumb1="currentPage"
-      style="grid-column: span 2"
-    />
     <div class="page-section">
       <div class="list-panel">
-        <div class="column-header">Inspection Record</div>
-        <DxList :data-source="inspRecordList">
-          <template #item="{ data: item }">
-            <div
-              class="list-item-wrapper"
-              :class="{
-                active: item.id_inspection_record == id_inspection_record,
-              }"
-            >
-              <div class="contents">
-                {{ DATE_FORMAT(item.inspection_date) }}<br />
-                {{ SET_CAMPAIGN(item.id_campaign) }}
-              </div>
-              <div class="contents">
-                <v-ons-toolbar-button
-                  class="btn"
-                  v-on:click="VIEW_DWG(item.id_inspection_record)"
-                >
-                  <i class="las la-search"></i>
-                </v-ons-toolbar-button>
-              </div>
+        <v-ons-list>
+          <v-ons-list-header>Inspection Record</v-ons-list-header>
+          <v-ons-list-item
+            tappable
+            v-for="item in inspRecordList"
+            :key="item.id"
+          >
+            <div class="center">
+              {{ DATE_FORMAT(item.inspection_date) }}<br />
+              {{ SET_CAMPAIGN(item.id_campaign) }}
             </div>
-          </template>
-        </DxList>
+            <div class="right">
+              <v-ons-toolbar-button
+                v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
+              >
+                <i class="las la-search"></i>
+              </v-ons-toolbar-button>
+            </div>
+          </v-ons-list-item>
+        </v-ons-list>
       </div>
       <div class="list-page">
+        <v-ons-list>
+          <v-ons-list-header
+            ><b>{{ currentPage }}</b></v-ons-list-header
+          >
+        </v-ons-list>
         <DxDataGrid
           id="data-grid-style"
           key-expr="id"
@@ -144,7 +140,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -164,7 +160,7 @@ import {
 } from "devextreme-vue/data-grid";
 
 //List
-import { DxList } from "devextreme-vue/list";
+// import { DxList } from "devextreme-vue/list";
 
 //FileUpload
 import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -178,7 +174,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
-    DxList,
+    // DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -192,14 +188,17 @@ export default {
     DxItem,
     DxPopup,
     //DxButton,
-    innerPageName,
+    // innerPageName,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
       icon: "/img/icon_menu/tank/tank.png",
     });
-    this.$store.commit("UPDATE_CURRENT_PAGENAME", "Marked-Up Drawing");
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Marked-Up Drawing",
+      subpageInnerName: null,
+    });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
       this.FETCH_INSP_RECORD();
@@ -506,7 +505,12 @@ export default {
       // overflow-y: auto;
     }
     .list-page {
+      padding: 20px;
       overflow-y: auto;
+      position: relative;
+      .list {
+        margin: -20px -20px 20px -20px;
+      }
     }
   }
 }

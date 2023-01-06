@@ -20,6 +20,7 @@ export default new Vuex.Store({
     appIcon: '/app-icon.png',
     currentInApp: '',
     currentPageName: '',
+    currentPageInnerName: '',
     currentClient: '',
     status: {
       fullscreenAlert: false,
@@ -289,7 +290,8 @@ export default new Vuex.Store({
     },
     UPDATE_CURRENT_PAGENAME: (state, payload) => {
       if (payload) {
-        state.currentPageName = payload;
+        state.currentPageName = payload.subpageName;
+        state.currentPageInnerName = payload.subpageInnerName;
       }
     },
     CLEAR_CURRENT_PAGENAME: (state) => {
