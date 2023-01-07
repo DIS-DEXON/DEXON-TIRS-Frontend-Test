@@ -1,8 +1,13 @@
 <template>
-  <div class="app-sidebar">
+  <div
+    class="app-sidebar"
+    :class="[sidebarHiding == true ? 'app-sidebar-hide' : 'app-sidebar']"
+  >
     <div class="item-container">
       <!-- SECTION INFO -->
-      <div class="section-label"><label>Information</label></div>
+      <div class="section-label">
+        <label>Information</label>
+      </div>
       <router-link
         :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/info'"
       >
@@ -21,7 +26,10 @@
       </router-link>
 
       <!-- SECTION INSPECTION -->
-      <div class="section-label"><label>Inspection</label></div>
+      <div class="section-label">
+        <label>Inspection</label>
+        <hr />
+      </div>
       <router-link
         :to="
           '/tank/client/' + id_company + '/tag/' + id_tag + '/marked-up-drawing'
@@ -85,7 +93,6 @@
           <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
-
       <router-link
         :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'"
       >
@@ -96,7 +103,10 @@
       </router-link>
 
       <!-- SECTION REPORT -->
-      <div class="section-label"><label>Report</label></div>
+      <div class="section-label">
+        <label>Report</label>
+        <hr />
+      </div>
       <router-link :to="'/tank/client/' + id_company + '/report/' + id_tag">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/report.png" />
@@ -181,6 +191,15 @@
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
+
+      <v-ons-toolbar-button
+        class="item bottom-btn"
+        v-on:click="SHOW_HIDE_SIDEBAR()"
+      >
+        <i class="las la-caret-square-left" v-if="sidebarHiding == false"></i>
+        <i class="las la-caret-square-right" v-if="sidebarHiding == true"></i>
+        <span>Hide Sidebar</span>
+      </v-ons-toolbar-button>
     </div>
   </div>
 </template>
@@ -384,6 +403,7 @@ export default {
           },
         ],
       },
+      sidebarHiding: false,
     };
   },
   computed: {},
@@ -465,6 +485,11 @@ export default {
         });
       }
     },
+    SHOW_HIDE_SIDEBAR() {
+      if (this.sidebarHiding == false) this.sidebarHiding = true;
+      else this.sidebarHiding = false;
+      this.$emit("resizeGridLayout");
+    },
   },
 };
 </script>
@@ -479,18 +504,29 @@ export default {
   border-width: 0 1px 0 0;
   position: relative;
   overflow-y: auto;
-
+  transition: all 0.3s;
   .item-container {
     width: 100%;
     padding-top: 20px;
+    transition: all 0.3s;
 
     .section-label {
-      font-size: 12px;
-      font-weight: 400;
-      color: #ffffff92;
       margin-left: 20px;
       margin-top: 20px;
-      font-style: normal;
+      transition: all 0.3s;
+      label {
+        font-size: 12px;
+        font-weight: 400;
+        color: #ffffff92;
+        font-style: normal;
+        transition: all 0.3s;
+      }
+      hr {
+        width: -webkit-fill-available;
+        margin-right: 10px;
+        display: none;
+        transition: all 0.3s;
+      }
     }
 
     .section-label:first-child {
@@ -506,6 +542,7 @@ export default {
       margin: 10px auto;
       border: 0px;
       position: relative;
+      transition: all 0.3s;
       i {
         margin-left: 15px;
         color: $web-font-color-white;
@@ -514,6 +551,7 @@ export default {
         color: $web-font-color-white;
         font-weight: 500;
         font-size: 12px;
+        transition: all 0.3s;
       }
       img {
         width: 18px;
@@ -536,6 +574,12 @@ export default {
     .router-link-exact-active > .item {
       background: $dexon-primary-red;
     }
+
+    .bottom-btn {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+    }
   }
   .item-container:last-child {
     margin-bottom: 100px;
@@ -553,19 +597,39 @@ export default {
 }
 @media screen and (max-width: 1024px) {
   .app-sidebar {
-    width: fit-content;
-    .item-container {
-      width: 54px;
-      padding-top: 10px;
-      .section-label {
-        display: none;
-      }
-      .item {
-        width: fit-content;
-        justify-content: center;
-        span,
-        i {
-          display: none;
+    .app-sidebar-hide {
+      width: fit-content;
+      transition: all 0.3s;
+      .item-container {
+        width: 54px;
+        padding-top: 10px;
+        .section-label {
+          margin: 0;
+          label {
+            display: none;
+          }
+          hr {
+            margin: 0 10px;
+            display: block;
+            transition: all 0.3s;
+          }
+        }
+        .item {
+          width: fit-content;
+          justify-content: center;
+          span,
+          i {
+            display: none;
+          }
+        }
+        .bottom-btn {
+          left: 10px;
+          width: 34px;
+
+          i {
+            display: inherit !important;
+            margin: 0;
+          }
         }
       }
     }
@@ -595,5 +659,42 @@ export default {
 
 .popover-button:last-child {
   border: 0;
+}
+
+.app-sidebar-hide {
+  width: fit-content;
+  transition: all 0.3s;
+  .item-container {
+    width: 54px;
+    padding-top: 10px;
+    .section-label {
+      margin: 0;
+      label {
+        display: none;
+      }
+      hr {
+        margin: 0 10px;
+        display: block;
+        transition: all 0.3s;
+      }
+    }
+    .item {
+      width: fit-content;
+      justify-content: center;
+      span,
+      i {
+        display: none;
+      }
+    }
+    .bottom-btn {
+      left: 10px;
+      width: 34px;
+
+      i {
+        display: inherit !important;
+        margin: 0;
+      }
+    }
+  }
 }
 </style>

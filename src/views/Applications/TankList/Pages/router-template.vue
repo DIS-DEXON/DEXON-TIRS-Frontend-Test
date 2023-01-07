@@ -1,5 +1,8 @@
 <template>
-  <div class="pm-page">
+  <div
+    class="pm-page"
+    :class="[sidebarHiding == true ? 'pm-page-none-sidbar' : 'pm-page']"
+  >
     <toolbar
       :pageSubName="this.$store.state.currentPageName"
       :pageSubInnerName="this.$store.state.currentPageInnerName"
@@ -11,7 +14,7 @@
       :infoTank="infoTank"
       :isMoreBtn="true"
     />
-    <sidebar />
+    <sidebar @resizeGridLayout="RESIZE_GRID_LAYOUT()" />
     <div class="pm-page-container">
       <router-view></router-view>
     </div>
@@ -42,6 +45,7 @@ export default {
   data() {
     return {
       infoTank: {},
+      sidebarHiding: false,
     };
   },
   computed: {},
@@ -77,6 +81,9 @@ export default {
           this.isLoading = false;
         });
     },
+    RESIZE_GRID_LAYOUT() {
+      this.sidebarHiding = !this.sidebarHiding;
+    },
   },
 };
 </script>
@@ -86,6 +93,7 @@ export default {
   display: grid;
   grid-template-columns: 200px calc(100vw - 200px);
   grid-template-rows: 51px calc(100vh - 119px);
+  transition: all 0.3s;
   .pm-page-container {
     background-color: #fff;
     // padding: 20px;
@@ -101,6 +109,17 @@ export default {
       // padding: 20px;
       .page-container {
       }
+    }
+  }
+}
+
+.pm-page-none-sidbar {
+  grid-template-columns: 54px calc(100vw - 54px);
+  // grid-template-rows: 61px calc(100vh - 139px);
+  .pm-page-container {
+    background-color: #fff;
+    // padding: 20px;
+    .page-container {
     }
   }
 }
