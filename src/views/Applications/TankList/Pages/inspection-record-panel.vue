@@ -16,6 +16,16 @@
         <div class="center">
           <span class="date">{{ DATE_FORMAT(item.inspection_date) }}</span>
           <span class="campaign">{{ SET_CAMPAIGN(item.id_campaign) }}</span>
+          <span
+            style="
+              position: absolute;
+              bottom: 0;
+              right: 14px;
+              font-size: 12px;
+              color: red;
+            "
+            >id: {{ item.id_inspection_record }}</span
+          >
         </div>
         <div class="right">
           <v-ons-toolbar-button v-on:click="VIEW_ITEM(item)">
