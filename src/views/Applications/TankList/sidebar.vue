@@ -576,9 +576,9 @@ export default {
     }
 
     .bottom-btn {
-      position: absolute;
+      position: fixed;
       left: 10px;
-      bottom: 10px;
+      bottom: 24px;
     }
   }
   .item-container:last-child {
