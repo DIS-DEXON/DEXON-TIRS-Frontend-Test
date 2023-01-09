@@ -5,7 +5,10 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL()" />
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header
@@ -336,7 +339,10 @@ export default {
       });
       e.cancel = true;
     },
-    VIEW_DWG(item) {
+    VIEW_ITEM(item) {
+      console.log("parent triggered: ");
+      console.log(item);
+
       this.id_inspection_record = item.id_inspection_record;
       this.inspection_date = item.inspection_date;
       this.current_view = item;
@@ -554,6 +560,9 @@ export default {
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
     },
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
+    },
   },
 };
 </script>
@@ -567,7 +576,7 @@ export default {
   margin: 0 auto;
   // padding: 20px;
   display: grid;
-  grid-template-columns: 250px calc(100% - 250px);
+  grid-template-columns: 201px calc(100% - 201px);
 }
 
 .page-section {

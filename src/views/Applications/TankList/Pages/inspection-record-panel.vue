@@ -18,7 +18,7 @@
           <span class="campaign">{{ SET_CAMPAIGN(item.id_campaign) }}</span>
         </div>
         <div class="right">
-          <v-ons-toolbar-button v-on:click="VIEW_DWG(item)">
+          <v-ons-toolbar-button v-on:click="VIEW_ITEM(item)">
             <i class="las la-search"></i>
           </v-ons-toolbar-button>
         </div>
@@ -121,6 +121,11 @@ export default {
       if (this.panelHiding == true) this.panelHiding = false;
       else this.panelHiding = true;
       this.$emit("showHidePanel");
+    },
+    VIEW_ITEM(item) {
+      console.log("INSP PANEL: ");
+      console.log(item);
+      this.$emit("viewItem", item);
     },
   },
 };
