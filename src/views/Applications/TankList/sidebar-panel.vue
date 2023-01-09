@@ -191,7 +191,8 @@
           <i class="las la-angle-right"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
-
+    </div>
+    <div class="item-container fixed-panel">
       <v-ons-toolbar-button
         class="item bottom-btn"
         v-on:click="SHOW_HIDE_SIDEBAR()"
@@ -503,8 +504,11 @@ export default {
   border: 1px solid #e6e6e6;
   border-width: 0 1px 0 0;
   position: relative;
-  overflow-y: auto;
   transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   .item-container {
     width: 100%;
     padding-top: 20px;
@@ -576,23 +580,14 @@ export default {
     }
 
     .bottom-btn {
-      position: fixed;
-      left: 10px;
-      bottom: 24px;
+      i {
+        margin: 0 10px;
+      }
     }
   }
-  .item-container:last-child {
-    margin-bottom: 100px;
-  }
-  .sidebar-toggle-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    i {
-      font-size: 24px;
-      color: $dexon-primary-blue;
-      cursor: pointer;
-    }
+
+  .fixed-panel {
+    background-color: #140a4b;
   }
 }
 @media screen and (max-width: 1024px) {
@@ -687,12 +682,8 @@ export default {
       }
     }
     .bottom-btn {
-      left: 10px;
-      width: 34px;
-
       i {
         display: inherit !important;
-        margin: 0;
       }
     }
   }

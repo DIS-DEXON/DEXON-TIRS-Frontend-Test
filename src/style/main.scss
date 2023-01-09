@@ -1238,75 +1238,7 @@ hr {
     padding-bottom: 60px;
 }
 
-.list-panel {
-    display: block;
-    height: 100%;
-    border: 1px solid #e6e6e6;
-    border-width: 0 1px 0 0;
-    background-color: #fff;
 
-    .column-header {
-        font-size: 12px;
-        font-weight: 600;
-        padding: 8px;
-        background-color: #140a4b;
-        color: #fff;
-    }
-
-    .list-item-wrapper {
-        display: grid;
-        grid-template-columns: calc(100% - 40px) 40px;
-        padding: 8px;
-        // border-bottom: 1px solid #000;
-        font-size: 12px;
-
-        div.contents:first-child {
-            font-weight: 500;
-        }
-    }
-
-    .toolbar-button {
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        margin: 0 2px;
-        border-radius: 6px;
-        background-color: #f6f6f6;
-        padding: 0;
-        text-align: right;
-
-        i {
-            font-size: 16px;
-            color: $web-font-color-blue;
-        }
-    }
-
-    .toolbar-button:hover,
-    .toolbar-button:active {
-        background-color: #140a4b;
-
-        i {
-            color: #fff;
-        }
-    }
-
-    .dx-list .dx-empty-message,
-    .dx-list-item-content {
-        padding: 8px;
-    }
-
-    .dx-device-mobile .dx-list .dx-empty-message,
-    .dx-device-mobile .dx-list-item-content {
-        padding: 0;
-    }
-
-    .list-item__center {
-        font-size: 12px;
-    }
-}
 
 .list-page {
     display: block;

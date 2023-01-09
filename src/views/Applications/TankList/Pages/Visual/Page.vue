@@ -1,21 +1,11 @@
 <template>
-  <div class="page-container">
-    <div class="list-panel">
-      <v-ons-list>
-        <v-ons-list-header>Inspection Record</v-ons-list-header>
-        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
-          <div class="center">
-            {{ DATE_FORMAT(item.inspection_date) }}<br />
-            {{ SET_CAMPAIGN(item.id_campaign) }}
-          </div>
-          <div class="right">
-            <v-ons-toolbar-button v-on:click="VIEW_DWG(item)">
-              <i class="las la-search"></i>
-            </v-ons-toolbar-button>
-          </div>
-        </v-ons-list-item>
-      </v-ons-list>
-    </div>
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL()" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header
@@ -233,6 +223,7 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import DxTextArea from "devextreme-vue/text-area";
 import DxButton from "devextreme-vue/button";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -265,6 +256,7 @@ const imgRef = "img";
 export default {
   name: "ViewProjectList",
   components: {
+    InspectionRecordPanel,
     //VueTabsChrome,
     // DxList,
     DxDataGrid,
@@ -291,16 +283,10 @@ export default {
       subpageName: "Picture Log",
       subpageInnerName: null,
     });
-    if (this.$store.state.status.server == true) {
-      this.FETCH_CAMPAIGN();
-      this.FETCH_INSP_RECORD();
-    }
   },
   data() {
     return {
       drawingList: [],
-      inspRecordList: {},
-      campaignList: [],
       isLoading: false,
       fileUploaderRef,
       imgRef,
@@ -322,6 +308,7 @@ export default {
       },
       popUpWidth: 0,
       pictureLog: "",
+      pagePanelHiding: false,
     };
   },
   computed: {
@@ -348,33 +335,6 @@ export default {
         });
       });
       e.cancel = true;
-    },
-    FETCH_INSP_RECORD() {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "insp-record/insp-record-by-tank-id",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-        },
-      })
-        .then((res) => {
-          // console.log("insp record:");
-          // console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.inspRecordList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
     },
     VIEW_DWG(item) {
       this.id_inspection_record = item.id_inspection_record;
@@ -403,9 +363,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    DATE_FORMAT(d) {
-      return moment(d).format("LL");
     },
     CREATE_DWG(e) {
       console.log(e);
@@ -559,37 +516,6 @@ export default {
       this.isInitEdit_2 = 1;
       this.popUpWidth = this.CHECK_SCREEN("w");
     },
-    FETCH_CAMPAIGN() {
-      this.isLoading = true;
-      axios({
-        method: "get",
-        url: "/insp-record/campaign-list",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      })
-        .then((res) => {
-          // console.log(res);
-          if (res.status == 200 && res.data) {
-            this.campaignList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    SET_CAMPAIGN(id) {
-      if (this.campaignList.length > 0) {
-        var data = this.campaignList.filter(function (e) {
-          return e.id_campaign == id;
-        });
-        // console.log(data);
-        return data[0].campaign_desc;
-      }
-    },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
         return false;
@@ -624,6 +550,9 @@ export default {
       if (e.changes.length >= 0) {
         this.UPDATE_DWG(this.pictureLog);
       }
+    },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
     },
   },
 };
@@ -681,5 +610,9 @@ export default {
   .list {
     margin: -20px -20px 20px -20px;
   }
+}
+
+.page-container-hide {
+  grid-template-columns: 51px calc(100% - 51px);
 }
 </style>

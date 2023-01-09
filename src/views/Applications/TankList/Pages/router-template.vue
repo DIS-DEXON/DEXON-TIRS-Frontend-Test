@@ -25,7 +25,7 @@
 import axios from "/axios.js";
 //Structures
 import toolbar from "@/components/app-structures/app-toolbar.vue";
-import sidebar from "@/views/Applications/TankList/sidebar.vue";
+import sidebar from "@/views/Applications/TankList/sidebar-panel.vue";
 
 export default {
   name: "router-template-detail",
