@@ -299,7 +299,7 @@ import {
 //import { DxItem } from "devextreme-vue/form";
 
 export default {
-  name: "RoundnessView",
+  name: "BottomSettlementView",
   components: {
     //VueTabsChrome,
     //DxList,
@@ -324,7 +324,7 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Floor Gradient",
+      subpageInnerName: "Bottom Settlement",
     });
   },
   data() {

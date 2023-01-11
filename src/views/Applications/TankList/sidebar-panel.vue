@@ -399,8 +399,8 @@ export default {
           },
           {
             id: 8,
-            code: "Floor Gradient",
-            path: "floor-gradient",
+            code: "Bottom Settlement",
+            path: "bottom-settlement",
           },
         ],
       },

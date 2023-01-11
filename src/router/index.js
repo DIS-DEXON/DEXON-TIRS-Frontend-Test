@@ -163,9 +163,9 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Evaluation/MRT.vue'),
           },
           {
-            path: 'evaluation/floor-gradient',
-            alias: 'Eva Floor Gradient',
-            component: () => import('../views/Applications/TankList/Pages/Evaluation/FloorGradient.vue'),
+            path: 'evaluation/bottom-settlement',
+            alias: 'Eva Bottom Settlement',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/BottomSettlement.vue'),
           },
           {
             path: 'evaluation/shell-buckling',
