@@ -627,10 +627,6 @@ export default {
   }
 }
 
-.dx-list-item-content::before {
-  content: none;
-}
-
 .data-grid-style {
   height: 100%;
   border-radius: 6px;
