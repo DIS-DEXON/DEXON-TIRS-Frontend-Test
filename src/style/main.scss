@@ -1276,10 +1276,11 @@ hr {
 }
 
 .checklist-sheet {
-    width: 100%;
+    width: auto;
     margin: 0 auto;
     border: 1px solid #000;
     box-shadow: none;
+    max-width: auto !important;
 
     @media screen and (max-width: 1600px) {
         width: calc(100% - 20px);

@@ -580,8 +580,10 @@ export default {
     }
 
     .bottom-btn {
+      justify-content: center;
       i {
         margin: 0 10px;
+        margin-left: 0;
       }
     }
   }
@@ -619,11 +621,12 @@ export default {
         }
         .bottom-btn {
           left: 10px;
-          width: 34px;
+          width: 38px;
 
           i {
             display: inherit !important;
             margin: 0;
+            margin-left: 0;
           }
         }
       }
@@ -682,8 +685,10 @@ export default {
       }
     }
     .bottom-btn {
+      width: 38px;
       i {
         display: inherit !important;
+        margin: 0;
       }
     }
   }

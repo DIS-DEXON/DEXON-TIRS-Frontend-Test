@@ -1,134 +1,119 @@
 <template>
-  <div class="page-container">
-    <div class="page-section">
-      <div class="list-panel">
-        <v-ons-list>
-          <v-ons-list-header>Inspection Record</v-ons-list-header>
-          <v-ons-list-item
-            tappable
-            v-for="item in inspRecordList"
-            :key="item.id"
-          >
-            <div class="center">
-              {{ DATE_FORMAT(item.inspection_date) }}<br />
-              {{ SET_CAMPAIGN(item.id_campaign) }}
-            </div>
-            <div class="right">
-              <v-ons-toolbar-button
-                v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
-              >
-                <i class="las la-search"></i>
-              </v-ons-toolbar-button>
-            </div>
-          </v-ons-list-item>
-        </v-ons-list>
-      </div>
-      <div class="list-page">
-        <v-ons-list>
-          <v-ons-list-header
-            ><b>{{ currentPage }}</b></v-ons-list-header
-          >
-        </v-ons-list>
-        <DxDataGrid
-          id="data-grid-style"
-          key-expr="id"
-          :data-source="drawingList"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
-          @row-inserted="CREATE_DWG"
-          @row-updated="UPDATE_DWG"
-          @row-removed="DELETE_DWG"
-          @editing-start="EDITING_START_DWG"
-          @init-new-row="INIT_NEW_ROW_DWG"
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
+    <div class="list-page">
+      <v-ons-list>
+        <v-ons-list-header
+          ><b>{{ currentPage }}</b></v-ons-list-header
         >
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="IS_VISIBLE_ADD()"
-            mode="popup"
-          >
-            <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
-            </DxPopup>
-            <DxForm>
-              <DxItem :col-count="2" :col-span="2" item-type="group">
-                <DxItem data-field="file_path" :col-span="2" />
-                <DxItem data-field="file_name" :col-span="2" />
-              </DxItem>
-            </DxForm>
-          </DxEditing>
+      </v-ons-list>
+      <DxDataGrid
+        id="data-grid-style"
+        key-expr="id"
+        :data-source="drawingList"
+        :element-attr="dataGridAttributes"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        @exporting="EXPORT_DATA"
+        @row-inserted="CREATE_DWG"
+        @row-updated="UPDATE_DWG"
+        @row-removed="DELETE_DWG"
+        @editing-start="EDITING_START_DWG"
+        @init-new-row="INIT_NEW_ROW_DWG"
+      >
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="IS_VISIBLE_ADD()"
+          mode="popup"
+        >
+          <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
+          </DxPopup>
+          <DxForm>
+            <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="file_path" :col-span="2" />
+              <DxItem data-field="file_name" :col-span="2" />
+            </DxItem>
+          </DxForm>
+        </DxEditing>
 
-          <DxColumn
-            data-field="file_path"
-            caption="Marked-up Drawing"
-            cell-template="dwg-img"
-            edit-cell-template="dwg-img-editor"
-            :width="520"
-          />
+        <DxColumn
+          data-field="file_path"
+          caption="Marked-up Drawing"
+          cell-template="dwg-img"
+          edit-cell-template="dwg-img-editor"
+          :width="520"
+        />
 
-          <DxColumn data-field="file_name" caption="File Name" :width="300" />
+        <DxColumn data-field="file_name" caption="File Name" :width="300" />
 
-          <template #dwg-img="{ data }">
-            <div style="position: relative">
-              <img :src="baseURL + data.value" width="500" /><br />
-              <a
-                :href="baseURL + data.value"
-                download="dwg"
-                target="_blank"
-                class="btn-view-dwg"
-                >VIEW</a
-              >
-            </div>
-          </template>
+        <template #dwg-img="{ data }">
+          <div style="position: relative">
+            <img :src="baseURL + data.value" width="500" /><br />
+            <a
+              :href="baseURL + data.value"
+              download="dwg"
+              target="_blank"
+              class="btn-view-dwg"
+              >VIEW</a
+            >
+          </div>
+        </template>
 
-          <template #dwg-img-editor="{ data }">
-            <div>
-              <img
-                :src="baseURL + data.value"
-                width="500"
-                v-if="imgDwg != '' && isInitEdit == 0"
-              />
-              <img
-                :src="imgDwg"
-                width="500"
-                v-if="imgDwg != '' && isInitEdit == 1"
-              />
-              <img
-                src="http://tmt-solution.com/public/image-empty.png"
-                width="500"
-                v-if="imgDwg == ''"
-              />
+        <template #dwg-img-editor="{ data }">
+          <div>
+            <img
+              :src="baseURL + data.value"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 0"
+            />
+            <img
+              :src="imgDwg"
+              width="500"
+              v-if="imgDwg != '' && isInitEdit == 1"
+            />
+            <img
+              src="http://tmt-solution.com/public/image-empty.png"
+              width="500"
+              v-if="imgDwg == ''"
+            />
 
-              <DxFileUploader
-                select-button-text="Select photo"
-                label-text=""
-                accept="image/*"
-                upload-mode="useForm"
-                @value-changed="ON_DWG_CHANGE"
-              />
-            </div>
-          </template>
+            <DxFileUploader
+              select-button-text="Select photo"
+              label-text=""
+              accept="image/*"
+              upload-mode="useForm"
+              @value-changed="ON_DWG_CHANGE"
+            />
+          </div>
+        </template>
 
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
   </div>
 </template> 
@@ -141,6 +126,7 @@ import moment from "moment";
 //Components
 import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -189,6 +175,7 @@ export default {
     DxPopup,
     //DxButton,
     // innerPageName,
+    InspectionRecordPanel,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -199,29 +186,10 @@ export default {
       subpageName: "Marked-Up Drawing",
       subpageInnerName: null,
     });
-    if (this.$store.state.status.server == true) {
-      this.FETCH_CAMPAIGN();
-      this.FETCH_INSP_RECORD();
-    }
   },
   data() {
     return {
-      drawingList: [
-        // {
-        //   id_dwg: 1,
-        //   id_tag: 5,
-        //   id_inspection_record: 2,
-        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_1.png",
-        //   file_name: "4-GC-H12N-0206101_Page_1",
-        // },
-        // {
-        //   id_dwg: 2,
-        //   id_tag: 5,
-        //   id_inspection_record: 2,
-        //   path_dwg: "wwwroot/attach/marked_up_dwg/4-GC-H12N-0206101_Page_2.png",
-        //   file_name: "4-GC-H12N-0206101_Page_2",
-        // },
-      ],
+      drawingList: [],
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -235,6 +203,7 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      pagePanelHiding: false,
     };
   },
   computed: {
@@ -277,38 +246,9 @@ export default {
       });
       e.cancel = true;
     },
-    FETCH_INSP_RECORD() {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "insp-record/insp-record-by-tank-id",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-        },
-      })
-        .then((res) => {
-          console.log("insp record:");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.inspRecordList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    VIEW_DWG(id_inspection_record) {
+    VIEW_ITEM(item) {
       this.id_component = this.$route.params.id_component;
-      this.id_inspection_record = id_inspection_record;
-      console.log("id_insp:" + id_inspection_record);
-      console.log("id_component:" + this.id_component);
+      this.id_inspection_record = item.id_inspection_record;
       axios({
         method: "post",
         url: "layout-drawing/layout-drawing-by-comp-id",
@@ -317,7 +257,7 @@ export default {
         },
         data: {
           id_component: this.id_component,
-          id_inspection_record: id_inspection_record,
+          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -333,9 +273,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    DATE_FORMAT(d) {
-      return moment(d).format("LL");
     },
     CREATE_DWG(e) {
       console.log(e);
@@ -446,43 +383,18 @@ export default {
       this.file = [];
       this.isInitEdit = 1;
     },
-    FETCH_CAMPAIGN() {
-      this.isLoading = true;
-      axios({
-        method: "get",
-        url: "/insp-record/campaign-list",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            this.campaignList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    SET_CAMPAIGN(id) {
-      if (this.campaignList) {
-        var data = this.campaignList.filter(function (e) {
-          return e.id_campaign == id;
-        });
-        console.log(data);
-        return data[0].campaign_desc;
-      }
-    },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
         return false;
       } else {
         return true;
       }
+    },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
+    },
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
     },
   },
 };
@@ -494,46 +406,26 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-
-  .page-section {
-    width: 100%;
-    height: calc(100% - 41px);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 250px calc(100% - 250px);
-    .list-panel {
-      // overflow-y: auto;
-    }
-    .list-page {
-      padding: 20px;
-      overflow-y: auto;
-      position: relative;
-      .list {
-        margin: -20px -20px 20px -20px;
-      }
-    }
-  }
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 201px calc(100% - 201px);
 }
 
-.info-tab-display {
-  display: flex;
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 41px);
 }
 
 .dx-list-item-content::before {
   content: none;
 }
+
 #data-grid-style {
   width: 100%;
 }
 
-.btn-view-dwg {
-  padding: 8px;
-  text-align: center;
-  background-color: #eb1851;
-  color: #fff;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+.list-page {
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
 }
 </style>

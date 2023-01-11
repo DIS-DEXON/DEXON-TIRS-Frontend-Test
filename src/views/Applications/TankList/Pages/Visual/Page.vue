@@ -579,38 +579,16 @@ export default {
   grid-template-columns: 201px calc(100% - 201px);
 }
 
-.page-section {
-  padding: 20px;
-}
-
-.page-section:last-child {
-  padding-bottom: 20px;
-}
-
-.tab-wrapper {
-  height: 48px;
-}
-
-.info-tab-display {
-  display: flex;
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 51px);
 }
 
 .dx-list-item-content::before {
   content: none;
 }
+
 #data-grid-style {
   width: 100%;
-}
-
-.btn-view-dwg {
-  padding: 8px;
-  text-align: center;
-  background-color: #eb1851;
-  color: #fff;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  right: 5px;
 }
 
 .list-page {
@@ -619,9 +597,5 @@ export default {
   .list {
     margin: -20px -20px 20px -20px;
   }
-}
-
-.page-container-hide {
-  grid-template-columns: 51px calc(100% - 51px);
 }
 </style>

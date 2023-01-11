@@ -1,7 +1,7 @@
 <template>
   <div class="pm-page">
     <toolbar
-      pageName="Tank List"
+      pageSubName="Tank List"
       @refreshInfo="FETCH_TANK_LIST()"
       @newBtnFn="TOGGLE_POPUP()"
       :isBackPath="true"

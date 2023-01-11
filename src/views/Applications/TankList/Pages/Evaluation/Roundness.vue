@@ -1,21 +1,14 @@
 <template>
-  <div class="page-container">
-    <div class="list-panel">
-      <v-ons-list>
-        <v-ons-list-header>Inspection Record</v-ons-list-header>
-        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
-          <div class="center">
-            {{ DATE_FORMAT(item.inspection_date) }}<br />
-            {{ SET_CAMPAIGN(item.id_campaign) }}
-          </div>
-          <div class="right">
-            <v-ons-toolbar-button v-on:click="VIEW_ROUNDNESS(item)">
-              <i class="las la-search"></i>
-            </v-ons-toolbar-button>
-          </div>
-        </v-ons-list-item>
-      </v-ons-list>
-    </div>
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header
@@ -172,6 +165,7 @@ import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -215,6 +209,7 @@ export default {
     DxFilterRow,
     appInstruction,
     chart,
+    InspectionRecordPanel,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -225,10 +220,6 @@ export default {
       subpageName: "Evaluation",
       subpageInnerName: "Roundness",
     });
-    if (this.$store.state.status.server == true) {
-      this.FETCH_CAMPAIGN();
-      this.FETCH_INSP_RECORD();
-    }
   },
   data() {
     return {
@@ -242,6 +233,7 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      pagePanelHiding: false,
     };
   },
   computed: {
@@ -269,37 +261,7 @@ export default {
       });
       e.cancel = true;
     },
-    FETCH_INSP_RECORD() {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "insp-record/insp-record-by-tank-id",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-        },
-      })
-        .then((res) => {
-          console.log("insp record:");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.inspRecordList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DATE_FORMAT(d) {
-      return moment(d).format("LL");
-    },
-    VIEW_ROUNDNESS(item) {
+    VIEW_ITEM(item) {
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       const id_tag = this.$route.params.id_tag;
@@ -327,37 +289,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    FETCH_CAMPAIGN() {
-      this.isLoading = true;
-      axios({
-        method: "get",
-        url: "/insp-record/campaign-list",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            this.campaignList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    SET_CAMPAIGN(id) {
-      if (this.campaignList) {
-        var data = this.campaignList.filter(function (e) {
-          return e.id_campaign == id;
-        });
-        console.log(data);
-        return data[0].campaign_desc;
-      }
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
@@ -444,6 +375,12 @@ export default {
           this.isLoading = false;
         });
     },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
+    },
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
+    },
   },
 };
 </script>
@@ -455,26 +392,12 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  // padding: 20px;
   display: grid;
-  grid-template-columns: 250px calc(100% - 250px);
-  // grid-auto-rows: 27px auto;
+  grid-template-columns: 201px calc(100% - 201px);
 }
 
-.page-section {
-  padding: 20px;
-}
-
-.page-section:last-child {
-  padding-bottom: 20px;
-}
-
-.tab-wrapper {
-  height: 48px;
-}
-
-.info-tab-display {
-  display: flex;
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 41px);
 }
 
 .list-page {
@@ -500,17 +423,6 @@ export default {
   border-radius: 6px;
 }
 
-.btn-view-dwg {
-  padding: 8px;
-  text-align: center;
-  background-color: #eb1851;
-  color: #fff;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-
 .app-instruction {
   padding-top: 20px;
 }
@@ -518,12 +430,7 @@ export default {
 .table-wrapper {
   height: 100%;
 }
-.chart-wrapper {
-  // padding: 0 10px;
-  .chart-item {
-    // height: 500px;
-  }
-}
+
 .instruction-table {
   // width: 100%;
   margin-top: 10px;

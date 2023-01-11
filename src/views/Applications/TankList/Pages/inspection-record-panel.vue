@@ -24,7 +24,7 @@
               font-size: 12px;
               color: red;
             "
-            >id: {{ item.id_inspection_record }}</span
+            >id_insp: {{ item.id_inspection_record }}</span
           >
         </div>
         <div class="right">
@@ -255,7 +255,7 @@ export default {
       cursor: pointer;
       margin: 10px auto;
       border-radius: 6px;
-      background-color: #f6f6f6;
+      background-color: #fff;
       padding: 0;
       text-align: right;
       border: 0;
@@ -281,15 +281,15 @@ export default {
 }
 
 .inspection-record-panel-hide {
-  width: 50px;
+  width: 40px;
   background-color: #f6f6f6;
   position: relative;
 
   .fixed-panel {
-    width: 50px;
+    width: 40px;
     .toolbar-button {
       background: none;
-      width: 36px;
+      width: 30px;
       margin: 10px auto;
       transition: all 0.3s;
       i {
@@ -304,7 +304,7 @@ export default {
   .insp-panel-header {
     position: absolute;
     top: 155px;
-    left: 17px;
+    left: 12px;
     background: none;
     transform-origin: 0 0;
     transform: rotate(270deg);

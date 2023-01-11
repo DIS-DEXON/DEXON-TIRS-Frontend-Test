@@ -2,7 +2,7 @@
   <div id="footer-label">
     <div class="wrapper">
       <p>Tank Inspection Management System (TIMS)</p>
-      <p>Copyright 2022 © Dexon Technology PLC.</p>
+      <p>Copyright 2023 © Dexon Technology PLC.</p>
     </div>
   </div>
 </template>
