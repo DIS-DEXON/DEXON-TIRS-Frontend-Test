@@ -1,23 +1,14 @@
 <template>
-  <div class="page-container">
-    <div class="list-panel">
-      <v-ons-list>
-        <v-ons-list-header>Inspection Record</v-ons-list-header>
-        <v-ons-list-item tappable v-for="item in inspRecordList" :key="item.id">
-          <div class="center">
-            {{ DATE_FORMAT(item.inspection_date) }}<br />
-            {{ SET_CAMPAIGN(item.id_campaign) }}
-          </div>
-          <div class="right">
-            <v-ons-toolbar-button
-              v-on:click="VIEW_CHECKLIST(item.id_inspection_record)"
-            >
-              <i class="las la-search"></i>
-            </v-ons-toolbar-button>
-          </div>
-        </v-ons-list-item>
-      </v-ons-list>
-    </div>
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
     <div id="page-container-view" class="list-page">
       <v-ons-list>
         <v-ons-list-header
@@ -46,7 +37,7 @@
         <div
           class="center-box-wrapper"
           v-if="
-            this.id_insp_record != '' &&
+            this.id_inspection_record != '' &&
             this.checklistList_existance.general == false &&
             this.checklistList_existance.ilast_ext == false &&
             this.checklistList_existance.ilast_int == false
@@ -57,7 +48,7 @@
             <span>Create New Checklist Form</span>
           </v-ons-toolbar-button>
         </div>
-        <div class="center-box-wrapper" v-if="this.id_insp_record == ''">
+        <div class="center-box-wrapper" v-if="this.id_inspection_record == ''">
           <div class="page-content-message-wrapper">
             <i class="las la-search"></i>
             <span>
@@ -100,6 +91,7 @@ import "devextreme/dist/css/dx.light.css";
 import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form-generic.vue";
 import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
 import checklistIlastInt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-int.vue";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 
 //DataGrid
 
@@ -110,12 +102,13 @@ export default {
     checklistIlastExt,
     checklistIlastInt,
     Loading,
+    InspectionRecordPanel,
   },
   data() {
     return {
       id_tag: this.$route.params.id_tag,
       id_checklist: this.$route.params.id_checklist,
-      id_insp_record: "",
+      id_inspection_record: null,
       checklistList: {
         generic: [],
         ilast_ext: [],
@@ -129,6 +122,7 @@ export default {
       inspRecordList: {},
       isLoading: false,
       campaignList: {},
+      pagePanelHiding: false,
     };
   },
   computed: {
@@ -149,10 +143,6 @@ export default {
       subpageName: "Checklist",
       subpageInnerName: null,
     });
-    if (this.$store.state.status.server == true) {
-      this.FETCH_CAMPAIGN();
-      this.FETCH_INSP_RECORD();
-    }
   },
   mounted() {},
   watch: {
@@ -160,24 +150,26 @@ export default {
     $route() {
       this.CLEAR_CURRENT_VIEW();
       this.id_checklist = this.$route.params.id_checklist;
-      this.id_insp_record = "";
+      this.id_inspection_record = "";
     },
   },
   methods: {
-    VIEW_CHECKLIST(id_insp_record) {
+    VIEW_ITEM(item) {
+      console.log("VIEW_ITEM: ");
+      console.log(item);
       this.CLEAR_CURRENT_VIEW();
-      this.id_insp_record = id_insp_record;
+      this.id_inspection_record = item.id_inspection_record;
       this.SCROLL_TOP("page-container-view");
       if (this.id_checklist == 1) {
-        this.CHECK_EXIST_RESULT_GENERIC(id_insp_record);
+        this.CHECK_EXIST_RESULT_GENERIC(item.id_inspection_record);
       } else if (this.id_checklist == 2)
-        this.CHECK_EXIST_RESULT_ILAST_EXT(id_insp_record);
+        this.CHECK_EXIST_RESULT_ILAST_EXT(item.id_inspection_record);
       else if (this.id_checklist == 3)
-        this.CHECK_EXIST_RESULT_ILAST_INT(id_insp_record);
+        this.CHECK_EXIST_RESULT_ILAST_INT(item.id_inspection_record);
       else console.log("view checklist failed");
     },
     CREATE_CHECKLIST() {
-      console.log("CREATE NEW CHECKLIST SHEET: " + this.id_insp_record);
+      console.log("CREATE NEW CHECKLIST SHEET: " + this.id_inspection_record);
       var form = this.id_checklist;
       if (form == 1) {
         this.isLoading = true;
@@ -189,14 +181,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_insp_record: this.id_insp_record,
+            id_inspection_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (generic)");
-              this.VIEW_CHECKLIST(this.id_insp_record);
+              this.VIEW_ITEM(this.id_inspection_record);
             }
           })
           .catch((error) => {
@@ -215,14 +207,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_insp_record: this.id_insp_record,
+            id_inspection_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (ilast ext)");
-              this.VIEW_CHECKLIST(this.id_insp_record);
+              this.VIEW_ITEM(this.id_inspection_record);
             }
           })
           .catch((error) => {
@@ -241,14 +233,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_insp_record: this.id_insp_record,
+            id_inspection_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (ilast int)");
-              this.VIEW_CHECKLIST(this.id_insp_record);
+              this.VIEW_ITEM(this.id_inspection_record);
             }
           })
           .catch((error) => {
@@ -268,7 +260,7 @@ export default {
         )
         .then((res) => {
           if (res == 1) {
-            console.log("DELETE CHECKLIST SHEET: " + this.id_insp_record);
+            console.log("DELETE CHECKLIST SHEET: " + this.id_inspection_record);
             var form = this.id_checklist;
             if (form == 1) {
               this.isLoading = true;
@@ -280,7 +272,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_insp_record: this.id_insp_record,
+                  id_inspection_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
@@ -306,7 +298,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_insp_record: this.id_insp_record,
+                  id_inspection_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
@@ -332,7 +324,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_insp_record: this.id_insp_record,
+                  id_inspection_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
@@ -354,8 +346,8 @@ export default {
           }
         });
     },
-    FETCH_CHECKLIST_GENERIC(id_insp_record) {
-      console.log("INSPECTION RECORD: " + id_insp_record);
+    FETCH_CHECKLIST_GENERIC(id_inspection_record) {
+      console.log("INSPECTION RECORD: " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -364,7 +356,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -381,8 +373,8 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_GENERIC(id_insp_record) {
-      console.log("CHECK RESULT EXIST (General): " + id_insp_record);
+    CHECK_EXIST_RESULT_GENERIC(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (General): " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -391,13 +383,14 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
+          console.log(res);
           if (res.data == true) {
             this.checklistList_existance.general = true;
-            this.FETCH_CHECKLIST_GENERIC(id_insp_record);
+            this.FETCH_CHECKLIST_GENERIC(id_inspection_record);
           } else {
             this.checklistList_existance.general = false;
             console.log("CHECK RESULT EXIST (General): FALSE");
@@ -410,7 +403,7 @@ export default {
           this.isLoading = false;
         });
     },
-    FETCH_CHECKLIST_ILAST_EXT(id_insp_record) {
+    FETCH_CHECKLIST_ILAST_EXT(id_inspection_record) {
       this.isLoading = true;
       axios({
         method: "post",
@@ -419,7 +412,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -436,8 +429,8 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_ILAST_EXT(id_insp_record) {
-      console.log("CHECK RESULT EXIST (ilast ext): " + id_insp_record);
+    CHECK_EXIST_RESULT_ILAST_EXT(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (ilast ext): " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -446,13 +439,13 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
           if (res.data == true) {
             this.checklistList_existance.ilast_ext = true;
-            this.FETCH_CHECKLIST_ILAST_EXT(id_insp_record);
+            this.FETCH_CHECKLIST_ILAST_EXT(id_inspection_record);
           } else {
             this.checklistList_existance.ilast_ext = false;
             console.log("CHECK RESULT EXIST(ilast ext): FALSE");
@@ -465,7 +458,7 @@ export default {
           this.isLoading = false;
         });
     },
-    FETCH_CHECKLIST_ILAST_INT(id_insp_record) {
+    FETCH_CHECKLIST_ILAST_INT(id_inspection_record) {
       this.isLoading = true;
       axios({
         method: "post",
@@ -474,7 +467,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -491,8 +484,8 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_ILAST_INT(id_insp_record) {
-      console.log("CHECK RESULT EXIST (ilast ext): " + id_insp_record);
+    CHECK_EXIST_RESULT_ILAST_INT(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (ilast ext): " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -501,13 +494,13 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: id_insp_record,
+          id_inspection_record: id_inspection_record,
         },
       })
         .then((res) => {
           if (res.data == true) {
             this.checklistList_existance.ilast_int = true;
-            this.FETCH_CHECKLIST_ILAST_INT(id_insp_record);
+            this.FETCH_CHECKLIST_ILAST_INT(id_inspection_record);
           } else {
             this.checklistList_existance.ilast_int = false;
             console.log("CHECK RESULT EXIST(ilast int): FALSE");
@@ -519,72 +512,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    FETCH_INSP_RECORD() {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      axios({
-        method: "post",
-        url: "insp-record/insp-record-by-tank-id",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-        },
-      })
-        .then((res) => {
-          // console.log("insp record:");
-          // console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.inspRecordList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DATE_FORMAT(d) {
-      return moment(d).format("LL");
-    },
-    FETCH_CAMPAIGN() {
-      this.isLoading = true;
-      axios({
-        method: "get",
-        url: "/insp-record/campaign-list",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            this.campaignList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    SET_CAMPAIGN(id) {
-      if (this.campaignList) {
-        var data = this.campaignList.filter(function (e) {
-          return e.id_campaign == id;
-        });
-        // console.log(data);
-        return data[0].campaign_desc;
-      }
-    },
-    SCROLL_TOP(container_id) {
-      document
-        .getElementById(container_id)
-        .scroll({ top: 0, behavior: "smooth" });
     },
     CLEAR_CURRENT_VIEW() {
       this.checklistList = {
@@ -598,6 +525,17 @@ export default {
         ilast_int: false,
       };
     },
+    SCROLL_TOP(container_id) {
+      document
+        .getElementById(container_id)
+        .scroll({ top: 0, behavior: "smooth" });
+    },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
+    },
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
+    },
   },
 };
 </script>
@@ -606,13 +544,15 @@ export default {
 @import "@/style/main.scss";
 
 .page-container {
-  height: calc(100vh - 119px);
-  overflow-y: hidden;
-  display: grid;
-  grid-template-columns: 250px calc(100% - 250px);
-  // grid-auto-rows: 27px auto;
   width: 100%;
-  background-color: #ffffff;
+  height: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 201px calc(100% - 201px);
+}
+
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 41px);
 }
 
 .list-page {
@@ -626,25 +566,6 @@ export default {
     padding: 10px;
     padding-top: 50px;
   }
-}
-.list-page:last-child {
-  padding-bottom: 20px;
-}
-
-.tab-wrapper {
-  height: 48px;
-}
-.vue-tabs-chrome {
-  padding-top: 10px;
-  background-color: #d9d9d9;
-  font-size: 14px;
-}
-
-.insp-record-header {
-  font-size: 16px;
-  padding: 10px;
-  background-color: #140a4b;
-  color: #fff;
 }
 
 .dx-list-item-content::before {
