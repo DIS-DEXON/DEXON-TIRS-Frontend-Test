@@ -353,7 +353,7 @@ export default {
       campaignList: {},
       isLoading: false,
       id_inspection_record: 0,
-      current_view: null,
+      current_view: {},
       pagePanelHiding: false,
     };
   },

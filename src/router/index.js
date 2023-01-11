@@ -167,6 +167,11 @@ const routes = [
             alias: 'Eva Floor Gradient',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/FloorGradient.vue'),
           },
+          {
+            path: 'evaluation/shell-buckling',
+            alias: 'Eva Buckling',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/Buckling.vue'),
+          },
         ]
       },
     ]

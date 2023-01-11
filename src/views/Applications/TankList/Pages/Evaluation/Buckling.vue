@@ -23,7 +23,7 @@
           <DxDataGrid
             id="roundness-grid"
             key-expr="id_eval"
-            :data-source="floorList"
+            :data-source="bucklingList"
             :element-attr="dataGridAttributes"
             :selection="{ mode: 'single' }"
             :hover-state-enabled="true"
@@ -32,9 +32,9 @@
             :show-row-lines="true"
             :row-alternation-enabled="false"
             :word-wrap-enabled="true"
-            @row-inserted="CREATE_FLOOR"
-            @row-updated="UPDATE_FLOOR"
-            @row-removed="DELETE_FLOOR"
+            @row-inserted="CREATE_BUCKLING"
+            @row-updated="UPDATE_BUCKLING"
+            @row-removed="DELETE_BUCKLING"
           >
             <DxFilterRow :visible="true" />
             <DxHeaderFilter :visible="true" />
@@ -47,45 +47,37 @@
               mode="row"
             />
 
-            <DxColumn data-field="survey_point" caption="Point No." />
-
             <DxColumn
-              data-field="distance"
-              caption="Distance (m)"
+              data-field="plate"
+              caption="Course - Plate No."
               format="#,##0.00"
             />
 
-            <DxColumn data-field="n_s" caption="N to S" format="#,##0.00" />
-
             <DxColumn
-              data-field="nne_ssw"
-              caption="NNE to SSW"
+              data-field="measured_height_m"
+              caption="Measured Height (m)"
               format="#,##0.00"
             />
 
-            <DxColumn data-field="ne_sw" caption="NE to SW" format="#,##0.00" />
-
             <DxColumn
-              data-field="ene_wsw"
-              caption="ENE to WSW"
+              data-field="shape_dia_mm"
+              caption="Theoretical Shape Diameter (mm)"
               format="#,##0.00"
             />
 
-            <DxColumn data-field="e_w" caption="E to W" format="#,##0.00" />
-
             <DxColumn
-              data-field="ese_wnw"
-              caption="ESE to WNW"
+              data-field="deviation_mm"
+              caption="Deviation (mm)"
               format="#,##0.00"
             />
 
-            <DxColumn data-field="se_nw" caption="SE to NW" format="#,##0.00" />
-
             <DxColumn
-              data-field="sse_nnw"
-              caption="SSE to NNW"
+              data-field="radious_tolerance"
+              caption="Radius Tolerance (mm)"
               format="#,##0.00"
             />
+
+            <DxColumn data-field="result" caption="Inspection Result" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -108,143 +100,46 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
-        <div class="chart-wrapper">
-          <chart :floorGradientData="floorList" :key="floorList" />
-        </div>
-        <div class="table-wrapper" style="grid-column: span 2">
-          <DxDataGrid
-            id="roundness-grid"
-            key-expr="id_eval"
-            :data-source="bulgeList"
-            :element-attr="dataGridAttributes"
-            :selection="{ mode: 'single' }"
-            :hover-state-enabled="true"
-            :allow-column-reordering="true"
-            :show-borders="true"
-            :show-row-lines="true"
-            :row-alternation-enabled="false"
-            :word-wrap-enabled="true"
-            @row-inserted="CREATE_BULGE"
-            @row-updated="UPDATE_BULGE"
-            @row-removed="DELETE_BULGE"
-          >
-            <DxFilterRow :visible="true" />
-            <DxHeaderFilter :visible="true" />
-
-            <DxEditing
-              :allow-updating="true"
-              :allow-deleting="true"
-              :allow-adding="IS_VISIBLE_ADD()"
-              :use-icons="true"
-              mode="row"
-            />
-
-            <DxColumn data-field="no" caption="No." width="100" />
-
-            <DxColumn
-              data-field="bulge_depression"
-              caption="Bulge or Depression"
-            />
-
-            <DxColumn
-              data-field="bbm_mm"
-              caption="BBM (mm)"
-              format="#,##0.00"
-              width="100"
-            />
-
-            <DxColumn
-              data-field="bbm_inch"
-              caption="BBM (inch)"
-              format="#,##0.00"
-              width="100"
-            />
-
-            <DxColumn
-              data-field="radius_mm"
-              caption="R (mm)"
-              format="#,##0.00"
-              width="100"
-            />
-
-            <DxColumn
-              data-field="radius_ft"
-              caption="R (ft)"
-              format="#,##0.00"
-              width="100"
-            />
-
-            <DxColumn
-              data-field="bb_inch"
-              caption="BB (inch)"
-              format="#,##0.00"
-              width="100"
-            />
-
-            <DxColumn data-field="result" caption="Result" />
-
-            <DxColumn type="buttons">
-              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-              <DxButton name="edit" hint="Edit" icon="edit" />
-              <DxButton name="delete" hint="Delete" icon="trash" />
-            </DxColumn>
-
-            <!-- Configuration goes here -->
-            <!-- <DxFilterRow :visible="true" /> -->
-            <DxScrolling mode="standard" />
-            <DxSearchPanel :visible="false" />
-            <DxPaging :page-size="10" :page-index="0" />
-            <DxPager
-              :show-page-size-selector="true"
-              :allowed-page-sizes="[5, 10, 20]"
-              :show-navigation-buttons="true"
-              :show-info="true"
-              info-text="Page {0} of {1} ({2} items)"
-            />
-            <!-- <DxExport :enabled="true" /> -->
-          </DxDataGrid>
-        </div>
-        <div class="app-instruction" style="grid-column: span 2">
-          <appInstruction title="Instruction" desc="Floor Gradient Survey">
-            <ol>
-              <li>
-                The number of radials is based on the number specified in table
-                below.
-              </li>
-              <li>
-                Spacing between evaluation locations to be determined following
-                table below.
-              </li>
-            </ol>
-            <table class="instruction-table">
-              <tr>
-                <th>Tank Diameter (m)</th>
-                <th>Number of Radials</th>
-                <th>Distance Between Measurements</th>
-              </tr>
-              <tr>
-                <td>1-5</td>
-                <td>4</td>
-                <td>0.75 m</td>
-              </tr>
-              <tr>
-                <td>6-15</td>
-                <td>4</td>
-                <td>1.0 m</td>
-              </tr>
-              <tr>
-                <td>16-45</td>
-                <td>8</td>
-                <td>1.5 m</td>
-              </tr>
-              <tr>
-                <td>> 45</td>
-                <td>16</td>
-                <td>2.0 m</td>
-              </tr>
-            </table>
-          </appInstruction>
-        </div>
+      </div>
+      <div class="app-instruction">
+        <appInstruction
+          title="Instruction"
+          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
+        >
+          <table class="instruction-table">
+            <tr>
+              <th>Tank Diameter m (ft)</th>
+              <th>
+                Radius Tolerance mm (in)<br />
+                (≤ 0.3048 m)
+              </th>
+              <th>
+                Radius Tolerance mm (in)<br />
+                (> 0.3048 m)
+              </th>
+            </tr>
+            <tr>
+              <td>&lt; 12 (40)</td>
+              <td>±13 (&#189;)</td>
+              <td>±39 (3&#189;)</td>
+            </tr>
+            <tr>
+              <td>from 12 (40) to &lt; 45 (150)</td>
+              <td>±19 (¾)</td>
+              <td>±57 (3¾)</td>
+            </tr>
+            <tr>
+              <td>from 45 (150) to &lt; 75 (250)</td>
+              <td>±25 (1)</td>
+              <td>±75 (3)</td>
+            </tr>
+            <tr>
+              <td>≥ 75 (250)</td>
+              <td>±32 (1¼)</td>
+              <td>±96 (3¼)</td>
+            </tr>
+          </table>
+        </appInstruction>
       </div>
     </div>
     <div class="list-page" v-if="this.id_inspection_record == ''">
@@ -270,7 +165,6 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
-import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-floor-gradient-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 
 //DataGrid
@@ -299,7 +193,7 @@ import {
 //import { DxItem } from "devextreme-vue/form";
 
 export default {
-  name: "RoundnessView",
+  name: "BucklingView",
   components: {
     //VueTabsChrome,
     //DxList,
@@ -315,7 +209,6 @@ export default {
     DxFilterRow,
     appInstruction,
     InspectionRecordPanel,
-    chart,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -324,18 +217,15 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Floor Gradient",
+      subpageInnerName: "Buckling",
     });
   },
   data() {
     return {
-      floorList: {},
-      bulgeList: {},
-      inspRecordList: {},
-      campaignList: {},
+      bucklingList: {},
       isLoading: false,
       id_inspection_record: "",
-      current_view: {},
+      current_view: "",
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -371,10 +261,9 @@ export default {
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       const id_tag = this.$route.params.id_tag;
-      //floor gradient
       axios({
         method: "post",
-        url: "floor-gradient/get-floor-gradient",
+        url: "buckling/get-buckling",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -384,36 +273,10 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get floor list:");
+          console.log("get buckling list:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.floorList = res.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-
-      //bulge
-      axios({
-        method: "post",
-        url: "floor-gradient/get-bulge-depression",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
-      })
-        .then((res) => {
-          console.log("get bulge list:");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.bulgeList = res.data;
+            this.bucklingList = res.data;
           }
         })
         .catch((error) => {
@@ -430,7 +293,7 @@ export default {
         return true;
       }
     },
-    CREATE_FLOOR(e) {
+    CREATE_BUCKLING(e) {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       e.data.id_eval = 0;
@@ -440,7 +303,7 @@ export default {
       console.log(e.data);
       axios({
         method: "post",
-        url: "floor-gradient/add-floor-gradient",
+        url: "buckling/add-buckling",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -460,11 +323,11 @@ export default {
           this.isLoading = false;
         });
     },
-    UPDATE_FLOOR(e) {
+    UPDATE_BUCKLING(e) {
       console.log(e.data);
       axios({
         method: "put",
-        url: "floor-gradient/edit-floor-gradient",
+        url: "buckling/edit-buckling",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -484,88 +347,11 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_FLOOR(e) {
+    DELETE_BUCKLING(e) {
       console.log(e.data);
       axios({
         method: "delete",
-        url: "floor-gradient/delete-floor-gradient",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    CREATE_BULGE(e) {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_eval = 0;
-      e.data.id_tag = id_tag;
-      e.data.id_inspection_record = this.id_inspection_record;
-
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "floor-gradient/add-bulge-depression",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_BULGE(e) {
-      console.log(e.data);
-      axios({
-        method: "put",
-        url: "floor-gradient/edit-bulge-depression",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DELETE_BULGE(e) {
-      console.log(e.data);
-      axios({
-        method: "delete",
+        url: "buckling/delete-buckling",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -602,10 +388,8 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  // padding: 20px;
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
-  // grid-auto-rows: 27px auto;
 }
 
 .page-container-hide {
@@ -619,17 +403,26 @@ export default {
     margin: -20px -20px 20px -20px;
   }
   .content {
-    width: calc(100% - 20px);
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: auto 400px;
-    grid-gap: 20px;
+    width: 100%;
+    // width: calc(100% - 20px);
+    // display: grid;
+    // grid-template-columns: 600px calc(100% - 600px);
+    // grid-gap: 20px;
+    display: block;
   }
+}
+
+.dx-list-item-content::before {
+  content: none;
 }
 
 .data-grid-style {
   height: 100%;
   border-radius: 6px;
+}
+
+.app-instruction {
+  padding-top: 20px;
 }
 
 .table-wrapper {
@@ -639,6 +432,5 @@ export default {
 .instruction-table {
   // width: 100%;
   margin-top: 10px;
-  text-align: center;
 }
 </style>
