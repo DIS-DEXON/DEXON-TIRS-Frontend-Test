@@ -18,129 +18,116 @@
           ></v-ons-list-header
         >
       </v-ons-list>
-      <div class="content">
-        <div class="table-wrapper">
-          <DxDataGrid
-            id="roundness-grid"
-            key-expr="id_eval"
-            :data-source="bucklingList"
-            :element-attr="dataGridAttributes"
-            :selection="{ mode: 'single' }"
-            :hover-state-enabled="true"
-            :allow-column-reordering="true"
-            :show-borders="true"
-            :show-row-lines="true"
-            :row-alternation-enabled="false"
-            :word-wrap-enabled="true"
-            @row-inserted="CREATE_BUCKLING"
-            @row-updated="UPDATE_BUCKLING"
-            @row-removed="DELETE_BUCKLING"
+      <div class="tab-wrapper">
+        <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
+      </div>
+      <div v-if="tabCurrent == 'data'" class="tab1-grid">
+        <div class="content">
+          <div class="table-wrapper">
+            <DxDataGrid
+              id="roundness-grid"
+              key-expr="id_eval"
+              :data-source="shellPointList"
+              :element-attr="dataGridAttributes"
+              :selection="{ mode: 'single' }"
+              :hover-state-enabled="true"
+              :allow-column-reordering="true"
+              :show-borders="true"
+              :show-row-lines="true"
+              :row-alternation-enabled="false"
+              :word-wrap-enabled="true"
+              @row-inserted="CREATE_BUCKLING"
+              @row-updated="UPDATE_BUCKLING"
+              @row-removed="DELETE_BUCKLING"
+            >
+              <DxFilterRow :visible="true" />
+              <DxHeaderFilter :visible="true" />
+
+              <DxEditing
+                :allow-updating="true"
+                :allow-deleting="true"
+                :allow-adding="false"
+                :use-icons="true"
+                mode="row"
+              />
+
+              <DxColumn
+                data-field="location"
+                caption="Evaluation Location at the Tank (Mark on shell map)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="maximum_space"
+                caption="Distance Between Survey Location (mm)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="cumulative"
+                caption="Cumulative Distance Around Tank (mm)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="relative_value"
+                caption="Relative Level/Distance Above Datum Point (mm)"
+                format="#,##0.00"
+              />
+
+              <DxColumn type="buttons">
+                <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+                <DxButton name="edit" hint="Edit" icon="edit" />
+                <DxButton name="delete" hint="Delete" icon="trash" />
+              </DxColumn>
+
+              <!-- Configuration goes here -->
+              <!-- <DxFilterRow :visible="true" /> -->
+              <DxScrolling mode="standard" />
+              <DxSearchPanel :visible="false" />
+              <DxPaging :page-size="10" :page-index="0" />
+              <DxPager
+                :show-page-size-selector="true"
+                :allowed-page-sizes="[5, 10, 20]"
+                :show-navigation-buttons="true"
+                :show-info="true"
+                info-text="Page {0} of {1} ({2} items)"
+              />
+              <!-- <DxExport :enabled="true" /> -->
+            </DxDataGrid>
+          </div>
+        </div>
+        <div class="app-instruction">
+          <appInstruction
+            title="Measurement Conceptualization"
+            desc="Measurements of Shell Settlement (External)"
           >
-            <DxFilterRow :visible="true" />
-            <DxHeaderFilter :visible="true" />
-
-            <DxEditing
-              :allow-updating="true"
-              :allow-deleting="true"
-              :allow-adding="IS_VISIBLE_ADD()"
-              :use-icons="true"
-              mode="row"
-            />
-
-            <DxColumn
-              data-field="plate"
-              caption="Course - Plate No."
-              format="#,##0.00"
-            />
-
-            <DxColumn
-              data-field="measured_height_m"
-              caption="Measured Height (m)"
-              format="#,##0.00"
-            />
-
-            <DxColumn
-              data-field="shape_dia_mm"
-              caption="Theoretical Shape Diameter (mm)"
-              format="#,##0.00"
-            />
-
-            <DxColumn
-              data-field="deviation_mm"
-              caption="Deviation (mm)"
-              format="#,##0.00"
-            />
-
-            <DxColumn
-              data-field="radious_tolerance"
-              caption="Radius Tolerance (mm)"
-              format="#,##0.00"
-            />
-
-            <DxColumn data-field="result" caption="Inspection Result" />
-
-            <DxColumn type="buttons">
-              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-              <DxButton name="edit" hint="Edit" icon="edit" />
-              <DxButton name="delete" hint="Delete" icon="trash" />
-            </DxColumn>
-
-            <!-- Configuration goes here -->
-            <!-- <DxFilterRow :visible="true" /> -->
-            <DxScrolling mode="standard" />
-            <DxSearchPanel :visible="false" />
-            <DxPaging :page-size="10" :page-index="0" />
-            <DxPager
-              :show-page-size-selector="true"
-              :allowed-page-sizes="[5, 10, 20]"
-              :show-navigation-buttons="true"
-              :show-info="true"
-              info-text="Page {0} of {1} ({2} items)"
-            />
-            <!-- <DxExport :enabled="true" /> -->
-          </DxDataGrid>
+            <ol>
+              <li>
+                There must be at least 8 settlement points. The maximum spacing
+                of settlement point is 32 ft. (9.7536 m) around the
+                circumference.
+              </li>
+              <li>
+                Points shall be equally spaced around the tank shell. There must
+                be at least 4 equally spaced diametrical measurements.
+              </li>
+              <li>The spacing settlement and quantity of measurement points</li>
+            </ol>
+          </appInstruction>
+          <appInstruction
+            style="margin-top: 20px"
+            title="The Maximum Spacing of Settlement Points"
+          >
+            <div class="img-box">
+              <img src="/img/tank-shell-max-space-settlement.png" />
+            </div>
+          </appInstruction>
+          <appInstruction style="margin-top: 20px" title="Datum Point Location">
+          </appInstruction>
         </div>
       </div>
-      <div class="app-instruction">
-        <appInstruction
-          title="Instruction"
-          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
-        >
-          <table class="instruction-table">
-            <tr>
-              <th>Tank Diameter m (ft)</th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (≤ 0.3048 m)
-              </th>
-              <th>
-                Radius Tolerance mm (in)<br />
-                (> 0.3048 m)
-              </th>
-            </tr>
-            <tr>
-              <td>&lt; 12 (40)</td>
-              <td>±13 (&#189;)</td>
-              <td>±39 (3&#189;)</td>
-            </tr>
-            <tr>
-              <td>from 12 (40) to &lt; 45 (150)</td>
-              <td>±19 (¾)</td>
-              <td>±57 (3¾)</td>
-            </tr>
-            <tr>
-              <td>from 45 (150) to &lt; 75 (250)</td>
-              <td>±25 (1)</td>
-              <td>±75 (3)</td>
-            </tr>
-            <tr>
-              <td>≥ 75 (250)</td>
-              <td>±32 (1¼)</td>
-              <td>±96 (3¼)</td>
-            </tr>
-          </table>
-        </appInstruction>
-      </div>
+      <div v-if="tabCurrent == 'api653'" class="tab2-grid"></div>
     </div>
     <div class="list-page" v-if="this.id_inspection_record == ''">
       <div class="center-box-wrapper">
@@ -166,6 +153,7 @@ import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import VueTabsChrome from "vue-tabs-chrome";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -193,7 +181,7 @@ import {
 //import { DxItem } from "devextreme-vue/form";
 
 export default {
-  name: "BucklingView",
+  name: "ShellSettlementView",
   components: {
     //VueTabsChrome,
     //DxList,
@@ -209,6 +197,7 @@ export default {
     DxFilterRow,
     appInstruction,
     InspectionRecordPanel,
+    VueTabsChrome,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -217,12 +206,12 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Buckling",
+      subpageInnerName: "Shell Settlement",
     });
   },
   data() {
     return {
-      bucklingList: {},
+      shellPointList: {},
       isLoading: false,
       id_inspection_record: "",
       current_view: "",
@@ -230,6 +219,19 @@ export default {
         class: "data-grid-style",
       },
       pagePanelHiding: false,
+      tabCurrent: "data",
+      tabs: [
+        {
+          label: "Settlement Data",
+          key: "data",
+          closable: false,
+        },
+        {
+          label: " Evaluation (API 653)",
+          key: "api653",
+          closable: false,
+        },
+      ],
     };
   },
   computed: {
@@ -263,7 +265,7 @@ export default {
       const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "buckling/get-buckling",
+        url: "shell-settlement/get-shell-settlement",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -273,10 +275,10 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get buckling list:");
+          console.log("get shell point list:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.bucklingList = res.data;
+            this.shellPointList = res.data;
           }
         })
         .catch((error) => {
@@ -292,84 +294,6 @@ export default {
       } else {
         return true;
       }
-    },
-    CREATE_BUCKLING(e) {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_eval = 0;
-      e.data.id_tag = id_tag;
-      e.data.id_inspection_record = this.id_inspection_record;
-
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "buckling/add-buckling",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_BUCKLING(e) {
-      console.log(e.data);
-      axios({
-        method: "put",
-        url: "buckling/edit-buckling",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DELETE_BUCKLING(e) {
-      console.log(e.data);
-      axios({
-        method: "delete",
-        url: "buckling/delete-buckling",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
     },
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
@@ -412,17 +336,25 @@ export default {
   }
 }
 
-.dx-list-item-content::before {
-  content: none;
-}
-
 .data-grid-style {
   height: 100%;
   border-radius: 6px;
 }
 
 .app-instruction {
-  padding-top: 20px;
+  // padding-top: 20px;
+
+  .img-box {
+    width: auto;
+    margin: 10px 0;
+    border: 1px solid #f0f0d2;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
 }
 
 .table-wrapper {
@@ -432,5 +364,26 @@ export default {
 .instruction-table {
   // width: 100%;
   margin-top: 10px;
+}
+
+.tab-wrapper {
+  height: 48px;
+  margin: -20px -20px 20px -20px;
+}
+.vue-tabs-chrome {
+  padding-top: 10px;
+  background-color: #d9d9d9;
+  font-size: 12px;
+  font-weight: 500;
+}
+.info-tab-display {
+  display: flex;
+}
+
+.tab1-grid {
+  display: grid;
+  grid-gap: 20px;
+  width: 100%;
+  grid-template-columns: auto 500px;
 }
 </style>
