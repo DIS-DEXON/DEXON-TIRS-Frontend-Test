@@ -101,6 +101,7 @@ export default {
                 if (res.data.user && res.data.token) {
                   localStorage.setItem("user", JSON.stringify(res.data.user));
                   localStorage.setItem("token", JSON.stringify(res.data.token));
+                  console.log("==> SIGNED IN USER: ");
                   console.log(res.data.user);
                   this.$router.push("/");
                 }
@@ -138,7 +139,7 @@ export default {
 @import "@/style/main.scss";
 
 #page-login {
-  background-image: url("/public/img/main-bg.jpg");
+  background-image: url("/public/img/main-bg.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -153,7 +154,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 0;
-    background: linear-gradient(180deg, #2759a8 0%, rgba(39, 89, 168, 0) 100%);
+    // background: linear-gradient(180deg, #140a4b 0%, rgba(39, 89, 168, 0) 100%);
   }
 }
 .page-container {
@@ -183,13 +184,12 @@ export default {
     color: $web-font-color-black;
     text-align: center;
     margin: 0;
-    margin-top: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
   label.sub-title {
     font-size: 14px;
-    color: $web-font-color-black;
+    color: $web-font-color-grey;
     margin: 2px 0 20px 0;
     font-weight: 600;
     text-transform: uppercase;
@@ -208,7 +208,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 24px;
+  margin: 24px 0;
 
   img {
     height: 100%;
@@ -238,6 +238,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 20px;
   .input-set {
     display: flex;
     justify-content: center;
@@ -246,7 +247,7 @@ export default {
 
     input {
       width: -webkit-fill-available;
-      background: #ffffff;
+      background: #f0f0f0;
       border: 1px solid #cecece;
       box-sizing: border-box;
       height: 44px;
@@ -254,7 +255,7 @@ export default {
       font-size: 1.75em;
       line-height: 30px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
       border-radius: 6px;
     }
     .user,

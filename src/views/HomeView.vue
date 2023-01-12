@@ -65,7 +65,7 @@
           name="search"
           size="50"
           v-model="search_key"
-          placeholder="client company name"
+          placeholder="Client Company Name"
           class="query"
         /><span class="icon"><i class="la la-search"></i></span
         ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
@@ -154,7 +154,7 @@ export default {
   methods: {
     FETCH_CLIENT_LIST() {
       this.isLoading = true;
-
+      console.log("==> CLIENT LIST: FETCHING");
       axios({
         method: "get",
         url: "/MdClientCompany",
@@ -164,6 +164,7 @@ export default {
       })
         .then((res) => {
           if (res.status == 200) {
+            console.log("==> LIENT LIST: FETCHED");
             this.clientList = res.data;
           }
         })
@@ -203,6 +204,11 @@ export default {
     },
     SEARCH_CLEAR() {
       this.search_key = null;
+    },
+    GO_TO(path) {
+      if (path) {
+        this.$router.push(path);
+      }
     },
   },
   computed: {
@@ -347,7 +353,7 @@ export default {
   color: #5b5b5b;
 }
 #user-panel {
-  background-image: url("/public/img/main-bg.png");
+  background-image: url("/public/img/main-bg.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -550,7 +556,8 @@ h2 {
 .searchbar-box {
   position: relative;
   background: #fff;
-  box-shadow: 0 9px 17px rgb(0 0 0 / 8%);
+  // box-shadow: 0 9px 17px rgb(0 0 0 / 8%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
   border-radius: 6px;
   height: 60px;
   display: flex;
@@ -558,13 +565,13 @@ h2 {
   justify-content: flex-start;
   align-items: center;
   margin: 0 8px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   .query {
     position: relative;
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
       "Fira Sans", Roboto, Oxygen, Ubuntu, "Droid Sans", "Arial", sans-serif;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 14px;
     color: #000;
     box-sizing: border-box;
@@ -592,6 +599,12 @@ h2 {
     cursor: pointer;
     font-size: 22px;
     color: #d2d2d2;
+  }
+}
+
+.searchbar-box:hover {
+  input {
+    height: 60px;
   }
 }
 </style>
