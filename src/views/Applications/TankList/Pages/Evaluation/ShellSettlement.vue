@@ -222,7 +222,7 @@ export default {
       tabCurrent: "data",
       tabs: [
         {
-          label: "Settlement Data",
+          label: "Shell Settlement Data",
           key: "data",
           closable: false,
         },
