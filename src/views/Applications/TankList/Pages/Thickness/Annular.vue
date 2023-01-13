@@ -17,9 +17,11 @@
           @row-inserted="CREATE_CML"
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
+          @selection-changed="VIEW_TP"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -33,6 +35,7 @@
             data-field="annular_no"
             caption="Plate No."
             sort-order="asc"
+            :allow-editing="false"
           />
           <DxColumn data-field="annular_row" caption="Row" />
           <DxColumn data-field="annular_column" caption="Column" />
@@ -43,6 +46,7 @@
             data-field="t_req"
             caption="tretire (mm)"
             format="#,##0.00"
+            :allow-editing="false"
           />
 
           <DxColumn
@@ -54,7 +58,7 @@
           />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -92,9 +96,11 @@
           @row-inserted="CREATE_TP"
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
+          @selection-changed="VIEW_THK"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" />
 
           <DxEditing
             :allow-updating="true"
@@ -109,7 +115,7 @@
           <DxColumn data-field="tp_desc" caption="TP Desc" />
 
           <DxColumn type="buttons">
-            <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" />
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
 
             <DxButton name="edit" hint="Edit" icon="edit" />
 
@@ -340,6 +346,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
+  DxSelection,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -360,6 +367,7 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
+    DxSelection,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -746,12 +754,12 @@ export default {
 
     VIEW_TP(e) {
       console.log(e);
-      this.id_cml = e.row.key;
+      this.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
     },
     VIEW_THK(e) {
       console.log(e);
-      this.id_tp = e.row.key;
+      this.id_tp = e.selectedRowKeys[0];
       this.FETCH_THK();
     },
     FETCH_INSP_RECORD() {
