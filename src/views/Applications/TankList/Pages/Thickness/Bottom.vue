@@ -35,6 +35,7 @@
             data-field="bottom_no"
             caption="Plate No."
             sort-order="asc"
+            :allow-editing="false"
           />
           <DxColumn data-field="bottom_row" caption="Row" />
           <DxColumn data-field="bottom_column" caption="Column" />
@@ -45,6 +46,7 @@
             data-field="t_req"
             caption="tretire (mm)"
             format="#,##0.00"
+            :allow-editing="false"
           />
 
           <DxColumn
