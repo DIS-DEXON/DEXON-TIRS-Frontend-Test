@@ -121,6 +121,19 @@
 
           <div class="input-set">
             <div class="label-box">
+              <p class="label">Material Type:</p>
+              <label class="star-label"><i class="las la-asterisk"></i></label>
+            </div>
+            <DxSelectBox
+              style="border: 0; font-size: 14px"
+              v-model="formData.mat_type"
+              :data-source="formSelect.mat_type"
+              display-expr="code"
+              value-expr="code"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
               <p class="label">Construction Code:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
@@ -375,7 +388,7 @@
               placeholder="Operating Pressure Coil (psig)"
             />
           </div>
-          <div class="input-set" style="grid-column: span 2">
+          <div class="input-set" style="grid-column: span 3">
             <div class="label-box">
               <p class="label">Foundation:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
