@@ -240,7 +240,7 @@
             </div>
             <input
               type="text"
-              v-model="formData.no_of_shell_couse"
+              v-model="formData.no_of_shell_course"
               placeholder="No. of Shell Course"
             />
           </div>
@@ -251,7 +251,7 @@
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
-              v-model="formData.id_internal_pressure"
+              v-model="formData.id_tank_internal_pressure"
               :data-source="formSelect.internal_pressure"
               display-expr="code"
               value-expr="id"
@@ -412,6 +412,7 @@
 
 <script>
 import axios from "/axios.js";
+import moment from "moment";
 import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
 import clone from "just-clone";
@@ -476,6 +477,8 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
+      this.formData.installation_date = moment(this.formData.installation_date).format("L");
+      this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
       console.log(this.formData);
       if (this.formData.tag_no) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
