@@ -697,6 +697,28 @@ export default {
     },
     UPDATE_COIL(e) {
       console.log(e.data);
+      axios({
+        method: "post",
+        url: "coil-thickness/edit-coil-info",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            //this.FETCH_CML();
+            this.FETCH_COIL();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     DELETE_COIL(e) {
       this.isLoading = true;
