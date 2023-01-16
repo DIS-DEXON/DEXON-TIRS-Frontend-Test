@@ -37,7 +37,7 @@
           :allow-updating="true"
           :allow-deleting="true"
           :allow-adding="IS_VISIBLE_ADD()"
-          mode="popup"
+          mode="row"
         >
           <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
           </DxPopup>
@@ -55,20 +55,27 @@
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor"
           :width="520"
+          :allow-editing="false"
         />
 
         <DxColumn data-field="file_name" caption="File Name" :width="300" />
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <img :src="baseURL + data.value" width="500" /><br />
             <a
+              :href="baseURL + data.value"
+              download="dwg"
+              target="_blank"
+              >
+            <img :src="baseURL + data.value" width="500" /><br />
+            </a>
+            <!-- <a
               :href="baseURL + data.value"
               download="dwg"
               target="_blank"
               class="btn-view-dwg"
               >VIEW</a
-            >
+            > -->
           </div>
         </template>
 
