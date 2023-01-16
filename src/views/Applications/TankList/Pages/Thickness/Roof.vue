@@ -224,9 +224,9 @@
 
           <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" />
 
-          <DxColumn data-field="roof_column" caption="Roof column" />
+          <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" />
 
           <DxColumn
             data-field="inservice_date"

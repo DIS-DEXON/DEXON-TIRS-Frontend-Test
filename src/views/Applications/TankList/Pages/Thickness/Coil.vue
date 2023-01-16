@@ -30,7 +30,7 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn data-field="coil_no" caption="Coil no" />
+          <DxColumn data-field="coil_no" caption="Coil no" sort-order="asc" />
 
           <DxColumn data-field="coil_name" caption="Coil name" />
 
@@ -85,7 +85,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="cml_no" caption="CML no" />
+          <DxColumn data-field="cml_no" caption="CML no" sort-order="asc" />
 
           <DxColumn data-field="cml_name" caption="CML name" />
 
@@ -182,7 +182,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP No." />
+          <DxColumn data-field="tp_name" caption="TP No." sort-order="asc" />
           <DxColumn data-field="tp_desc" caption="TP Desc." />
 
           <DxColumn type="buttons">
@@ -223,6 +223,9 @@
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
         >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+
           <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
@@ -241,7 +244,11 @@
 
           <!-- <DxColumn data-field="plate_no" caption="Plate No." />
           <DxColumn data-field="tp_name" caption="TP No." /> -->
-          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+          <DxColumn 
+            data-field="id_inspection_record" 
+            caption="Inspection date"
+            sort-order="desc"
+          >
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -280,20 +287,24 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
-          <DxToolbar>
+
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+
+          <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
+          </DxToolbar> -->
+          <!-- <template #table-header>
             <div>
               <div class="page-section-label">Thickness Summary</div>
             </div>
-          </template>
+          </template> -->
 
-          <DxColumn data-field="coil_no" caption="Coil No." />
+          <DxColumn data-field="coil_no" caption="Coil No." sort-order="asc" />
 
-          <DxColumn data-field="cml_name" caption="CML name" />
+          <DxColumn data-field="cml_name" caption="CML name" sort-order="asc" />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" />
 
           <DxColumn
             data-field="inservice_date"
@@ -376,7 +387,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>
@@ -408,9 +419,9 @@ import {
   DxPager,
   DxScrolling,
   DxColumn,
-  // DxExport,
-  DxToolbar,
-  DxItem,
+  DxExport,
+  // DxToolbar,
+  // DxItem,
   DxEditing,
   DxLookup,
   DxButton,
@@ -429,9 +440,9 @@ export default {
     DxPager,
     DxScrolling,
     DxColumn,
-    // DxExport,
-    DxToolbar,
-    DxItem,
+    DxExport,
+    // DxToolbar,
+    // DxItem,
     DxEditing,
     DxLookup,
     DxButton,
@@ -539,7 +550,6 @@ export default {
         });
     },
     FETCH_TP() {
-      this.isLoading = true;
       var id = this.current_view_item.id_cml;
       axios({
         method: "post",
@@ -566,7 +576,6 @@ export default {
         });
     },
     FETCH_UTM() {
-      this.isLoading = true;
       var id = this.current_view_item.id_tp;
       axios({
         method: "post",
@@ -593,7 +602,6 @@ export default {
         });
     },
     FETCH_INSP_RECORD() {
-      this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -620,11 +628,10 @@ export default {
         });
     },
     FETCH_LAST_INSP_THK() {
-      this.isLoading = true;
       var id = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "shell-thickness/shell-thk-view-last-insp",
+        url: "coil-thickness/coil-thk-view-last-insp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -707,6 +714,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_COIL();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -737,7 +745,6 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            //this.FETCH_VIEW();
           }
         })
         .catch((error) => {
@@ -791,7 +798,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -869,6 +876,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
+            this.FETCH_LAST_INSP_THK();
             // this.FETCH_VIEW();
           }
         })
@@ -900,6 +908,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
+            this.FETCH_LAST_INSP_THK();
             // this.FETCH_VIEW();
           }
         })
@@ -930,6 +939,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
+            this.FETCH_LAST_INSP_THK();
             //this.FETCH_VIEW();
           }
         })
@@ -957,6 +967,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
+            this.FETCH_LAST_INSP_THK();
             // this.FETCH_VIEW();
           }
         })
