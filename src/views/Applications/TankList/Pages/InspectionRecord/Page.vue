@@ -95,7 +95,7 @@
 <script>
 //API
 import axios from "/axios.js";
-// import moment from "moment";
+import moment from "moment";
 
 //Components
 //import VueTabsChrome from "vue-tabs-chrome";
@@ -229,6 +229,7 @@ export default {
     CREATE_RECORD(e) {
       e.data.id_tag = this.$route.params.id_tag;
       e.data.id_inspection_record = 0;
+      e.data.inspection_date = moment(e.data.inspection_date).format("L");
       console.log(e.data);
       axios({
         method: "post",
@@ -252,6 +253,8 @@ export default {
         .finally(() => {});
     },
     UPDATE_RECORD(e) {
+      e.data.inspection_date = moment(e.data.inspection_date).format("L");
+      console.log(e.data);
       axios({
         method: "put",
         url: "/insp-record/edit-insp-record",
