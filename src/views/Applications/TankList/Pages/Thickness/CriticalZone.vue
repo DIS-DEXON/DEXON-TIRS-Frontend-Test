@@ -34,10 +34,10 @@
           <DxColumn
             data-field="plate_no"
             caption="Plate No."
-            sort-order="asc"
+            :allow-editing="false"
           />
-          <DxColumn data-field="plate_row" caption="Row" />
-          <DxColumn data-field="plate_column" caption="Column" />
+          <DxColumn data-field="plate_row" caption="Row" sort-order="asc"/>
+          <DxColumn data-field="plate_column" caption="Column" sort-order="asc"/>
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -45,6 +45,7 @@
             data-field="t_req"
             caption="tretire (mm)"
             format="#,##0.00"
+            :allow-editing="false"
           />
 
           <DxColumn
@@ -108,7 +109,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP Name" />
+          <DxColumn data-field="tp_name" caption="TP Name" sort-order="asc"/>
 
           <DxColumn data-field="tp_desc" caption="TP Desc" />
 
@@ -163,7 +164,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+          <DxColumn data-field="id_inspection_record" caption="Inspection date" sort-order="desc">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -221,9 +222,6 @@
             caption="Plate No."
             sort-order="asc"
           />
-
-          <DxColumn data-field="plate_desc" caption="Plate desc" />
-
           <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" />
 
           <DxColumn
@@ -404,7 +402,7 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "critical-thickness/critical-thk-cml-by-tank-id",
+        url: "critical-thickness/critical-thk-cml-view-by-tank-id",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },

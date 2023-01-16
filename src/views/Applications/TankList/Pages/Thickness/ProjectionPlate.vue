@@ -33,6 +33,8 @@
 
           <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" />
 
+          <DxColumn data-field="tp_num" caption="TP num" width="0"/>
+
           <DxColumn data-field="tp_desc" caption="TP desc" />
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -426,8 +428,9 @@ export default {
         });
     },
     CREATE_TP(e) {
-      e.data.id_cml = this.id_cml;
+      e.data.id_tag = this.$route.params.id_tag;
       e.data.id_tp = 0;
+      e.data.inservice_date = moment(e.data.inservice_date).format("L");
       console.log(e.data);
       this.isLoading = true;
       axios({

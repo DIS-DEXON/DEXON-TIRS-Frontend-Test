@@ -89,7 +89,13 @@
 
           <DxColumn data-field="cml_name" caption="CML name" />
 
-          <DxColumn data-field="location" caption="Location" />
+          <DxColumn data-field="location" caption="Location">
+            <DxLookup
+              :data-source="location"
+              display-expr="code"
+              value-expr="code"
+            />
+          </DxColumn>
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
 
@@ -262,14 +268,16 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
         >
-          <DxToolbar>
+          <!-- <DxToolbar>
             <DxItem location="before" template="table-header" />
           </DxToolbar>
           <template #table-header>
             <div>
               <div class="page-section-label">Thickness Summary</div>
             </div>
-          </template>
+          </template> -->
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
 
           <DxColumn data-field="sump_no" caption="Sump No." />
 
@@ -358,7 +366,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>
@@ -390,9 +398,9 @@ import {
   DxPager,
   DxScrolling,
   DxColumn,
-  // DxExport,
-  DxToolbar,
-  DxItem,
+  DxExport,
+  // DxToolbar,
+  // DxItem,
   DxEditing,
   DxLookup,
   DxButton,
@@ -411,9 +419,9 @@ export default {
     DxPager,
     DxScrolling,
     DxColumn,
-    // DxExport,
-    DxToolbar,
-    DxItem,
+    DxExport,
+    // DxToolbar,
+    // DxItem,
     DxEditing,
     DxLookup,
     DxButton,
@@ -461,6 +469,10 @@ export default {
         { code: "SS" },
         { code: "Duplex" },
         { code: "Unknown" },
+      ],
+      location: [
+        { code: "Bottom" },
+        { code: "Wall" }
       ],
     };
   },
@@ -521,7 +533,6 @@ export default {
         });
     },
     FETCH_TP() {
-      this.isLoading = true;
       var id = this.current_view_item.id_cml;
       axios({
         method: "post",
@@ -548,7 +559,6 @@ export default {
         });
     },
     FETCH_UTM() {
-      this.isLoading = true;
       var id = this.current_view_item.id_tp;
       axios({
         method: "post",
@@ -575,7 +585,6 @@ export default {
         });
     },
     FETCH_INSP_RECORD() {
-      this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -602,7 +611,6 @@ export default {
         });
     },
     FETCH_LAST_INSP_THK() {
-      this.isLoading = true;
       var id = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -672,6 +680,28 @@ export default {
     },
     UPDATE_SUMP(e) {
       console.log(e.data);
+      axios({
+        method: "post",
+        url: "sump-thickness/edit-sump-info",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            //this.FETCH_CML();
+            this.FETCH_SUMP();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     DELETE_SUMP(e) {
       this.isLoading = true;
@@ -689,6 +719,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_SUMP();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -773,7 +804,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -851,7 +882,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -882,7 +913,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -912,7 +943,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            //this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -939,7 +970,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {

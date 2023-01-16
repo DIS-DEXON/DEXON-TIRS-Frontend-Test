@@ -259,10 +259,6 @@ export default {
       e.data.id_tag = id_tag;
       e.data.id_thk = 0;
       e.data.id_inspection_record = this.id_inspection_record;
-      var date = this.inspRecordList.filter(function (v) {
-        return v.id_inspection_record == e.data.id_inspection_record;
-      });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       axios({
         method: "post",
@@ -276,7 +272,9 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
           }
         })
         .catch((error) => {
@@ -287,10 +285,6 @@ export default {
         });
     },
     UPDATE_MFL(e) {
-      var date = this.inspRecordList.filter(function (v) {
-        return v.id_inspection_record == e.data.id_inspection_record;
-      });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       axios({
         method: "put",
@@ -304,7 +298,9 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
           }
         })
         .catch((error) => {
