@@ -75,9 +75,10 @@
               data-field="radious_tolerance"
               caption="Radius Tolerance (mm)"
               format="#,##0.00"
+              :allow-editing="false"
             />
 
-            <DxColumn data-field="result" caption="Inspection Result" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

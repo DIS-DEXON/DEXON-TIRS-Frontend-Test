@@ -65,15 +65,17 @@
               data-field="relative_to_nom"
               caption="Relative to nom. (mm)"
               format="#,##0.00"
+              :allow-editing="false"
             />
 
             <DxColumn
               data-field="radius_tolerance"
               caption="Radius Tolerance (mm)"
               format="#,##0.00"
+              :allow-editing="false"
             />
 
-            <DxColumn data-field="result" caption="Inspection Result" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -317,7 +319,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -341,7 +343,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -365,7 +367,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {

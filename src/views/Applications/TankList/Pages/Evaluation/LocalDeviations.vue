@@ -288,7 +288,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -312,7 +312,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -336,7 +336,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {

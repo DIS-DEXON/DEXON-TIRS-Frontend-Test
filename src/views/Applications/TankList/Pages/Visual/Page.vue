@@ -90,14 +90,13 @@
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <img :src="baseURL + data.value" width="300" height="200" /><br />
             <a
               :href="baseURL + data.value"
               download="dwg"
               target="_blank"
-              class="btn-view-dwg"
-              >VIEW</a
             >
+            <img :src="baseURL + data.value" width="300" height="200" /><br />
+            </a>
           </div>
         </template>
 
@@ -400,7 +399,7 @@ export default {
           if (res.status == 201 && res.data) {
             console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -442,7 +441,7 @@ export default {
           if (res.status == 201 && res.data) {
             console.log("in");
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -468,7 +467,8 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
+            // this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {

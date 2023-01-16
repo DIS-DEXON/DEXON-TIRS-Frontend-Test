@@ -11,9 +11,11 @@
     />
     <div class="list-page">
       <v-ons-list>
-        <v-ons-list-header
-          ><b>{{ currentPage }}</b></v-ons-list-header
-        >
+        <v-ons-list-header>
+          <b>{{ currentPage }}</b>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <DxDataGrid
         id="data-grid-style"
@@ -211,6 +213,7 @@ export default {
         class: "data-grid-style",
       },
       pagePanelHiding: false,
+      current_view: {},
     };
   },
   computed: {
@@ -256,6 +259,7 @@ export default {
     VIEW_ITEM(item) {
       this.id_component = this.$route.params.id_component;
       this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
       axios({
         method: "post",
         url: "layout-drawing/layout-drawing-by-comp-id",
@@ -437,6 +441,7 @@ export default {
 }
 
 .list-page {
+  overflow-y: auto;
   .list {
     margin: -20px -20px 20px -20px;
   }
