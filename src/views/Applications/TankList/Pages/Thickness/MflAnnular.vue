@@ -336,6 +336,31 @@ export default {
     },
     DELETE_MFL(e) {
       console.log(e);
+      axios({
+        method: "delete",
+        url: "mfl-annular-thickness/delete-mfl-annular-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_thk: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
