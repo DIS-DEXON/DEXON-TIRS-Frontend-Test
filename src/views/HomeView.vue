@@ -353,7 +353,7 @@ export default {
   color: #5b5b5b;
 }
 #user-panel {
-  background-image: url("/public/img/main-bg.webp");
+  background-image: url("/public/img/main-bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

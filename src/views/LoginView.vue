@@ -139,7 +139,7 @@ export default {
 @import "@/style/main.scss";
 
 #page-login {
-  background-image: url("/public/img/main-bg.webp");
+  background-image: url("/public/img/main-bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
