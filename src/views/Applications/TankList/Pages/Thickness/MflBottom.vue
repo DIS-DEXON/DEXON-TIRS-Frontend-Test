@@ -75,7 +75,13 @@
 
         <DxColumn data-field="defect_y" caption="Y (mm)" />
 
-        <DxColumn data-field="type_of_repair" caption="Type of repair" />
+        <DxColumn data-field="type_of_repair" caption="Type of repair">
+          <DxLookup
+            :data-source="typeOfRepair"
+            display-expr="code"
+            value-expr="code"
+          />
+        </DxColumn>
 
         <DxColumn data-field="repair_width" caption="Width" />
 
@@ -85,7 +91,14 @@
 
         <DxColumn data-field="repair_radius" caption="Radius" />
 
-        <DxColumn data-field="repair_status" caption="Repair status" />
+        <DxColumn data-field="repair_status" caption="Repair status">
+          <DxLookup
+            :data-source="repairStatus"
+            display-expr="code"
+            value-expr="code"
+          />
+        </DxColumn>
+
 
         <DxColumn type="buttons">
           <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -146,6 +159,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
+  DxLookup,
 } from "devextreme-vue/data-grid";
 
 //FileUpload
@@ -171,6 +185,7 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     InspectionRecordPanel,
+    DxLookup,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -200,6 +215,15 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
+      typeOfRepair: [
+        {"code":"Patch Plate"},
+        {"code":"Recoating"},
+        {"code":"Deposited weld"}
+      ],
+      repairStatus: [
+        {"code":"Yes"},
+        {"code":"No"}
+      ]
     };
   },
   computed: {
@@ -312,6 +336,31 @@ export default {
     },
     DELETE_MFL(e) {
       console.log(e);
+      axios({
+        method: "delete",
+        url: "mfl-bottom-thickness/delete-mfl-bottom-data",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_thk: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {

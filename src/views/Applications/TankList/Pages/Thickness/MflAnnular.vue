@@ -10,6 +10,14 @@
       @viewItem="VIEW_ITEM"
     />
     <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
       <DxDataGrid
         id="mfl-grid"
         key-expr="id_thk"
@@ -67,7 +75,13 @@
 
         <DxColumn data-field="defect_y" caption="Y (mm)" />
 
-        <DxColumn data-field="type_of_repair" caption="Type of repair" />
+        <DxColumn data-field="type_of_repair" caption="Type of repair">
+          <DxLookup
+            :data-source="typeOfRepair"
+            display-expr="code"
+            value-expr="code"
+          />
+        </DxColumn>
 
         <DxColumn data-field="repair_width" caption="Width" />
 
@@ -77,7 +91,13 @@
 
         <DxColumn data-field="repair_radius" caption="Radius" />
 
-        <DxColumn data-field="repair_status" caption="Repair status" />
+        <DxColumn data-field="repair_status" caption="Repair status">
+          <DxLookup
+            :data-source="repairStatus"
+            display-expr="code"
+            value-expr="code"
+          />
+        </DxColumn>
 
         <DxColumn type="buttons">
           <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -138,6 +158,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
+  DxLookup,
 } from "devextreme-vue/data-grid";
 
 //FileUpload
@@ -164,6 +185,7 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     InspectionRecordPanel,
+    DxLookup,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -193,6 +215,15 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
+      typeOfRepair: [
+        {"code":"Patch Plate"},
+        {"code":"Recoating"},
+        {"code":"Deposited weld"}
+      ],
+      repairStatus: [
+        {"code":"Yes"},
+        {"code":"No"}
+      ]
     };
   },
   computed: {
@@ -252,10 +283,6 @@ export default {
       e.data.id_tag = id_tag;
       e.data.id_thk = 0;
       e.data.id_inspection_record = this.id_inspection_record;
-      var date = this.inspRecordList.filter(function (v) {
-        return v.id_inspection_record == e.data.id_inspection_record;
-      });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       axios({
         method: "post",
@@ -269,7 +296,9 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
           }
         })
         .catch((error) => {
@@ -280,10 +309,6 @@ export default {
         });
     },
     UPDATE_MFL(e) {
-      var date = this.inspRecordList.filter(function (v) {
-        return v.id_inspection_record == e.data.id_inspection_record;
-      });
-      e.data.inspection_date = moment(date[0].inspection_date).format("L");
       console.log(e.data);
       axios({
         method: "put",
@@ -297,7 +322,9 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
           }
         })
         .catch((error) => {
