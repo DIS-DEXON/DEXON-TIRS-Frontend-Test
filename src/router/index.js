@@ -172,6 +172,11 @@ const routes = [
             alias: 'Eva Buckling',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/Buckling.vue'),
           },
+          {
+            path: 'evaluation/shell-plumness',
+            alias: 'Eva Plumness',
+            component: () => import('../views/Applications/TankList/Pages/Evaluation/ShellPlumness.vue'),
+          },
         ]
       },
     ]

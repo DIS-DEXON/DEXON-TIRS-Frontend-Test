@@ -94,9 +94,17 @@
               :href="baseURL + data.value"
               download="dwg"
               target="_blank"
+              v-if="data.value != ''"
             >
             <img :src="baseURL + data.value" width="300" height="200" /><br />
             </a>
+
+            <img
+              src="http://tmt-solution.com/public/image-empty.png"
+              width="300"
+              height="200"
+              v-if="data.value == ''"
+            />
           </div>
         </template>
 
@@ -411,6 +419,12 @@ export default {
     },
     UPDATE_DWG(e) {
       console.log(e);
+      console.log("file1:");
+      console.log(this.file1);
+      console.log(this.file_path_1);
+      console.log("file2:");
+      console.log(this.file2);
+      console.log(this.file_path_2);
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
