@@ -409,6 +409,8 @@ export default {
     }
     .sheet-body {
       grid-template-columns: 50% 50%;
+      border-radius: 6px;
+      overflow: hidden;
       .form-item {
         display: grid;
         grid-template-columns: 220px calc(100% - 220px);
