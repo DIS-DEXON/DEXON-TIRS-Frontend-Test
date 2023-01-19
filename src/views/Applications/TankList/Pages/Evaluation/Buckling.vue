@@ -50,7 +50,6 @@
             <DxColumn
               data-field="plate"
               caption="Course - Plate No."
-              format="#,##0.00"
             />
 
             <DxColumn

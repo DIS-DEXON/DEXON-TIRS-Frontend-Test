@@ -36,9 +36,9 @@
               :show-row-lines="true"
               :row-alternation-enabled="false"
               :word-wrap-enabled="true"
-              @row-inserted="CREATE_BUCKLING"
-              @row-updated="UPDATE_BUCKLING"
-              @row-removed="DELETE_BUCKLING"
+              @row-inserted="CREATE"
+              @row-updated="UPDATE"
+              @row-removed="DELETE"
             >
               <DxFilterRow :visible="true" />
               <DxHeaderFilter :visible="true" />
@@ -54,19 +54,21 @@
               <DxColumn
                 data-field="location"
                 caption="Evaluation Location at the Tank (Mark on shell map)"
-                format="#,##0.00"
+                :allow-editing="false"
               />
 
               <DxColumn
                 data-field="maximum_space"
                 caption="Distance Between Survey Location (mm)"
                 format="#,##0.00"
+                :allow-editing="false"
               />
 
               <DxColumn
                 data-field="cumulative"
                 caption="Cumulative Distance Around Tank (mm)"
                 format="#,##0.00"
+                :allow-editing="false"
               />
 
               <DxColumn
@@ -127,7 +129,122 @@
           </appInstruction>
         </div>
       </div>
-      <div v-if="tabCurrent == 'api653'" class="tab2-grid"></div>
+      <div v-if="tabCurrent == 'api653'" class="tab2-grid">
+        <div class="content">
+          <div class="table-wrapper">
+            <DxDataGrid
+              id="settlement-2-grid"
+              key-expr="id_eval"
+              :data-source="shellCal2List"
+              :element-attr="dataGridAttributes"
+              :selection="{ mode: 'single' }"
+              :hover-state-enabled="true"
+              :allow-column-reordering="true"
+              :show-borders="true"
+              :show-row-lines="true"
+              :row-alternation-enabled="false"
+              :word-wrap-enabled="true"
+            >
+              <DxFilterRow :visible="true" />
+              <DxHeaderFilter :visible="true" />
+
+              <DxColumn
+                data-field="location"
+                caption="Dato Point"
+                :allow-editing="false"
+              />
+
+              <DxColumn
+                data-field="cumulative"
+                caption="Circumferential Distance"
+                format="#,##0.00"
+                :allow-editing="false"
+              />
+
+              <DxColumn
+                data-field="reduced_level"
+                caption="Reduced Level"
+                format="#,##0.00"
+                :allow-editing="false"
+              />
+
+              <DxColumn
+                data-field="theta_radians"
+                caption="Theta Radians"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="theta_degrees"
+                caption="Theta Degrees"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="relative_value"
+                caption="Relative Level"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="y"
+                caption="Y=A+B Cos(Theta-C)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="difference_value"
+                caption="Difference (Ui)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field=""
+                caption="Out of Plane Deflection (Si)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="deviation_value"
+                caption="Deviation"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="difference_2_value"
+                caption="Difference(2)"
+                format="#,##0.00"
+              />
+
+              <DxColumn
+                data-field="deviation_2_value"
+                caption="Deviation(2)"
+                format="#,##0.00"
+              />
+
+              <DxColumn type="buttons">
+                <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+                <DxButton name="edit" hint="Edit" icon="edit" />
+                <DxButton name="delete" hint="Delete" icon="trash" />
+              </DxColumn>
+
+              <!-- Configuration goes here -->
+              <!-- <DxFilterRow :visible="true" /> -->
+              <DxScrolling mode="standard" />
+              <DxSearchPanel :visible="false" />
+              <DxPaging :page-size="10" :page-index="0" />
+              <DxPager
+                :show-page-size-selector="true"
+                :allowed-page-sizes="[5, 10, 20]"
+                :show-navigation-buttons="true"
+                :show-info="true"
+                info-text="Page {0} of {1} ({2} items)"
+              />
+              <!-- <DxExport :enabled="true" /> -->
+            </DxDataGrid>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="list-page" v-if="this.id_inspection_record == ''">
       <div class="center-box-wrapper">
@@ -287,6 +404,36 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    CREATE(e) {
+      console.log(e);
+    },
+    UPDATE(e) {
+      console.log(e);
+      axios({
+        method: "put",
+        url: "shell-settlement/edit-shell-settlement",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE(e) {
+      console.log(e);
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
