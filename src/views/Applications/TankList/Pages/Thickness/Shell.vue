@@ -476,7 +476,7 @@ export default {
         });
     },
     FETCH_CML() {
-      this.isLoading = true;
+      // this.isLoading = true;
       var id = this.current_view_item.id_tank_course;
       axios({
         method: "post",
@@ -503,7 +503,7 @@ export default {
         });
     },
     FETCH_TP() {
-      this.isLoading = true;
+      // this.isLoading = true;
       var id = this.current_view_item.id_cml;
       axios({
         method: "post",
@@ -530,7 +530,7 @@ export default {
         });
     },
     FETCH_UTM() {
-      this.isLoading = true;
+      // this.isLoading = true;
       var id = this.current_view_item.id_tp;
       axios({
         method: "post",
@@ -557,7 +557,7 @@ export default {
         });
     },
     FETCH_INSP_RECORD() {
-      this.isLoading = true;
+      // this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -584,7 +584,7 @@ export default {
         });
     },
     FETCH_LAST_INSP_THK() {
-      this.isLoading = true;
+      // this.isLoading = true;
       var id = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -668,7 +668,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -695,7 +695,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -747,7 +747,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -773,7 +773,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -804,7 +804,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -834,7 +834,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            //this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
@@ -861,7 +861,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
-            // this.FETCH_VIEW();
+            this.FETCH_LAST_INSP_THK();
           }
         })
         .catch((error) => {
