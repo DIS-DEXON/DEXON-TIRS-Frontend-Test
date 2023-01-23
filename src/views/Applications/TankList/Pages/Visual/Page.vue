@@ -421,10 +421,10 @@ export default {
       console.log(e);
       console.log("file1:");
       console.log(this.file1);
-      console.log(this.file_path_1);
+      console.log("file_path: " + this.file_path_1);
       console.log("file2:");
       console.log(this.file2);
-      console.log(this.file_path_2);
+      console.log("file_path: " + this.file_path_2);
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
@@ -455,6 +455,8 @@ export default {
           if (res.status == 201 && res.data) {
             console.log("in");
             console.log(res.data);
+            this.file_path_1 = "";
+            this.file_path_2 = "";
             this.VIEW_ITEM(this.current_view);
           }
         })
