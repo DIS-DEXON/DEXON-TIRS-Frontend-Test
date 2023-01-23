@@ -107,7 +107,9 @@
         <label>Report</label>
         <hr />
       </div>
-      <router-link :to="'/tank/client/' + id_company + '/report/' + id_tag">
+      <router-link
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/report'"
+      >
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/report.png" />
           <span>Report</span>

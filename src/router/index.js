@@ -177,6 +177,11 @@ const routes = [
             alias: 'Eva Plumness',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/ShellPlumness.vue'),
           },
+          {
+            path: 'report',
+            alias: 'Report',
+            component: () => import('../views/Applications/TankList/Pages/Report/ReportTest.vue'),
+          },
         ]
       },
     ]

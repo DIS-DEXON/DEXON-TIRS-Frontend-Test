@@ -19,6 +19,7 @@
     "core-js": "^3.8.3",
     "devextreme": "^21.2.4",
     "devextreme-vue": "^21.2.4",
+    "easy-template-x": "^3.0.4",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "highcharts": "^10.2.1",
