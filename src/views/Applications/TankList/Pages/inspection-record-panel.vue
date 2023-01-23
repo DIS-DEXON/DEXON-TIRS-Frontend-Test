@@ -41,7 +41,7 @@
       >
         <i class="las la-caret-square-left" v-if="panelHiding == false"></i>
         <i class="las la-caret-square-right" v-if="panelHiding == true"></i>
-        <span>Hide Panel</span>
+        <span>Hide List</span>
       </v-ons-toolbar-button>
     </div>
   </div>

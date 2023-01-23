@@ -347,7 +347,7 @@ export default {
         });
     },
     FETCH_CHECKLIST_GENERIC(id_inspection_record) {
-      console.log("INSPECTION RECORD: " + id_inspection_record);
+      console.log("FECTH INSPECTION RECORD: " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
@@ -356,11 +356,11 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {
-          console.log("FETCH_CHECKLIST_GENERAL:");
+          console.log("FETCH_CHECKLIST_GENERAL: id = " + id_inspection_record);
           console.log(res);
           if (res.status == 200 && res.data) {
             this.checklistList.generic = res.data;
@@ -383,7 +383,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -412,7 +412,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -439,7 +439,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -467,7 +467,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {
@@ -494,7 +494,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_inspection_record: id_inspection_record,
+          id_insp_record: id_inspection_record,
         },
       })
         .then((res) => {

@@ -55,14 +55,14 @@
                     </v-ons-toolbar-button>
                     <v-ons-toolbar-button
                       class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
+                      v-on:click="DELETE_IMG(currentViewRow.receipt_img)"
                       v-if="infoTank.pic_overview"
                     >
                       <i class="las la-trash"></i>
                     </v-ons-toolbar-button>
                     <v-ons-toolbar-button
                       class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
+                      v-on:click="UPLOAD_IMG()"
                       v-if="!infoTank.pic_overview"
                     >
                       <i class="las la-plus"></i>
@@ -371,6 +371,36 @@ export default {
               name: this.infoClient.company_name,
               logo: this.infoClient.logo,
             });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPLOAD_IMG() {
+      console.log("==> TANK INFO IMG UPLOAD: START");
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      console.log("ID TAG (TANK): " + id_tag);
+      axios({
+        method: "post",
+        url: "/tank-info/attach-pic",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+          file: this.file_pic_overview,
+        },
+      })
+        .then((res) => {
+          console.log("==> TANK INFO IMG UPLOAD: RESPONSE");
+          console.log(res);
+          if (res.status == 200) {
+            this.FETCH_TANK_INFO();
           }
         })
         .catch((error) => {

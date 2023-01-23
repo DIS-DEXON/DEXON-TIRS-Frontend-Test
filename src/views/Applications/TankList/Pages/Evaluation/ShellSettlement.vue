@@ -9,20 +9,32 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
+
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
+        <v-ons-list-header>
           <b>
+            Details of Inspection on
             {{ DATE_FORMAT(current_view.inspection_date) }}</b
           ></v-ons-list-header
         >
       </v-ons-list>
+
       <div class="tab-wrapper">
         <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
       </div>
       <div v-if="tabCurrent == 'data'" class="tab1-grid">
         <div class="content">
+          <div class="report-sheet">
+            <div class="report-container">
+              <div class="sheet-body">
+                <div class="section-label">
+                  <label>Create evaluation point</label>
+                </div>
+                <div class="form-item"></div>
+              </div>
+            </div>
+          </div>
           <div class="table-wrapper">
             <DxDataGrid
               id="roundness-grid"
@@ -130,6 +142,7 @@
         </div>
       </div>
       <div v-if="tabCurrent == 'api653'" class="tab2-grid">
+        <h1>TWWTRF</h1>
         <div class="content">
           <div class="table-wrapper">
             <DxDataGrid
@@ -246,7 +259,11 @@
         </div>
       </div>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record == ''">
+    <div
+      class="list-page"
+      style="height: 100%"
+      v-if="this.id_inspection_record == ''"
+    >
       <div class="center-box-wrapper">
         <div class="page-content-message-wrapper">
           <i class="las la-search"></i>
@@ -532,5 +549,66 @@ export default {
   grid-gap: 20px;
   width: 100%;
   grid-template-columns: auto 500px;
+}
+
+.tab-top-page {
+  background-color: #d9d9da;
+}
+
+.report-sheet {
+  max-width: 100%;
+  width: 100%;
+  font-family: $web-default-font;
+  box-shadow: none;
+  padding: 0 !important;
+  margin-top: 0;
+  margin-bottom: 20px;
+  .report-container {
+    .header {
+      .title {
+        grid-column: span 4;
+      }
+    }
+    .sheet-body {
+      grid-template-columns: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      .section-label {
+        label {
+          font-size: 12px;
+          text-transform: capitalize;
+        }
+      }
+      .form-item {
+        display: grid;
+        grid-template-columns: 150px calc(100% - 250px) 100px;
+        grid-template-rows: 35px;
+        .form-item-label {
+        }
+        .form-item-value {
+          grid-column: span 1;
+          border-right: 0;
+          input {
+            text-align: center;
+            // margin-right: 20px;
+          }
+          label {
+            margin: 0 auto;
+            font-weight: 600;
+          }
+        }
+        .form-item-textarea {
+          textarea {
+            height: auto;
+            max-height: 80px;
+            overflow-y: auto;
+          }
+        }
+      }
+      .form-item-picture-log .img-box {
+        height: 244px;
+      }
+    }
+  }
 }
 </style>

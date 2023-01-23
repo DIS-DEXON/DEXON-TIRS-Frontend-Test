@@ -64,12 +64,8 @@
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <a
-              :href="baseURL + data.value"
-              download="dwg"
-              target="_blank"
-              >
-            <img :src="baseURL + data.value" width="500" /><br />
+            <a :href="baseURL + data.value" download="dwg" target="_blank">
+              <img :src="baseURL + data.value" width="500" /><br />
             </a>
             <!-- <a
               :href="baseURL + data.value"
@@ -257,6 +253,7 @@ export default {
       e.cancel = true;
     },
     VIEW_ITEM(item) {
+      this.current_view = {};
       this.id_component = this.$route.params.id_component;
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
@@ -412,6 +409,13 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+  },
+  watch: {
+    $route() {
+      console.log("PATH CHANGED");
+      this.current_view = {};
+      this.drawingList = {};
     },
   },
 };

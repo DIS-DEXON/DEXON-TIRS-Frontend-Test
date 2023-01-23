@@ -455,12 +455,14 @@ export default {
         product: [],
         construction_code: [],
         inspection_code: [],
-        mat_type: [{
-          "code": "CS"
+        mat_type: [
+          {
+            code: "CS",
           },
-        {
-          "code": "SS"
-        }],
+          {
+            code: "SS",
+          },
+        ],
         internal_pressure: [],
         roof_type: [],
         roof_shape: [],
@@ -498,8 +500,12 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(this.formData.installation_date).format("L");
-      this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
+      this.formData.installation_date = moment(
+        this.formData.installation_date
+      ).format("L");
+      this.formData.inservice_date = moment(
+        this.formData.inservice_date
+      ).format("L");
       console.log(this.formData);
       if (this.formData.tag_no) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
@@ -520,7 +526,7 @@ export default {
                 if (res.status == 200) {
                   this.$ons.notification.alert("Tank Edit successful");
                   this.$emit("closePopup");
-                  // this.$router.go();
+                  this.$router.go();
                 }
               })
               .catch((error) => {
