@@ -38,6 +38,8 @@
           sort-order="desc"
         />
 
+        <DxColumn data-field="project_no" caption="Project number" />
+
         <DxColumn data-field="report_no" caption="Report number" />
 
         <DxColumn data-field="id_campaign" caption="Campaign">
