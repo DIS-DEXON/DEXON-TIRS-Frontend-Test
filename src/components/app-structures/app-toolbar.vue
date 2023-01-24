@@ -9,6 +9,16 @@
         <i class="las la-angle-left"></i>
         <span>Back</span>
       </v-ons-toolbar-button>
+      <span
+        style="
+          position: absolute;
+          top: 6px;
+          left: 124px;
+          font-size: 12px;
+          color: red;
+        "
+        >id_tank: {{ infoTank.id_tag }}</span
+      >
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
       <div class="sub-page-box" v-if="pageSubInnerName">
@@ -288,6 +298,7 @@ export default {
     padding-left: 20px;
     justify-content: flex-start;
     width: fit-content;
+    position: relative;
     h1,
     h2 {
       font-style: normal;
