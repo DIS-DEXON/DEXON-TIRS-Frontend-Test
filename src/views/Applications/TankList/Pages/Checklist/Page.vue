@@ -11,9 +11,10 @@
     />
     <div id="page-container-view" class="list-page">
       <v-ons-list>
-        <v-ons-list-header
-          ><b>{{ currentPage }}</b></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <div v-if="isLoading == false">
         <div v-if="this.checklistList_existance.general == true">
@@ -123,6 +124,7 @@ export default {
       isLoading: false,
       campaignList: {},
       pagePanelHiding: false,
+      current_view: {},
     };
   },
   computed: {
@@ -141,7 +143,7 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Checklist",
-      subpageInnerName: null,
+      subpageInnerName: this.currentPage,
     });
   },
   mounted() {},
@@ -151,10 +153,16 @@ export default {
       this.CLEAR_CURRENT_VIEW();
       this.id_checklist = this.$route.params.id_checklist;
       this.id_inspection_record = "";
+      this.current_view = {};
+      this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+        subpageName: "Checklist",
+        subpageInnerName: this.currentPage,
+      });
     },
   },
   methods: {
     VIEW_ITEM(item) {
+      this.current_view = item;
       console.log("VIEW_ITEM: ");
       console.log(item);
       this.CLEAR_CURRENT_VIEW();

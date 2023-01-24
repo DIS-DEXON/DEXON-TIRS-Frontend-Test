@@ -9,7 +9,7 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
-    <div class="list-page" v-if="this.dataMRT">
+    <div class="list-page" v-if="this.id_inspection_record">
       <v-ons-list>
         <v-ons-list-header
           >Inspection Details of

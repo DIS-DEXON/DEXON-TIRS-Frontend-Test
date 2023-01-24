@@ -9,10 +9,9 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
-    <div class="list-page">
+    <div class="list-page" v-if="this.id_inspection_record">
       <v-ons-list>
         <v-ons-list-header>
-          <b>{{ currentPage }}</b>
           Inspection Details of
           <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
         </v-ons-list-header>
@@ -120,6 +119,17 @@
         <DxExport :enabled="true" />
       </DxDataGrid>
     </div>
+    <div class="list-page" v-if="this.id_inspection_record == ''">
+      <div class="center-box-wrapper">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record <br />
+            to view information</span
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template> 
 
@@ -189,12 +199,12 @@ export default {
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Marked-Up Drawing",
-      subpageInnerName: null,
+      subpageInnerName: this.currentPage,
     });
   },
   data() {
     return {
-      drawingList: [],
+      drawingList: null,
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -414,8 +424,13 @@ export default {
   watch: {
     $route() {
       console.log("PATH CHANGED");
+      this.id_inspection_record = "";
       this.current_view = {};
-      this.drawingList = {};
+      this.drawingList = null;
+      this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+        subpageName: "Marked-Up Drawing",
+        subpageInnerName: this.currentPage,
+      });
     },
   },
 };

@@ -13,8 +13,8 @@
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header>
+          Inspection Detail of
           <b>
-            Details of Inspection on
             {{ DATE_FORMAT(current_view.inspection_date) }}</b
           ></v-ons-list-header
         >
