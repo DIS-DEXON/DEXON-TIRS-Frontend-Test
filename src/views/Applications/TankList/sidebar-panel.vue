@@ -596,40 +596,36 @@ export default {
 }
 @media screen and (max-width: 1024px) {
   .app-sidebar {
-    .app-sidebar-hide {
-      width: fit-content;
-      transition: all 0.3s;
-      .item-container {
-        width: 54px;
-        padding-top: 10px;
-        .section-label {
+    width: fit-content;
+    transition: all 0.3s;
+    .item-container {
+      width: 54px;
+      padding-top: 10px;
+      .section-label {
+        margin: 0;
+        label {
+          display: none;
+        }
+        hr {
+          margin: 0 10px;
+          display: block;
+          transition: all 0.3s;
+        }
+      }
+      .item {
+        width: fit-content;
+        justify-content: center;
+        span,
+        i {
+          display: none;
+        }
+      }
+      .bottom-btn {
+        display: none;
+        width: 38px;
+        i {
+          display: inherit !important;
           margin: 0;
-          label {
-            display: none;
-          }
-          hr {
-            margin: 0 10px;
-            display: block;
-            transition: all 0.3s;
-          }
-        }
-        .item {
-          width: fit-content;
-          justify-content: center;
-          span,
-          i {
-            display: none;
-          }
-        }
-        .bottom-btn {
-          left: 10px;
-          width: 38px;
-
-          i {
-            display: inherit !important;
-            margin: 0;
-            margin-left: 0;
-          }
         }
       }
     }
