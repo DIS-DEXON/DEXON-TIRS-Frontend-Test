@@ -47,34 +47,46 @@
                 <div class="img-box">
                   <div class="btn-panel">
                     <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_overview"
+                      class="pic-toolbar-btn"
+                      v-on:click="PREVIEW_PIC(infoTank.overview_img_path)"
+                      v-if="infoTank.overview_img_path"
                     >
-                      <i class="las la-expand-arrows-alt"></i>
+                      <i class="las la-eye"></i>
                     </v-ons-toolbar-button>
                     <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="DELETE_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_overview"
+                      class="pic-toolbar-btn"
+                      v-on:click="DELETE_PIC(infoTank.overview_img_path, 1)"
+                      v-if="infoTank.overview_img_path"
                     >
                       <i class="las la-trash"></i>
                     </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="UPLOAD_IMG()"
-                      v-if="!infoTank.pic_overview"
-                    >
-                      <i class="las la-plus"></i>
+                    <v-ons-toolbar-button>
+                      <label
+                        class="pic-toolbar-btn"
+                        for="pic-upload-btn"
+                        v-if="!infoTank.overview_img_path"
+                        ><i class="las la-plus"></i
+                      ></label>
                     </v-ons-toolbar-button>
                   </div>
                   <img
-                    :src="infoTank.pic_overview"
-                    v-if="infoTank.pic_overview"
+                    :src="baseURL + infoTank.overview_img_path"
+                    v-if="infoTank.overview_img_path"
                   />
+                  <input
+                    type="file"
+                    id="pic-upload-btn"
+                    style="display: none"
+                    ref="pic_upload_ov"
+                    @change="UPLOAD_PIC(1)"
+                  />
+
                   <div class="">
-                    <i class="las la-image" v-if="!infoTank.pic_overview"></i>
-                    <label v-if="!infoTank.pic_overview">No Image</label>
+                    <i
+                      class="las la-image"
+                      v-if="!infoTank.overview_img_path"
+                    ></i>
+                    <label v-if="!infoTank.overview_img_path">No Image</label>
                   </div>
                 </div>
               </div>
@@ -88,33 +100,44 @@
                 <div class="img-box">
                   <div class="btn-panel">
                     <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_nameplate"
+                      class="pic-toolbar-btn"
+                      v-on:click="PREVIEW_PIC(infoTank.name_plate_img_path)"
+                      v-if="infoTank.name_plate_img_path"
                     >
-                      <i class="las la-expand-arrows-alt"></i>
+                      <i class="las la-eye"></i>
                     </v-ons-toolbar-button>
                     <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="infoTank.pic_nameplate"
+                      class="pic-toolbar-btn"
+                      v-on:click="DELETE_PIC(infoTank.name_plate_img_path, 2)"
+                      v-if="infoTank.name_plate_img_path"
                     >
                       <i class="las la-trash"></i>
                     </v-ons-toolbar-button>
-                    <v-ons-toolbar-button
-                      class="btn"
-                      v-on:click="PREVIEW_IMG(currentViewRow.receipt_img)"
-                      v-if="!infoTank.pic_nameplate"
-                    >
-                      <i class="las la-plus"></i>
+                    <v-ons-toolbar-button v-if="!infoTank.name_plate_img_path">
+                      <label
+                        class="pic-toolbar-btn"
+                        for="pic-upload-btn-2"
+                        v-if="!infoTank.name_plate_img_path"
+                        ><i class="las la-plus"></i
+                      ></label>
                     </v-ons-toolbar-button>
                   </div>
                   <img
-                    :src="infoTank.pic_nameplate"
-                    v-if="infoTank.pic_nameplate"
+                    :src="baseURL + infoTank.name_plate_img_path"
+                    v-if="infoTank.name_plate_img_path"
                   />
-                  <i class="las la-image" v-if="!infoTank.pic_nameplate"></i>
-                  <label v-if="!infoTank.pic_nameplate">No Image</label>
+                  <input
+                    type="file"
+                    id="pic-upload-btn-2"
+                    style="display: none"
+                    ref="pic_upload_np"
+                    @change="UPLOAD_PIC(2)"
+                  />
+                  <i
+                    class="las la-image"
+                    v-if="!infoTank.name_plate_img_path"
+                  ></i>
+                  <label v-if="!infoTank.name_plate_img_path">No Image</label>
                 </div>
               </div>
             </div>
@@ -135,6 +158,11 @@
       v-if="isLoading == true"
       color="#fc9b21"
     />
+    <previewImage
+      :imageURL="previewImg"
+      v-if="previewImg"
+      @close-preview="PREVIEW_PIC_CLOSE()"
+    />
   </div>
 </template> 
 
@@ -150,6 +178,7 @@ import drawingTable from "@/views/Applications/TankList/Pages/Information/table-
 import pidTable from "@/views/Applications/TankList/Pages/Information/table-pid.vue";
 import generalDocTable from "@/views/Applications/TankList/Pages/Information/table-generalDoc.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import previewImage from "@/components/image-preview.vue";
 
 //DataGrid
 
@@ -162,6 +191,7 @@ export default {
     pidTable,
     generalDocTable,
     contentLoading,
+    previewImage,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -182,6 +212,7 @@ export default {
       infoTank: {},
       infoClient: {},
       tabCurrent: "info",
+      file_pic_upload: "",
       tabs: [
         {
           label: "General Information",
@@ -199,7 +230,7 @@ export default {
           closable: false,
         },
       ],
-
+      previewImg: "",
       isLoading: false,
     };
   },
@@ -321,12 +352,19 @@ export default {
       ];
       return info;
     },
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    },
   },
   methods: {
     FETCH_TANK_INFO() {
+      console.log("==> FETCH TANK INFO: START");
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
-      console.log("ID TAG: " + id_tag);
+      console.log("==> FETCH TANK INFO: ID TAG (TANK): " + id_tag);
       axios({
         method: "post",
         url: "tank-info/tank-info-by-id",
@@ -338,7 +376,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log("info:");
+          console.log("==> FETCH TANK INFO: DONE");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.infoTank = res.data[0];
@@ -352,6 +390,7 @@ export default {
         });
     },
     FETCH_CLIENT_INFO() {
+      console.log("==> FETCH CLIENT INFO: START");
       this.isLoading = true;
       var id_company = this.$route.params.id_company;
       console.log("ID COMPANY: " + id_company);
@@ -363,7 +402,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log("client:");
+          console.log("==> FETCH CLIENT INFO: DONE");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.infoClient = res.data;
@@ -380,35 +419,116 @@ export default {
           this.isLoading = false;
         });
     },
-    UPLOAD_IMG() {
-      console.log("==> TANK INFO IMG UPLOAD: START");
+    UPLOAD_PIC(pic_type) {
       this.isLoading = true;
+      console.log("==> TANK INFO IMG UPLOAD: START");
       var id_tag = this.$route.params.id_tag;
-      console.log("ID TAG (TANK): " + id_tag);
-      axios({
-        method: "post",
-        url: "/tank-info/attach-pic",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_tag: id_tag,
-          file: this.file_pic_overview,
-        },
-      })
-        .then((res) => {
-          console.log("==> TANK INFO IMG UPLOAD: RESPONSE");
-          console.log(res);
-          if (res.status == 200) {
-            this.FETCH_TANK_INFO();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
+      console.log("==> ID TAG (TANK): " + id_tag);
+
+      if (pic_type == 1) {
+        this.file_pic_upload = this.$refs.pic_upload_ov.files[0];
+      } else {
+        this.file_pic_upload = this.$refs.pic_upload_np.files[0];
+      }
+
+      console.log(this.file_pic_upload);
+      console.log("==> TANK INFO IMG UPLOAD: TYPE " + pic_type);
+      if (
+        (this.file_pic_upload && this.file_pic_upload.type == "image/jpeg") ||
+        this.file_pic_upload.type == "image/png"
+      ) {
+        if (this.file_pic_upload.size < 20000000) {
+          axios({
+            method: "post",
+            url: "/tank-info/attach-pic",
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
+            },
+            data: {
+              id_tag: id_tag,
+              file: this.file_pic_upload,
+              type: pic_type,
+            },
+          })
+            .then((res) => {
+              console.log(res);
+
+              if (res.status == 200) {
+                this.FETCH_TANK_INFO();
+                console.log("==> TANK INFO IMG UPLOAD: DONE");
+                this.isLoading = false;
+              }
+            })
+            .catch((error) => {
+              this.isLoading = false;
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        } else {
+          this.$ons.notification.alert("File size too large. (20 MB max)");
+          const file = document.getElementById("pic-upload-btn");
+          file.val = "";
           this.isLoading = false;
-        });
+        }
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only JPEG/PNG file can be uploaded."
+        );
+        const file = document.getElementById("pic-upload-btn");
+        file.val = "";
+        this.isLoading = false;
+      }
+    },
+    DELETE_PIC(file_path, pic_type) {
+      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+        if (res == 1) {
+          this.isLoading = true;
+          console.log("==> TANK INFO IMG DELETE: START");
+          var id_tag = this.$route.params.id_tag;
+          console.log("==> ID TAG (TANK): " + id_tag);
+          axios({
+            method: "delete",
+            url: "/tank-info/delete-pic",
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
+            },
+            data: {
+              id_tag: id_tag,
+              file_path: file_path,
+              type: pic_type,
+            },
+          })
+            .then((res) => {
+              console.log(res);
+
+              if (res.status == 200) {
+                this.FETCH_TANK_INFO();
+                console.log("==> TANK INFO IMG DELETE: DONE");
+                this.isLoading = false;
+              }
+            })
+            .catch((error) => {
+              this.isLoading = false;
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        }
+      });
+    },
+    PREVIEW_PIC(img) {
+      if (img) {
+        this.previewImg = img;
+      }
+    },
+    PREVIEW_PIC_CLOSE() {
+      this.previewImg = "";
     },
   },
 };
@@ -421,7 +541,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .report-sheet {
   max-width: 100%;
@@ -489,5 +609,23 @@ export default {
 }
 .info-tab-display {
   display: flex;
+}
+
+.pic-toolbar-btn {
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 44px;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  margin-top: 10px !important;
+}
+.toolbar-button {
+  padding: 0;
 }
 </style>

@@ -47,8 +47,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .image-preview-wrapper {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -59,9 +59,9 @@ export default {
     padding: 10px;
     width: fit-content;
     min-width: 200px;
-    max-width: calc(100vw - 140px);
+    max-width: calc(100vw - 150px);
     height: fit-content;
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 200px);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -72,8 +72,8 @@ export default {
     img {
       width: 100%;
       height: 100%;
-      max-width: calc(100vw - 140px);
-      max-height: calc(100vh - 140px);
+      max-width: calc(100vw - 150px);
+      max-height: calc(100vh - 200px);
       object-fit: contain;
     }
     .btn-close {

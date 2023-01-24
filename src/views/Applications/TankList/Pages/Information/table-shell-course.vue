@@ -250,7 +250,7 @@ export default {
     FETCH_TANK_COURSE() {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
-      console.log("ID TAG: " + id_tag);
+      // console.log("ID TAG: " + id_tag);
       axios({
         method: "post",
         url: "tank-course/tank-course-by-tank-id",
@@ -262,8 +262,8 @@ export default {
         },
       })
         .then((res) => {
-          console.log("tank course:");
-          console.log(res);
+          // console.log("tank course:");
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.courseList = res.data;
           }
@@ -284,8 +284,8 @@ export default {
         },
       })
         .then((res) => {
-          console.log("material:");
-          console.log(res);
+          // console.log("material:");
+          // console.log(res);
           if (res.status == 200 && res.data) {
             this.matList = res.data;
           }
