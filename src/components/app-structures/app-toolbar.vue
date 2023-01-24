@@ -10,6 +10,7 @@
         <span>Back</span>
       </v-ons-toolbar-button>
       <span
+        v-if="infoTank"
         style="
           position: absolute;
           top: 6px;
