@@ -9,7 +9,11 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
-    <div id="page-container-view" class="list-page">
+    <div
+      id="page-container-view"
+      class="list-page"
+      v-if="this.id_inspection_record"
+    >
       <v-ons-list>
         <v-ons-list-header>
           Inspection Details of
@@ -78,6 +82,17 @@
       </div>
       <Loading v-if="isLoading == true" text="Loading" />
     </div>
+    <div class="list-page" v-if="this.id_inspection_record == ''">
+      <div class="center-box-wrapper">
+        <div class="page-content-message-wrapper">
+          <i class="las la-search"></i>
+          <span>
+            Select inspection record <br />
+            to view information</span
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template> 
 
@@ -109,7 +124,7 @@ export default {
     return {
       id_tag: this.$route.params.id_tag,
       id_checklist: this.$route.params.id_checklist,
-      id_inspection_record: null,
+      id_inspection_record: "",
       checklistList: {
         generic: [],
         ilast_ext: [],
