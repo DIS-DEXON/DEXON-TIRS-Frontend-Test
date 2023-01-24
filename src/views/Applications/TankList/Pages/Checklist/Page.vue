@@ -177,22 +177,26 @@ export default {
   },
   methods: {
     VIEW_ITEM(item) {
+      // this.SCROLL_TOP("page-container-view");
       this.current_view = item;
       console.log("VIEW_ITEM: ");
       console.log(item);
       this.CLEAR_CURRENT_VIEW();
       this.id_inspection_record = item.id_inspection_record;
-      this.SCROLL_TOP("page-container-view");
+
       if (this.id_checklist == 1) {
         this.CHECK_EXIST_RESULT_GENERIC(item.id_inspection_record);
-      } else if (this.id_checklist == 2)
+      } else if (this.id_checklist == 2) {
         this.CHECK_EXIST_RESULT_ILAST_EXT(item.id_inspection_record);
-      else if (this.id_checklist == 3)
+      } else if (this.id_checklist == 3) {
         this.CHECK_EXIST_RESULT_ILAST_INT(item.id_inspection_record);
-      else console.log("view checklist failed");
+      } else console.log("view checklist failed");
     },
+
     CREATE_CHECKLIST() {
-      console.log("CREATE NEW CHECKLIST SHEET: " + this.id_inspection_record);
+      console.log(
+        "==> CREATE NEW CHECKLIST SHEET: id_insp: " + this.id_inspection_record
+      );
       var form = this.id_checklist;
       if (form == 1) {
         this.isLoading = true;
@@ -204,14 +208,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_inspection_record: this.id_inspection_record,
+            id_insp_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (generic)");
-              this.VIEW_ITEM(this.id_inspection_record);
+              this.VIEW_ITEM(this.current_view);
             }
           })
           .catch((error) => {
@@ -230,14 +234,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_inspection_record: this.id_inspection_record,
+            id_insp_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (ilast ext)");
-              this.VIEW_ITEM(this.id_inspection_record);
+              this.VIEW_ITEM(this.current_view);
             }
           })
           .catch((error) => {
@@ -256,14 +260,14 @@ export default {
               "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
           data: {
-            id_inspection_record: this.id_inspection_record,
+            id_insp_record: this.id_inspection_record,
           },
         })
           .then((res) => {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (ilast int)");
-              this.VIEW_ITEM(this.id_inspection_record);
+              this.VIEW_ITEM(this.current_view);
             }
           })
           .catch((error) => {
@@ -369,6 +373,38 @@ export default {
           }
         });
     },
+
+    //GENERIC
+    CHECK_EXIST_RESULT_GENERIC(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (General): " + id_inspection_record);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-generic/check-chkgeneric",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_insp_record: id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data == true) {
+            this.checklistList_existance.general = true;
+            this.FETCH_CHECKLIST_GENERIC(id_inspection_record);
+          } else {
+            this.checklistList_existance.general = false;
+            console.log("CHECK RESULT EXIST (General): FALSE");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_CHECKLIST_GENERIC(id_inspection_record) {
       console.log("FECTH INSPECTION RECORD: " + id_inspection_record);
       this.isLoading = true;
@@ -396,12 +432,14 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_GENERIC(id_inspection_record) {
-      console.log("CHECK RESULT EXIST (General): " + id_inspection_record);
+
+    //ILAST_EXT
+    CHECK_EXIST_RESULT_ILAST_EXT(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (ilast ext): " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
-        url: "chk-generic/check-chkgeneric",
+        url: "chk-ilast-ex/check-chkilastex",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -410,13 +448,12 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.data == true) {
-            this.checklistList_existance.general = true;
-            this.FETCH_CHECKLIST_GENERIC(id_inspection_record);
+            this.checklistList_existance.ilast_ext = true;
+            this.FETCH_CHECKLIST_ILAST_EXT(id_inspection_record);
           } else {
-            this.checklistList_existance.general = false;
-            console.log("CHECK RESULT EXIST (General): FALSE");
+            this.checklistList_existance.ilast_ext = false;
+            console.log("CHECK RESULT EXIST(ilast ext): FALSE");
           }
         })
         .catch((error) => {
@@ -452,12 +489,14 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_ILAST_EXT(id_inspection_record) {
+
+    //ILAST_INT
+    CHECK_EXIST_RESULT_ILAST_INT(id_inspection_record) {
       console.log("CHECK RESULT EXIST (ilast ext): " + id_inspection_record);
       this.isLoading = true;
       axios({
         method: "post",
-        url: "chk-ilast-ex/check-chkilastex",
+        url: "chk-ilast-in/check-chkilastin",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -467,11 +506,11 @@ export default {
       })
         .then((res) => {
           if (res.data == true) {
-            this.checklistList_existance.ilast_ext = true;
-            this.FETCH_CHECKLIST_ILAST_EXT(id_inspection_record);
+            this.checklistList_existance.ilast_int = true;
+            this.FETCH_CHECKLIST_ILAST_INT(id_inspection_record);
           } else {
-            this.checklistList_existance.ilast_ext = false;
-            console.log("CHECK RESULT EXIST(ilast ext): FALSE");
+            this.checklistList_existance.ilast_int = false;
+            console.log("CHECK RESULT EXIST(ilast int): FALSE");
           }
         })
         .catch((error) => {
@@ -507,35 +546,7 @@ export default {
           this.isLoading = false;
         });
     },
-    CHECK_EXIST_RESULT_ILAST_INT(id_inspection_record) {
-      console.log("CHECK RESULT EXIST (ilast ext): " + id_inspection_record);
-      this.isLoading = true;
-      axios({
-        method: "post",
-        url: "chk-ilast-in/check-chkilastin",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_insp_record: id_inspection_record,
-        },
-      })
-        .then((res) => {
-          if (res.data == true) {
-            this.checklistList_existance.ilast_int = true;
-            this.FETCH_CHECKLIST_ILAST_INT(id_inspection_record);
-          } else {
-            this.checklistList_existance.ilast_int = false;
-            console.log("CHECK RESULT EXIST(ilast int): FALSE");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
+
     CLEAR_CURRENT_VIEW() {
       this.checklistList = {
         generic: [],
