@@ -12,11 +12,26 @@
     </div>
     <v-ons-list v-if="panelHiding == false">
       <v-ons-list-header>Inspection Record</v-ons-list-header>
-      <v-ons-list-item tappable v-for="item in inspectionList" :key="item.id_inspection_record" :id="[item.id_inspection_record]">
+      <v-ons-list-item
+        tappable
+        v-for="item in inspectionList"
+        :key="item.id_inspection_record"
+        :id="[item.id_inspection_record]"
+        v-on:click="VIEW_ITEM(item)"
+        style="cursor: pointer"
+      >
         <div class="center">
           <span class="date">{{ DATE_FORMAT(item.inspection_date) }}</span>
           <span class="campaign">{{ SET_CAMPAIGN(item.id_campaign) }}</span>
-          <span style="position: absolute; bottom: 0; right: 14px; font-size: 12px; color: red;">
+          <span
+            style="
+              position: absolute;
+              bottom: 0;
+              right: 14px;
+              font-size: 12px;
+              color: red;
+            "
+          >
             id_insp: {{ item.id_inspection_record }}
           </span>
         </div>
@@ -63,8 +78,10 @@ export default {
   },
   watch: {
     $route() {
-      if(this.current_view.id_inspection_record) {
-        document.getElementById(this.current_view.id_inspection_record).classList.remove('active');
+      if (this.current_view.id_inspection_record) {
+        document
+          .getElementById(this.current_view.id_inspection_record)
+          .classList.remove("active");
       }
       this.current_view.id_inspection_record = "";
     },
@@ -135,13 +152,17 @@ export default {
       this.$emit("showHidePanel");
     },
     VIEW_ITEM(item) {
-      if(this.current_view.id_inspection_record) {
-        document.getElementById(this.current_view.id_inspection_record).classList.remove('active');
+      if (this.current_view.id_inspection_record) {
+        document
+          .getElementById(this.current_view.id_inspection_record)
+          .classList.remove("active");
       }
       console.log("INSP PANEL: ");
       console.log(item);
       this.$emit("viewItem", item);
-      document.getElementById(item.id_inspection_record).classList.add('active');
+      document
+        .getElementById(item.id_inspection_record)
+        .classList.add("active");
       this.current_view.id_inspection_record = item.id_inspection_record;
     },
   },
@@ -322,7 +343,6 @@ export default {
     color: $web-font-color-black;
     letter-spacing: 1px;
   }
-
 }
 
 .active {

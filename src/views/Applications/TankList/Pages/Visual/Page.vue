@@ -211,7 +211,6 @@
         <DxExport :enabled="true" />
       </DxDataGrid>
     </div>
-
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template> 

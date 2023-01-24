@@ -1,125 +1,122 @@
 <template>
-    <div
-        class="page-container"
-        :class="[
-        pagePanelHiding == false ? 'page-container' : 'page-container-hide',
-        ]"
-    >
-        <InspectionRecordPanel
-        @showHidePanel="SHOW_HIDE_PANEL"
-        @viewItem="VIEW_ITEM"
-        />
-        <div class="list-page" v-if="this.id_inspection_record != ''">
-        <v-ons-list>
-            <v-ons-list-header
-            >Inspection Details of
-            <b>
-                {{ DATE_FORMAT(current_view.inspection_date) }}</b
-            ></v-ons-list-header
-            >
-        </v-ons-list>
-        <div class="content">
-            <div class="table-wrapper">
-            <DxDataGrid
-                id="roundness-grid"
-                key-expr="id_eval"
-                :data-source="plumbnessList"
-                :element-attr="dataGridAttributes"
-                :selection="{ mode: 'single' }"
-                :hover-state-enabled="true"
-                :allow-column-reordering="true"
-                :show-borders="true"
-                :show-row-lines="true"
-                :row-alternation-enabled="false"
-                :word-wrap-enabled="true"
-                @row-inserted="CREATE_PLUMBNESS"
-                @row-updated="UPDATE_PLUMBNESS"
-                @row-removed="DELETE_PLUMBNESS"
-            >
-                <DxFilterRow :visible="true" />
-                <DxHeaderFilter :visible="true" />
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
+      <div class="content">
+        <div class="table-wrapper">
+          <DxDataGrid
+            id="roundness-grid"
+            key-expr="id_eval"
+            :data-source="plumbnessList"
+            :element-attr="dataGridAttributes"
+            :selection="{ mode: 'single' }"
+            :hover-state-enabled="true"
+            :allow-column-reordering="true"
+            :show-borders="true"
+            :show-row-lines="true"
+            :row-alternation-enabled="false"
+            :word-wrap-enabled="true"
+            @row-inserted="CREATE_PLUMBNESS"
+            @row-updated="UPDATE_PLUMBNESS"
+            @row-removed="DELETE_PLUMBNESS"
+          >
+            <DxFilterRow :visible="true" />
+            <DxHeaderFilter :visible="true" />
 
-                <DxEditing
-                :allow-updating="true"
-                :allow-deleting="true"
-                :allow-adding="IS_VISIBLE_ADD()"
-                :use-icons="true"
-                mode="row"
-                />
+            <DxEditing
+              :allow-updating="true"
+              :allow-deleting="true"
+              :allow-adding="IS_VISIBLE_ADD()"
+              :use-icons="true"
+              mode="row"
+            />
 
-                <DxColumn
-                data-field="eval_location"
-                caption="Location"
-                />
+            <DxColumn data-field="eval_location" caption="Location" />
 
-                <DxColumn
-                data-field="bottom_tank"
-                caption="Bottom of Tank (mm)"
-                format="#,##0.00"
-                />
+            <DxColumn
+              data-field="bottom_tank"
+              caption="Bottom of Tank (mm)"
+              format="#,##0.00"
+            />
 
-                <DxColumn
-                data-field="top_tank"
-                caption="Top of Tank (mm)"
-                format="#,##0.00"
-                />
+            <DxColumn
+              data-field="top_tank"
+              caption="Top of Tank (mm)"
+              format="#,##0.00"
+            />
 
-                <DxColumn
-                data-field="deviation"
-                caption="Deviation (mm)"
-                format="#,##0.00"
-                :allow-editing="false"
-                />
+            <DxColumn
+              data-field="deviation"
+              caption="Deviation (mm)"
+              format="#,##0.00"
+              :allow-editing="false"
+            />
 
-                <DxColumn
-                data-field="in_out_ward"
-                caption="Result"
-                :allow-editing="false"
-                />
+            <DxColumn
+              data-field="in_out_ward"
+              caption="Result"
+              :allow-editing="false"
+            />
 
-                <DxColumn
-                data-field="s_value"
-                caption="S (mm)"
-                format="#,##0.00"
-                :allow-editing="false"
-                />
+            <DxColumn
+              data-field="s_value"
+              caption="S (mm)"
+              format="#,##0.00"
+              :allow-editing="false"
+            />
 
-                <DxColumn
-                data-field="st"
-                caption="St (mm)"
-                format="#,##0.00"
-                :allow-editing="false"
-                />
+            <DxColumn
+              data-field="st"
+              caption="St (mm)"
+              format="#,##0.00"
+              :allow-editing="false"
+            />
 
-                <DxColumn
-                data-field="inspection_result"
-                caption="Inspection Result"
-                :allow-editing="false"
-                />
+            <DxColumn
+              data-field="inspection_result"
+              caption="Inspection Result"
+              :allow-editing="false"
+            />
 
-                <DxColumn type="buttons">
-                <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-                <DxButton name="edit" hint="Edit" icon="edit" />
-                <DxButton name="delete" hint="Delete" icon="trash" />
-                </DxColumn>
+            <DxColumn type="buttons">
+              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+              <DxButton name="edit" hint="Edit" icon="edit" />
+              <DxButton name="delete" hint="Delete" icon="trash" />
+            </DxColumn>
 
-                <!-- Configuration goes here -->
-                <!-- <DxFilterRow :visible="true" /> -->
-                <DxScrolling mode="standard" />
-                <DxSearchPanel :visible="false" />
-                <DxPaging :page-size="10" :page-index="0" />
-                <DxPager
-                :show-page-size-selector="true"
-                :allowed-page-sizes="[5, 10, 20]"
-                :show-navigation-buttons="true"
-                :show-info="true"
-                info-text="Page {0} of {1} ({2} items)"
-                />
-                <!-- <DxExport :enabled="true" /> -->
-            </DxDataGrid>
-            </div>
+            <!-- Configuration goes here -->
+            <!-- <DxFilterRow :visible="true" /> -->
+            <DxScrolling mode="standard" />
+            <DxSearchPanel :visible="false" />
+            <DxPaging :page-size="10" :page-index="0" />
+            <DxPager
+              :show-page-size-selector="true"
+              :allowed-page-sizes="[5, 10, 20]"
+              :show-navigation-buttons="true"
+              :show-info="true"
+              info-text="Page {0} of {1} ({2} items)"
+            />
+            <!-- <DxExport :enabled="true" /> -->
+          </DxDataGrid>
         </div>
-        <!-- <div class="app-instruction">
+      </div>
+      <!-- <div class="app-instruction">
             <appInstruction
             title="Instruction"
             desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
@@ -159,19 +156,9 @@
             </table>
             </appInstruction>
         </div> -->
-        </div>
-        <div class="list-page" v-if="this.id_inspection_record == ''">
-        <div class="center-box-wrapper">
-            <div class="page-content-message-wrapper">
-            <i class="las la-search"></i>
-            <span>
-                Select inspection record <br />
-                to view information</span
-            >
-            </div>
-        </div>
-        </div>
     </div>
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
+  </div>
 </template>
 
 <script>
@@ -183,6 +170,7 @@ import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 // import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -217,6 +205,7 @@ export default {
     DxFilterRow,
     // appInstruction,
     InspectionRecordPanel,
+    SelectInspRecord,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {

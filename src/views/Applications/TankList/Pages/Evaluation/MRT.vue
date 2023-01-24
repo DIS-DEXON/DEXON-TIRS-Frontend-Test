@@ -9,7 +9,7 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
-    <div class="list-page" v-if="this.id_inspection_record">
+    <div class="list-page" v-if="this.id_inspection_record && this.dataMRT">
       <v-ons-list>
         <v-ons-list-header
           >Inspection Details of
@@ -286,7 +286,7 @@
     </div>
     <div
       class="list-page"
-      v-if="!this.dataMRT && this.id_inspection_record != ''"
+      v-if="this.dataMRT == null && this.id_inspection_record != ''"
     >
       <div class="center-box-wrapper">
         <v-ons-toolbar-button v-on:click="CREATE_MRT()">
@@ -295,17 +295,7 @@
         </v-ons-toolbar-button>
       </div>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record == ''">
-      <div class="center-box-wrapper">
-        <div class="page-content-message-wrapper">
-          <i class="las la-search"></i>
-          <span>
-            Select inspection record <br />
-            to view information</span
-          >
-        </div>
-      </div>
-    </div>
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template>
 
@@ -319,6 +309,7 @@ import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
 
 //List
 // import { DxList } from "devextreme-vue/list";
@@ -335,6 +326,7 @@ export default {
     // DxList,
     appInstruction,
     InspectionRecordPanel,
+    SelectInspRecord,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -352,7 +344,7 @@ export default {
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
-      id_inspection_record: 0,
+      id_inspection_record: "",
       current_view: {},
       pagePanelHiding: false,
     };

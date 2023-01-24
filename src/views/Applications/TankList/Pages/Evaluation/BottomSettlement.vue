@@ -247,17 +247,7 @@
         </div>
       </div>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record == ''">
-      <div class="center-box-wrapper">
-        <div class="page-content-message-wrapper">
-          <i class="las la-search"></i>
-          <span>
-            Select inspection record <br />
-            to view information</span
-          >
-        </div>
-      </div>
-    </div>
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template>
 
@@ -272,6 +262,7 @@ import "devextreme/dist/css/dx.light.css";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-floor-gradient-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -315,6 +306,7 @@ export default {
     DxFilterRow,
     appInstruction,
     InspectionRecordPanel,
+    SelectInspRecord,
     chart,
   },
   created() {
