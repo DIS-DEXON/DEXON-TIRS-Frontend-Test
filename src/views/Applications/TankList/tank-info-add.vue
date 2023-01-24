@@ -488,7 +488,7 @@ export default {
       this.formData.installation_date = moment(this.formData.installation_date).format("L");
       this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
       console.log(this.formData);
-      if (this.formData.tag_no && this.formData.tank_no && this.formData.installation_date && this.formData.inservice_date && this.formData.inservice_age_of_tank_yrs && this.formData.mat_type && this.formData.tank_capacity_litre && this.formData.tank_height_m && this.formData.max_liquid_level_m && this.formData.diameter_m && this.formData.insulation && this.formData.insulation_thk_mm && this.formData.sg_of_product) {
+      if (this.formData.tag_no && this.formData.tank_no && this.formData.installation_date && this.formData.inservice_date && this.formData.inservice_age_of_tank_yrs && this.formData.mat_type && this.formData.tank_capacity_litre && this.formData.tank_height_m && this.formData.max_liquid_level_m && this.formData.diameter_m && this.formData.insulation && this.formData.insulation_thk_mm !== "" && this.formData.sg_of_product) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
           if (res == 1) {
             const data = this.formData;
