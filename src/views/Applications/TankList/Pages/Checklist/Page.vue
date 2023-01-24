@@ -299,7 +299,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_inspection_record: this.id_inspection_record,
+                  id_insp_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
@@ -325,7 +325,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_inspection_record: this.id_inspection_record,
+                  id_insp_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
@@ -351,7 +351,7 @@ export default {
                     "Bearer " + JSON.parse(localStorage.getItem("token")),
                 },
                 data: {
-                  id_inspection_record: this.id_inspection_record,
+                  id_insp_record: this.id_inspection_record,
                 },
               })
                 .then((res) => {
