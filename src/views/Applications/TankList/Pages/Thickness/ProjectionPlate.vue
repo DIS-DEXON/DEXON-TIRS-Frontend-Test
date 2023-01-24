@@ -17,6 +17,8 @@
           @row-inserted="CREATE_TP"
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
+          @init-new-row="ADDING"
+          @editing-start="EDITING"
           @selection-changed="VIEW_THK"
         >
           <DxFilterRow :visible="true" />
@@ -31,14 +33,15 @@
             mode="form"
           />
 
-          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" />
+          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" :allow-editing="editTpNo"/>
 
-          <DxColumn data-field="tp_num" caption="TP num" width="0"/>
+          <DxColumn data-field="tp_num" caption="TP num" width="0" :allow-editing="editTpNum"/>
 
-          <DxColumn data-field="tp_desc" caption="TP desc" />
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :allow-editing="editTpDesc" />
 
-          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :allow-editing="editTnom"/>
+
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :allow-editing="editTreq"/>
 
           <DxColumn
             data-field="inservice_date"
@@ -46,6 +49,7 @@
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
+            :allow-editing="editInserviceDate"
           />
 
           <DxColumn type="buttons">
@@ -323,6 +327,12 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      editInserviceDate: false,
+      editTnom: false,
+      editTpDesc: false,
+      editTpNo: false,
+      editTreq: false,
+      editTpNum: false,
     };
   },
   computed: {},
@@ -606,6 +616,29 @@ export default {
     SET_FORMAT_DATE(e) {
       console.log(e);
       return moment(e.inspection_date).format("DD MMM yyyy");
+    },
+    EDITING(e) {
+      console.log("EDITING");
+      console.log(e);
+      this.editTpNo = true;
+      this.editTpDesc = true;
+      this.editTnom = true;
+      this.editInserviceDate = true;
+      this.editTpNum = false;
+      this.editTreq = false;
+      // var a = document.querySelectorAll('input.dx-texteditor-input');
+      // console.log(a);
+      // a.filter
+    },
+    ADDING(e) {
+      console.log("ADDING");
+      console.log(e);
+      this.editTpNo = false;
+      this.editTpDesc = false;
+      this.editTnom = true;
+      this.editInserviceDate = true;
+      this.editTpNum = true;
+      this.editTreq = false;
     },
   },
 };
