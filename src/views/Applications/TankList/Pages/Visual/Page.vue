@@ -35,6 +35,7 @@
         @row-removed="DELETE_DWG"
         @editing-start="EDITING_START_DWG"
         @init-new-row="INIT_NEW_ROW_DWG"
+        @row-removing="REMOVING"
         @saved="SAVE"
       >
         <DxEditing
@@ -311,6 +312,8 @@ export default {
       isInitEdit_1: 0,
       isInitEdit_2: 0,
       id_inspection_record: 0,
+      isAdd: 0,
+      isRemove: 0,
       current_view: {},
       inspection_date: "",
       dataGridAttributes: {
@@ -378,8 +381,10 @@ export default {
         });
     },
     CREATE_DWG(e) {
+      console.log("CREATE_DWG");
       console.log(e);
       var formData = new FormData();
+      formData.append("id_visual", 0);
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append(
@@ -390,6 +395,8 @@ export default {
       formData.append("recommendation", e.data.recommendation);
       formData.append("file_1", this.file1);
       formData.append("file_2", this.file2);
+      formData.append("file_path_1", "");
+      formData.append("file_path_2", "");
       formData.append("created_by", this.$store.state.user.id_user);
       formData.append("updated_by", this.$store.state.user.id_user);
 
@@ -418,6 +425,7 @@ export default {
         });
     },
     UPDATE_DWG(e) {
+      console.log("UPDATE_DWG");
       console.log(e);
       console.log("file1:");
       console.log(this.file1);
@@ -517,6 +525,7 @@ export default {
       this.isInitEdit_2 = 1;
     },
     EDITING_START_DWG(e) {
+      console.log("EDITING_START_DWG");
       console.log(e);
       this.pictureLog = e;
       this.imgDwg1 = e.data.file_path_1;
@@ -527,16 +536,26 @@ export default {
       this.file2 = [];
       this.isInitEdit_1 = 0;
       this.isInitEdit_2 = 0;
+      this.isAdd = 0;
+      this.isRemove = 0;
       this.popUpWidth = this.CHECK_SCREEN("w");
     },
-    INIT_NEW_ROW_DWG() {
+    INIT_NEW_ROW_DWG(e) {
+      console.log("INIT_NEW_ROW_DWG");
+      console.log(e);
       this.imgDwg1 = "";
       this.imgDwg2 = "";
       this.file1 = [];
       this.file2 = [];
       this.isInitEdit_1 = 1;
       this.isInitEdit_2 = 1;
+      this.isAdd = 1;
       this.popUpWidth = this.CHECK_SCREEN("w");
+    },
+    REMOVING(e) {
+      console.log("REMOVING");
+      console.log(e);
+      this.isRemove = 1;
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
@@ -569,7 +588,7 @@ export default {
     },
     SAVE(e) {
       console.log(e);
-      if (e.changes.length >= 0) {
+      if (e.changes.length >= 0 && this.isAdd == 0 && this.isRemove == 0) {
         this.UPDATE_DWG(this.pictureLog);
       }
     },
