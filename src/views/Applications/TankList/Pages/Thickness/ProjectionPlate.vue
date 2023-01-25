@@ -671,4 +671,5 @@ export default {
 .data-grid-style {
   height: 100%;
 }
+
 </style>
