@@ -405,18 +405,17 @@ export default {
               if (sha256(this.formData.oldPassword) == this.user.password) {
                 this.$ons.notification.confirm("Confirm Save").then((res) => {
                   if (res == 1) {
-                    const data = {
-                      id_user: this.formData.id_user,
-                      password: sha256(this.formData.confirmPassword),
-                    };
                     axios({
                       method: "put",
-                      url: "/user/change-password",
+                      url: "account-user/change-password",
                       headers: {
                         Authorization:
                           "Bearer " + JSON.parse(localStorage.getItem("token")),
                       },
-                      data: data,
+                      data: {
+                        id_account: this.formData.id_account,
+                        password: sha256(this.formData.confirmPassword),
+                      },
                     })
                       .then((res) => {
                         if (res.status == 200 && res.data) {
