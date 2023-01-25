@@ -62,7 +62,7 @@
             <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
               <i class="las la-pen green"></i>
             </div>
-            <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
+            <div class="table-btn" v-on:click="DELETE_ACCOUNT(data)">
               <i class="las la-trash red"></i>
             </div>
           </div>
@@ -219,24 +219,21 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_ACCOUNT() {
-      let rowID = this.currentViewRow.id_client;
+    DELETE_ACCOUNT(data) {
       this.$ons.notification.confirm("Confirm delete?").then((res) => {
         if (res == 1) {
           axios({
-            method: "delete",
-            url: "/contact-client/client-delete",
+            method: "put",
+            url: "/account-user/delete-dexon-account",
             headers: {
               Authorization:
                 "Bearer " + JSON.parse(localStorage.getItem("token")),
             },
-            data: { id_client: rowID },
+            data: { id_account: data.data.id_account },
           })
             .then((res) => {
               if (res.status == 200) {
-                this.$ons.notification.alert(
-                  "Client contact delete successful"
-                );
+                this.$ons.notification.alert("Account delete successful");
                 this.FETCH_LIST();
               }
             })
