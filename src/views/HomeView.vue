@@ -31,9 +31,7 @@
     </div>
     <div
       class="page-container"
-      v-if="
-        this.user.role_desc == 'admin' || this.user.role_desc == 'super user'
-      "
+      v-if="this.user.id_role == 5 || this.user.id_role == 3"
     >
       <div class="section-label" v-if="showSectionLabel == true">
         <h2 class="page-section-label">Management</h2>

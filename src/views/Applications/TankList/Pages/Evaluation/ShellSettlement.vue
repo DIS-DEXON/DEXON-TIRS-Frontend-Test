@@ -25,19 +25,9 @@
       </div>
       <div v-if="tabCurrent == 'data'" class="tab1-grid">
         <div class="content">
-          <div class="report-sheet">
-            <div class="report-container">
-              <div class="sheet-body">
-                <div class="section-label">
-                  <label>Create evaluation point</label>
-                </div>
-                <div class="form-item"></div>
-              </div>
-            </div>
-          </div>
           <div class="table-wrapper">
             <DxDataGrid
-              id="roundness-grid"
+              id="shell-settlement-point-table"
               key-expr="id_eval"
               :data-source="shellPointList"
               :element-attr="dataGridAttributes"
@@ -48,7 +38,6 @@
               :show-row-lines="true"
               :row-alternation-enabled="false"
               :word-wrap-enabled="true"
-              @row-inserted="CREATE"
               @row-updated="UPDATE"
               @row-removed="DELETE"
             >
@@ -62,6 +51,11 @@
                 :use-icons="true"
                 mode="row"
               />
+
+              <DxToolbar>
+                <DxItem location="before" template="table-header" />
+                <DxItem location="after" template="table-header-button-set" />
+              </DxToolbar>
 
               <DxColumn
                 data-field="location"
@@ -94,6 +88,44 @@
                 <DxButton name="edit" hint="Edit" icon="edit" />
                 <DxButton name="delete" hint="Delete" icon="trash" />
               </DxColumn>
+
+              <template #table-header>
+                <div class="dx-table-style">
+                  <div class="table-header-label">Evaluation Points</div>
+                </div>
+              </template>
+              <template #table-header-button-set>
+                <div class="dx-table-style">
+                  <div class="table-toolbar-set">
+                    <v-ons-toolbar-button
+                      class="table-toolbar-btn"
+                      v-on:click="TOGGLE_POPUP_ADD()"
+                      v-if="shellPointIsEmpty.length == 0"
+                    >
+                      <i class="las la-plus"></i>
+                      <span>Create New Points</span>
+                    </v-ons-toolbar-button>
+
+                    <v-ons-toolbar-button
+                      class="table-toolbar-btn"
+                      v-on:click="DELETE_POINT()"
+                      v-if="shellPointIsEmpty.length > 0"
+                    >
+                      <i class="las la-trash"></i>
+                      <span>Delete All Points</span>
+                    </v-ons-toolbar-button>
+
+                    <v-ons-toolbar-button
+                      class="table-toolbar-btn"
+                      v-on:click="EDIT_UI_ACTIVE()"
+                      v-if="shellPointIsEmpty.length > 0"
+                    >
+                      <i class="las la-edit"></i>
+                      <span>Edit UI Active</span>
+                    </v-ons-toolbar-button>
+                  </div>
+                </div>
+              </template>
 
               <!-- Configuration goes here -->
               <!-- <DxFilterRow :visible="true" /> -->
@@ -260,6 +292,11 @@
       </div>
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
+    <popupAdd
+      v-if="isAdd == true"
+      @closePopup="CLOSE_ADD()"
+      :info="this.current_view"
+    />
   </div>
 </template>
 
@@ -270,11 +307,11 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import VueTabsChrome from "vue-tabs-chrome";
 import SelectInspRecord from "@/components/select-insp-record.vue";
+import popupAdd from "@/views/Applications/TankList/Pages/Evaluation/ShellSettlement-add.vue";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -291,21 +328,13 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
+  DxToolbar,
+  DxItem,
 } from "devextreme-vue/data-grid";
-
-//List
-// import { DxList } from "devextreme-vue/list";
-
-//FileUpload
-//import { DxFileUploader } from "devextreme-vue/file-uploader";
-//import { DxButton } from 'devextreme-vue/button';
-//import { DxItem } from "devextreme-vue/form";
 
 export default {
   name: "ShellSettlementView",
   components: {
-    //VueTabsChrome,
-    //DxList,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -316,10 +345,13 @@ export default {
     DxButton,
     DxHeaderFilter,
     DxFilterRow,
+    DxToolbar,
+    DxItem,
     appInstruction,
     InspectionRecordPanel,
     VueTabsChrome,
     SelectInspRecord,
+    popupAdd,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -333,6 +365,7 @@ export default {
   },
   data() {
     return {
+      isAdd: false,
       shellPointList: {},
       isLoading: false,
       id_inspection_record: "",
@@ -362,6 +395,9 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
+    },
+    shellPointIsEmpty() {
+      return this.shellPointList;
     },
   },
   methods: {
@@ -410,8 +446,12 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE(e) {
-      console.log(e);
+    TOGGLE_POPUP_ADD() {
+      this.isAdd = true;
+    },
+    CLOSE_ADD() {
+      this.VIEW_ITEM(this.current_view);
+      this.isAdd = false;
     },
     UPDATE(e) {
       console.log(e);
@@ -452,6 +492,38 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+    DELETE_POINT() {
+      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+        if (res == 1) {
+          axios({
+            method: "delete",
+            url: "/shell-settlement/delete-shell-settlement",
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token")),
+            },
+            data: {
+              id_inspection_record: this.current_view.id_inspection_record,
+            },
+          })
+            .then((res) => {
+              console.log(res);
+              if (res.status == 200) {
+                this.$ons.notification.alert("Points Deleted");
+                this.VIEW_ITEM(this.current_view);
+              }
+            })
+            .catch((error) => {
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        } else {
+          this.$ons.notification.alert("Please fill all required fields.");
+        }
+      });
     },
   },
 };
@@ -494,7 +566,7 @@ export default {
 }
 
 .app-instruction {
-  // padding-top: 20px;
+  padding-left: 20px;
 
   .img-box {
     width: auto;
@@ -507,10 +579,6 @@ export default {
       object-fit: contain;
     }
   }
-}
-
-.table-wrapper {
-  height: 100%;
 }
 
 .instruction-table {
@@ -533,14 +601,19 @@ export default {
 }
 
 .tab1-grid {
-  display: grid;
-  grid-gap: 20px;
-  width: 100%;
-  grid-template-columns: auto 500px;
+  display: flex;
+  // display: grid;
+  // grid-gap: 20px;
+  // width: 100%;
+  // grid-template-columns: auto 500px;
 }
 
 .tab-top-page {
   background-color: #d9d9da;
+}
+
+.table-wrapper {
+  height: 100%;
 }
 
 .report-sheet {

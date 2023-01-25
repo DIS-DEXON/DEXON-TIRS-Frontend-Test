@@ -1,64 +1,64 @@
 <template>
-  <div class="pm-page">
-    <toolbar
-      pageSubName="Tank List"
-      @refreshInfo="FETCH_TANK_LIST()"
-      @newBtnFn="TOGGLE_POPUP()"
-      :isBackPath="true"
-      isBack_specificPath="/"
-      newBtnLabel="New Tank"
-      :isNewBtn="true"
-      style="grid-column: span 2"
-    />
-    <div class="pm-page-container">
-      <div class="page-container">
-        <DxDataGrid
-          id="data-grid-style"
-          :data-source="tankList"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          @exporting="EXPORT_DATA"
-        >
-          <DxColumn
-            data-field="created_time"
-            :width="0"
-            caption=""
-            sort-order="asc"
-          />
-          <DxColumn :width="200" data-field="tag_no" caption="Tag No" />
-          <DxColumn :width="200" data-field="tank_no" caption="Tank No" />
-          <DxColumn :width="200" data-field="site_name" caption="Location" />
-          <DxColumn :width="200" data-field="site_desc" caption="Site" />
-          <DxColumn data-field="description" caption="Description" />
+  <div class="page-wrapper">
+    <div class="page-toolbar">
+      <toolbar
+        pageSubName="Tank List"
+        @refreshInfo="FETCH_TANK_LIST()"
+        @newBtnFn="TOGGLE_POPUP()"
+        :isBackPath="true"
+        isBack_specificPath="/"
+        newBtnLabel="New Tank"
+        :isNewBtn="true"
+        style="grid-column: span 2"
+      />
+    </div>
+    <div class="page-content">
+      <DxDataGrid
+        id="data-grid-style"
+        :data-source="tankList"
+        :element-attr="dataGridAttributes"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        @exporting="EXPORT_DATA"
+      >
+        <DxColumn
+          data-field="created_time"
+          :width="0"
+          caption=""
+          sort-order="asc"
+        />
+        <DxColumn :width="200" data-field="tag_no" caption="Tag No" />
+        <DxColumn :width="200" data-field="tank_no" caption="Tank No" />
+        <DxColumn :width="200" data-field="site_name" caption="Location" />
+        <DxColumn :width="200" data-field="site_desc" caption="Site" />
+        <DxColumn data-field="description" caption="Description" />
 
-          <DxColumn :width="50" caption="" cell-template="cell-button-set" />
-          <template #cell-button-set="{ data }">
-            <div class="table-btn-group">
-              <div class="table-btn" v-on:click="VIEW_INFO(data)">
-                <i class="las la-search blue"></i>
-              </div>
+        <DxColumn :width="50" caption="" cell-template="cell-button-set" />
+        <template #cell-button-set="{ data }">
+          <div class="table-btn-group">
+            <div class="table-btn" v-on:click="VIEW_INFO(data)">
+              <i class="las la-search blue"></i>
             </div>
-          </template>
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
+          </div>
+        </template>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
     <contentLoading
       text="Loading, please wait..."
@@ -222,26 +222,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pm-page {
-  border: 1px solid #e6e6e6;
-  border-width: 0;
-  background-color: #ffffff;
-  height: 100%;
-
-  .pm-page-container {
-    background-color: #ffffff;
-    padding: 20px 20px 0px 20px;
-    height: calc(100vh - 159px);
-    overflow-y: scroll;
-
-    .page-container {
-      width: 100%;
-      height: 100%;
-      margin: 0 auto;
-    }
-  }
-}
-#data-grid {
-  height: 100%;
-}
+@import "@/style/main.scss";
 </style>
