@@ -1,8 +1,8 @@
 <template>
-  <div class="pm-page">
-    <div class="pm-toolbar">
+  <div class="page-wrapper">
+    <div class="page-toolbar">
       <toolbar
-        pageName="Client Company"
+        pageSubName="Client Company"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="true"
         newBtnLabel="New Client"
@@ -10,92 +10,92 @@
         :isBack="true"
       />
     </div>
-    <div class="pm-page-container">
-      <div class="page-content page-list">
-        <DxDataGrid
-          id="data-grid-style"
-          :data-source="clientCompanyList"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="false"
-          :show-borders="true"
-          :show-row-lines="false"
-          :row-alternation-enabled="true"
-          @exporting="EXPORT_DATA"
-        >
-          <DxColumn
-            data-field="id_company"
-            alignment="center"
-            :width="50"
-            caption="ID"
-          />
-          <DxColumn :width="100" cell-template="column-logo" caption="Logo" />
-          <DxColumn
-            :width="300"
-            data-field="company_name"
-            caption="Company Name"
-          />
-          <DxColumn data-field="location" caption="Location" />
-          <DxColumn data-field="address" caption="Address" />
-          <DxColumn data-field="phone_no" caption="Phone No" />
-          <DxColumn
-            :width="150"
-            data-field="is_domestic"
-            caption="Located in Thailand"
-          />
+    <div class="page-content">
+      <DxDataGrid
+        id="client-company-table"
+        :element-attr="dataGridAttributes"
+        :data-source="clientCompanyList"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="false"
+        :show-borders="true"
+        :show-row-lines="false"
+        :row-alternation-enabled="true"
+        @exporting="EXPORT_DATA"
+      >
+        <DxColumn
+          data-field="id_company"
+          alignment="center"
+          :width="50"
+          caption="ID"
+        />
+        <DxColumn :width="100" cell-template="column-logo" caption="Logo" />
+        <DxColumn
+          :width="300"
+          data-field="company_name"
+          caption="Company Name"
+        />
+        <DxColumn data-field="location" caption="Location" />
+        <DxColumn data-field="address" caption="Address" />
+        <DxColumn data-field="phone_no" caption="Phone No" />
+        <DxColumn
+          :width="150"
+          data-field="is_domestic"
+          caption="Located in Thailand"
+        />
 
-          <DxColumn :width="120" caption="" cell-template="option-btn-set" />
-          <template #column-logo="{ data }">
-            <div class="client-logo">
-              <img :src="baseURL + data.data.logo" />
-            </div>
-          </template>
-          <template #option-btn-password="{ data }">
+        <DxColumn :width="120" caption="" cell-template="option-btn-set" />
+        <template #column-logo="{ data }">
+          <div class="client-logo">
+            <img :src="baseURL + data.data.logo" />
+          </div>
+        </template>
+        <template #option-btn-password="{ data }">
+          <div
+            class="table-btn-group"
+            v-if="data.data.role_desc != 'super user'"
+          >
             <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
+              class="table-btn table-btn-none"
+              v-on:click="RESET_PASSWORD(data)"
             >
-              <div
-                class="table-btn table-btn-none"
-                v-on:click="RESET_PASSWORD(data)"
-              >
-                <i class="las la-undo-alt red"></i>
-                <span class="red">reset password</span>
-              </div>
+              <i class="las la-undo-alt red"></i>
+              <span class="red">reset password</span>
             </div>
-          </template>
-          <template #option-btn-set="{ data }">
-            <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
-            >
-              <div class="table-btn" v-on:click="VIEW_INFO(data)">
-                <i class="las la-search blue"></i>
-              </div>
-              <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
-                <i class="las la-pen green"></i>
-              </div>
-              <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
-                <i class="las la-trash red"></i>
-              </div>
+          </div>
+        </template>
+        <template #option-btn-set="{ data }">
+          <div
+            class="table-btn-group"
+            v-if="data.data.role_desc != 'super user'"
+          >
+            <div class="table-btn" v-on:click="VIEW_INFO(data)">
+              <i class="las la-search blue"></i>
             </div>
-          </template>
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
+            <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
+              <i class="las la-pen green"></i>
+            </div>
+            <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
+              <i class="las la-trash red"></i>
+            </div>
+          </div>
+        </template>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
+
     <popupAdd
       v-if="isAdd == true"
       @btn-cancel-add="TOGGLE_POPUP('add')"
@@ -135,7 +135,7 @@ import {
 import axios from "/axios.js";
 
 //Pages & Structures
-import toolbar from "@/components/app-structures/app-toolbar.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 import popupAdd from "@/views/Applications/ClientCompany/client-add.vue";
 import popupEdit from "@/views/Applications/ClientCompany/client-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
@@ -145,7 +145,7 @@ import clone from "just-clone";
 // import { sha256 } from "js-sha256";
 
 export default {
-  name: "ViewClientList",
+  name: "Client-Company-List",
   components: {
     toolbar,
     DxDataGrid,
@@ -160,6 +160,7 @@ export default {
     popupEdit,
   },
   created() {
+    this.$store.commit("CLEAR_CURRENT_CLIENT");
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Client Company Manager",
       icon: "/img/icon_menu/client/client.png",
@@ -175,6 +176,9 @@ export default {
       currentViewRow: {},
       errorMessage: "",
       editInfo: "",
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {

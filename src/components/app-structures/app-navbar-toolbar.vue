@@ -18,7 +18,7 @@
           font-size: 12px;
           color: red;
         "
-        >id_tank: {{ infoTank.id_tag }}</span
+        >id_tag: {{ infoTank.id_tag }}</span
       >
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="right-col">
-      <div class="search-box">
+      <div class="search-box" v-if="isSearchBox == true">
         <i class="las la-search search"></i>
         <input
           v-model="searchKeyword"
@@ -184,6 +184,7 @@ export default {
     isMoreBtn: Boolean,
     infoTank: Object,
     newBtnLabel: String,
+    isSearchBox: Boolean,
   },
   data() {
     return {

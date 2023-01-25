@@ -1,8 +1,8 @@
 <template>
-  <div class="pm-page">
-    <div class="pm-toolbar">
+  <div class="page-wrapper">
+    <div class="page-toolbar">
       <toolbar
-        pageName="User Account"
+        pageSubName="User Account"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="true"
         newBtnLabel="New Account"
@@ -10,85 +10,79 @@
         :isBack="true"
       />
     </div>
-    <div class="pm-page-container">
-      <div class="page-content page-list">
-        <DxDataGrid
-          id="data-grid-style"
-          :data-source="accountList"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="false"
-          :show-borders="true"
-          :show-row-lines="false"
-          :row-alternation-enabled="true"
-          @exporting="EXPORT_DATA"
-        >
-          <DxColumn
-            data-field="id_account"
-            alignment="center"
-            :width="50"
-            caption="ID"
-          />
-          <DxColumn data-field="emp_no" caption="Employee No" />
-          <DxColumn data-field="prefix_desc" caption="Prefix" :width="80" />
-          <DxColumn data-field="first_name" caption="First Name" />
-          <DxColumn data-field="last_name" caption="Last Name" />
-          <DxColumn data-field="role_desc" caption="Role" />
-          <DxColumn data-field="username" caption="Username" />
-          <DxColumn data-field="position_desc" caption="Position" />
-          <DxColumn data-field="department_desc" caption="Department" />
-          <DxColumn
-            caption="Password"
-            :width="150"
-            cell-template="option-btn-password"
-          />
-          <DxColumn :width="90" caption="" cell-template="option-btn-set" />
-          <template #option-btn-password="{ data }">
+    <div class="page-content">
+      <DxDataGrid
+        id="user-account-table"
+        :element-attr="dataGridAttributes"
+        :data-source="accountList"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="false"
+        :show-borders="true"
+        :show-row-lines="false"
+        :row-alternation-enabled="true"
+        @exporting="EXPORT_DATA"
+      >
+        <DxColumn
+          data-field="id_account"
+          alignment="center"
+          :width="50"
+          caption="ID"
+        />
+        <DxColumn data-field="emp_no" caption="Employee No" />
+        <DxColumn data-field="prefix_desc" caption="Prefix" :width="80" />
+        <DxColumn data-field="first_name" caption="First Name" />
+        <DxColumn data-field="last_name" caption="Last Name" />
+        <DxColumn data-field="role_desc" caption="Role" />
+        <DxColumn data-field="username" caption="Username" />
+        <DxColumn data-field="position_desc" caption="Position" />
+        <DxColumn data-field="department_desc" caption="Department" />
+        <DxColumn
+          caption="Password"
+          :width="150"
+          cell-template="option-btn-password"
+        />
+        <DxColumn :width="90" caption="" cell-template="option-btn-set" />
+        <template #option-btn-password="{ data }">
+          <div class="table-btn-group" v-if="data.data.id_role != 5">
             <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
+              class="table-btn table-btn-none"
+              v-on:click="RESET_PASSWORD(data)"
             >
-              <div
-                class="table-btn table-btn-none"
-                v-on:click="RESET_PASSWORD(data)"
-              >
-                <i class="las la-undo-alt red"></i>
-                <span class="red">reset password</span>
-              </div>
+              <i class="las la-undo-alt red"></i>
+              <span class="red">reset password</span>
             </div>
-          </template>
-          <template #option-btn-set="{ data }">
-            <div
-              class="table-btn-group"
-              v-if="data.data.role_desc != 'super user'"
-            >
-              <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
+          </div>
+        </template>
+        <template #option-btn-set="{ data }">
+          <div class="table-btn-group" v-if="data.data.id_role != 5">
+            <!-- <div class="table-btn" v-on:click="VIEW_INFO(data)">
                 <i class="las la-search blue"></i>
               </div> -->
-              <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
-                <i class="las la-pen green"></i>
-              </div>
-              <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
-                <i class="las la-trash red"></i>
-              </div>
+            <div class="table-btn" v-on:click="TOGGLE_POPUP('edit', data)">
+              <i class="las la-pen green"></i>
             </div>
-          </template>
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
+            <div class="table-btn" v-on:click="DELETE_CLIENT(data)">
+              <i class="las la-trash red"></i>
+            </div>
+          </div>
+        </template>
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
+
     <popupAdd
       v-if="isAdd == true"
       @btn-cancel-add="TOGGLE_POPUP('add')"
@@ -128,7 +122,7 @@ import {
 import axios from "/axios.js";
 
 //Pages & Structures
-import toolbar from "@/components/app-structures/app-toolbar.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 import popupAdd from "@/views/Applications/UserAccountManager/account-add.vue";
 import popupEdit from "@/views/Applications/UserAccountManager/account-edit.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
@@ -138,7 +132,7 @@ import clone from "just-clone";
 import { sha256 } from "js-sha256";
 
 export default {
-  name: "ViewAccountList",
+  name: "User-Account-List",
   components: {
     toolbar,
     DxDataGrid,
@@ -153,6 +147,7 @@ export default {
     popupEdit,
   },
   created() {
+    this.$store.commit("CLEAR_CURRENT_CLIENT");
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "User Account Manager",
       icon: "/img/icon_menu/account/account.png",
@@ -165,9 +160,11 @@ export default {
       isAdd: false,
       isEdit: false,
       isLoading: false,
-      currentViewRow: {},
       errorMessage: "",
       editInfo: "",
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {},
@@ -288,103 +285,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
-.pm-page {
-  border: 1px solid #e6e6e6;
-  border-width: 0 0 0 1px;
-  background-color: #ffffff;
-  height: 100%;
-  // display: grid;
-  // grid-template-rows: 61px auto;
-  // grid-template-columns: auto 360px;
-
-  .pm-page-container {
-    background-color: #ffffff;
-    // padding: 20px 20px 0px 20px;
-    height: calc(100vh - 119px);
-    display: flex;
-    overflow-y: scroll;
-
-    .page-content {
-      width: 100%;
-      height: 100%;
-      margin: 0 auto;
-    }
-    .page-nodata {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .page-list {
-      width: auto;
-      padding: 20px;
-      margin-bottom: 80px;
-    }
-    .page-info {
-      width: auto;
-    }
-  }
-}
-
-.pm-toolbar {
-  grid-column: span 2;
-}
-.border-left {
-  border: 1px solid #e6e6e6;
-  border-width: 0 0 0 1px;
-  padding: 0 !important;
-  height: calc(100vh - 139px) !important;
-}
-.pm-info-sidebar {
-  width: 360px;
-  height: 100%;
-  background: #fff;
-  padding: 0 20px;
-  overflow-y: scroll;
-  position: relative;
-  .pm-section-label {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.75em;
-    line-height: 16px;
-    letter-spacing: -0.08px;
-    color: $web-font-color-black;
-    padding: 20px 0 10px 0;
-    margin: 0;
-    user-select: text;
-  }
-  .form-item-container {
-    display: block;
-  }
-  .pm-sidebar-close-btn {
-    width: 40px;
-    height: 20px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f3f0f0;
-    border-radius: 20px;
-    cursor: pointer;
-    i {
-      font-size: 1.75em;
-    }
-  }
-
-  .pm-sidebar-close-btn:hover {
-    background: #f6f6f6;
-  }
-  .pm-sidebar-close-btn:active {
-    background: #f3f0f0;
-  }
-}
-
-.pm-info-sidebar::-webkit-scrollbar {
-  display: none;
-}
-
-.form-item-container:last-child {
-  margin-bottom: 40px;
-}
 </style>

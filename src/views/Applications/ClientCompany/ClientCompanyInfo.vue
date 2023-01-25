@@ -1,6 +1,6 @@
 <template>
-  <div class="pm-page">
-    <div class="pm-toolbar">
+  <div class="page-wrapper">
+    <div class="page-toolbar">
       <toolbar
         :pageSubName="companyInfo.company_name"
         :isNewBtn="false"
@@ -11,46 +11,45 @@
         @refreshInfo="FETCH_SITE_LIST()"
       />
     </div>
-    <div class="pm-page-container">
-      <div class="page-content page-list">
-        <DxDataGrid
-          id="data-grid-style"
-          key-expr="id"
-          :data-source="siteList"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="false"
-          :show-borders="true"
-          :show-row-lines="false"
-          :row-alternation-enabled="true"
-          @exporting="EXPORT_DATA"
-          @row-inserted="CREATE_SITE"
-          @row-updated="UPDATE_SITE"
-          @row-removed="DELETE_SITE"
-        >
-          <DxColumn data-field="site_name" caption="Site Name" />
-          <DxColumn data-field="site_desc" caption="Site Description" />
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            mode="row"
-          />
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <DxExport :enabled="true" />
-        </DxDataGrid>
-      </div>
+    <div class="page-content">
+      <DxDataGrid
+        id="client-info-table"
+        :element-attr="dataGridAttributes"
+        key-expr="id"
+        :data-source="siteList"
+        :selection="{ mode: 'single' }"
+        :hover-state-enabled="true"
+        :allow-column-reordering="false"
+        :show-borders="true"
+        :show-row-lines="false"
+        :row-alternation-enabled="true"
+        @exporting="EXPORT_DATA"
+        @row-inserted="CREATE_SITE"
+        @row-updated="UPDATE_SITE"
+        @row-removed="DELETE_SITE"
+      >
+        <DxColumn data-field="site_name" caption="Site Name" />
+        <DxColumn data-field="site_desc" caption="Site Description" />
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="true"
+          mode="row"
+        />
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
     </div>
 
     <contentLoading
@@ -82,7 +81,7 @@ import {
 import axios from "/axios.js";
 
 //Pages & Structures
-import toolbar from "@/components/app-structures/app-toolbar.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
@@ -104,6 +103,7 @@ export default {
     contentLoading,
   },
   created() {
+    this.$store.commit("CLEAR_CURRENT_CLIENT");
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Client Company Manager",
       icon: "/img/icon_menu/client/client.png",
@@ -123,6 +123,9 @@ export default {
       currentViewRow: {},
       errorMessage: "",
       editInfo: "",
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
     };
   },
   computed: {

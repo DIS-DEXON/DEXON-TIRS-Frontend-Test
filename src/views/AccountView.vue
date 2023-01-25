@@ -1,13 +1,15 @@
 <template>
-  <div id="page-account" class="page-body">
-    <appNavi :isBack="false" pageName="My Account" />
-    <div class="page-container page-display">
+  <div class="page-wrapper">
+    <div class="page-toolbar">
+      <toolbar pageSubName="My Account" :isBack="true" />
+    </div>
+    <div class="page-content">
       <!-- 
       <div class="form">
         <div class="page-section-button">
           <h2 class="page-section-label">Profile Photo</h2>
           <v-ons-toolbar-button
-            class="popover-button"
+            class="button"
             v-on:click="BTN_EDIT('photo')"
             v-if="isEdit.photo == false"
           >
@@ -39,11 +41,11 @@
           </div>
         </div>
       </div> -->
-      <div class="form" style="grid-row: span 2">
+      <div class="form">
         <div class="page-section-button">
           <h2 class="page-section-label">Personal Informations</h2>
           <v-ons-toolbar-button
-            class="popover-button"
+            class="button"
             v-on:click="BTN_EDIT('info')"
             v-if="isEdit.info == false"
           >
@@ -124,7 +126,7 @@
         <div class="page-section-button">
           <h2 class="page-section-label">Account Setting</h2>
           <v-ons-toolbar-button
-            class="popover-button"
+            class="button"
             v-on:click="BTN_EDIT('account')"
             v-if="isEdit.account == false"
           >
@@ -202,15 +204,16 @@ import { sha256 } from "js-sha256";
 import axios from "/axios.js";
 
 //UI Components
-import appNavi from "@/components/app-structures/app-navbar.vue";
+
 import ViewLayout from "@/layouts/non-sidebar-layout.vue";
 // import DxDateBox from "devextreme-vue/date-box";
 // import DxSelectBox from "devextreme-vue/select-box";
 import PageLoading from "@/components/app-structures/app-loading.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 
 export default {
   name: "AccountView",
-  components: { appNavi, PageLoading },
+  components: { PageLoading, toolbar },
   data() {
     return {
       user: "",
@@ -472,18 +475,20 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 @import "@/style/form.scss";
-#page-account {
-  overflow: scroll;
-  height: calc(100% - 54px);
+.page-content {
+  display: block;
 }
 
-#page-account::-webkit-scrollbar {
-  display: none;
-}
 .form {
   margin: 0 auto;
+  margin-top: 40px;
   // padding: 0 20px;
   width: 100%;
+  .page-section-button {
+    width: 500px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+  }
   .form-item-container {
     display: block !important;
     margin: auto;
@@ -511,47 +516,70 @@ export default {
       }
     }
   }
+
+  .form-button-container {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
   .profile-box {
     margin: 0 auto;
     padding: 20px 0;
     width: 500px;
   }
 }
-
-.page-display {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  padding-top: 20px;
+.form:first-child {
+  margin-top: 0;
 }
 
-.toolbar-button {
-  height: 34px;
-  padding: 0 10px;
-  border: 0;
-  i {
-    margin-right: 6px;
-    margin-left: 0;
-  }
-}
+@media screen and (max-width: 768px) {
+  .form {
+    .page-section-button {
+      width: 100%;
+      padding-bottom: 20px;
+      margin: 0 !important;
+    }
+    .form-item-container {
+      .input-set {
+        grid-template-columns: 50% 50%;
+        .label {
+          height: 20px;
+          grid-column: span 2;
+        }
+        .info {
+          grid-column: span 2;
+          height: 36px;
+          line-height: 36px;
+          padding: 0;
+          text-align: left;
+          text-indent: 10px;
+          margin: 0;
+        }
+        input {
+          height: 36px;
+          padding: 6px 0;
+          margin: 0;
+          grid-column: span 2;
+          font-weight: 500;
+          line-height: 20px;
+        }
+      }
+    }
 
-.toolbar-button:hover {
-  background-color: #0076ff;
-  color: #fff;
-}
-
-.page-section-button {
-  padding: 0 70px;
-}
-
-.form .form-button-container {
-  width: 500px;
-  margin: 0 auto;
-  padding: 20px 0;
-}
-
-@media screen and (max-width: 1024px) {
-  .page-display {
-    display: block;
+    .form-button-container {
+      width: 100%;
+      margin: 0;
+      .button-set {
+        width: calc(100% - 10px);
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 50% 50%;
+        button {
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
   }
 }
 

@@ -13,6 +13,7 @@
       style="grid-column: span 3"
       :infoTank="infoTank"
       :isMoreBtn="true"
+      :isSearchBox="true"
     />
     <sidebar @resizeGridLayout="RESIZE_GRID_LAYOUT()" />
     <div class="pm-page-container">
@@ -24,8 +25,8 @@
 <script>
 import axios from "/axios.js";
 //Structures
-import toolbar from "@/components/app-structures/app-toolbar.vue";
-import sidebar from "@/views/Applications/TankList/sidebar-panel.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
+import sidebar from "@/components/app-structures/app-sidebar-tank.vue";
 
 export default {
   name: "router-template-detail",

@@ -4,9 +4,9 @@
       <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
     </div>
     <div class="page-section info-tab-display" v-if="tabCurrent == 'info'">
-      <div class="report-sheet">
+      <div class="report-sheet" style="grid-row: span 2">
         <div class="report-container">
-          <div class="sheet-body">
+          <div class="sheet-body" style="grid-template-columns: 50% 50%">
             <div class="section-label" style="grid-column: span 2">
               <label>tank specification</label>
             </div>
@@ -20,25 +20,22 @@
             </div>
             <div
               class="form-item"
-              style="grid-column: span 2; grid-row: span 2"
+              style="grid-column: span 2; grid-row: span 2; height: 49px"
             >
-              <div class="form-item-label">
+              <div class="form-item-label" style="height: 36px">
                 <label>Foundation</label>
               </div>
-              <div class="form-item-value">
+              <div class="form-item-value" style="height: 36px">
                 <label>{{ infoTank.foundation }}</label>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="report-sheet"
-        style="width: 500px; height: 100%; margin-left: 20px"
-      >
-        <div class="report-container" style="height: 100%">
-          <div class="sheet-body" style="display: block; height: 100%">
-            <div style="height: 50%">
+      <div class="report-sheet">
+        <div class="report-container">
+          <div class="sheet-body">
+            <div>
               <div class="section-label">
                 <label>overview picture</label>
               </div>
@@ -91,9 +88,15 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="report-sheet">
+        <div class="report-container">
+          <div class="sheet-body">
             <div>
               <div class="section-label">
-                <label>name plate</label>
+                <label>name plate picture</label>
               </div>
 
               <div class="form-item-picture-log">
@@ -144,8 +147,9 @@
           </div>
         </div>
       </div>
+      <shellCourse v-if="tabCurrent == 'info'" style="grid-column: span 2" />
     </div>
-    <shellCourse v-if="tabCurrent == 'info'" />
+
     <div v-if="tabCurrent == 'drawing'">
       <drawingTable />
       <pidTable />
@@ -558,7 +562,7 @@ export default {
       }
     }
     .sheet-body {
-      grid-template-columns: 50% 50%;
+      grid-template-columns: 100%;
       border-radius: 6px;
       overflow: hidden;
       .form-item {
@@ -608,7 +612,11 @@ export default {
   font-weight: 500;
 }
 .info-tab-display {
-  display: flex;
+  width: calc(100% - 60px);
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: calc(100% - 500px) 500px;
+  grid-template-rows: 273px 273px;
 }
 
 .pic-toolbar-btn {

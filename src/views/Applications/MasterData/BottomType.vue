@@ -80,7 +80,7 @@ import {
 
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import toolbar from "@/components/app-structures/app-toolbar.vue";
+import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 
 //API
 import axios from "/axios.js";

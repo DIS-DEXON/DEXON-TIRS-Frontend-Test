@@ -1,5 +1,5 @@
 <template>
-  <div class="page-section" style="padding-top: 0px">
+  <div>
     <DxDataGrid
       id="data-grid-style"
       key-expr="id_tank_course"
@@ -372,20 +372,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
-
-.page-container {
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-}
-
-.page-section {
-  padding: 20px;
-}
-
-.page-section:last-child {
-  padding-bottom: 20px;
-}
 
 .toolbar-button {
   background-color: $web-theme-color-background;
