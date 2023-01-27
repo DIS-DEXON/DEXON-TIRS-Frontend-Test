@@ -195,7 +195,7 @@
 
               <DxColumn
                 data-field="location"
-                caption="Dato Point"
+                caption="Data Point"
                 :allow-editing="false"
               />
 

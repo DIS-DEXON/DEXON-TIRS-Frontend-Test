@@ -16,13 +16,24 @@ export default {
       theTemplate: null,
       status: "",
       data1: {
-              "Beers": [
-                { "Brand": "Carlsberg", "Price": 1 },
-                { "Brand": "Leaf Blonde", "Price": 2 },
-                { "Brand": "Weihenstephan", "Price": 1.5 }
-              ],
+              "tank_no": "T-001",
+              "company_name": "PTTLNG PLC",
+              "terminal": "Terminal 1",
+              "location": "Rayong, Thailand",
+              "insp_date": "Jan 01, 2023",
               "header": "Tank Report Management",
-            },
+              "shell_settlement_point": [
+                {"location": 1, "cumulative": 5001, "relative_level": 3001},
+                {"location": 2, "cumulative": 5002, "relative_level": 3002},
+                {"location": 3, "cumulative": 5003, "relative_level": 3003},
+                {"location": 4, "cumulative": 5004, "relative_level": 3004},
+                {"location": 5, "cumulative": 5005, "relative_level": 3005},
+                {"location": 6, "cumulative": 5006, "relative_level": 3006},
+                {"location": 7, "cumulative": 5007, "relative_level": 3007},
+                {"location": 8, "cumulative": 5008, "relative_level": 3008},
+                {"location": 9, "cumulative": 5009, "relative_level": 3009},
+              ]
+      },
       // filename: "example.txt",
       // blob: new Blob(["example text"])
     }
@@ -31,7 +42,7 @@ export default {
   methods: {
     async getTemplate() {
       if (this.theTemplate) return this.theTemplate;
-      const request = await fetch("/report_template/template.docx");
+      const request = await fetch("/report_template/Inspection Report Template.docx");
       console.log(request);
       this.theTemplate = await request.blob();
     },

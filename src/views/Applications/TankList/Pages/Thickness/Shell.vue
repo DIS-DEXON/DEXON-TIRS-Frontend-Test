@@ -259,7 +259,7 @@
             </div>
           </template>
 
-          <DxColumn data-field="id_tank_course" caption="Shell course" />
+          <DxColumn data-field="course_no" caption="Shell course" />
 
           <DxColumn data-field="plate_no" caption="Plate no" />
 
