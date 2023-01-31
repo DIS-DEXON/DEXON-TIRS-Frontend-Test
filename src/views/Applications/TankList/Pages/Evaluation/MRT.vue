@@ -429,7 +429,7 @@ export default {
           if (res.status == 200 && res.data) {
             console.log("MRT Created");
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {
@@ -452,7 +452,7 @@ export default {
           if (res.status == 200 && res.data) {
             console.log("MRT Updated");
             console.log(res.data);
-            this.VIEW_ITEM(this.id_inspection_record);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch((error) => {

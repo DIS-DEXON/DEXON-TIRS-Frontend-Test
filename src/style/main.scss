@@ -1309,6 +1309,7 @@ td {
         cursor: text;
         font-size: 20px;
         font-weight: 700;
+        color: $web-font-color-blue ;
     }
 
     .table-toolbar-set {
@@ -1343,5 +1344,18 @@ td {
         .table-toolbar-btn:last-child {
             margin-right: 0 !important;
         }
+    }
+}
+
+.custom-table-header {
+    height: 46px;
+
+    label {
+        line-height: 36px;
+        user-select: text;
+        cursor: text;
+        font-size: 20px;
+        font-weight: 700;
+        color: #140a4b;
     }
 }

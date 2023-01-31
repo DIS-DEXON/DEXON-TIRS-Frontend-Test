@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     FETCH_INSP_RECORD() {
+      console.log("==> FETCH: Inspection Record");
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
@@ -101,7 +102,10 @@ export default {
         },
       })
         .then((res) => {
+          console.log("==> RES: Inspection Record");
+          console.log(res);
           if (res.status == 200 && res.data) {
+            console.log("==> SUCCESS: Inspection Record");
             this.inspectionList = res.data;
           }
         })
@@ -157,7 +161,7 @@ export default {
           .getElementById(this.current_view.id_inspection_record)
           .classList.remove("active");
       }
-      console.log("INSP PANEL: ");
+      console.log("==> VIEW: Inspection Record Item");
       console.log(item);
       this.$emit("viewItem", item);
       document

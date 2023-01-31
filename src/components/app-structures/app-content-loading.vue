@@ -31,7 +31,8 @@ export default {
   width: 100%;
   background-color: #fdfdfd;
   position: absolute;
-  top: 44px;
+  /* top: 44px; */
+  z-index: 999;
   .box {
     display: flex;
     justify-content: center;
