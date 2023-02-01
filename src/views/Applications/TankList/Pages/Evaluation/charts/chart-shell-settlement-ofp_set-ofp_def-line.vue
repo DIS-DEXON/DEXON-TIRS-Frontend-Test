@@ -3,7 +3,7 @@
     <highcharts
       :options="chartOptions"
       v-if="this.chartData"
-      :key="dataList"
+      :key="chartData.length"
     ></highcharts>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
         legend: {
           layout: "horizontal",
           align: "center",
-          verticalAlign: "bottom",
+          verticalAlign: "top",
         },
         plotOptions: {
           series: {
@@ -76,7 +76,7 @@ export default {
           },
           spline: {
             dataLabels: {
-              enabled: true,
+              enabled: false,
               formatter: function () {
                 return this.point.y + " mm";
               },
@@ -85,7 +85,7 @@ export default {
         },
         series: [
           {
-            name: "Level",
+            name: "Out of Plane Settlement Ui",
             data: [],
             color: "#140a4b",
             lineWidth: 2,
@@ -97,7 +97,7 @@ export default {
             },
           },
           {
-            name: "Optimal Cosine Curve",
+            name: "Out of Plane Deflection Si",
             data: [],
             color: "#c12400",
             lineWidth: 2,
@@ -153,7 +153,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get graph point:");
+          console.log("==> FETCH: Graph Level / Cosine");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             var pointData = res.data;
@@ -163,9 +163,11 @@ export default {
                 this.chartOptions.series[0].data.push(
                   pointData[i].out_of_plane
                 );
-                this.chartOptions.series[1].data.push(pointData[i].y);
-                this.chartOptions.xAxis.categories.push(
+                this.chartOptions.series[1].data.push(
                   pointData[i].difference_value
+                );
+                this.chartOptions.xAxis.categories.push(
+                  pointData[i].theta_degrees.toFixed(0)
                 );
               }
             }
@@ -190,7 +192,7 @@ export default {
   border: 1px solid #000;
   border-radius: 6px;
   overflow: hidden;
-  padding-top: 20px;
+  padding: 10px 40px;
   margin-top: 20px;
   .highcharts-container {
     height: 100% !important;

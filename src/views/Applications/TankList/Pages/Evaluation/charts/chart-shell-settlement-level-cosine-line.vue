@@ -3,7 +3,7 @@
     <highcharts
       :options="chartOptions"
       v-if="this.chartData"
-      :key="dataList"
+      :key="chartData.length"
     ></highcharts>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
         legend: {
           layout: "horizontal",
           align: "center",
-          verticalAlign: "bottom",
+          verticalAlign: "top",
         },
         plotOptions: {
           series: {
@@ -76,7 +76,7 @@ export default {
           },
           spline: {
             dataLabels: {
-              enabled: true,
+              enabled: false,
               formatter: function () {
                 return this.point.y + " mm";
               },
@@ -153,7 +153,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get graph point:");
+          console.log("==> FETCH: Graph settlement / deflection");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             var pointData = res.data;
@@ -165,7 +165,7 @@ export default {
                 );
                 this.chartOptions.series[1].data.push(pointData[i].y);
                 this.chartOptions.xAxis.categories.push(
-                  pointData[i].theta_degrees
+                  pointData[i].theta_degrees.toFixed(0)
                 );
               }
             }
@@ -190,7 +190,7 @@ export default {
   border: 1px solid #000;
   border-radius: 6px;
   overflow: hidden;
-  padding-top: 20px;
+  padding: 10px 40px;
   margin-top: 20px;
   .highcharts-container {
     height: 100% !important;

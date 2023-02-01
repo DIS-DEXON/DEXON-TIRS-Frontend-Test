@@ -23,6 +23,7 @@
       <div class="tab-wrapper">
         <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
       </div>
+
       <div v-if="tabCurrent == 'data'" class="tab1-grid">
         <div class="content">
           <div class="table-wrapper">
@@ -503,8 +504,17 @@
             </div>
           </div>
         </div>
-        <chartShellSettlement1 :current_view="this.current_view" />
-        <chartShellSettlement2 :current_view="this.current_view" />
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-gap: 20px;
+            width: calc(100% - 20px);
+          "
+        >
+          <chartShellSettlement1 :current_view="this.current_view" />
+          <chartShellSettlement2 :current_view="this.current_view" />
+        </div>
         <div class="app-instruction" style="margin-top: 20px">
           <appInstruction
             title="Instruction"
@@ -535,12 +545,18 @@
         <div class="custom-table-header">
           <label>Acceptance Determination</label>
         </div>
-        <div class="content">
-          <div class="report-sheet report-sheet-left">
+        <div class="content" v-if="this.acceptDetInfo">
+          <div class="report-sheet">
             <div class="report-container">
               <div class="sheet-body">
                 <div class="section-label" style="grid-column: span 2">
                   <label style="line-height: 34px"
+                    >API 653, Paragraph B.3 - Determination of Permissible
+                    Out-of-Plane Settlement</label
+                  >
+                </div>
+                <div class="section-label" style="grid-row: span 2">
+                  <label style="line-height: 14px"
                     >API 653, Paragraph B.3 - Determination of Permissible
                     Out-of-Plane Settlement</label
                   >
@@ -551,21 +567,428 @@
                 <div class="section-label">
                   <label>The optimal cosine curve is invalid</label>
                 </div>
-                <div class="content-left">
-                  <vue-mathjax :formula="formula"></vue-mathjax>
+                <div class="content-wrapper">
+                  <div class="formula-container">
+                    <img src="/img/formula/opt-cosine-valid.svg" />
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>L : </b> Arc length between measurement points
+                        (ft)(Max. 32 feet)</label
+                      >
+                    </div>
+                    <div class="form-item-unit">
+                      <label>{{
+                        acceptanceDetermination.l_value.toFixed(2)
+                      }}</label>
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>Y :</b> Yield strength (lbf/in2) (Min Specified Yield
+                        Stress [lbf/in2]Obtained from API653 Table 4.1)</label
+                      >
+                    </div>
+                    <div class="form-item-value">
+                      <input v-model="acceptDetInfo.yield" />
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>E :</b> Youngs Modulus (lbf/in2) (30.7 E, 106
+                        psi)(Metals handbook, constant for Mild Steel)</label
+                      >
+                    </div>
+                    <div class="form-item-value">
+                      <input v-model="acceptDetInfo.e" />
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>H :</b> Tank Height (ft) (Obtained from Tank
+                        Data)</label
+                      >
+                    </div>
+                    <div class="form-item-unit">
+                      <label>{{
+                        acceptanceDetermination.tank_height_ft.toFixed(2)
+                      }}</label>
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label> <b>n :</b> Number of measurement points</label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>{{ acceptanceDetermination.points }}</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      padding-top: 40px;
+                    "
+                  >
+                    <div class="form-item-label">
+                      <label>
+                        <b>S<sub>max</sub></b></label
+                      >
+                    </div>
+                    <div class="form-item-unit" style="width: 130px">
+                      <label>mm</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label>
+                        <b
+                          >ft &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;
+                        </b></label
+                      >
+                    </div>
+                    <div class="form-item-unit" style="width: 130px">
+                      <label>mm</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label> <b>mm </b></label>
+                    </div>
+                  </div>
                 </div>
-                <div class="content-right"></div>
+                <div class="content-wrapper">
+                  <div class="formula-container">
+                    <img src="/img/formula/opt-cosine-invalid.svg" />
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label> <b>K : </b> API 653, Paragraph B.3.2.2</label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>S<sub>arc</sub> : </b>Effective settlement arc, see
+                        B.2.2.5.1 (ft)</label
+                      >
+                    </div>
+                    <div class="form-item-value">
+                      <input />
+                    </div>
+                  </div>
+
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label> <b>D : </b> Tank inside diameter (ft)</label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>H : </b> Tank Height (ft) (Obtained from Tank
+                        Data)</label
+                      >
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>Y : </b> Yield strength (lbf/in2) (Min Specified
+                        Yield Stress [lbf/in2]Obtained from API653 Table
+                        4.1)</label
+                      >
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label>
+                        <b>E : </b> Youngs Modulus (lbf/in2) (30.7 E, 106
+                        psi)(Metals handbook, constant for Mild Steel)</label
+                      >
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+
+                  <div class="form-item">
+                    <div class="form-item-label">
+                      <label> <b>n : </b> Number of measurement points</label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>mm</label>
+                    </div>
+                  </div>
+
+                  <div
+                    class="form-item"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      padding-top: 40px;
+                    "
+                  >
+                    <div class="form-item-label">
+                      <label>
+                        <b>S<sub>max</sub></b></label
+                      >
+                    </div>
+                    <div class="form-item-unit" style="width: 130px">
+                      <label>mm</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label>
+                        <b
+                          >ft &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;
+                        </b></label
+                      >
+                    </div>
+                    <div class="form-item-unit" style="width: 130px">
+                      <label>mm</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label> <b>mm </b></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="content-wrapper">
+                  <div class="formula-container">
+                    <img src="/img/formula/out-of-plane-settlement.svg" />
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        U<sub>i</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>1491.85</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        U<sub>i-1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>750.00</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        U<sub>i+1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>0.00</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        S&nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>1116.85</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        R<sup>2</sup> &nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>-4.81</label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right">
+                        Predicted deflection (tilt) &nbsp;&nbsp;&nbsp;&nbsp;=
+                      </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>1309.36</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label> mm </label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-item"
+                    style="grid-template-columns: auto 120px 50px"
+                  >
+                    <div class="form-item-label">
+                      <label style="text-align: right"> at </label>
+                    </div>
+                    <div class="form-item-unit">
+                      <label>0.09</label>
+                    </div>
+                    <div class="form-item-label">
+                      <label> degrees </label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="report-sheet report-sheet-right">
+        </div>
+        <div class="content" v-if="this.acceptDetInfo">
+          <div class="report-sheet">
             <div class="report-container">
-              <div class="sheet-body">
+              <div
+                class="sheet-body"
+                style="grid-template-columns: 50% 12.5% 12.5% 12.5% 12.5%"
+              >
                 <div class="section-label">
-                  <label style="line-height: 34px"
-                    >API 653, Paragraph B.3 - Determination of Permissible
-                    Out-of-Plane Settlement</label
+                  <label>Acceptance Criteria</label>
+                </div>
+                <div class="section-label">
+                  <label>Cosine Curve</label>
+                </div>
+                <div class="section-label">
+                  <label>S<sub>max</sub> (mm)</label>
+                </div>
+                <div class="section-label">
+                  <label>S (mm)</label>
+                </div>
+                <div class="section-label">
+                  <label>Inspection Result</label>
+                </div>
+                <div class="form-item" style="grid-row: span 2">
+                  <div
+                    class="form-item-label"
+                    style="
+                      grid-column: span 2;
+                      display: flex;
+                      height: auto;
+                      padding-left: 30px;
+                    "
                   >
+                    <label
+                      >The maximum out of plane deflection, where the greatest
+                      deviation of the bottom from the optimum cosine curve
+                      occurs over the shortest interval between measurements,
+                      shell not exceed the maximum permissible out-of-plane
+                      deflection calculated from formula in B3.2</label
+                    >
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div class="form-item-label" style="grid-column: span 2">
+                    <label style="text-align: center">Valid</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>0.965</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>0.965</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>Not Accepted</label>
+                  </div>
+                </div>
+
+                <div class="form-item">
+                  <div class="form-item-label" style="grid-column: span 2">
+                    <label style="text-align: center">Invalid</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>0.965</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>0.965</label>
+                  </div>
+                </div>
+                <div class="form-item">
+                  <div
+                    class="form-item-unit"
+                    style="grid-column: span 2; width: auto"
+                  >
+                    <label>Not Accepted</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content" v-if="this.acceptDetInfo">
+          <div class="report-sheet">
+            <div class="report-container">
+              <div class="sheet-body" style="grid-template-columns: 100%">
+                <div class="section-label">
+                  <label>Settlement Summary and Recommendation</label>
+                </div>
+                <div class="form-item">
+                  <div class="form-item-label" style="grid-column: span 2">
+                    <label style="text-align: center"
+                      >ยังไม่มี API ไม่มีที่ลงใน Database</label
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -606,7 +1029,6 @@ import SelectInspRecord from "@/components/select-insp-record.vue";
 import popupAdd from "@/views/Applications/TankList/Pages/Evaluation/ShellSettlement-add.vue";
 import popupEditUIActive from "@/views/Applications/TankList/Pages/Evaluation/ShellSettlement-edit-ui-active.vue";
 // import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import { VueMathjax } from "vue-mathjax";
 
 //Charts
 import chartShellSettlement1 from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-shell-settlement-level-cosine-line.vue";
@@ -655,7 +1077,6 @@ export default {
     // contentLoading,
     chartShellSettlement1,
     chartShellSettlement2,
-    "vue-mathjax": VueMathjax,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -673,7 +1094,7 @@ export default {
       current_view: "",
       shellPointList: [],
       settlementCalPointList: [],
-      acceptDetInfo: {},
+      acceptDetInfo: "",
       isAdd: false,
       isEdit: false,
       isLoading: false,
@@ -699,7 +1120,7 @@ export default {
           closable: false,
         },
       ],
-      formula: "$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$",
+      formula: "",
     };
   },
   computed: {
@@ -712,13 +1133,21 @@ export default {
     shellPointIsEmpty() {
       return this.shellPointList;
     },
+    acceptanceDetermination() {
+      var info = {
+        l_value: this.acceptDetInfo.l_value,
+        tank_height_ft: this.acceptDetInfo.tank_height_ft,
+        points: this.acceptDetInfo.points,
+      };
+      return info;
+    },
   },
   watch: {
     tabCurrent() {
-      // if (this.tabCurrent == "data") this.VIEW_ITEM(this.current_view);
-      // else if (this.tabCurrent == "cal") this.FETCH_CALC();
-      // else if (this.tabCurrent == "ad") this.FETCH_ACPT_DET();
-      // else console.log("select tab error");
+      if (this.tabCurrent == "data") this.VIEW_ITEM(this.current_view);
+      else if (this.tabCurrent == "cal") this.FETCH_CALC();
+      else if (this.tabCurrent == "ad") this.FETCH_ACPT_DET();
+      else console.log("select tab error");
     },
     current_view() {
       this.tabCurrent = "data";
@@ -840,8 +1269,8 @@ export default {
           console.log("==> RES: Acceptance Determination");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            console.log("==> SUCCESS: Calculation");
-            this.acceptDetInfo = res.data;
+            console.log("==> SUCCESS: Acceptance Determination");
+            this.acceptDetInfo = res.data[0];
           }
         })
         .catch((error) => {
@@ -1015,6 +1444,7 @@ export default {
   padding: 0 !important;
   margin-top: 0;
   margin-bottom: 20px;
+
   .report-container {
     .header {
       .title {
@@ -1025,19 +1455,21 @@ export default {
       grid-template-columns: repeat(4, 25%);
       border-radius: 6px;
       overflow: hidden;
-      margin-bottom: 20px;
+
       .section-label {
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         label {
           font-size: 12px;
-          text-transform: capitalize;
+          text-transform: none;
           user-select: text;
           cursor: text;
         }
       }
       .form-item {
         .form-item-label {
-          padding: 0;
           height: 50px;
           background-color: #fff;
           border: 0.5px solid #000;
@@ -1050,13 +1482,12 @@ export default {
           }
         }
         .form-item-value {
-          padding: 0;
           grid-column: span 1;
           border: 0.5px solid #000;
           background-color: rgba(255, 255, 0, 0.117);
           input {
             font-weight: 700;
-            padding: 0;
+
             height: 50px;
             text-align: center;
             // margin-right: 20px;
@@ -1091,16 +1522,43 @@ export default {
 }
 
 .tab2-grid {
+  .content {
+    .report-sheet {
+      margin-bottom: 0;
+      .report-container {
+        .header {
+          .title {
+          }
+        }
+        .sheet-body {
+          margin-bottom: 20px;
+          .form-item {
+            .form-item-label {
+              padding: 0;
+            }
+            .form-item-value {
+              padding: 0;
+              input {
+                padding: 0;
+              }
+            }
+          }
+        }
+        .sheet-body:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
 }
 
 .tab3-grid {
   .content {
-    width: calc(100% - 40px);
-    display: grid;
-    grid-template-columns: repeat(3, 33.33%);
-    grid-gap: 20px;
-    .report-sheet-left {
-      grid-column: span 2;
+    // width: calc(100% - 20px);
+    // display: grid;
+    // grid-template-columns: 70% 30%;
+    // grid-gap: 20px;
+    .report-sheet {
       .report-container {
         .header {
           .title {
@@ -1108,84 +1566,70 @@ export default {
           }
         }
         .sheet-body {
-          grid-template-columns: 50% 50%;
+          grid-template-columns: 35% 35% 30%;
+          border: 0.5px solid #000;
+
+          .content-wrapper {
+            border: 0.5px solid #000;
+            padding: 20px;
+          }
 
           .form-item {
+            display: grid;
+            grid-template-columns: auto 120px;
             .form-item-label {
-              padding: 0;
               height: 50px;
               background-color: #fff;
-              border: 0.5px solid #000;
+              border: 0;
               label {
                 user-select: text;
                 cursor: text;
-                font-weight: 700;
+                font-weight: 500;
                 width: 100%;
-                text-align: center;
+                text-align: left;
+                b {
+                  user-select: text;
+                  cursor: text;
+                  font-size: 14px;
+                }
               }
             }
             .form-item-value {
-              padding: 0;
               grid-column: span 1;
-              border: 0.5px solid #000;
-              background-color: rgba(255, 255, 0, 0.117);
+              background-color: #fff;
+              border: 0;
+
               input {
                 font-weight: 700;
-                padding: 0;
-                height: 50px;
+                border: 1px solid #000;
+                background-color: rgba(255, 255, 0, 0.117);
+                height: 36px;
                 text-align: center;
                 // margin-right: 20px;
-                background-color: transparent;
+                border-radius: 4px;
               }
               label {
                 margin: 0 auto;
                 font-weight: 600;
               }
             }
-          }
-        }
-      }
-    }
-    .report-sheet-right {
-      .report-container {
-        .header {
-          .title {
-            grid-column: span 4;
-          }
-        }
-        .sheet-body {
-          grid-template-columns: 100%;
 
-          .form-item {
-            .form-item-label {
-              padding: 0;
-              height: 50px;
-              background-color: #fff;
-              border: 0.5px solid #000;
+            .form-item-unit {
+              border: 0;
+
               label {
                 user-select: text;
                 cursor: text;
-                font-weight: 700;
-                width: 100%;
+                line-height: 36px;
+                width: -webkit-fill-available;
                 text-align: center;
-              }
-            }
-            .form-item-value {
-              padding: 0;
-              grid-column: span 1;
-              border: 0.5px solid #000;
-              background-color: rgba(255, 255, 0, 0.117);
-              input {
                 font-weight: 700;
-                padding: 0;
-                height: 50px;
+                border: 1px solid #000;
+                background-color: #fff;
+                height: 36px;
                 text-align: center;
                 // margin-right: 20px;
-                background-color: transparent;
-              }
-              label {
-                margin: 0 auto;
-                font-weight: 600;
+                border-radius: 4px;
               }
             }
           }
