@@ -5,23 +5,33 @@
       v-if="this.chartData"
       :key="chartData.length"
     ></highcharts>
+    <contentLoading
+      text="Loading, please wait..."
+      v-if="isLoading == true"
+      color="#fc9b21"
+    />
   </div>
 </template>
 
 <script>
 // import moment from "moment";
 import axios from "/axios.js";
+import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 export default {
-  name: "chart-roundness-line",
+  name: "chart-shell-settlement-level-cosine-line",
   props: {
     current_view: Object,
+  },
+  components: {
+    contentLoading,
   },
   created() {
     this.FETCH_POINT();
   },
   data() {
     return {
+      isLoading: false,
       chartData: {},
       chartOptions: {
         chart: {
@@ -140,6 +150,7 @@ export default {
   mounted() {},
   methods: {
     FETCH_POINT() {
+      this.isLoading = true;
       const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -185,6 +196,7 @@ export default {
 
 <style lang="scss" scoped>
 .chart-item {
+  position: relative;
   height: -webkit-fill-available;
   min-height: 200px;
   border: 1px solid #000;
@@ -195,6 +207,10 @@ export default {
   .highcharts-container {
     height: 100% !important;
     margin: auto 0;
+  }
+  .app-content-loading {
+    top: 0;
+    left: 0;
   }
 }
 </style>

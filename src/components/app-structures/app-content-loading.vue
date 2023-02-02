@@ -29,7 +29,7 @@ export default {
 .app-content-loading {
   height: 100%;
   width: 100%;
-  background-color: #fdfdfd;
+  background-color: #ffffffe0;
   position: absolute;
   /* top: 44px; */
   z-index: 999;
