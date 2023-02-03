@@ -676,8 +676,11 @@
                         >
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label>{{
-                          acceptanceDetermination.deflection_ft
+                        <label v-if="!acceptanceDetermination.deflection_ft"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.deflection_ft">{{
+                          acceptanceDetermination.deflection_ft.toFixed(2)
                         }}</label>
                       </div>
                       <div class="form-item-label">
@@ -689,8 +692,11 @@
                         >
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label>{{
-                          acceptanceDetermination.deflection_mm
+                        <label v-if="!acceptanceDetermination.deflection_mm"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.deflection_mm">{{
+                          acceptanceDetermination.deflection_mm.toFixed(2)
                         }}</label>
                       </div>
                       <div class="form-item-label">
@@ -757,7 +763,10 @@
                         >
                       </div>
                       <div class="form-item-unit">
-                        <label>{{ acceptanceDetermination.yield }}</label>
+                        <label v-if="!acceptanceDetermination.yield">-</label>
+                        <label v-if="acceptanceDetermination.yield">{{
+                          acceptanceDetermination.yield
+                        }}</label>
                       </div>
                     </div>
 
@@ -769,7 +778,10 @@
                         >
                       </div>
                       <div class="form-item-unit">
-                        <label>{{ acceptanceDetermination.e }}</label>
+                        <label v-if="!acceptanceDetermination.e">-</label>
+                        <label v-if="acceptanceDetermination.e">{{
+                          acceptanceDetermination.e
+                        }}</label>
                       </div>
                     </div>
 
@@ -796,7 +808,12 @@
                         >
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label>{{ acceptanceDetermination.s_max_in }}</label>
+                        <label v-if="!acceptanceDetermination.s_max_in"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.s_max_in">{{
+                          acceptanceDetermination.s_max_in
+                        }}</label>
                       </div>
                       <div class="form-item-label">
                         <label>
@@ -807,7 +824,12 @@
                         >
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label>{{ acceptanceDetermination.s_max_mm }}</label>
+                        <label v-if="!acceptanceDetermination.s_max_mm"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.s_max_mm">{{
+                          acceptanceDetermination.s_max_mm
+                        }}</label>
                       </div>
                       <div class="form-item-label">
                         <label> <b>mm </b></label>
@@ -828,7 +850,8 @@
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label v-if="!acceptanceDetermination.ui_max">-</label>
+                        <label v-if="acceptanceDetermination.ui_max">{{
                           acceptanceDetermination.ui_max.toFixed(2)
                         }}</label>
                       </div>
@@ -843,8 +866,11 @@
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
-                          acceptanceDetermination.ui_before_max
+                        <label v-if="!acceptanceDetermination.ui_before_max"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.ui_before_max">{{
+                          acceptanceDetermination.ui_before_max.toFixed(2)
                         }}</label>
                       </div>
                     </div>
@@ -858,7 +884,12 @@
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{ acceptanceDetermination.ui_next_max }}</label>
+                        <label v-if="!acceptanceDetermination.ui_next_max"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.ui_next_max">{{
+                          acceptanceDetermination.ui_next_max.toFixed(2)
+                        }}</label>
                       </div>
                     </div>
                     <div
@@ -871,7 +902,10 @@
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{ acceptanceDetermination.st }}</label>
+                        <label v-if="!acceptanceDetermination.st">-</label>
+                        <label v-if="acceptanceDetermination.st">{{
+                          acceptanceDetermination.st
+                        }}</label>
                       </div>
                     </div>
                     <div
@@ -981,7 +1015,10 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>0.965</label>
+                      <label v-if="!acceptanceDetermination.s_value">-</label>
+                      <label v-if="acceptanceDetermination.s_value">{{
+                        acceptanceDetermination.s_value.toFixed(2)
+                      }}</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -989,7 +1026,10 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>0.965</label>
+                      <label v-if="!acceptanceDetermination.st_value">-</label>
+                      <label v-if="acceptanceDetermination.st_value">{{
+                        acceptanceDetermination.st_value.toFixed(2)
+                      }}</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -997,7 +1037,12 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>Not Accepted</label>
+                      <label v-if="!acceptanceDetermination.insp_result"
+                        >-</label
+                      >
+                      <label v-if="acceptanceDetermination.insp_result">{{
+                        acceptanceDetermination.insp_result
+                      }}</label>
                     </div>
                   </div>
 
@@ -1011,7 +1056,10 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>0.965</label>
+                      <label v-if="!acceptanceDetermination.s_max_mm">-</label>
+                      <label v-if="acceptanceDetermination.s_max_mm">{{
+                        acceptanceDetermination.s_max_mm.toFixed(2)
+                      }}</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -1019,7 +1067,10 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>0.965</label>
+                      <label v-if="!acceptanceDetermination.st_value">-</label>
+                      <label v-if="acceptanceDetermination.st_value">{{
+                        acceptanceDetermination.st_value.toFixed(2)
+                      }}</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -1027,7 +1078,15 @@
                       class="form-item-unit"
                       style="grid-column: span 2; width: auto"
                     >
-                      <label>Not Accepted</label>
+                      <label v-if="!acceptanceDetermination.insp_result_invalid"
+                        >-</label
+                      >
+                      <label
+                        v-if="acceptanceDetermination.insp_result_invalid"
+                        >{{
+                          acceptanceDetermination.insp_result_invalid
+                        }}</label
+                      >
                     </div>
                   </div>
                 </div>
@@ -1224,6 +1283,10 @@ export default {
           r_2: this.acceptDetInfo.r_2,
           predicted_tilt: this.acceptDetInfo.predicted_tilt,
           direction_degrees_cw_pi: this.acceptDetInfo.direction_degrees_cw_pi,
+          s_value: this.acceptDetInfo.s_value,
+          st_value: this.acceptDetInfo.st_value,
+          insp_result: this.acceptDetInfo.insp_result,
+          insp_result_invalid: this.acceptDetInfo.insp_result_invalid,
         };
         return info;
       } else return "no data";
