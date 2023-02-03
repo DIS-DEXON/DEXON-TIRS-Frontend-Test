@@ -902,9 +902,11 @@
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label v-if="!acceptanceDetermination.st">-</label>
-                        <label v-if="acceptanceDetermination.st">{{
-                          acceptanceDetermination.st
+                        <label v-if="!acceptanceDetermination.st_value"
+                          >-</label
+                        >
+                        <label v-if="acceptanceDetermination.st_value">{{
+                          acceptanceDetermination.st_value.toFixed(2)
                         }}</label>
                       </div>
                     </div>
