@@ -8,7 +8,7 @@
     >
       <router-view :layout.sync="layout" />
     </component>
-    <footerLabel />
+    <!-- <footerLabel /> -->
     <FullscreenAlertView
       v-if="this.$store.state.status.fullscreenAlert == true"
     />
@@ -17,20 +17,18 @@
 
 <script>
 import topBar from "@/components/app-structures/app-topbar";
-import footerLabel from "@/components/app-structures/app-bottombar";
+// import footerLabel from "@/components/app-structures/app-bottombar";
 import "devextreme/dist/css/dx.light.css";
 import FullscreenAlertView from "@/views/FullscreenAlertView.vue";
 export default {
   components: {
     topBar,
-    footerLabel,
+    // footerLabel,
     FullscreenAlertView,
   },
   created() {
-    if (this.$store.state.status.server == true) {
-      if (JSON.parse(localStorage.getItem("token")))
-        this.$store.commit("VALIDATE_TOKEN");
-    }
+    if (JSON.parse(localStorage.getItem("token")))
+      this.$store.commit("VALIDATE_TOKEN");
   },
   data() {
     return {
@@ -56,7 +54,7 @@ export default {
 
 .app-page {
   width: 100%;
-  height: calc(100vh - 68px);
+  height: calc(100vh - 44px);
   padding-top: 44px;
   overflow: hidden;
 }

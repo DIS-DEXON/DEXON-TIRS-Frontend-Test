@@ -9,7 +9,6 @@
       @showHidePanel="SHOW_HIDE_PANEL"
       @viewItem="VIEW_ITEM"
     />
-
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header>
@@ -374,7 +373,7 @@
                     <div class="form-item-value">
                       <input
                         v-model="formData.multi.abf"
-                        v-on:keyup.enter="EDIT_CAL()"
+                        v-on:keyup.enter="EDIT_CALC()"
                       />
                     </div>
                   </div>
@@ -400,7 +399,7 @@
                     <div class="form-item-value">
                       <input
                         v-model="formData.multi.bbf"
-                        v-on:keyup.enter="EDIT_CAL()"
+                        v-on:keyup.enter="EDIT_CALC()"
                       />
                     </div>
                   </div>
@@ -426,7 +425,7 @@
                     <div class="form-item-value">
                       <input
                         v-model="formData.multi.cbf"
-                        v-on:keyup.enter="EDIT_CAL()"
+                        v-on:keyup.enter="EDIT_CALC()"
                       />
                     </div>
                   </div>
@@ -1298,7 +1297,7 @@ export default {
     tabCurrent() {
       if (this.tabCurrent == "data") this.VIEW_ITEM(this.current_view);
       else if (this.tabCurrent == "cal") this.FETCH_CALC();
-      else if (this.tabCurrent == "ad") this.FETCH_ACPT_DET();
+      else if (this.tabCurrent == "ad") this.FETCH_ACCPT();
       else console.log("tab select error");
     },
     current_view() {
@@ -1308,20 +1307,7 @@ export default {
       this.settlementCalPointList = [];
     },
   },
-  mounted() {
-    if (document.getElementById("my-datatable")) return; // was already loaded
-    var scriptTag = document.createElement("script");
-    scriptTag.src = "https://polyfill.io/v3/polyfill.min.js?features=es6";
-    scriptTag.id = "my-datatable";
-    document.getElementsByTagName("head")[0].appendChild(scriptTag);
-
-    if (document.getElementById("my-datatable")) return; // was already loaded
-    var scriptTag2 = document.createElement("script");
-    scriptTag2.src =
-      "https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js";
-    scriptTag2.id = "my-datatable";
-    document.getElementsByTagName("head")[0].appendChild(scriptTag2);
-  },
+  mounted() {},
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();
@@ -1404,7 +1390,7 @@ export default {
           this.isLoading = false;
         });
     },
-    FETCH_ACPT_DET() {
+    FETCH_ACCPT() {
       console.log("==> FETCH: Acceptance Determination");
       this.isLoading = true;
       const id_tag = this.$route.params.id_tag;
@@ -1434,7 +1420,7 @@ export default {
           this.isLoading = false;
         });
     },
-    EDIT_CAL() {
+    EDIT_CALC() {
       console.log("==> FETCH: Edit Multi Item");
       this.isLoading = true;
       axios({
@@ -1476,7 +1462,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             console.log("==> SUCCESS: Edit Acceptance Criteria");
-            this.FETCH_ACPT_DET();
+            this.FETCH_ACCPT();
           }
         })
         .catch((error) => {

@@ -93,7 +93,7 @@ export default {
 .pm-page {
   display: grid;
   grid-template-columns: 200px calc(100vw - 200px);
-  grid-template-rows: 51px calc(100vh - 119px);
+  grid-template-rows: 51px calc(100vh - 95px);
   transition: all 0.3s;
   .pm-page-container {
     background-color: #fff;

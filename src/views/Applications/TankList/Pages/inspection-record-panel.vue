@@ -64,6 +64,7 @@ export default {
   name: "inspection-record-panel",
   data() {
     return {
+      isLoading: false,
       inspectionList: [],
       campaignList: [],
       panelHiding: false,
@@ -276,7 +277,7 @@ export default {
   .fixed-panel {
     width: 200px;
     position: fixed;
-    bottom: 24px;
+    bottom: 0;
     padding-top: 20px;
     .toolbar-button {
       width: 180px;

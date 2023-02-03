@@ -209,6 +209,7 @@ export default new Vuex.Store({
     CLEAR_CURRENT_CLIENT: (state) => {
       state.currentClient = '';
     },
+
     SIGN_IN: (state, payload) => {
       state.user = payload
     },

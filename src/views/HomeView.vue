@@ -145,7 +145,9 @@ export default {
     this.$emit(`update:layout`, ViewLayout);
     this.$store.commit("CLEAR_CURRENT_INAPP");
     this.user = JSON.parse(localStorage.getItem("user"));
-    this.FETCH_CLIENT_LIST();
+    if (this.$store.state.status.server == true) {
+      this.FETCH_CLIENT_LIST();
+    }
   },
   beforeMount() {},
   mounted() {},
