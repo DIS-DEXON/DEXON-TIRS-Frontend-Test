@@ -707,9 +707,13 @@ h2 {
 
     .logo {
       width: 60px;
-      height: 50px;
+      height: 40px;
       padding-left: 10px;
       cursor: pointer;
+      background-color: #fff;
+      border-radius: 6px;
+      padding: 5px;
+      margin-left: 10px;
       img {
         width: 100%;
         height: 100%;
@@ -721,7 +725,7 @@ h2 {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding-left: 20px;
+      padding-left: 30px;
       cursor: pointer;
 
       label {
