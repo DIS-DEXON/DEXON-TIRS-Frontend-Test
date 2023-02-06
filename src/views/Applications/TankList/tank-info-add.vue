@@ -458,6 +458,14 @@ export default {
         foundation: [],
         site: [],
         now: [],
+        mat_type: [
+          {
+            code: "CS",
+          },
+          {
+            code: "SS",
+          },
+        ],
       },
     };
   },
