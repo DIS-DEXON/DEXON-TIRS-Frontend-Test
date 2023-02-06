@@ -126,7 +126,11 @@ export default {
       formData: {
         is_active: true,
         is_domestic: true,
-        file: "",
+        file: null,
+        address: null,
+        phone_no: null,
+        company_name: "",
+        location: null,
       },
       formSelect: {},
     };

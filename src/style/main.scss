@@ -78,6 +78,10 @@ $web-font-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
         padding: 0 20px;
         padding-bottom: 150px;
     }
+
+    @media screen and (max-width: 425px) {
+        padding: 0 10px;
+    }
 }
 
 .page-body::-webkit-scrollbar {
@@ -688,6 +692,10 @@ hr {
 
     }
 
+    .data-grid-style .dx-datagrid-borders>.dx-datagrid-headers {
+        background-color: #140a4b;
+
+    }
 
 }
 

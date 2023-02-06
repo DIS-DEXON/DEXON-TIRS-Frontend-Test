@@ -54,7 +54,10 @@
       </div>
     </div>
     <div class="page-container">
-      <div class="section-label" v-if="showSectionLabel == true">
+      <div
+        class="section-label"
+        v-if="showSectionLabel == true && this.user.id_role != 1"
+      >
         <h2 class="page-section-label" style="padding-bottom: 30px">Clients</h2>
       </div>
       <div class="searchbar-box">
@@ -63,19 +66,42 @@
           name="search"
           size="50"
           v-model="search_key"
-          placeholder="Client Company Name"
+          placeholder="Search client company name"
           class="query"
         /><span class="icon"><i class="la la-search"></i></span
         ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
           ><i class="la la-close"></i
         ></span>
       </div>
-      <div class="client-list-grid" v-if="!this.search_key">
+      <div
+        class="section-label"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+        v-if="!this.search_key && this.clientListRecent.length > 0"
+      >
+        <h2 class="page-section-label" style="padding-bottom: 20px">
+          Recently Viewed
+        </h2>
+        <v-ons-toolbar-button
+          class="btn"
+          style="margin-right: 8px"
+          v-on:click="CLEAR_RECENT()"
+        >
+          <span>Clear recently viewed</span>
+        </v-ons-toolbar-button>
+      </div>
+      <div
+        class="client-list-recent"
+        v-if="!this.search_key && this.clientListRecent.length > 0"
+      >
         <v-ons-card
           class="client-card"
-          v-for="item in clientList"
+          v-for="item in clientListRecent"
           :key="item.id"
-          v-on:click="VIEW_INFO(item.id_company)"
+          v-on:click="VIEW_INFO(item)"
         >
           <div class="client_logo">
             <img :src="baseURL + item.logo" alt="client logo" />
@@ -83,18 +109,47 @@
           <div class="title">{{ item.company_name }}</div>
         </v-ons-card>
       </div>
-      <div class="client-list-grid" v-if="this.search_key">
-        <v-ons-card
-          class="client-card"
-          v-for="item in clientListFiltered"
+      <div class="section-label">
+        <h2 class="page-section-label" style="padding-top: 40px">
+          {{ client_list_section_label }}
+        </h2>
+      </div>
+      <div class="client-list-list" v-if="!this.search_key">
+        <div
+          class="item"
+          v-for="item in clientList"
           :key="item.id"
-          v-on:click="VIEW_INFO(item.id_company)"
+          v-on:click="VIEW_INFO(item)"
         >
-          <div class="client_logo">
+          <div class="logo">
             <img :src="baseURL + item.logo" alt="client logo" />
           </div>
-          <div class="title">{{ item.company_name }}</div>
-        </v-ons-card>
+          <div class="name">
+            <label>{{ item.company_name }}</label>
+          </div>
+
+          <div class="icon">
+            <i class="las la-search"></i>
+          </div>
+        </div>
+      </div>
+      <div class="client-list-list" v-if="this.search_key">
+        <div
+          class="item"
+          v-for="item in clientListFiltered"
+          :key="item.id"
+          v-on:click="VIEW_INFO(item)"
+        >
+          <div class="logo">
+            <img :src="baseURL + item.logo" alt="client logo" />
+          </div>
+          <div class="name">
+            <label>{{ item.company_name }}</label>
+          </div>
+          <div class="icon">
+            <i class="las la-search"></i>
+          </div>
+        </div>
       </div>
     </div>
     <AppLoading
@@ -132,6 +187,7 @@ export default {
       user: null,
       clientList: [],
       clientListFiltered: [],
+      clientListRecent: [],
       search_key: "",
     };
   },
@@ -145,7 +201,9 @@ export default {
     this.$emit(`update:layout`, ViewLayout);
     this.$store.commit("CLEAR_CURRENT_INAPP");
     this.user = JSON.parse(localStorage.getItem("user"));
+
     if (this.$store.state.status.server == true) {
+      this.CHECK_RECENT_EXIST();
       this.FETCH_CLIENT_LIST();
     }
   },
@@ -184,10 +242,13 @@ export default {
         this.isOpening = false;
       }
     },
-    VIEW_INFO(id_client) {
-      if (id_client) {
-        this.$store.commit("UPDATE_CURRENT_VIEW_CLIENT", id_client);
-        this.$router.push("/tank/client/" + id_client);
+    VIEW_INFO(item) {
+      console.log(item);
+      if (item.id_company) {
+        this.KEEP_RECENT(item);
+
+        this.$store.commit("UPDATE_CURRENT_VIEW_CLIENT", item.id_company);
+        this.$router.push("/tank/client/" + item.id_company);
       }
     },
     SEARCH_GET(searchValue) {
@@ -210,6 +271,47 @@ export default {
         this.$router.push(path);
       }
     },
+    CHECK_RECENT_EXIST() {
+      var check = JSON.parse(localStorage.getItem("recent_client"));
+      console.log(check);
+      if (check == null) {
+        var list = [];
+        localStorage.setItem("recent_client", JSON.stringify(list));
+      }
+      this.clientListRecent = JSON.parse(localStorage.getItem("recent_client"));
+    },
+    KEEP_RECENT(item) {
+      var list = JSON.parse(localStorage.getItem("recent_client"));
+
+      var exist;
+
+      var a = list.filter((list) => list.id_company == item.id_company);
+      if (a.length > 0) exist = 1;
+      else exist = 0;
+
+      var upload = list;
+      if (exist == 0) {
+        upload.unshift(item);
+        localStorage.setItem("recent_client", JSON.stringify(upload));
+      } else {
+        for (var i = 0; i < upload.length; i++) {
+          if (upload[i].id_company == item.id_company) {
+            upload.splice(i, 1);
+            break;
+          }
+        }
+        upload.unshift(item);
+        localStorage.setItem("recent_client", JSON.stringify(upload));
+      }
+    },
+    CLEAR_RECENT() {
+      this.$ons.notification.confirm("Confirm Clear?").then((res) => {
+        if (res == 1) {
+          localStorage.removeItem("recent_client");
+          this.CHECK_RECENT_EXIST();
+        }
+      });
+    },
   },
   computed: {
     baseURL() {
@@ -220,6 +322,13 @@ export default {
     },
     current_date() {
       return moment().format("dddd, LL, hh:mm:ss a");
+    },
+    client_list_section_label() {
+      if (this.search_key && this.clientListFiltered.length == 0)
+        return "Not Found";
+      else if (this.search_key && this.clientListFiltered.length > 0)
+        return "Search Result";
+      else return "All Clients";
     },
   },
 };
@@ -346,11 +455,30 @@ export default {
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.1));
 }
 
-.page-section-label {
-  font-size: 1.75em;
-  font-style: italic;
-  text-transform: capitalize;
-  color: #5b5b5b;
+.section-label {
+  .page-section-label {
+    font-size: 1.75em;
+    font-style: italic;
+    text-transform: capitalize;
+    color: $web-font-color-black;
+    padding-left: 8px;
+  }
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #efefef;
+    padding: 0 15px;
+    height: 34px;
+    border: 0px;
+    span {
+      font-size: 12px;
+      font-weight: 500;
+      color: #303030;
+    }
+  }
 }
 #user-panel {
   background-image: url("/public/img/main-bg.png");
@@ -514,18 +642,26 @@ h2 {
   font-size: 26px;
 }
 
-.client-list-grid {
+.client-list-recent {
   display: grid;
-  grid-template-columns: repeat(5, 20%);
+  grid-template-columns: repeat(6, calc(100% / 6));
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(4, calc(100% / 4));
+  }
+  @media screen and (max-width: 425px) {
+    grid-template-columns: repeat(2, calc(100% / 2));
+  }
 }
 
 .client-card {
   cursor: pointer;
-  height: 220px;
-
+  height: 100%;
+  padding: 6px;
+  margin: 8px;
   .client_logo {
     width: 100%;
-    height: 100px;
+    height: 60px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -539,18 +675,84 @@ h2 {
     }
   }
   .title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-align: center;
   }
 }
 
 .client-card:hover {
-  transition: all 100ms;
+  // transition: all 100ms;
   transform: scale(1.02);
+}
+
+.client-list-list {
+  display: block;
+  width: calc(100% - 16px);
+  padding: 20px 8px;
+  padding-top: 10px;
+
+  .item {
+    width: 100%;
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 70px calc(100% - 120px) 50px;
+    border: 1px solid #e1e1e1;
+    border-width: 0 0 1px 0;
+    cursor: pointer;
+
+    .logo {
+      width: 60px;
+      height: 50px;
+      padding-left: 10px;
+      cursor: pointer;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .name {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding-left: 20px;
+      cursor: pointer;
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: $web-font-color-black;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: left;
+        cursor: pointer;
+      }
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+  .item:hover {
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+  }
 }
 
 .searchbar-box {
@@ -559,7 +761,7 @@ h2 {
   // box-shadow: 0 9px 17px rgb(0 0 0 / 8%);
   box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
   border-radius: 6px;
-  height: 60px;
+  height: 48px;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
@@ -600,11 +802,9 @@ h2 {
     font-size: 22px;
     color: #d2d2d2;
   }
-}
 
-.searchbar-box:hover {
   input {
-    height: 60px;
+    height: 40px;
   }
 }
 </style>
