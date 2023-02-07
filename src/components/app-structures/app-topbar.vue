@@ -121,7 +121,7 @@
           <hr />
 
           <v-ons-toolbar-button
-            class="popover-button popover-button-red mobile-none"
+            class="popover-button popover-button-red"
             v-on:click="SIGN_OUT()"
           >
             <span>Log Out</span>
@@ -340,6 +340,7 @@ export default {
         margin-left: 0px;
         img {
           height: 30px;
+          max-width: 50px;
           -webkit-mask: none !important;
           mask: none !important;
         }

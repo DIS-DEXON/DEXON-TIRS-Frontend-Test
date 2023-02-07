@@ -347,7 +347,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 #page-home {
-  height: calc(100vh - 78px);
+  height: calc(100vh - 44px);
   overflow-y: scroll;
 }
 
@@ -607,24 +607,39 @@ export default {
     grid-template-columns: repeat(4, calc(100% / 4));
   }
   @media screen and (max-width: 425px) {
-    display: block;
-    width: 100%;
+    grid-template-columns: repeat(2, 50%);
+    width: calc(100% - 28px);
   }
 }
 
 .client-card {
   cursor: pointer;
   height: 100%;
-  padding: 10px;
+  padding: 8px 20px;
   margin: 0;
   .client_logo {
     width: 100%;
+    max-width: 80px;
     height: 60px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0 20px 0;
+    margin: 20px auto;
+
+    //Another Style (no background)
+    // width: 60px;
+    // height: 60px;
+    // padding: 10px;
+    // margin: 10px auto;
+    // overflow: hidden;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+    // border-radius: 6px;
+    // background-color: white;
+    // margin-bottom: 14px;
 
     img {
       width: 100%;
@@ -642,6 +657,19 @@ export default {
     text-align: center;
     font-family: "SF Pro", "SF Pro Display", "Helvetica Nueue", "Noto Sans Thai",
       "Roboto", sans-serif !important;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .client_logo {
+      width: 100%;
+      height: 50px;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    .client_logo {
+      width: 100%;
+      height: 40px;
+    }
   }
 }
 

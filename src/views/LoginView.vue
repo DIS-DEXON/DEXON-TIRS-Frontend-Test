@@ -154,7 +154,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 0;
-    // background: linear-gradient(180deg, #140a4b 0%, rgba(39, 89, 168, 0) 100%);
+    background: linear-gradient(180deg, #140a4b 0%, rgba(39, 89, 168, 0) 100%);
   }
 }
 .page-container {
