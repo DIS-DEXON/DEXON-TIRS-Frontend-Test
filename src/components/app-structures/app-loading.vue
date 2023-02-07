@@ -50,10 +50,12 @@ export default {
       filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.1));
     }
     h5 {
+      font-size: 12px;
       color: $web-font-color-grey;
       font-weight: 600;
     }
     h6 {
+      font-size: 12px;
       color: $web-font-color-grey;
       font-weight: 400;
       margin: 10px 0 20px 0;

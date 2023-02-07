@@ -13,17 +13,18 @@
             <i class="las la-home"></i>
           </div>
           <div class="btn-group-separater"></div>
-          <div class="inapp-logo">
+          <!-- <div class="inapp-logo">
             <img :src="this.$store.state.currentInApp.icon" />
             <label for="">{{ this.$store.state.currentInApp.name }}</label>
-          </div>
+          </div> -->
           <div
             class="inapp-logo client-logo"
             v-if="this.$store.state.currentClient"
+            style="padding-left: 15px"
           >
-            <div class="btn-group-separater-client">
+            <!-- <div class="btn-group-separater-client">
               <i class="las la-angle-right"></i>
-            </div>
+            </div> -->
             <img :src="baseURL + this.$store.state.currentClient.logo" />
             <label for="">{{ this.$store.state.currentClient.name }}</label>
           </div>

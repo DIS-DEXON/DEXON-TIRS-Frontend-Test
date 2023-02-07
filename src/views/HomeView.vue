@@ -1,17 +1,15 @@
 <template>
   <div id="page-home" class="page-body">
     <div id="user-panel">
-      <div class="page-container" style="padding-top: 0; padding-bottom: 0">
+      <div
+        class="page-container"
+        style="padding-top: 40px; padding-bottom: 80px"
+      >
         <div class="wrapper">
           <div class="left-col">
             <div class="detail">
               <div class="name">
-                <h2>
-                  <span class="hl">T</span>ank
-                  <span class="hl">I</span>nspection
-                  <span class="hl">M</span>anagement
-                  <span class="hl">S</span>ystem
-                </h2>
+                <h2>Tank Inspection Management System</h2>
                 <h2>{{ user.lastname }}</h2>
               </div>
               <!-- <div class="desc">
@@ -21,65 +19,35 @@
             </div>
           </div>
           <div class="right-col">
-            <v-ons-toolbar-button v-on:click="GO_TO('/account')">
+            <v-ons-toolbar-button
+              v-on:click="GO_TO('/account')"
+              style="background-color: transparent"
+            >
               <span>My Account</span>
               <i class="las la-user-circle"></i>
             </v-ons-toolbar-button>
           </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="page-container"
-      v-if="this.user.id_role == 5 || this.user.id_role == 3"
-    >
-      <div class="section-label" v-if="showSectionLabel == true">
-        <h2 class="page-section-label">Management</h2>
-      </div>
-      <div class="app-drawer-wrapper">
-        <div
-          class="app-item-wrapper"
-          v-for="item in appsList.managementApps"
-          :key="item.id"
-        >
-          <div
-            class="app-item"
-            v-on:click="OPEN_APP(item)"
-            v-if="item.isActive == true"
-          >
-            <img :src="item.icon_menu" />
-            <label>{{ item.name }}</label>
-          </div>
+        <div class="searchbar-box">
+          <input
+            type="text"
+            name="search"
+            size="50"
+            v-model="search_key"
+            placeholder="Search Client"
+            class="query"
+          /><span class="icon"><i class="la la-search"></i></span
+          ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
+            ><i class="la la-close"></i
+          ></span>
         </div>
       </div>
+      <div class="bg-filter"></div>
     </div>
+
     <div class="page-container">
       <div
         class="section-label"
-        v-if="showSectionLabel == true && this.user.id_role != 1"
-      >
-        <h2 class="page-section-label" style="padding-bottom: 30px">Clients</h2>
-      </div>
-      <div class="searchbar-box">
-        <input
-          type="text"
-          name="search"
-          size="50"
-          v-model="search_key"
-          placeholder="Search client company name"
-          class="query"
-        /><span class="icon"><i class="la la-search"></i></span
-        ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
-          ><i class="la la-close"></i
-        ></span>
-      </div>
-      <div
-        class="section-label"
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
         v-if="!this.search_key && this.clientListRecent.length > 0"
       >
         <h2 class="page-section-label" style="padding-bottom: 20px">
@@ -90,7 +58,7 @@
           style="margin-right: 8px"
           v-on:click="CLEAR_RECENT()"
         >
-          <span>Clear recently viewed</span>
+          <span>Clear Recent</span>
         </v-ons-toolbar-button>
       </div>
       <div
@@ -117,7 +85,7 @@
       <div class="client-list-list" v-if="!this.search_key">
         <div
           class="item"
-          v-for="item in clientList"
+          v-for="item in clientListPaged"
           :key="item.id"
           v-on:click="VIEW_INFO(item)"
         >
@@ -148,6 +116,42 @@
           </div>
           <div class="icon">
             <i class="las la-search"></i>
+          </div>
+        </div>
+      </div>
+      <v-ons-toolbar-button
+        style="margin-right: 8px; width: 200px; margin: 0 auto"
+        v-on:click="SHOW_MORE_CLIENT()"
+        v-if="
+          this.clientListPaged.length < this.clientList.length &&
+          !this.search_key
+        "
+      >
+        <span>Show More</span>
+      </v-ons-toolbar-button>
+    </div>
+    <div
+      class="page-container"
+      v-if="
+        (this.user.id_role == 5 || this.user.id_role == 3) && !this.search_key
+      "
+    >
+      <div class="section-label" v-if="showSectionLabel == true">
+        <h2 class="page-section-label">Master Data & Management</h2>
+      </div>
+      <div class="app-drawer-wrapper">
+        <div
+          class="app-item-wrapper"
+          v-for="item in appsList.managementApps"
+          :key="item.id"
+        >
+          <div
+            class="app-item"
+            v-on:click="OPEN_APP(item)"
+            v-if="item.isActive == true"
+          >
+            <img :src="item.icon_menu" />
+            <label>{{ item.name }}</label>
           </div>
         </div>
       </div>
@@ -186,6 +190,7 @@ export default {
       showSectionLabel: true,
       user: null,
       clientList: [],
+      clientListPaged: [],
       clientListFiltered: [],
       clientListRecent: [],
       search_key: "",
@@ -224,6 +229,7 @@ export default {
           if (res.status == 200) {
             console.log("==> LIENT LIST: FETCHED");
             this.clientList = res.data;
+            this.clientListPaged = this.clientList.slice(0, 5);
           }
         })
         .catch((error) => {
@@ -279,6 +285,7 @@ export default {
         localStorage.setItem("recent_client", JSON.stringify(list));
       }
       this.clientListRecent = JSON.parse(localStorage.getItem("recent_client"));
+      this.clientListRecent = this.clientListRecent.slice(0, 6);
     },
     KEEP_RECENT(item) {
       var list = JSON.parse(localStorage.getItem("recent_client"));
@@ -312,6 +319,9 @@ export default {
         }
       });
     },
+    SHOW_MORE_CLIENT() {
+      this.clientListPaged = this.clientList;
+    },
   },
   computed: {
     baseURL() {
@@ -338,7 +348,7 @@ export default {
 @import "@/style/main.scss";
 #page-home {
   height: calc(100vh - 78px);
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 .app-drawer-wrapper {
@@ -456,32 +466,21 @@ export default {
 }
 
 .section-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   .page-section-label {
     font-size: 1.75em;
     font-style: italic;
     text-transform: capitalize;
     color: $web-font-color-black;
     padding-left: 8px;
-  }
-  .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #efefef;
-    padding: 0 15px;
-    height: 34px;
-    border: 0px;
-    span {
-      font-size: 12px;
-      font-weight: 500;
-      color: #303030;
-    }
+    font-weight: 500;
   }
 }
+
 #user-panel {
-  background-image: url("/public/img/main-bg.png");
+  background-image: url("/public/img/main-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -495,22 +494,11 @@ export default {
   }
 
   .wrapper {
-    padding: 80px 0px;
+    height: 150px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .left-col {
-      .photo {
-        width: 96px;
-        height: 96px;
-        border-radius: 100px;
-        overflow: hidden;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
       .detail {
         display: flex;
         flex-direction: column;
@@ -523,11 +511,12 @@ export default {
 
           h2 {
             font-style: normal;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 24px;
             margin: 0 !important;
             text-transform: uppercase;
             letter-spacing: 1pt;
+            user-select: text;
           }
           h2:last-child {
             margin-left: 10px !important;
@@ -561,9 +550,12 @@ export default {
       i {
         color: $web-font-color-white;
         text-shadow: $web-font-shadow;
-        font-size: 16px;
+      }
+      span {
+        font-size: 14px;
       }
       i {
+        font-size: 20px;
         margin-left: 10px;
         margin-right: 0;
       }
@@ -572,93 +564,59 @@ export default {
         background-color: #f0f0f029;
       }
     }
-    @media screen and (max-width: 1024px) {
-      padding: 80px 0px;
-    }
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 0px;
+  }
 
-      .left-col {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-        .photo {
-          width: 100px;
-          height: 100px;
-        }
-        .detail {
-          margin-left: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          // margin-left: 30px;
-          .name {
-            margin: 30px 0 0 0;
-            justify-content: center;
-            text-align: center;
-            h2 {
-              width: 100%;
-              height: 20px;
-              font-size: 2.5em;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-              margin-bottom: 8px !important ;
-            }
-
-            @media screen and (max-width: 425px) {
-              display: block;
-              h2:last-child {
-                margin-left: 0 !important;
-              }
-            }
-          }
-          .desc {
-            width: 100%;
-            justify-content: center;
-            label {
-              text-align: center;
-              font-size: 1.5em;
-              line-height: unset;
-            }
-          }
-        }
-      }
-      .right-col {
-        margin-top: 20px;
-        display: none;
-      }
-    }
+  .bg-filter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, #140a4b 0%, rgba(39, 89, 168, 0) 150%);
   }
 }
 
-h2 {
-  margin: 10px 0;
-  font-size: 26px;
+.toolbar-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #efefef;
+  padding: 0 15px;
+  height: 34px;
+  border: 0px;
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #303030;
+  }
 }
 
 .client-list-recent {
   display: grid;
   grid-template-columns: repeat(6, calc(100% / 6));
+  grid-template-rows: auto;
+  grid-template-rows: auto;
+  grid-gap: 12px;
+  width: calc(100% - 76px);
+  padding: 8px;
+  margin: 0;
 
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(4, calc(100% / 4));
   }
   @media screen and (max-width: 425px) {
-    grid-template-columns: repeat(2, calc(100% / 2));
+    display: block;
+    width: 100%;
   }
 }
 
 .client-card {
   cursor: pointer;
   height: 100%;
-  padding: 6px;
-  margin: 8px;
+  padding: 10px;
+  margin: 0;
   .client_logo {
     width: 100%;
     height: 60px;
@@ -676,12 +634,14 @@ h2 {
   }
   .title {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-align: center;
+    font-family: "SF Pro", "SF Pro Display", "Helvetica Nueue", "Noto Sans Thai",
+      "Roboto", sans-serif !important;
   }
 }
 
@@ -700,13 +660,13 @@ h2 {
     width: 100%;
     padding: 10px 0;
     display: grid;
-    grid-template-columns: 70px calc(100% - 120px) 50px;
+    grid-template-columns: 70px calc(100% - 150px) 80px;
     border: 1px solid #e1e1e1;
     border-width: 0 0 1px 0;
     cursor: pointer;
 
     .logo {
-      width: 60px;
+      width: 40px;
       height: 40px;
       padding-left: 10px;
       cursor: pointer;
@@ -714,9 +674,14 @@ h2 {
       border-radius: 6px;
       padding: 5px;
       margin-left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+
       img {
         width: 100%;
-        height: 100%;
+        height: 30px;
         object-fit: contain;
       }
     }
@@ -725,7 +690,7 @@ h2 {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding-left: 30px;
+      padding-left: 10px;
       cursor: pointer;
 
       label {
@@ -742,7 +707,7 @@ h2 {
     }
 
     .icon {
-      width: 50px;
+      width: 80px;
       height: 50px;
       display: flex;
       justify-content: center;
@@ -771,7 +736,7 @@ h2 {
   justify-content: flex-start;
   align-items: center;
   margin: 0 8px;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
 
   .query {
     position: relative;
@@ -793,8 +758,10 @@ h2 {
     left: 20px;
     pointer-events: none;
     transform: translateY(-50%) scaleX(-1);
-    color: #e0e0e0;
     font-size: 24px;
+    i {
+      color: #d2d2d2;
+    }
   }
 
   .close {

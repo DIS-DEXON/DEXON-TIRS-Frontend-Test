@@ -139,7 +139,7 @@ export default {
 @import "@/style/main.scss";
 
 #page-login {
-  background-image: url("/public/img/main-bg.png");
+  background-image: url("/public/img/main-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -255,7 +255,7 @@ export default {
       font-size: 1.75em;
       line-height: 30px;
       font-style: normal;
-      font-weight: 500;
+      font-weight: 400;
       border-radius: 6px;
     }
     .user,

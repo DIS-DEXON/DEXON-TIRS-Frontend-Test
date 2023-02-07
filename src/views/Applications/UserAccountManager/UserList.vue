@@ -282,4 +282,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
+.data-grid-style {
+  margin-bottom: 100px;
+}
 </style>

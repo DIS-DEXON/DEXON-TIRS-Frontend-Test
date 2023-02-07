@@ -337,6 +337,10 @@ export default {
   }
 }
 
+.data-grid-style {
+  margin-bottom: 100px;
+}
+
 .dx-datagrid-content .dx-datagrid-table .dx-row > td,
 .dx-datagrid-content .dx-datagrid-table .dx-row > tr > td {
   vertical-align: middle !important;
