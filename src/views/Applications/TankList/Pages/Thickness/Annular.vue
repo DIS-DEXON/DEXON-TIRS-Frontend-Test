@@ -2,6 +2,18 @@
   <div class="page-container">
     <div class="page-section">
       <div class="table-wrapper">
+        <v-ons-toolbar-button>
+          <label class="upload-btn" for="cml-upload-btn"
+            ><i class="las la-plus"></i> UPLOAD CML</label
+          >
+        </v-ons-toolbar-button>
+        <input
+          type="file"
+          style="display: none"
+          id="cml-upload-btn"
+          ref="cml_upload_file"
+          @change="UPLOAD_CML()"
+        />
         <DxDataGrid
           id="cml-grid"
           key-expr="id_cml"
@@ -792,6 +804,50 @@ export default {
     SET_FORMAT_DATE(e) {
       console.log(e);
       return moment(e.inspection_date).format("DD MMM yyyy");
+    },
+    UPLOAD_CML() {
+      var file = this.$refs.cml_upload_file.files[0];
+      var id_tag = parseInt(this.$route.params.id_tag);
+      if (
+        file.type ==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+        this.$route.params.id_tag
+      ) {
+        this.isLoading = true;
+        axios({
+          method: "post",
+          url: "/annular-thickness/upload-annular-thk-cml?id_tag=" + id_tag,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            file: file,
+          },
+        })
+          .then((res) => {
+            this.isLoading = false;
+            console.log(res);
+            if (res.status == 204) {
+              this.FETCH_CML();
+              this.FETCH_VIEW();
+            }
+          })
+          .catch((error) => {
+            this.isLoading = false;
+            this.$ons.notification.alert(
+              error.code + " " + error.response.status + " " + error.message
+            );
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
+        );
+      }
     },
   },
 };
