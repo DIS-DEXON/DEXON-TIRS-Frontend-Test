@@ -366,7 +366,7 @@
                           this.settlementCalPointList[0].asv
                         "
                         >{{
-                          this.settlementCalPointList[0].asv.toFixed(2)
+                          this.settlementCalPointList[0].asv.toFixed(4)
                         }}</label
                       >
                     </div>
@@ -392,7 +392,7 @@
                           this.settlementCalPointList[0].bsv
                         "
                         >{{
-                          this.settlementCalPointList[0].bsv.toFixed(2)
+                          this.settlementCalPointList[0].bsv.toFixed(4)
                         }}</label
                       >
                     </div>
@@ -418,7 +418,7 @@
                           this.settlementCalPointList[0].csv
                         "
                         >{{
-                          this.settlementCalPointList[0].csv.toFixed(2)
+                          this.settlementCalPointList[0].csv.toFixed(4)
                         }}</label
                       >
                     </div>
@@ -432,7 +432,7 @@
                 </div>
                 <div class="sheet-body">
                   <div class="section-label" style="grid-column: span 4">
-                    <label>Sum of (Deviation)(Syy)</label>
+                    <label>Sum of Deviation (Syy)</label>
                   </div>
                   <div class="form-item" style="grid-column: span 4">
                     <div class="form-item-label">
@@ -457,7 +457,7 @@
                     </div>
                   </div>
                   <div class="section-label" style="grid-column: span 4">
-                    <label>Sum of (Different)(SSE)</label>
+                    <label>Sum of Different (SSE)</label>
                   </div>
                   <div class="form-item" style="grid-column: span 4">
                     <div class="form-item-label">
@@ -482,7 +482,7 @@
                     </div>
                   </div>
                   <div class="section-label" style="grid-column: span 4">
-                    <label>R = (Syy - SSE)/Syy</label>
+                    <label>R&#178; = (Syy - SSE)/Syy</label>
                   </div>
                   <div class="form-item" style="grid-column: span 4">
                     <div class="form-item-label">
@@ -493,7 +493,7 @@
                           settlementCalPointList[0].r_2
                         "
                         >{{
-                          this.settlementCalPointList[0].r_2.toFixed(2)
+                          this.settlementCalPointList[0].r_2.toFixed(4)
                         }}</label
                       >
                       <label
