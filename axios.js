@@ -9,7 +9,7 @@ const axios = Axios.create({
     baseURL: url,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    timeout: 10000,
+    timeout: 60000,
 })
 
 export default axios
