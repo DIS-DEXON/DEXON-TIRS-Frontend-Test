@@ -71,7 +71,7 @@
             v-on:click="VIEW_INFO(item)"
           >
             <div class="item-img">
-              <i class="las la-folder-open"></i>
+              <i class="las la-drum-steelpan"></i>
             </div>
             <div class="label">
               <label>{{ item.tag_no }}</label>
@@ -101,7 +101,7 @@
             v-on:click="VIEW_INFO(item)"
           >
             <div class="item-img">
-              <i class="las la-folder-open"></i>
+              <i class="las la-drum-steelpan"></i>
             </div>
             <div class="label">
               <label>{{ item.tag_no }}</label>
