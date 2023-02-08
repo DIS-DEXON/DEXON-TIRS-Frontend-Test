@@ -1425,7 +1425,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "shell-settlement/edit-multi-shell-settlement",
+        url: "shell-settlement/edit-shell-settlement-cal",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -1451,7 +1451,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "shell-settlement/edit-multi-shell-settlement",
+        url: "shell-settlement/edit-shell-settlement-acc",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
