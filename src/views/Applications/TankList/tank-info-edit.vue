@@ -5,11 +5,13 @@
         <label>Edit Tank Info</label>
       </div>
       <div class="popup-content form">
-        <div class="form-item-container">
-          <label class="section-text" style="margin-top: 0"
+        <div class="tab-wrapper">
+          <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
+        </div>
+        <div class="form-item-container" v-if="tabCurrent == 1">
+          <!-- <label class="section-text" style="margin-top: 0"
             >General Information</label
-          >
-
+          > -->
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tag No:</p>
@@ -41,7 +43,6 @@
               value-expr="id"
             />
           </div>
-
           <div class="input-set">
             <div class="label-box">
               <p class="label">Description:</p>
@@ -66,7 +67,6 @@
               value-expr="id"
             />
           </div>
-
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Status:</p>
@@ -115,9 +115,9 @@
               placeholder="Year of In-service (year)"
             />
           </div>
-
-          <hr style="grid-column: span 3" />
-          <label class="section-text">Tank Specification</label>
+        </div>
+        <div class="form-item-container" v-if="tabCurrent == 2">
+          <!-- <label class="section-text">Tank Specification</label> -->
 
           <div class="input-set">
             <div class="label-box">
@@ -403,6 +403,7 @@
             />
           </div>
         </div>
+        <div class="form-item-container" v-if="tabCurrent == 3"></div>
       </div>
       <div
         class="popup-content loading-section"
@@ -431,7 +432,10 @@ import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
 import clone from "just-clone";
 // import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
+
+//Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import VueTabsChrome from "vue-tabs-chrome";
 
 export default {
   name: "popup-edit-tank",
@@ -444,6 +448,7 @@ export default {
     // DxLookup,
     // DxDropDownOptions,
     contentLoading,
+    VueTabsChrome,
   },
   data() {
     return {
@@ -472,6 +477,24 @@ export default {
         site: [],
         now: [],
       },
+      tabCurrent: 1,
+      tabs: [
+        {
+          label: "General Information",
+          key: 1,
+          closable: false,
+        },
+        {
+          label: "Tank Specification",
+          key: 2,
+          closable: false,
+        },
+        {
+          label: "ILAST Information",
+          key: 3,
+          closable: false,
+        },
+      ],
     };
   },
   computed: {
@@ -766,5 +789,9 @@ hr {
     left: 0;
     height: calc(100% - 51px);
   }
+}
+
+.tab-wrapper {
+  margin: -20px -20px 10px -20px;
 }
 </style>
