@@ -215,8 +215,8 @@ export default {
     return {
       infoTank: {},
       infoClient: {},
-      tabCurrent: "info",
       file_pic_upload: "",
+      tabCurrent: "info",
       tabs: [
         {
           label: "General Information",
@@ -602,15 +602,6 @@ export default {
   }
 }
 
-.tab-wrapper {
-  height: 48px;
-}
-.vue-tabs-chrome {
-  padding-top: 10px;
-  background-color: #d9d9d9;
-  font-size: 12px;
-  font-weight: 500;
-}
 .info-tab-display {
   width: calc(100% - 60px);
   display: grid;
