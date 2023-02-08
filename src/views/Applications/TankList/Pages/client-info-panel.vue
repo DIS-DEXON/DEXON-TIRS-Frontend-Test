@@ -38,7 +38,7 @@
               <p class="info" v-if="clientInfo.is_domestic == true">
                 Located in Thailand
               </p>
-              <p class="info" v-else>Located out Thailand</p>
+              <p class="info" v-else>Located outside Thailand</p>
             </div>
           </div>
           <!-- <div class="form-button-container">
