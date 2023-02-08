@@ -134,7 +134,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="70" />
 
           <DxColumn data-field="tp_desc" caption="TP desc" />
 
