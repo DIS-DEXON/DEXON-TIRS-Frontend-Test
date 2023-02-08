@@ -1357,6 +1357,9 @@ td {
 
 .custom-table-header {
     height: 46px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     label {
         line-height: 36px;
@@ -1364,7 +1367,37 @@ td {
         cursor: text;
         font-size: 20px;
         font-weight: 700;
-        color: #140a4b;
+        color: $dexon-primary-blue;
+    }
+
+    .table-toolbar-set,
+    .right {
+
+        .toolbar-button {
+            cursor: pointer;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 32px;
+            margin: 0 !important;
+            padding: 0;
+            padding-right: 10px;
+            color: #140a4b;
+            background-color: #fff;
+            border: 1px solid #e6e6e6;
+
+            i,
+            span {
+                color: #140a4b;
+
+            }
+
+            span {
+                font-weight: 600;
+                font-size: 12px;
+            }
+        }
     }
 }
 

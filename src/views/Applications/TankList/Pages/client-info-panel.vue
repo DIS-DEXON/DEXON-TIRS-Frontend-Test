@@ -1,12 +1,14 @@
 <template>
   <div class="client-info-panel">
     <div class="wrapper">
-      <div class="client-logo">
-        <img :src="baseURL + clientInfo.logo" v-if="clientInfo.logo" />
-      </div>
       <div class="client-info">
         <div class="form">
           <div class="form-item-container">
+            <div class="input-set">
+              <div class="client-logo">
+                <img :src="baseURL + clientInfo.logo" v-if="clientInfo.logo" />
+              </div>
+            </div>
             <div class="input-set">
               <p class="label">Company Name</p>
               <p class="info">
@@ -104,8 +106,8 @@ export default {
 
   .client-logo {
     width: 100%;
-    height: 100px;
-    padding: 20px 0;
+    height: 80px;
+    padding: 10px 0 20px 0;
     img {
       width: 100%;
       height: 100%;
@@ -123,6 +125,7 @@ export default {
           text-indent: 0;
           text-align: left;
           padding: 10px;
+          font-size: 12px;
         }
       }
     }

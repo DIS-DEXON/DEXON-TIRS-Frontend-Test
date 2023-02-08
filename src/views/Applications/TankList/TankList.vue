@@ -9,7 +9,6 @@
         :isRefresh="true"
         isBack_specificPath="/"
         newBtnLabel="New Tank"
-        :isNewBtn="true"
         style="grid-column: span 2"
       />
     </div>
@@ -18,7 +17,18 @@
     </div>
     <div class="page-content">
       <div class="custom-table-header">
-        <label>Tank List</label>
+        <div class="left">
+          <label>Tank List</label>
+        </div>
+        <div class="right table-toolbar-set">
+          <v-ons-toolbar-button
+            class="table-toolbar-btn"
+            v-on:click="TOGGLE_POPUP()"
+          >
+            <i class="las la-plus"></i>
+            <span>Add New Tank</span>
+          </v-ons-toolbar-button>
+        </div>
       </div>
       <div class="searchbar-box" style="margin-top: 10px">
         <input
@@ -26,7 +36,7 @@
           name="search"
           size="50"
           v-model="search_key"
-          placeholder="Search Client"
+          placeholder="Search Tag No."
           class="query"
         /><span class="icon"><i class="la la-search"></i></span
         ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
@@ -34,17 +44,83 @@
         ></span>
       </div>
       <div class="tank-list-list">
-        <div
-          class="item"
-          v-for="item in tankList"
-          :key="item.id_tag"
-          v-on:click="VIEW_INFO(item)"
-        >
-          <div class="name">
-            <label>{{ item.tag_no }}</label>
+        <div class="table-header">
+          <div class="item-img"></div>
+          <div class="label">
+            <label>Tag No.</label>
           </div>
-          <div class="icon">
-            <i class="las la-search"></i>
+          <div class="label">
+            <label>Tank No.</label>
+          </div>
+          <div class="label">
+            <label>Location</label>
+          </div>
+          <div class="label">
+            <label>Site</label>
+          </div>
+          <div class="label">
+            <label>Description</label>
+          </div>
+          <div class="icon"></div>
+        </div>
+        <div v-if="!search_key">
+          <div
+            class="item"
+            v-for="item in tankList"
+            :key="item.id_tag"
+            v-on:click="VIEW_INFO(item)"
+          >
+            <div class="item-img">
+              <i class="las la-folder-open"></i>
+            </div>
+            <div class="label">
+              <label>{{ item.tag_no }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.tank_no }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.site_name }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.site_desc }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.description }}</label>
+            </div>
+            <div class="icon">
+              <i class="las la-angle-right"></i>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div
+            class="item"
+            v-for="item in tankListFiltered"
+            :key="item.id_tag"
+            v-on:click="VIEW_INFO(item)"
+          >
+            <div class="item-img">
+              <i class="las la-folder-open"></i>
+            </div>
+            <div class="label">
+              <label>{{ item.tag_no }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.tank_no }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.site_name }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.site_desc }}</label>
+            </div>
+            <div class="label">
+              <label>{{ item.description }}</label>
+            </div>
+            <div class="icon">
+              <i class="las la-angle-right"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -69,7 +145,7 @@ import clientInfoSidebar from "@/views/Applications/TankList/Pages/client-info-p
 import axios from "/axios.js";
 
 export default {
-  name: "ViewProjectList",
+  name: "TankList",
   components: {
     toolbar,
     contentLoading,
@@ -96,6 +172,7 @@ export default {
       editInfo: "",
       infoClient: {},
       tankList: [],
+      tankListFiltered: [],
       dataGridAttributes: {
         class: "data-grid-style",
       },
@@ -103,6 +180,12 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    // whenever search_key change, this function will run
+    search_key() {
+      this.SEARCH_GET(this.search_key);
+    },
+  },
   methods: {
     VIEW_INFO(item) {
       if (item.id_tag != null) {
@@ -169,6 +252,19 @@ export default {
           this.isLoading = false;
         });
     },
+    SEARCH_CLEAR() {
+      this.search_key = null;
+    },
+    SEARCH_GET(searchValue) {
+      let tankListFiltered = this.tankList;
+
+      if (searchValue != "" && searchValue) {
+        tankListFiltered = tankListFiltered.filter((item) => {
+          return item.tag_no.toUpperCase().includes(searchValue.toUpperCase());
+        });
+      }
+      this.tankListFiltered = tankListFiltered;
+    },
   },
 };
 </script>
@@ -187,6 +283,7 @@ export default {
   }
   .page-content {
     padding: 20px;
+    overflow-y: auto;
     // background-color: #fff;
   }
 }
@@ -197,16 +294,62 @@ export default {
   padding: 20px 8px;
   padding-top: 10px;
 
+  .table-header {
+    width: 100%;
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 40px calc(40% - 120px) 10% 10% 20% 20% 80px;
+    border: 1px solid #e6e6e6;
+    border-width: 0 0 1px 0;
+    .label {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding-left: 10px;
+      cursor: text;
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: $web-font-color-black;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: left;
+        cursor: text;
+        user-select: text;
+      }
+    }
+  }
+
   .item {
     width: 100%;
     padding: 10px 0;
     display: grid;
-    grid-template-columns: calc(100% - 150px) 150px;
-    border: 1px solid #e1e1e1;
+    grid-template-columns: 40px calc(40% - 120px) 10% 10% 20% 20% 80px;
+    border: 1px solid #e6e6e6;
     border-width: 0 0 1px 0;
     cursor: pointer;
 
-    .name {
+    .item-img {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      i {
+        font-size: 22px;
+        color: $dexon-primary-blue;
+      }
+    }
+
+    .label {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -223,6 +366,7 @@ export default {
         overflow: hidden;
         text-align: left;
         cursor: pointer;
+        user-select: text;
       }
     }
 
@@ -233,7 +377,8 @@ export default {
       justify-content: center;
       align-items: center;
       i {
-        font-size: 14px;
+        font-size: 18px;
+        color: $dexon-primary-blue;
       }
     }
   }
@@ -265,7 +410,7 @@ export default {
     font-size: 14px;
     color: #000;
     box-sizing: border-box;
-    padding: 0 30px 0 70px;
+    padding: 0 30px 0 60px;
     border: none;
     background: none;
     width: 100%;
@@ -277,7 +422,7 @@ export default {
     left: 20px;
     pointer-events: none;
     transform: translateY(-50%) scaleX(-1);
-    font-size: 24px;
+    font-size: 18px;
     i {
       color: #d2d2d2;
     }
@@ -289,7 +434,7 @@ export default {
     right: 25px;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 22px;
+    font-size: 18px;
     color: #d2d2d2;
   }
 
