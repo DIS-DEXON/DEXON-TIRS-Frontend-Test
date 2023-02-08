@@ -148,7 +148,10 @@
             </DxDataGrid>
           </div>
         </div>
-        <div class="app-instruction" style="padding-left: 20px">
+        <div
+          class="app-instruction"
+          style="padding-top: 20px; padding-left: 20px"
+        >
           <appInstruction
             title="Measurement Conceptualization"
             desc="Measurements of Shell Settlement (External)"
@@ -1864,7 +1867,6 @@ export default {
   }
   .app-instruction {
     padding-left: 0 !important;
-    padding-top: 20px;
   }
 }
 </style>
