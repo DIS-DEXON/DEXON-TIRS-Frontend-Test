@@ -1,8 +1,8 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-layout">
     <div class="page-toolbar">
       <toolbar
-        pageSubName="Tank List"
+        :pageSubName="infoClient.company_name"
         @refreshInfo="FETCH_TANK_LIST()"
         @newBtnFn="TOGGLE_POPUP()"
         :isBackPath="true"
@@ -13,53 +13,41 @@
         style="grid-column: span 2"
       />
     </div>
+    <div class="page-sidebar">
+      <clientInfoSidebar :clientInfo="infoClient" />
+    </div>
     <div class="page-content">
-      <DxDataGrid
-        id="data-grid-style"
-        :data-source="tankList"
-        :element-attr="dataGridAttributes"
-        :selection="{ mode: 'single' }"
-        :hover-state-enabled="true"
-        :allow-column-reordering="true"
-        :show-borders="true"
-        :show-row-lines="true"
-        :row-alternation-enabled="false"
-        @exporting="EXPORT_DATA"
-      >
-        <DxColumn
-          data-field="created_time"
-          :width="0"
-          caption=""
-          sort-order="asc"
-        />
-        <DxColumn :width="200" data-field="tag_no" caption="Tag No" />
-        <DxColumn :width="200" data-field="tank_no" caption="Tank No" />
-        <DxColumn :width="200" data-field="site_name" caption="Location" />
-        <DxColumn :width="200" data-field="site_desc" caption="Site" />
-        <DxColumn data-field="description" caption="Description" />
-
-        <DxColumn :width="50" caption="" cell-template="cell-button-set" />
-        <template #cell-button-set="{ data }">
-          <div class="table-btn-group">
-            <div class="table-btn" v-on:click="VIEW_INFO(data)">
-              <i class="las la-search blue"></i>
-            </div>
+      <div class="custom-table-header">
+        <label>Tank List</label>
+      </div>
+      <div class="searchbar-box" style="margin-top: 10px">
+        <input
+          type="text"
+          name="search"
+          size="50"
+          v-model="search_key"
+          placeholder="Search Client"
+          class="query"
+        /><span class="icon"><i class="la la-search"></i></span
+        ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
+          ><i class="la la-close"></i
+        ></span>
+      </div>
+      <div class="tank-list-list">
+        <div
+          class="item"
+          v-for="item in tankList"
+          :key="item.id_tag"
+          v-on:click="VIEW_INFO(item)"
+        >
+          <div class="name">
+            <label>{{ item.tag_no }}</label>
           </div>
-        </template>
-        <!-- Configuration goes here -->
-        <!-- <DxFilterRow :visible="true" /> -->
-        <DxScrolling mode="standard" />
-        <DxSearchPanel :visible="true" />
-        <DxPaging :page-size="10" :page-index="0" />
-        <DxPager
-          :show-page-size-selector="true"
-          :allowed-page-sizes="[5, 10, 20]"
-          :show-navigation-buttons="true"
-          :show-info="true"
-          info-text="Page {0} of {1} ({2} items)"
-        />
-        <DxExport :enabled="true" />
-      </DxDataGrid>
+          <div class="icon">
+            <i class="las la-search"></i>
+          </div>
+        </div>
+      </div>
     </div>
     <contentLoading
       text="Loading, please wait..."
@@ -71,25 +59,11 @@
 </template> 
 
 <script>
-//DataGrid
-import "devextreme/dist/css/dx.light.css";
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
-import {
-  DxDataGrid,
-  DxSearchPanel,
-  DxPaging,
-  DxPager,
-  DxScrolling,
-  DxColumn,
-  DxExport,
-} from "devextreme-vue/data-grid";
-
 //Structures
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import toolbar from "@/components/app-structures/app-navbar-toolbar.vue";
 import popupAdd from "@/views/Applications/TankList/tank-info-add.vue";
+import clientInfoSidebar from "@/views/Applications/TankList/Pages/client-info-panel.vue";
 
 //API
 import axios from "/axios.js";
@@ -97,16 +71,10 @@ import axios from "/axios.js";
 export default {
   name: "ViewProjectList",
   components: {
-    DxDataGrid,
-    DxSearchPanel,
-    DxPaging,
-    DxPager,
-    DxScrolling,
-    DxColumn,
-    DxExport,
     toolbar,
     contentLoading,
     popupAdd,
+    clientInfoSidebar,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -131,34 +99,17 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style",
       },
+      search_key: null,
     };
   },
   computed: {},
   methods: {
-    VIEW_INFO(e) {
-      const id_tag = e.data.id_tag;
-      const id_company = e.data.id_client;
-      if (id_tag != null) {
+    VIEW_INFO(item) {
+      if (item.id_tag != null) {
         this.$router.push(
-          "/tank/client/" + id_company + "/tag/" + id_tag + "/info"
+          "/tank/client/" + item.id_client + "/tag/" + item.id_tag + "/info"
         );
       }
-    },
-    EXPORT_DATA(e) {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet("Projects");
-      exportDataGrid({
-        worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
-          saveAs(
-            new Blob([buffer], { type: "application/octet-stream" }),
-            "Projects.xlsx"
-          );
-        });
-      });
-      e.cancel = true;
     },
     TOGGLE_POPUP() {
       this.isAdd = !this.isAdd;
@@ -224,4 +175,126 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/style/main.scss";
+.page-layout {
+  display: grid;
+  grid-template-columns: 300px calc(100vw - 300px);
+  grid-template-rows: 51px calc(100vh - 95px);
+  transition: all 0.3s;
+  .page-toolbar {
+    grid-column: span 2;
+    background-color: #fff;
+    // padding: 20px;
+  }
+  .page-content {
+    padding: 20px;
+    // background-color: #fff;
+  }
+}
+
+.tank-list-list {
+  display: block;
+  width: calc(100% - 16px);
+  padding: 20px 8px;
+  padding-top: 10px;
+
+  .item {
+    width: 100%;
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: calc(100% - 150px) 150px;
+    border: 1px solid #e1e1e1;
+    border-width: 0 0 1px 0;
+    cursor: pointer;
+
+    .name {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding-left: 10px;
+      cursor: pointer;
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: $web-font-color-black;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: left;
+        cursor: pointer;
+      }
+    }
+
+    .icon {
+      width: 80px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+  .item:hover {
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+}
+.searchbar-box {
+  position: relative;
+  background: #fff;
+  // box-shadow: 0 9px 17px rgb(0 0 0 / 8%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+  border-radius: 6px;
+  height: 48px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 8px;
+  // margin-bottom: 20px;
+
+  .query {
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
+      "Fira Sans", Roboto, Oxygen, Ubuntu, "Droid Sans", "Arial", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #000;
+    box-sizing: border-box;
+    padding: 0 30px 0 70px;
+    border: none;
+    background: none;
+    width: 100%;
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    pointer-events: none;
+    transform: translateY(-50%) scaleX(-1);
+    font-size: 24px;
+    i {
+      color: #d2d2d2;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 22px;
+    color: #d2d2d2;
+  }
+
+  input {
+    height: 40px;
+  }
+}
 </style>
