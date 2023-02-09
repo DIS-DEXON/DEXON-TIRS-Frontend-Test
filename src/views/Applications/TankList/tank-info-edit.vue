@@ -895,7 +895,7 @@ export default {
         site: [],
         now: [],
       },
-      tabCurrent: "A3",
+      tabCurrent: "A1",
       tabs: [
         {
           label: "General Information",
