@@ -61,6 +61,18 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
+        <v-ons-toolbar-button>
+          <label class="upload-btn" for="cml-upload-btn"
+            ><i class="las la-plus"></i> UPLOAD CML</label
+          >
+        </v-ons-toolbar-button>
+        <input
+          type="file"
+          style="display: none"
+          id="cml-upload-btn"
+          ref="cml_upload_file"
+          @change="UPLOAD_CML()"
+        />
         <DxDataGrid
           id="data-table-cml"
           key-expr="id_cml"
@@ -122,6 +134,18 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
+        <v-ons-toolbar-button>
+          <label class="upload-btn" for="tp-upload-btn"
+            ><i class="las la-plus"></i> UPLOAD TP</label
+          >
+        </v-ons-toolbar-button>
+        <input
+          type="file"
+          style="display: none"
+          id="tp-upload-btn"
+          ref="tp_upload_file"
+          @change="UPLOAD_TP()"
+        />
         <DxDataGrid
           id="data-table-tp"
           key-expr="id_tp"
@@ -874,6 +898,90 @@ export default {
     SET_FORMAT_DATE(e) {
       // console.log(e);
       return moment(e.inspection_date).format("DD MMM yyyy");
+    },
+    UPLOAD_CML() {
+      this.isLoading = true;
+      var file = this.$refs.cml_upload_file.files[0];
+      var id_tag = parseInt(this.$route.params.id_tag);
+      if (
+        file.type ==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+        this.$route.params.id_tag
+      ) {
+        axios({
+          method: "post",
+          url: "/shell-thickness/upload-shell-thk-cml?id_tag=" + id_tag,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            file: file,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status == 204) {
+              console.log("success");
+              // this.FETCH_CML();
+              // this.FETCH_LAST_INSP_THK();
+            }
+          })
+          .catch((error) => {
+            this.$ons.notification.alert(
+              error.code + " " + error.response.status + " " + error.message
+            );
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
+        );
+      }
+    },
+    UPLOAD_TP() {
+      this.isLoading = true;
+      var file = this.$refs.tp_upload_file.files[0];
+      var id_tag = parseInt(this.$route.params.id_tag);
+      if (
+        file.type ==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+        this.$route.params.id_tag
+      ) {
+        axios({
+          method: "post",
+          url: "/shell-thickness/upload-shell-thk-tp?id_tag=" + id_tag,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            file: file,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status == 204) {
+              this.FETCH_LAST_INSP_THK();
+            }
+          })
+          .catch((error) => {
+            this.$ons.notification.alert(
+              error.code + " " + error.response.status + " " + error.message
+            );
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
+        );
+      }
     },
   },
 };
