@@ -8,10 +8,10 @@
         <div class="tab-wrapper">
           <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
         </div>
-        <div class="form-item-container" v-if="tabCurrent == 1">
-          <!-- <label class="section-text" style="margin-top: 0"
+        <div class="form-item-container" v-if="tabCurrent == 'A1'">
+          <label class="section-text" style="margin-top: 0"
             >General Information</label
-          > -->
+          >
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tag No:</p>
@@ -116,8 +116,8 @@
             />
           </div>
         </div>
-        <div class="form-item-container" v-if="tabCurrent == 2">
-          <!-- <label class="section-text">Tank Specification</label> -->
+        <div class="form-item-container" v-if="tabCurrent == 'A2'">
+          <label class="section-text">Tank Specification</label>
 
           <div class="input-set">
             <div class="label-box">
@@ -403,7 +403,425 @@
             />
           </div>
         </div>
-        <div class="form-item-container" v-if="tabCurrent == 3"></div>
+        <div class="form-item-container" v-if="tabCurrent == 'A3'">
+          <label class="section-text">Component</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Bottom:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_bottom"
+              placeholder="Bottom"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Shell:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_shell"
+              placeholder="Shell"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Manways:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_manways"
+              placeholder="Manways"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Fixed Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_fixed_roof"
+              placeholder="Fixed Roof"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Access:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_access"
+              placeholder="Access"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Drain:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_drain"
+              placeholder="Drain"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Vents:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_vents"
+              placeholder="Vents"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Floating Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_floating_roof"
+              placeholder="Floating Roof"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Type:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_type"
+              placeholder="Type"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Material and Style:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_material_and_style"
+              placeholder="Material and Style"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Primary Seal:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_primary_seal"
+              placeholder="Primary Seal"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Secondary Seal:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_secondary_seal"
+              placeholder="Secondary Seal"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Anti Rotation Device:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_anti_rotation_device"
+              placeholder="Anti Rotation Device"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Gauge Pipe:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.component_gauge_pipe"
+              placeholder="Gauge Pipe"
+            />
+          </div>
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Formal External Inspection (FEI)</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FEI Last Inspected:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fei_last_inspected"
+              placeholder="FEI Last Inspected"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FEI Last Coated:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fei_last_coated"
+              placeholder="FEI Last Coated"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FEI Last Cleaned:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fei_last_coated"
+              placeholder="FEI Last Coated"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FEI Recommended Next:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fei_recommended_next"
+              placeholder="FEI Recommended Next"
+            />
+          </div>
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Formal Internal Inspection (FII)</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FII Last Inspected:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fii_last_inspected"
+              placeholder="FII Last Inspected"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FII Last Coated:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fii_last_coated"
+              placeholder="FII Last Coated"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">FII Last Cleaned:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.fii_last_cleaned"
+              placeholder="FII Last Cleaned"
+            />
+          </div>
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Coatings</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">External Bottom:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_ext_bottom"
+              placeholder="External Bottom"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">External Shell:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_ext_shell"
+              placeholder="External Shell"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">External Fixed Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_ext_fixed_roof"
+              placeholder="External Fixed Roof"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">External Floating Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_ext_floating_roof"
+              placeholder="External Floating Roof"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Internal Bottom:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_int_bottom"
+              placeholder="Internal Bottom"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Internal Shell:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_int_shell"
+              placeholder="Internal Shell"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Internal Fixed Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_int_fixed_roof"
+              placeholder="Internal Fixed Roof"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Internal Floating Roof:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.coating_int_floating_roof"
+              placeholder="Internal Floating Roof"
+            />
+          </div>
+
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Secondary Containment</label>
+          <div class="input-set" style="grid-column: span 3">
+            <div class="label-box">
+              <p class="label">Description/Condition/Visual Findings:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <textarea
+              style="height: 80px"
+              type="text"
+              v-model="formData.desc_cond_visual_finding"
+              placeholder="Description/Condition/Visual Findings"
+            />
+          </div>
+
+          <hr style="grid-column: span 3" />
+          <label class="section-text">Miscellaneous</label>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Pressure:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_pressure"
+              placeholder="Pressure"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Temp:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_temp"
+              placeholder="Temp"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Venting:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_venting"
+              placeholder="Venting"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Flow Rate:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_flow_rate"
+              placeholder="Flow Rate"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Suction Line:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_suction_line"
+              placeholder="Suction Line"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Receipt:</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.misc_receipt"
+              placeholder="Receipt"
+            />
+          </div>
+        </div>
       </div>
       <div
         class="popup-content loading-section"
@@ -477,21 +895,21 @@ export default {
         site: [],
         now: [],
       },
-      tabCurrent: 1,
+      tabCurrent: "A3",
       tabs: [
         {
           label: "General Information",
-          key: 1,
+          key: "A1",
           closable: false,
         },
         {
           label: "Tank Specification",
-          key: 2,
+          key: "A2",
           closable: false,
         },
         {
           label: "ILAST Information",
-          key: 3,
+          key: "A3",
           closable: false,
         },
       ],
@@ -794,4 +1212,12 @@ hr {
 .tab-wrapper {
   margin: -20px -20px 10px -20px;
 }
+.vue-tabs-chrome .tabs-footer {
+  height: 0;
+  background-color: #fff;
+}
+
+// .popup-wrapper .popup-card .popup-content {
+//   padding-bottom: 40px;
+// }
 </style>
