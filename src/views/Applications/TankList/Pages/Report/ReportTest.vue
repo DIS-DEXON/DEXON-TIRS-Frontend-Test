@@ -15,6 +15,9 @@ export default {
   created() {
     if (this.$store.state.status.server == true) {
       this.FETCH_CHECKLIST_ILAST_EX();
+      this.getImageData();
+      console.log("data:");
+      console.log(this.data1);
     }
   },
   data() {
@@ -38,16 +41,11 @@ export default {
           { location: 6, cumulative: 5006, relative_level: 3006 },
           { location: 7, cumulative: 5007, relative_level: 3007 },
           { location: 8, cumulative: 5008, relative_level: 3008 },
-          { location: 9, cumulative: 5009, relative_level: 3009 }
+          { location: 9, cumulative: 5009, relative_level: 3009 },
         ],
         checklist: "",
-        picture_log: [
-          {
-            findings: "testttttttttttt",
-            overview_pic: this.getImageData()
-          }
-        ]
-      }
+        picture_log: [{}],
+      },
       // filename: "example.txt",
       // blob: new Blob(["example text"])
     };
@@ -137,13 +135,13 @@ export default {
         method: "post",
         url: "chk-ilast-ex/get-chkilastex-by-insp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
         data: {
-          id_insp_record: 17
-        }
+          id_insp_record: 17,
+        },
       })
-        .then(res => {
+        .then((res) => {
           console.log("checklist ilast ex:");
           console.log(res);
           if (res.status == 200 && res.data) {
@@ -151,7 +149,7 @@ export default {
             this.data1.checklist = res.data;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         })
         .finally(() => {
@@ -213,13 +211,15 @@ export default {
       const imageObject = {
         _type: "image",
         source: imageBlob,
-        format: mimeType.Png,
+        format: mimeType,
         width: 200,
-        height: 200
+        height: 200,
       };
       console.log(imageObject);
-      return imageObject;
-    }
+      this.data1.picture_log[0].findings = "Testtttttttttttttt";
+      this.data1.picture_log[0].overview_pic = imageObject;
+      //return imageObject;
+    },
     // async convertURLtoFile(url) {
     //   // console.log("convertURLtoFile");
     //   // const response = await fetch(url);
@@ -229,7 +229,7 @@ export default {
     //   // console.log(base64Image);
     //   // return `data:image/jpeg;base64,${base64Image}`;
     // }
-  }
+  },
 };
 </script>
 
