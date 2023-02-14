@@ -78,8 +78,7 @@
             <div class="form-item-value">
               <input
                 type="radio"
-                value="
-                NA"
+                value="NA"
                 :name="item3.id"
                 v-model="item3.result[0].result_desc"
                 v-on:click="

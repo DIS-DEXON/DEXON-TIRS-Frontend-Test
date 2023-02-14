@@ -12,6 +12,7 @@
         :show-borders="true"
         :show-row-lines="true"
         :row-alternation-enabled="false"
+        :column-hiding-enabled="true"
         @exporting="EXPORT_DATA"
         :word-wrap-enabled="true"
         @row-inserted="CREATE_RECORD"
@@ -36,33 +37,25 @@
           data-type="date"
           format="dd MMM yyyy"
           sort-order="desc"
+          :width="140"
         />
 
-        <DxColumn data-field="project_no" caption="Project number" />
+        <DxColumn
+          data-field="project_no"
+          caption="Project number"
+          :width="140"
+        />
 
-        <DxColumn data-field="report_no" caption="Report number" />
+        <DxColumn data-field="report_no" caption="Report number" :width="140" />
 
-        <DxColumn data-field="id_campaign" caption="Campaign">
+        <DxColumn data-field="id_campaign" caption="Campaign" :width="100">
           <DxLookup
             :data-source="campaigeList"
             value-expr="id_campaign"
             display-expr="campaign_desc"
           />
         </DxColumn>
-        <DxColumn data-field="remark" caption="Remark" />
-
-        <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
-
-        <!-- <template #cell-button-set="{ data }">
-        <div class="table-btn-group">
-          <div class="table-btn" v-on:click="EDIT_INFO(data)">
-            <i class="las la-pen blue"></i>
-          </div>
-          <div class="table-btn" v-on:click="DELETE_INFO(data)">
-            <i class="las la-trash red"></i>
-          </div>
-        </div>
-      </template> -->
+        <DxColumn data-field="remark" caption="Remark" :width="auto" />
         <template #table-header>
           <div>
             <div class="page-section-label">Shell Course</div>

@@ -374,6 +374,7 @@ export default {
     },
     CREATE_DWG(e) {
       console.log("CREATE_DWG");
+      const user = JSON.parse(localStorage.getItem("user"));
       console.log(e);
       var formData = new FormData();
       formData.append("id_visual", 0);
@@ -389,8 +390,8 @@ export default {
       formData.append("file_2", this.file2);
       formData.append("file_path_1", "");
       formData.append("file_path_2", "");
-      formData.append("created_by", this.$store.state.user.id_user);
-      formData.append("updated_by", this.$store.state.user.id_user);
+      formData.append("created_by", user.id_account);
+      formData.append("updated_by", user.id_account);
 
       axios({
         method: "post",
@@ -425,6 +426,7 @@ export default {
       console.log("file2:");
       console.log(this.file2);
       console.log("file_path: " + this.file_path_2);
+      const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
@@ -440,7 +442,7 @@ export default {
       formData.append("file_path_1", this.file_path_1);
       formData.append("file_path_2", this.file_path_2);
       formData.append("created_by", e.data.created_by);
-      formData.append("updated_by", this.$store.state.user.id_user);
+      formData.append("updated_by", user.id_account);
       axios({
         method: "put",
         url: "visual-report/edit-visual-record",
