@@ -23,7 +23,6 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          style="margin-top: 20px"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -170,11 +169,16 @@
             data-field="roofnz_no"
             caption="Nozzle no."
             sort-order="asc"
+            :width="120"
           />
 
-          <DxColumn data-field="nps" caption="DIA (in)" />
+          <DxColumn data-field="nps" caption="DIA (in)" :width="80" />
 
-          <DxColumn data-field="material_type" caption="Material type">
+          <DxColumn
+            data-field="material_type"
+            caption="Material type"
+            :width="90"
+          >
             <DxLookup
               :data-source="matList"
               display-expr="code"
@@ -182,13 +186,19 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn
+            data-field="t_nom"
+            caption="tnom (mm)"
+            format="#,##0.00"
+            :width="100"
+          />
 
           <DxColumn
             data-field="t_req"
             caption="treq (mm)"
             format="#,##0.00"
             :allow-editing="false"
+            :width="100"
           />
 
           <DxColumn
@@ -271,9 +281,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="100" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="200" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -336,6 +346,7 @@
             data-field="id_inspection_record"
             caption="Inspection date"
             sort-order="desc"
+            :width="150"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -348,6 +359,7 @@
             data-field="t_actual"
             caption="tactual (mm)"
             format="#,##0.00"
+            :width="150"
           />
 
           <DxColumn type="buttons">

@@ -201,7 +201,7 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="150"
+            :width="120"
           />
 
           <DxColumn type="buttons">
