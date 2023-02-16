@@ -271,7 +271,7 @@
       <div class="table-wrapper">
         <div class="table-header-toolbar" style="width: calc(100% - 42px)">
           <div class="left">
-            <label>Test Points (TP)</label>
+            <label>TP</label>
           </div>
           <div class="right">
             <v-ons-toolbar-button>
@@ -351,7 +351,7 @@
       <div class="table-wrapper">
         <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
-            <label>Thickness Value </label>
+            <label>Thickness</label>
           </div>
           <div class="right"></div>
         </div>
