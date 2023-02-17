@@ -896,6 +896,7 @@ export default {
       return moment(e.inspection_date).format("DD MMM yyyy");
     },
     UPLOAD_CML() {
+      this.isLoading = true;
       var file = this.$refs.cml_upload_file.files[0];
       var id_tag = parseInt(this.$route.params.id_tag);
       if (
@@ -916,7 +917,6 @@ export default {
           },
         })
           .then((res) => {
-            this.isLoading = false;
             console.log(res);
             if (res.status == 204) {
               this.FETCH_CML();
@@ -924,12 +924,13 @@ export default {
             }
           })
           .catch((error) => {
-            this.isLoading = false;
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
-          .finally(() => {});
+          .finally(() => {
+            this.isLoading = false;
+          });
       } else {
         this.$ons.notification.alert(
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
@@ -937,6 +938,7 @@ export default {
       }
     },
     UPLOAD_TP() {
+      this.isLoading = true;
       var file = this.$refs.tp_upload_file.files[0];
       var id_tag = parseInt(this.$route.params.id_tag);
       if (
@@ -957,7 +959,6 @@ export default {
           },
         })
           .then((res) => {
-            this.isLoading = false;
             console.log(res);
             if (res.status == 204) {
               this.FETCH_TP();
@@ -965,12 +966,13 @@ export default {
             }
           })
           .catch((error) => {
-            this.isLoading = false;
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
-          .finally(() => {});
+          .finally(() => {
+            this.isLoading = false;
+          });
       } else {
         this.$ons.notification.alert(
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."

@@ -149,7 +149,9 @@
       </div>
       <shellCourse v-if="tabCurrent == 'info'" style="grid-column: span 2" />
     </div>
-
+    <div v-if="tabCurrent == 'additional'">
+      <infoAdditional :infoAddi="generalInfo" />
+    </div>
     <div v-if="tabCurrent == 'drawing'">
       <drawingTable />
       <pidTable />
@@ -183,6 +185,7 @@ import pidTable from "@/views/Applications/TankList/Pages/Information/table-pid.
 import generalDocTable from "@/views/Applications/TankList/Pages/Information/table-generalDoc.vue";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import previewImage from "@/components/image-preview.vue";
+import infoAdditional from "@/views/Applications/TankList/Pages/Information/table-infoAdditional.vue";
 
 //DataGrid
 
@@ -196,6 +199,7 @@ export default {
     generalDocTable,
     contentLoading,
     previewImage,
+    infoAdditional,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -221,6 +225,11 @@ export default {
         {
           label: "General Information",
           key: "info",
+          closable: false,
+        },
+        {
+          label: "Additional Information",
+          key: "additional",
           closable: false,
         },
         {
@@ -354,6 +363,180 @@ export default {
           value: this.infoTank.inservice_age_of_tank_yrs,
         },
       ];
+      return info;
+    },
+    componentInfo() {
+      var info = [
+        {
+          desc: "Bottom",
+          value: this.infoTank.component_bottom,
+        },
+        {
+          desc: "Shell",
+          value: this.infoTank.component_shell,
+        },
+        {
+          desc: "Manways",
+          value: this.infoTank.component_manways,
+        },
+        {
+          desc: "Fixed Roof",
+          value: this.infoTank.component_fixed_roof,
+        },
+        {
+          desc: "Access",
+          value: this.infoTank.component_access,
+        },
+        {
+          desc: "Drain",
+          value: this.infoTank.component_drain,
+        },
+        {
+          desc: "Vents",
+          value: this.infoTank.component_vents,
+        },
+        {
+          desc: "Floating Roof",
+          value: this.infoTank.floating_roof,
+        },
+        {
+          desc: "Type",
+          value: this.infoTank.component_type,
+        },
+        {
+          desc: "Material and Style",
+          value: this.infoTank.component_material_and_style,
+        },
+        {
+          desc: "Primary Seal",
+          value: this.infoTank.component_primary_seal,
+        },
+        {
+          desc: "Secondary Seal",
+          value: this.infoTank.component_secondary_seal,
+        },
+        {
+          desc: "Anti Rotation Device",
+          value: this.infoTank.component_anti_rotation_device,
+        },
+        {
+          desc: "Gauge Pipe",
+          value: this.infoTank.component_gauge_pipe,
+        },
+      ];
+      return info;
+    },
+    feiInfo() {
+      var info = [
+        {
+          desc: "FEI Last Inspected",
+          value: this.infoTank.fei_last_inspected,
+        },
+        {
+          desc: "FEI Last Coated",
+          value: this.infoTank.fei_last_coated,
+        },
+        {
+          desc: "FEI Last Cleaned",
+          value: this.infoTank.fei_last_cleaned,
+        },
+        {
+          desc: "FEI Recommended Next",
+          value: this.infoTank.fei_recommended_next,
+        },
+      ]
+      return info;
+    },
+    fiiInfo() {
+      var info = [
+        {
+          desc: "FII Last Inspected",
+          value: this.infoTank.fii_last_inspected,
+        },
+        {
+          desc: "FII Last Coated",
+          value: this.infoTank.fii_last_coated,
+        },
+        {
+          desc: "FII Last Cleaned",
+          value: this.infoTank.fii_last_cleaned,
+        },
+      ]
+      return info;
+    },
+    coatingInfo() {
+      var info = [
+        {
+          desc: "Ext Bottom",
+          value: this.infoTank.coating_ext_bottom,
+        },
+        {
+          desc: "Ext Shell",
+          value: this.infoTank.coating_ext_shell,
+        },
+        {
+          desc: "Ext Fixed Roof",
+          value: this.infoTank.coating_ext_fixed_roof,
+        },
+        {
+          desc: "Ext Floating Roof",
+          value: this.infoTank.coating_ext_floating_roof,
+        },
+        {
+          desc: "Int Bottom",
+          value: this.infoTank.coating_int_bottom,
+        },
+        {
+          desc: "Int Shell",
+          value: this.infoTank.coating_int_shell,
+        },
+        {
+          desc: "Int Fixed Roof",
+          value: this.infoTank.coating_int_fixed_roof,
+        },
+        {
+          desc: "Int Floating Roof",
+          value: this.infoTank.coating_int_floating_roof,
+        },
+      ]
+      return info;
+    },
+    miscInfo() {
+      var info = [
+        {
+          desc: "Pressure (operating/design)",
+          value: this.infoTank.misc_pressure,
+        },
+        {
+          desc: "Temperature (operating/design)",
+          value: this.infoTank.misc_temp,
+        },
+        {
+          desc: "Venting",
+          value: this.infoTank.misc_venting,
+        },
+        {
+          desc: "Flow Rates",
+          value: this.infoTank.misc_flow_rate,
+        },
+        {
+          desc: "Suction Line",
+          value: this.infoTank.misc_suction_line,
+        },
+        {
+          desc: "Receipt",
+          value: this.infoTank.misc_receipt,
+        },
+      ]
+      return info;
+    },
+    secondContInfo() {
+      var info = [
+        {
+          desc: "Description/Condition/Visual Findings",
+          value: this.infoTank.desc_cond_visual_finding,
+        },
+      ]
       return info;
     },
     baseURL() {
@@ -567,7 +750,7 @@ export default {
       overflow: hidden;
       .form-item {
         display: grid;
-        grid-template-columns: 220px calc(100% - 220px);
+        grid-template-columns: 180px calc(100% - 180px);
         grid-template-rows: 35px;
         .form-item-label {
           label {
