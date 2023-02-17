@@ -175,18 +175,19 @@
             caption="Plate No."
             sort-order="asc"
             :allow-editing="false"
-            :width="100"
+            :width="80"
           />
-          <DxColumn data-field="annular_row" caption="Row" />
-          <DxColumn data-field="annular_column" caption="Column" />
+          <DxColumn data-field="annular_row" caption="Row" :width="80"/>
+          <DxColumn data-field="annular_column" caption="Column" :width="80"/>
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80"/>
 
           <DxColumn
             data-field="t_req"
             caption="tretire (mm)"
             format="#,##0.00"
             :allow-editing="false"
+            :width="80"
           />
 
           <DxColumn
@@ -269,9 +270,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP Name" />
+          <DxColumn data-field="tp_name" caption="TP Name" :width="100" />
 
-          <DxColumn data-field="tp_desc" caption="TP Desc" />
+          <DxColumn data-field="tp_desc" caption="TP Desc" :width="200" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -330,7 +331,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="150">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -342,6 +343,7 @@
             data-field="t_actual"
             caption="tactual (mm)"
             format="#,##0.00"
+            :width="150"
           />
 
           <DxColumn type="buttons">
