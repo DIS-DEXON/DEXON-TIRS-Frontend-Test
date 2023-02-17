@@ -116,7 +116,7 @@
       <div class="table-wrapper">
         <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
-            <label>CML</label>
+            <label>TP</label>
           </div>
           <div class="right">
           </div>
@@ -152,15 +152,15 @@
             mode="form"
           />
 
-          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" :allow-editing="editTpNo"/>
+          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" :allow-editing="editTpNo" :width="100" />
 
-          <DxColumn data-field="tp_num" caption="TP num" width="0" :allow-editing="editTpNum"/>
+          <DxColumn data-field="tp_num" caption="TP num" width="0" :allow-editing="editTpNum" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" :allow-editing="editTpDesc" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :allow-editing="editTpDesc" :width="100"  />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :allow-editing="editTnom"/>
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :allow-editing="editTnom" :width="100" />
 
-          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :allow-editing="editTreq"/>
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :allow-editing="editTreq" :width="100" />
 
           <DxColumn
             data-field="inservice_date"
@@ -226,7 +226,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="id_inspection_record" caption="Inspection date">
+          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="150">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -238,6 +238,7 @@
             data-field="t_actual"
             caption="tactual (mm)"
             format="#,##0.00"
+            :width="150" 
           />
 
           <DxColumn type="buttons">
@@ -689,22 +690,22 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
   .page-section {
+    padding: 20px;
     height: fit-content;
-    margin-bottom: 20px;
-    width: calc(100% - 20px);
-    padding: 20px 10px;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-rows: 500px 500px;
-    // grid-gap: 10px;
+    width: auto;
+  }
+
+  .overflow-x {
+    height: calc(100% - 88px);
   }
 }
-
 .table-wrapper {
-  padding: 0 10px;
+  margin-right: 20px;
+}
+.table-wrapper:last-child {
+  margin-right: 0px;
 }
 
 .data-grid-style {
