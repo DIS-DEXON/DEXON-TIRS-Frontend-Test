@@ -23,7 +23,6 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          style="margin-top: 20px"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />

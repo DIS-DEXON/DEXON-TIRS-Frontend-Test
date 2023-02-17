@@ -202,9 +202,20 @@
             <label>CML</label>
           </div>
           <div class="right">
-
+            <v-ons-toolbar-button>
+              <label for="cml-upload-btn"
+                ><i class="las la-file-import"></i>Import Excel</label
+              >
+            </v-ons-toolbar-button>
           </div>
         </div>
+        <input
+          type="file"
+          style="display: none"
+          id="cml-upload-btn"
+          ref="cml_upload_file"
+          @change="UPLOAD_CML()"
+        />
         <DxDataGrid
           id="cml-grid"
           key-expr="id_cml"
@@ -301,9 +312,20 @@
             <label>TP</label>
           </div>
           <div class="right">
-
+            <v-ons-toolbar-button>
+              <label for="tp-upload-btn"
+                ><i class="las la-file-import"></i>Import Excel</label
+              >
+            </v-ons-toolbar-button>
           </div>
         </div>
+        <input
+          type="file"
+          style="display: none"
+          id="tp-upload-btn"
+          ref="tp_upload_file"
+          @change="UPLOAD_TP()"
+        />
         <DxDataGrid
           id="tp-grid"
           key-expr="id_tp"
