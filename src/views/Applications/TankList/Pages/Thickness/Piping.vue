@@ -170,7 +170,7 @@
             data-field="piping_no"
             caption="Piping no"
             sort-order="asc"
-            :width="80"
+            :width="85"
           />
 
           <DxColumn data-field="piping_name" caption="Piping name" :width="120" />
