@@ -193,9 +193,20 @@
             <label>CML</label>
           </div>
           <div class="right">
-
+            <v-ons-toolbar-button>
+              <label for="cml-upload-btn"
+                ><i class="las la-file-import"></i>Import Excel</label
+              >
+            </v-ons-toolbar-button>
           </div>
         </div>
+        <input
+          type="file"
+          style="display: none"
+          id="cml-upload-btn"
+          ref="cml_upload_file"
+          @change="UPLOAD_CML()"
+        />
         <DxDataGrid
           id="cml-grid"
           key-expr="id_cml"
@@ -282,9 +293,20 @@
             <label>TP</label>
           </div>
           <div class="right">
-
+            <v-ons-toolbar-button>
+              <label for="tp-upload-btn"
+                ><i class="las la-file-import"></i>Import Excel</label
+              >
+            </v-ons-toolbar-button>
           </div>
         </div>
+        <input
+          type="file"
+          style="display: none"
+          id="tp-upload-btn"
+          ref="tp_upload_file"
+          @change="UPLOAD_TP()"
+        />
         <DxDataGrid
           id="tp-grid"
           key-expr="id_tp"
@@ -350,7 +372,8 @@
           <div class="left">
             <label>Thickness</label>
           </div>
-          <div class="right"></div>
+          <div class="right">
+          </div>
         </div>
         <DxDataGrid
           id="thk-grid"
@@ -1102,6 +1125,88 @@ export default {
         return 1016;
       } else if (val == 42) {
         return 1097;
+      }
+    },
+    UPLOAD_CML() {
+      this.isLoading = true;
+      var file = this.$refs.cml_upload_file.files[0];
+      var id_tag = parseInt(this.$route.params.id_tag);
+      if (
+        file.type ==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+        this.$route.params.id_tag
+      ) {
+        axios({
+          method: "post",
+          url: "/sump-thickness/upload-sump-thk-cml?id_tag=" + id_tag,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            file: file,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status == 204) {
+              this.FETCH_LAST_INSP_THK();
+            }
+          })
+          .catch((error) => {
+            this.$ons.notification.alert(
+              error.code + " " + error.response.status + " " + error.message
+            );
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
+        );
+      }
+    },
+    UPLOAD_TP() {
+      this.isLoading = true;
+      var file = this.$refs.tp_upload_file.files[0];
+      var id_tag = parseInt(this.$route.params.id_tag);
+      if (
+        file.type ==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
+        this.$route.params.id_tag
+      ) {
+        axios({
+          method: "post",
+          url: "/sump-thickness/upload-sump-thk-tp?id_tag=" + id_tag,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: {
+            file: file,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status == 204) {
+              this.FETCH_LAST_INSP_THK();
+            }
+          })
+          .catch((error) => {
+            this.$ons.notification.alert(
+              error.code + " " + error.response.status + " " + error.message
+            );
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else {
+        this.$ons.notification.alert(
+          "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
+        );
       }
     },
   },
