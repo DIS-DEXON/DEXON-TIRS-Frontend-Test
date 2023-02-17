@@ -1,306 +1,16 @@
 <template>
   <div class="page-container">
-    <div class="page-section">
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="piping-grid"
-          key-expr="id_piping"
-          :data-source="dataList.piping"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_PIPING"
-          @row-updated="UPDATE_PIPING"
-          @row-removed="DELETE_PIPING"
-          @selection-changed="VIEW_CML"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" />
-
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            :use-icons="true"
-            mode="row"
-          />
-          <DxColumn
-            data-field="piping_no"
-            caption="Piping no"
-            sort-order="asc"
-          />
-
-          <DxColumn data-field="piping_name" caption="Piping name" />
-
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
+    <div class="tab-wrapper">
+      <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
+    </div>
+    <div class="page-section" v-if="tabCurrent == 'A1'">
+      <div class="table-header-toolbar" style="width: calc(100% - 41px)">
+        <div class="left">
+          <label>Thickness Calculation Result</label>
+        </div>
+        <div class="right"></div>
       </div>
       <div class="table-wrapper">
-        <v-ons-toolbar-button>
-          <label class="upload-btn" for="cml-upload-btn"
-            ><i class="las la-plus"></i> UPLOAD CML</label
-          >
-        </v-ons-toolbar-button>
-        <input
-          type="file"
-          style="display: none"
-          id="cml-upload-btn"
-          ref="cml_upload_file"
-          @change="UPLOAD_CML()"
-        />
-        <DxDataGrid
-          id="cml-grid"
-          key-expr="id_cml"
-          :data-source="dataList.cml"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_CML"
-          @row-updated="UPDATE_CML"
-          @row-removed="DELETE_CML"
-          @selection-changed="VIEW_TP"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" />
-
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            :use-icons="true"
-            mode="row"
-          />
-
-          <DxColumn data-field="cml_no" caption="CML no" sort-order="asc" />
-
-          <DxColumn data-field="cml_name" caption="CML name" />
-
-          <DxColumn data-field="part" caption="Part" />
-
-          <DxColumn data-field="nps" caption="NPS" />
-
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
-
-          <DxColumn
-            data-field="t_req"
-            caption="treq (mm)"
-            format="#,##0.00"
-            :allow-editing="false"
-          />
-
-          <DxColumn data-field="P" caption="P (psi)" format="#,##0.00" />
-
-          <DxColumn data-field="S" caption="S (psi)" format="#,##0.00" />
-
-          <DxColumn data-field="E" caption="E" />
-
-          <DxColumn data-field="material_type" caption="Material type">
-            <DxLookup
-              :data-source="matList"
-              display-expr="code"
-              value-expr="code"
-            />
-          </DxColumn>
-
-          <DxColumn
-            data-field="inservice_date"
-            caption="In-service date"
-            data-type="date"
-            format="dd MMM yyyy"
-            :width="120"
-          />
-
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper">
-        <v-ons-toolbar-button>
-          <label class="upload-btn" for="tp-upload-btn"
-            ><i class="las la-plus"></i> UPLOAD TP</label
-          >
-        </v-ons-toolbar-button>
-        <input
-          type="file"
-          style="display: none"
-          id="tp-upload-btn"
-          ref="tp_upload_file"
-          @change="UPLOAD_TP()"
-        />
-        <DxDataGrid
-          id="tp-grid"
-          key-expr="id_tp"
-          :data-source="dataList.tp"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_TP"
-          @row-updated="UPDATE_TP"
-          @row-removed="DELETE_TP"
-          @selection-changed="VIEW_UTM"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <DxSelection mode="single" />
-          <!-- <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">TP</div>
-            </div>
-          </template> -->
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            :use-icons="true"
-            mode="row"
-          />
-
-          <DxColumn data-field="tp_name" caption="TP No." sort-order="asc" />
-          <DxColumn data-field="tp_desc" caption="TP Desc." />
-
-          <DxColumn type="buttons">
-            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
-            <DxButton name="edit" hint="Edit" icon="edit" />
-            <DxButton name="delete" hint="Delete" icon="trash" />
-          </DxColumn>
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper">
-        <DxDataGrid
-          id="thk-grid"
-          key-expr="id_thk"
-          :data-source="dataList.thk"
-          :element-attr="dataGridAttributes"
-          :selection="{ mode: 'single' }"
-          :hover-state-enabled="true"
-          :allow-column-reordering="true"
-          :show-borders="true"
-          :show-row-lines="true"
-          :row-alternation-enabled="false"
-          :word-wrap-enabled="true"
-          @row-inserted="CREATE_THK"
-          @row-updated="UPDATE_THK"
-          @row-removed="DELETE_THK"
-        >
-          <DxFilterRow :visible="true" />
-          <DxHeaderFilter :visible="true" />
-          <!-- <DxToolbar>
-            <DxItem location="before" template="table-header" />
-          </DxToolbar>
-          <template #table-header>
-            <div>
-              <div class="page-section-label">UTM</div>
-            </div>
-          </template> -->
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            :use-icons="true"
-            mode="row"
-          />
-
-          <!-- <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." /> -->
-          <DxColumn
-            data-field="id_inspection_record"
-            caption="Inspection date"
-            sort-order="desc"
-          >
-            <DxLookup
-              :data-source="inspRecordList"
-              :display-expr="SET_FORMAT_DATE"
-              value-expr="id_inspection_record"
-            />
-          </DxColumn>
-
-          <DxColumn data-field="t_actual" caption="tactual (mm)" />
-
-          <!-- Configuration goes here -->
-          <!-- <DxFilterRow :visible="true" /> -->
-          <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="false" />
-          <DxPaging :page-size="10" :page-index="0" />
-          <DxPager
-            :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 20]"
-            :show-navigation-buttons="true"
-            :show-info="true"
-            info-text="Page {0} of {1} ({2} items)"
-          />
-          <!-- <DxExport :enabled="true" /> -->
-        </DxDataGrid>
-      </div>
-      <div class="table-wrapper" style="grid-column: span 4; margin-top: 20px">
         <DxDataGrid
           id="view-grid"
           key-expr="id_tp"
@@ -420,6 +130,315 @@
         </DxDataGrid>
       </div>
     </div>
+    <div id="x-page" class="page-section overflow-x" v-if="tabCurrent == 'A2'">
+      <div class="table-wrapper">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+          <div class="left">
+            <label>Piping</label>
+          </div>
+          <div class="right"></div>
+        </div>
+        <DxDataGrid
+          id="piping-grid"
+          key-expr="id_piping"
+          :data-source="dataList.piping"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+          @row-inserted="CREATE_PIPING"
+          @row-updated="UPDATE_PIPING"
+          @row-removed="DELETE_PIPING"
+          @selection-changed="VIEW_CML"
+        >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" />
+
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+          <DxColumn
+            data-field="piping_no"
+            caption="Piping no"
+            sort-order="asc"
+            :width="80"
+          />
+
+          <DxColumn data-field="piping_name" caption="Piping name" :width="120" />
+
+          <DxColumn type="buttons">
+            <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="false" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+          <div class="left">
+            <label>CML</label>
+          </div>
+          <div class="right">
+
+          </div>
+        </div>
+        <DxDataGrid
+          id="cml-grid"
+          key-expr="id_cml"
+          :data-source="dataList.cml"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+          @row-inserted="CREATE_CML"
+          @row-updated="UPDATE_CML"
+          @row-removed="DELETE_CML"
+          @selection-changed="VIEW_TP"
+        >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" />
+
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+
+          <DxColumn data-field="cml_no" caption="CML no" sort-order="asc" :width="80" />
+
+          <DxColumn data-field="cml_name" caption="CML name" :width="80" />
+
+          <DxColumn data-field="part" caption="Part" :width="100"/>
+
+          <DxColumn data-field="nps" caption="NPS" :width="70" />
+
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="70" />
+
+          <DxColumn
+            data-field="t_req"
+            caption="treq (mm)"
+            format="#,##0.00"
+            :allow-editing="false"
+            :width="70"
+          />
+
+          <DxColumn data-field="P" caption="P (psi)" format="#,##0.00" :width="70" />
+
+          <DxColumn data-field="S" caption="S (psi)" format="#,##0.00" :width="80" />
+
+          <DxColumn data-field="E" caption="E" :width="60" />
+
+          <DxColumn data-field="material_type" caption="Material type" :width="90">
+            <DxLookup
+              :data-source="matList"
+              display-expr="code"
+              value-expr="code"
+            />
+          </DxColumn>
+
+          <DxColumn
+            data-field="inservice_date"
+            caption="In-service date"
+            data-type="date"
+            format="dd MMM yyyy"
+            :width="100"
+          />
+
+          <DxColumn type="buttons">
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_TP" /> -->
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="false" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+          <div class="left">
+            <label>TP</label>
+          </div>
+          <div class="right">
+
+          </div>
+        </div>
+        <DxDataGrid
+          id="tp-grid"
+          key-expr="id_tp"
+          :data-source="dataList.tp"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+          @row-inserted="CREATE_TP"
+          @row-updated="UPDATE_TP"
+          @row-removed="DELETE_TP"
+          @selection-changed="VIEW_UTM"
+        >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <DxSelection mode="single" />
+          <!-- <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">TP</div>
+            </div>
+          </template> -->
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+
+          <DxColumn data-field="tp_name" caption="TP No." sort-order="asc" :width="100" />
+          <DxColumn data-field="tp_desc" caption="TP Desc." :width="150" />
+
+          <DxColumn type="buttons">
+            <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
+            <DxButton name="edit" hint="Edit" icon="edit" />
+            <DxButton name="delete" hint="Delete" icon="trash" />
+          </DxColumn>
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="false" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+          <div class="left">
+            <label>Thickness</label>
+          </div>
+          <div class="right"></div>
+        </div>
+        <DxDataGrid
+          id="thk-grid"
+          key-expr="id_thk"
+          :data-source="dataList.thk"
+          :element-attr="dataGridAttributes"
+          :selection="{ mode: 'single' }"
+          :hover-state-enabled="true"
+          :allow-column-reordering="true"
+          :show-borders="true"
+          :show-row-lines="true"
+          :row-alternation-enabled="false"
+          :word-wrap-enabled="true"
+          @row-inserted="CREATE_THK"
+          @row-updated="UPDATE_THK"
+          @row-removed="DELETE_THK"
+        >
+          <DxFilterRow :visible="true" />
+          <DxHeaderFilter :visible="true" />
+          <!-- <DxToolbar>
+            <DxItem location="before" template="table-header" />
+          </DxToolbar>
+          <template #table-header>
+            <div>
+              <div class="page-section-label">UTM</div>
+            </div>
+          </template> -->
+          <DxEditing
+            :allow-updating="true"
+            :allow-deleting="true"
+            :allow-adding="true"
+            :use-icons="true"
+            mode="row"
+          />
+
+          <!-- <DxColumn data-field="plate_no" caption="Plate No." />
+          <DxColumn data-field="tp_name" caption="TP No." /> -->
+          <DxColumn
+            data-field="id_inspection_record"
+            caption="Inspection date"
+            sort-order="desc"
+            :width="150"
+          >
+            <DxLookup
+              :data-source="inspRecordList"
+              :display-expr="SET_FORMAT_DATE"
+              value-expr="id_inspection_record"
+            />
+          </DxColumn>
+
+          <DxColumn data-field="t_actual" caption="tactual (mm)" :width="150" />
+
+          <!-- Configuration goes here -->
+          <!-- <DxFilterRow :visible="true" /> -->
+          <DxScrolling mode="standard" />
+          <DxSearchPanel :visible="false" />
+          <DxPaging :page-size="10" :page-index="0" />
+          <DxPager
+            :show-page-size-selector="true"
+            :allowed-page-sizes="[5, 10, 20]"
+            :show-navigation-buttons="true"
+            :show-info="true"
+            info-text="Page {0} of {1} ({2} items)"
+          />
+          <!-- <DxExport :enabled="true" /> -->
+        </DxDataGrid>
+      </div>
+    </div>
+
     <contentLoading
       text="Loading, please wait..."
       v-if="isLoading == true"
@@ -435,6 +454,7 @@ import moment from "moment";
 
 //Components
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import VueTabsChrome from "vue-tabs-chrome";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
@@ -478,6 +498,7 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
+    VueTabsChrome,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -519,6 +540,19 @@ export default {
         { code: "SS" },
         { code: "Duplex" },
         { code: "Unknown" },
+      ],
+      tabCurrent: "A2",
+      tabs: [
+        {
+          label: "Calculation Result",
+          key: "A1",
+          closable: false,
+        },
+        {
+          label: "Messurement Result",
+          key: "A2",
+          closable: false,
+        },
       ],
     };
   },
@@ -1184,29 +1218,25 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
   .page-section {
+    padding: 20px;
     height: fit-content;
-    margin-bottom: 20px;
-    width: calc(100% - 20px);
-    padding: 20px 10px;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: 15% 50% 15% 20%;
-    grid-template-rows: 500px 500px;
-    // grid-gap: 10px;
+    width: auto;
+  }
+
+  .overflow-x {
+    height: calc(100% - 88px);
   }
 }
-
 .table-wrapper {
-  padding: 0 10px;
+  margin-right: 20px;
+}
+.table-wrapper:last-child {
+  margin-right: 0px;
 }
 
 .data-grid-style {
   height: 100%;
-}
-
-.page-section-label {
-  padding: 0;
 }
 </style>
