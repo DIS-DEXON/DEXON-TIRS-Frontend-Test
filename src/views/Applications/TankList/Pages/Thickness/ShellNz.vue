@@ -513,7 +513,7 @@ export default {
     },
     FETCH_TP() {
       console.log(this.id_cml);
-      this.isLoading = true;
+      // this.isLoading = true;
       axios({
         method: "post",
         url: "shellnz-thickness/shellnz-thk-tp-by-cml",
@@ -540,7 +540,7 @@ export default {
     },
     FETCH_THK() {
       console.log(this.id_tp);
-      this.isLoading = true;
+      // this.isLoading = true;
       axios({
         method: "post",
         url: "shellnz-thickness/shellnz-thk-data-by-tp",

@@ -33,6 +33,7 @@
         @row-removed="DELETE_DWG"
         @editing-start="EDITING_START_DWG"
         @init-new-row="INIT_NEW_ROW_DWG"
+        @saved="SAVE"
       >
         <DxEditing
           :allow-updating="true"
@@ -56,7 +57,6 @@
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor"
           :width="520"
-          :allow-editing="false"
         />
 
         <DxColumn data-field="file_name" caption="File Name" :width="300" />
@@ -212,6 +212,8 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
+      is_changed_dwg: 0,
+      dataDwgTemp: "",
     };
   },
   computed: {
@@ -320,23 +322,27 @@ export default {
     },
     UPDATE_DWG(e) {
       console.log(e);
+      var formData = new FormData();
+      formData.append("id", e.key);
+      formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_component", this.id_component);
+      formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append("file_name", e.data.file_name);
+      formData.append("file", this.file);
+      formData.append("file_path", this.file_path);
+      formData.append("is_changed_dwg", this.is_changed_dwg);
       axios({
         method: "put",
         url: "layout-drawing/edit-layout-drawing",
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
-        data: {
-          id: e.key,
-          id_tag: this.$route.params.id_tag,
-          id_component: this.id_component,
-          id_inspection_record: this.id_inspection_record,
-          file_name: e.data.file_name,
-        },
+        data: formData,
       })
         .then((res) => {
           console.log(res);
-          if (res.status == 200 && res.data) {
+          if (res.status == 201 && res.data) {
             console.log(res.data);
             var item = [];
             item.id_inspection_record = this.id_inspection_record;
@@ -348,6 +354,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.is_changed_dwg = 0;
         });
     },
     DELETE_DWG(e) {
@@ -387,17 +394,27 @@ export default {
         this.imgDwg = reader.result;
       };
       this.file = e.value[0];
+      this.is_changed_dwg = 1;
     },
     EDITING_START_DWG(e) {
       console.log(e);
       this.imgDwg = e.data.path_dwg;
       this.file = [];
       this.isInitEdit = 0;
+      this.file_path = e.data.file_path;
+      this.dataDwgTemp = e;
     },
     INIT_NEW_ROW_DWG() {
       this.imgDwg = "";
       this.file = [];
       this.isInitEdit = 1;
+    },
+    SAVE(e) {
+      console.log('save:');
+      console.log(e);
+      if(e.changes.length == 0) {
+        this.UPDATE_DWG(this.dataDwgTemp);
+      } 
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
