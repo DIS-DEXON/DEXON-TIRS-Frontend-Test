@@ -1,46 +1,122 @@
 <template>
-  <div class="page-container">
-    <!-- <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" /> -->
-    <button type="button" v-on:click="createDocx()">Create docx</button>
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header>
+          Inspection Detail of
+          <!-- <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b> -->
+        </v-ons-list-header>
+      </v-ons-list>
+      <div class="tab-wrapper">
+        <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
+      </div>
+
+      <div v-if="tabCurrent == 'tab1'">
+        <div class="widget-container">
+          <DxHtmlEditor :value="valueContent" :height="300">
+            <DxToolbar>
+              <DxItem name="undo" />
+              <DxItem name="redo" />
+              <DxItem name="separator" />
+              <DxItem :accepted-values="sizeValues" name="size" />
+              <DxItem :accepted-values="fontValues" name="font" />
+              <DxItem name="separator" />
+              <DxItem name="bold" />
+              <DxItem name="italic" />
+              <DxItem name="strike" />
+              <DxItem name="underline" />
+              <DxItem name="separator" />
+              <DxItem name="alignLeft" />
+              <DxItem name="alignCenter" />
+              <DxItem name="alignRight" />
+              <DxItem name="alignJustify" />
+              <DxItem name="separator" />
+              <DxItem name="color" />
+              <DxItem name="background" />
+            </DxToolbar>
+          </DxHtmlEditor>
+        </div>
+        <div class="value-content">value:{{ valueContent }}</div>
+      </div>
+      <div v-if="tabCurrent == 'tab2'">
+        <button type="button" v-on:click="createDocx()">Create docx</button>
+      </div>
+      <div v-if="tabCurrent == 'tab3'"></div>
+    </div>
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template>
 <script>
 //import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
-//import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
+import VueTabsChrome from "vue-tabs-chrome";
 //import { saveAs } from "@progress/kendo-file-saver";
-
+//import { markup } from "./data.js";
+import { DxHtmlEditor, DxToolbar, DxItem } from "devextreme-vue/html-editor";
 export default {
   name: "report-test",
 
   components: {
-    //InspectionRecordPanel
+    InspectionRecordPanel,
+    SelectInspRecord,
+    DxHtmlEditor,
+    DxToolbar,
+    DxItem,
+    VueTabsChrome
   },
   created() {
     if (this.$store.state.status.server == true) {
-      this.FETCH_CHECKLIST_ILAST_EX();
-      this.getImageData();
-      this.FETCH_TANK_INFO();
-      this.FETCH_SHELL_POINT();
-      this.FETCH_SHELL_API();
-      this.FETCH_BOTTOM_THK();
-      this.FETCH_PLUMBNESS();
-      this.FETCH_CRITICAL_THK();
-      this.FETCH_ROOF_THK();
-      this.FETCH_ROOFNZ_THK();
-      this.FETCH_SHELL_COURSE();
-      this.FETCH_SHELL_THK();
-      console.log("data:");
-      console.log(this.data1);
+      // console.log("data:");
+      // console.log(this.data1);
     }
   },
   data() {
     return {
       theTemplate: null,
-
+      valueContent: "",
       buffer: "",
       status: "",
+      pagePanelHiding: false,
+      tabCurrent: "data",
+      id_inspection_record: "",
+      selectedItems: [{ text: "Html" }],
+      sizeValues: ["8pt", "10pt", "12pt", "14pt", "18pt", "24pt", "36pt"],
+      fontValues: [
+        "Arial",
+        "Courier New",
+        "Georgia",
+        "Impact",
+        "Lucida Console",
+        "Tahoma",
+        "Times New Roman",
+        "Verdana"
+      ],
+      tabs: [
+        {
+          label: "Generic",
+          key: "tab1",
+          closable: false
+        },
+        {
+          label: "ILAST External",
+          key: "tab2",
+          closable: false
+        },
+        {
+          label: "ILAST Internal",
+          key: "tab3",
+          closable: false
+        }
+      ],
       data1: [
         {
           suitability: [],
@@ -136,7 +212,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_insp_record: 18
+          id_insp_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -195,7 +271,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: 18
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -224,7 +300,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: 18
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -253,7 +329,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: 18
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -281,7 +357,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: 11
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -309,7 +385,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: 11
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -337,7 +413,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: 11
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -365,7 +441,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: 11
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -393,7 +469,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: 11
+          id_inspection_record: this.id_insp_record
         }
       })
         .then(res => {
@@ -438,6 +514,26 @@ export default {
           this.isLoading = false;
         });
     },
+    VIEW_ITEM(item) {
+      //this.isLoading = true;
+      console.log("view item :" + item.id_inspection_record);
+      this.id_inspection_record = item.id_inspection_record;
+      this.FETCH_CHECKLIST_ILAST_EX();
+      this.getImageData();
+      this.FETCH_TANK_INFO();
+      this.FETCH_SHELL_POINT();
+      this.FETCH_SHELL_API();
+      this.FETCH_BOTTOM_THK();
+      this.FETCH_PLUMBNESS();
+      this.FETCH_CRITICAL_THK();
+      this.FETCH_ROOF_THK();
+      this.FETCH_ROOFNZ_THK();
+      this.FETCH_SHELL_COURSE();
+      this.FETCH_SHELL_THK();
+    },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
+    },
     readFile(e) {
       console.log("readFile");
       console.log(e);
@@ -472,5 +568,45 @@ export default {
   }
 };
 </script>
-
+<style lang="scss" scoped>
+.page-container {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 201px calc(100% - 201px);
+}
+.list-page {
+  position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
+  .content {
+    width: 100%;
+    // width: calc(100% - 20px);
+    // display: grid;
+    // grid-template-columns: 600px calc(100% - 600px);
+    // grid-gap: 20px;
+    display: block;
+  }
+}
+.tab-wrapper {
+  height: 48px;
+  margin: -20px -20px 20px -20px;
+}
+.vue-tabs-chrome {
+  padding-top: 10px;
+  background-color: #d9d9d9;
+  font-size: 12px;
+  font-weight: 500;
+}
+.value-content {
+  margin-top: 20px;
+  overflow: auto;
+  height: 110px;
+  width: 100%;
+  white-space: pre-wrap;
+}
+</style>
 
