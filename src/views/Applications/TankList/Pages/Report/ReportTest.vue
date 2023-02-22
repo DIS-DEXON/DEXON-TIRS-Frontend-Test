@@ -10,7 +10,7 @@
       <v-ons-list>
         <v-ons-list-header>
           Inspection Detail of
-          <!-- <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b> -->
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
         </v-ons-list-header>
       </v-ons-list>
       <div class="tab-wrapper">
@@ -19,8 +19,8 @@
 
       <div v-if="tabCurrent == 'tab1'">
         <div class="widget-container">
-          <DxHtmlEditor :value="valueContent" :height="300">
-            <DxToolbar>
+          <DxHtmlEditor :value="valueContent" @valueChanged="onTextChanged" :height="300">
+            <DxToolbar :multiline="isMultiline">
               <DxItem name="undo" />
               <DxItem name="redo" />
               <DxItem name="separator" />
@@ -37,8 +37,8 @@
               <DxItem name="alignRight" />
               <DxItem name="alignJustify" />
               <DxItem name="separator" />
-              <DxItem name="color" />
-              <DxItem name="background" />
+              <DxItem name="orderedList" />
+              <DxItem name="bulletList" />
             </DxToolbar>
           </DxHtmlEditor>
         </div>
@@ -54,8 +54,10 @@
 </template>
 <script>
 //import { TemplateHandler } from "easy-template-x";
+//import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
+import moment from "moment";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 import VueTabsChrome from "vue-tabs-chrome";
@@ -82,11 +84,13 @@ export default {
   data() {
     return {
       theTemplate: null,
+      isMultiline: true,
       valueContent: "",
+      current_view: {},
       buffer: "",
       status: "",
       pagePanelHiding: false,
-      tabCurrent: "data",
+      tabCurrent: "tab2",
       id_inspection_record: "",
       selectedItems: [{ text: "Html" }],
       sizeValues: ["8pt", "10pt", "12pt", "14pt", "18pt", "24pt", "36pt"],
@@ -119,6 +123,7 @@ export default {
       ],
       data1: [
         {
+          htmleditor: [],
           suitability: [],
           shell_settlement_point: [],
           shell_settlement_api: [],
@@ -137,6 +142,18 @@ export default {
   },
   computed: {},
   methods: {
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
+    },
+    onTextChanged(e) {
+      this.valueContent = e.component.option("value");
+      this.data1.htmleditor = e.component.option("value");
+      //this.data1.htmleditor = e.component.option("value");
+      //console.log("e: " + e);
+      // axios.post("/save-text", {
+      //   text: e.component.option("value")
+      // });
+    },
     async getTemplate() {
       if (this.theTemplate) return this.theTemplate;
       const request = await fetch(
@@ -168,8 +185,8 @@ export default {
       //   this.status = "Creating document...";
       //   const handler = new TemplateHandler();
       //   console.log("3.1");
-      //   const docx = await handler.process(this.theTemplate, data);
-      //   console.log("3.2");
+      //   let docx = await handler.process(this.theTemplate, data);
+      //   console.log("3.2:" + docx);
 
       //   // 4. save output
       //   this.status = "Done!";
@@ -205,6 +222,7 @@ export default {
     },
 
     FETCH_CHECKLIST_ILAST_EX() {
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "chk-ilast-ex/get-chkilastex-by-insp-id",
@@ -212,7 +230,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_insp_record: this.id_insp_record
+          id_insp_record: id_insp
         }
       })
         .then(res => {
@@ -263,6 +281,7 @@ export default {
     },
     FETCH_SHELL_POINT() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "shell-settlement/get-shell-settlement",
@@ -271,7 +290,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -291,6 +310,7 @@ export default {
     },
     FETCH_SHELL_API() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "shell-settlement/get-shell-settlement-cal",
@@ -300,7 +320,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -320,6 +340,7 @@ export default {
     },
     FETCH_PLUMBNESS() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "plumbness/get-plumbness",
@@ -329,7 +350,7 @@ export default {
         },
         data: {
           id_tag: parseInt(id_tag),
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -349,6 +370,7 @@ export default {
     },
     FETCH_BOTTOM_THK() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "bottom-thickness/bottom-thk-view-by-inspection-record-id",
@@ -357,7 +379,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -377,6 +399,7 @@ export default {
     },
     FETCH_CRITICAL_THK() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "critical-thickness/critical-thk-view-by-inspection-record-id",
@@ -385,7 +408,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -405,6 +428,7 @@ export default {
     },
     FETCH_ROOF_THK() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "roof-thickness/roof-thk-view-by-inspection-record-id",
@@ -413,7 +437,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -433,6 +457,7 @@ export default {
     },
     FETCH_ROOFNZ_THK() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "roofnz-thickness/roofnz-thk-view-by-inspection-record-id",
@@ -441,7 +466,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -461,6 +486,7 @@ export default {
     },
     FETCH_SHELL_THK() {
       const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
       axios({
         method: "post",
         url: "shell-thickness/shell-thk-view-by-inspection-record-id",
@@ -469,7 +495,7 @@ export default {
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_insp_record
+          id_inspection_record: id_insp
         }
       })
         .then(res => {
@@ -516,7 +542,9 @@ export default {
     },
     VIEW_ITEM(item) {
       //this.isLoading = true;
-      console.log("view item :" + item.id_inspection_record);
+      this.current_view = item;
+
+      console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
       this.FETCH_CHECKLIST_ILAST_EX();
       this.getImageData();
@@ -576,6 +604,7 @@ export default {
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
 }
+
 .list-page {
   position: relative;
   overflow-y: auto;
