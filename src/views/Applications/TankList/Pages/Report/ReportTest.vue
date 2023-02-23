@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-//import { TemplateHandler } from "easy-template-x";
+import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
@@ -121,23 +121,19 @@ export default {
           closable: false
         }
       ],
-      data1: [
-        {
-          htmleditor: [],
-          suitability: [],
-          shell_settlement_point: [],
-          shell_settlement_api: [],
-          plumbness: [],
-          bottom_thk: [],
-          critical_thk: [],
-          shell_course: [{}],
-          shell_thk: [],
-          roof_thk: [],
-          roofnz_thk: [],
-          checklist: [],
-          picture_log: [{}]
-        }
-      ]
+      data1: {
+        bottom_thk: [],
+        critical_thk: [],
+        checklist: [],
+        plumbness: [],
+        roof_thk: [],
+        roofnz_thk: [],
+        shell_course: [{}],
+        shell_settlement_point: [],
+        shell_settlement_api: [],
+        shell_thk: [],
+        picture_log: [{}]
+      }
     };
   },
   computed: {},
@@ -159,46 +155,47 @@ export default {
       const request = await fetch(
         "/report_template/Inspection Report Template.docx"
       );
-      console.log(request);
+      //console.log(request);
       this.theTemplate = await request.blob();
     },
 
     async createDocx() {
+      console.log("CREATED DOCX: ");
       console.log(this.data1);
-      // try {
-      //   this.status = "";
+      try {
+        this.status = "";
 
-      //   // 1. read template file
-      //   this.status = "Getting the template...";
-      //   const templateFile = await this.getTemplate();
-      //   console.log(templateFile);
-      //   console.log("1");
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplate();
+        console.log(templateFile);
+        console.log("1");
 
-      //   // 2. read json data
-      //   this.status = "Parsing data...";
-      //   // const jsonData = this.data1;
-      //   // const data = JSON.parse(jsonData);
-      //   const data = this.data1;
-      //   console.log("2");
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
 
-      //   // 3. process the template
-      //   this.status = "Creating document...";
-      //   const handler = new TemplateHandler();
-      //   console.log("3.1");
-      //   let docx = await handler.process(this.theTemplate, data);
-      //   console.log("3.2:" + docx);
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
 
-      //   // 4. save output
-      //   this.status = "Done!";
-      //   this.saveFile("result.docx", docx);
-      //   console.log("4");
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("result.docx", docx);
+        console.log("4");
 
-      //   setTimeout(() => (this.status = ""), 1000);
-      // } catch (e) {
-      //   // error handling
-      //   this.status = "Error: " + e.message;
-      //   console.error(e);
-      // }
+        setTimeout(() => (this.status = ""), 1000);
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -235,9 +232,9 @@ export default {
       })
         .then(res => {
           console.log("checklist ilast ex:");
-          console.log(res);
+          //console.log(res);
           if (res.status == 200 && res.data) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.checklist = res.data;
           }
         })
@@ -266,10 +263,10 @@ export default {
       })
         .then(res => {
           console.log("tank info:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
-            this.data1 = res.data;
+            this.data1 = res.data[0];
           }
         })
         .catch(error => {
@@ -295,8 +292,8 @@ export default {
       })
         .then(res => {
           console.log("eval shell point:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.shell_settlement_point = res.data;
           }
@@ -325,8 +322,8 @@ export default {
       })
         .then(res => {
           console.log("eval shell api:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.shell_settlement_api = res.data;
           }
@@ -355,8 +352,8 @@ export default {
       })
         .then(res => {
           console.log("plumness:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.plumbness = res.data;
           }
@@ -384,8 +381,8 @@ export default {
       })
         .then(res => {
           console.log("BOTTOM THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.bottom_thk = res.data;
           }
@@ -413,8 +410,8 @@ export default {
       })
         .then(res => {
           console.log("CRITICAL THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.critical_thk = res.data;
           }
@@ -442,8 +439,8 @@ export default {
       })
         .then(res => {
           console.log("ROOF THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.roof_thk = res.data;
           }
@@ -471,8 +468,8 @@ export default {
       })
         .then(res => {
           console.log("ROOFNZ THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.roofnz_thk = res.data;
           }
@@ -500,8 +497,8 @@ export default {
       })
         .then(res => {
           console.log("SHELL THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.shell_thk = res.data;
           }
@@ -527,8 +524,8 @@ export default {
       })
         .then(res => {
           console.log("SHELL THK:");
-          console.log(res);
-          if (res.status == 200 && res.data) {
+          //console.log(res);
+          if (res.status == 200) {
             console.log(res.data);
             this.data1.shell_course = res.data;
           }
@@ -542,13 +539,15 @@ export default {
     },
     VIEW_ITEM(item) {
       //this.isLoading = true;
-      this.current_view = item;
 
+      this.current_view = item;
+      console.log("view " + item.inspection_date);
+      console.log(item);
       console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
-      this.FETCH_CHECKLIST_ILAST_EX();
       this.getImageData();
-      this.FETCH_TANK_INFO();
+      this.FETCH_CHECKLIST_ILAST_EX();
+      // this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
       this.FETCH_BOTTOM_THK();
@@ -574,7 +573,7 @@ export default {
     },
 
     async getImageData() {
-      console.log("in");
+      console.log("get image data");
       const imagePath =
         "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
       const response = await fetch(imagePath);
