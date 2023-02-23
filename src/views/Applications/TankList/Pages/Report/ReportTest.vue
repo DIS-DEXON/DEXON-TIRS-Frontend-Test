@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import { TemplateHandler } from "easy-template-x";
+//import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
@@ -124,6 +124,8 @@ export default {
       data1: {
         company_name: "",
         tank_no: "",
+        insp_date: "",
+        insp_campaign: "",
         location: "",
         inservice_date: "",
         diameter_m: "",
@@ -154,6 +156,49 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
+    DATE_FOR_SHELL_THK(obj) {
+      console.log("DATE FOR DOCX:!");
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.shell_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+      }
+    },
+    DATE_FOR_ROOF_THK(obj) {
+      console.log("DATE FOR DOCX:!");
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.roof_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+      }
+    },
+    DATE_FOR_ROOFNZ_THK(obj) {
+      console.log("DATE FOR DOCX:!");
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.roofnz_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+      }
+    },
+    NUMBER_ROUNDING_ROOF_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        this.data1.roof_thk[i].scr = scr.toFixed(2);
+        this.data1.roof_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_ROOFNZ_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        this.data1.roofnz_thk[i].scr = scr.toFixed(2);
+        this.data1.roofnz_thk[i].rl = rl.toFixed(2);
+      }
+    },
     onTextChanged(e) {
       this.valueContent = e.component.option("value");
       this.data1.htmleditor = e.component.option("value");
@@ -175,40 +220,40 @@ export default {
     async createDocx() {
       console.log("CREATED DOCX: ");
       console.log(this.data1);
-      try {
-        this.status = "";
+      // try {
+      //   this.status = "";
 
-        // 1. read template file
-        this.status = "Getting the template...";
-        const templateFile = await this.getTemplate();
-        console.log(templateFile);
-        console.log("1");
+      //   // 1. read template file
+      //   this.status = "Getting the template...";
+      //   const templateFile = await this.getTemplate();
+      //   console.log(templateFile);
+      //   console.log("1");
 
-        // 2. read json data
-        this.status = "Parsing data...";
-        // const jsonData = this.data1;
-        // const data = JSON.parse(jsonData);
-        const data = this.data1;
-        console.log("2");
+      //   // 2. read json data
+      //   this.status = "Parsing data...";
+      //   // const jsonData = this.data1;
+      //   // const data = JSON.parse(jsonData);
+      //   const data = this.data1;
+      //   console.log("2");
 
-        // 3. process the template
-        this.status = "Creating document...";
-        const handler = new TemplateHandler();
-        console.log("3.1");
-        let docx = await handler.process(this.theTemplate, data);
-        console.log("3.2:" + docx);
+      //   // 3. process the template
+      //   this.status = "Creating document...";
+      //   const handler = new TemplateHandler();
+      //   console.log("3.1");
+      //   let docx = await handler.process(this.theTemplate, data);
+      //   console.log("3.2:" + docx);
 
-        // 4. save output
-        this.status = "Done!";
-        this.saveFile("result.docx", docx);
-        console.log("4");
+      //   // 4. save output
+      //   this.status = "Done!";
+      //   this.saveFile("result.docx", docx);
+      //   console.log("4");
 
-        setTimeout(() => (this.status = ""), 1000);
-      } catch (e) {
-        // error handling
-        this.status = "Error: " + e.message;
-        console.error(e);
-      }
+      //   setTimeout(() => (this.status = ""), 1000);
+      // } catch (e) {
+      //   // error handling
+      //   this.status = "Error: " + e.message;
+      //   console.error(e);
+      // }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -293,19 +338,6 @@ export default {
             this.data1.tank_height_ft = res.data[0].tank_height_ft;
             this.data1.product_code = res.data[0].product_code;
             this.data1.g = res.data[0].g;
-
-            //     tank_no: "",
-            // location: "",
-            // inservice_date: "",
-            // diameter_m: "",
-            // tank_height_m: "",
-            // tank_capacity_litre: "",
-            // max_liquid_level_m: "",
-            // roof_shade: "",
-            // diameter_ft: "",
-            // tank_height_ft: "",
-            // product_code: "",
-            // g: "",
           }
         })
         .catch(error => {
@@ -313,6 +345,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const temp = this.data1.inservice_date;
+          this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
         });
     },
     FETCH_SHELL_POINT() {
@@ -489,6 +523,10 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const s = this.data1.roof_thk;
+          this.DATE_FOR_ROOF_THK(s);
+          const obj = this.data1.roof_thk;
+          this.NUMBER_ROUNDING_ROOF_THK(obj);
         });
     },
     FETCH_ROOFNZ_THK() {
@@ -518,6 +556,10 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const s = this.data1.roofnz_thk;
+          this.DATE_FOR_ROOFNZ_THK(s);
+          const obj = this.data1.roofnz_thk;
+          this.NUMBER_ROUNDING_ROOFNZ_THK(obj);
         });
     },
     FETCH_SHELL_THK() {
@@ -540,6 +582,8 @@ export default {
           if (res.status == 200) {
             console.log(res.data);
             this.data1.shell_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
@@ -547,6 +591,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const s = this.data1.shell_thk;
+          this.DATE_FOR_SHELL_THK(s);
         });
     },
     FETCH_SHELL_COURSE() {
