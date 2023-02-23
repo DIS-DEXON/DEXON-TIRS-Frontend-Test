@@ -122,6 +122,19 @@ export default {
         }
       ],
       data1: {
+        company_name: "",
+        tank_no: "",
+        location: "",
+        inservice_date: "",
+        diameter_m: "",
+        tank_height_m: "",
+        tank_capacity_litre: "",
+        max_liquid_level_m: "",
+        roof_shade: "",
+        diameter_ft: "",
+        tank_height_ft: "",
+        product_code: "",
+        g: "",
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
@@ -266,7 +279,33 @@ export default {
           //console.log(res);
           if (res.status == 200) {
             console.log(res.data);
-            this.data1 = res.data[0];
+            //this.data1 = res.data[0];
+            this.data1.company_name = res.data[0].company_name;
+            this.data1.tank_no = res.data[0].tank_no;
+            this.data1.location = res.data[0].location;
+            this.data1.inservice_date = res.data[0].inservice_date;
+            this.data1.diameter_m = res.data[0].diameter_m;
+            this.data1.tank_height_m = res.data[0].tank_height_m;
+            this.data1.tank_capacity_litre = res.data[0].tank_capacity_litre;
+            this.data1.max_liquid_level_m = res.data[0].max_liquid_level_m;
+            this.data1.roof_shade = res.data[0].roof_shade;
+            this.data1.diameter_ft = res.data[0].diameter_ft;
+            this.data1.tank_height_ft = res.data[0].tank_height_ft;
+            this.data1.product_code = res.data[0].product_code;
+            this.data1.g = res.data[0].g;
+
+            //     tank_no: "",
+            // location: "",
+            // inservice_date: "",
+            // diameter_m: "",
+            // tank_height_m: "",
+            // tank_capacity_litre: "",
+            // max_liquid_level_m: "",
+            // roof_shade: "",
+            // diameter_ft: "",
+            // tank_height_ft: "",
+            // product_code: "",
+            // g: "",
           }
         })
         .catch(error => {
@@ -547,7 +586,7 @@ export default {
       this.id_inspection_record = item.id_inspection_record;
       this.getImageData();
       this.FETCH_CHECKLIST_ILAST_EX();
-      // this.FETCH_TANK_INFO();
+      this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
       this.FETCH_BOTTOM_THK();
