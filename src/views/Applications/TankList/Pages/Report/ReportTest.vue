@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-//import { TemplateHandler } from "easy-template-x";
+import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
@@ -64,6 +64,7 @@ import VueTabsChrome from "vue-tabs-chrome";
 //import { saveAs } from "@progress/kendo-file-saver";
 //import { markup } from "./data.js";
 import { DxHtmlEditor, DxToolbar, DxItem } from "devextreme-vue/html-editor";
+
 export default {
   name: "report-test",
 
@@ -85,6 +86,8 @@ export default {
     return {
       theTemplate: null,
       isMultiline: true,
+      imgpath: [],
+      temp: {},
       valueContent: "",
       current_view: {},
       buffer: "",
@@ -151,13 +154,20 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    }
+  },
   methods: {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
     DATE_FOR_SHELL_THK(obj) {
-      console.log("DATE FOR DOCX:!");
+      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         this.data1.shell_thk[i].inspection_date = moment(date).format(
@@ -166,7 +176,7 @@ export default {
       }
     },
     DATE_FOR_ROOF_THK(obj) {
-      console.log("DATE FOR DOCX:!");
+      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         this.data1.roof_thk[i].inspection_date = moment(date).format(
@@ -175,10 +185,26 @@ export default {
       }
     },
     DATE_FOR_ROOFNZ_THK(obj) {
-      console.log("DATE FOR DOCX:!");
+      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         this.data1.roofnz_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+      }
+    },
+    DATE_FOR_BOTTOM_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.bottom_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+      }
+    },
+    DATE_FOR_CRIT_ZONE(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.critical_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
       }
@@ -199,6 +225,30 @@ export default {
         this.data1.roofnz_thk[i].rl = rl.toFixed(2);
       }
     },
+    NUMBER_ROUNDING_SHELL_SETTLE_API(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const rad = obj[i].theta_radians;
+        const degree = obj[i].theta_degrees;
+        this.data1.shell_settlement_api[i].theta_radians = rad.toFixed(2);
+        this.data1.shell_settlement_api[i].theta_degrees = degree.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_BOTTOM_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        this.data1.bottom_thk[i].scr = scr.toFixed(2);
+        this.data1.bottom_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_CRIT_ZONE(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        this.data1.critical_thk[i].scr = scr.toFixed(2);
+        this.data1.critical_thk[i].rl = rl.toFixed(2);
+      }
+    },
     onTextChanged(e) {
       this.valueContent = e.component.option("value");
       this.data1.htmleditor = e.component.option("value");
@@ -216,44 +266,49 @@ export default {
       //console.log(request);
       this.theTemplate = await request.blob();
     },
-
+    REMOVER() {
+      for (let i = this.data1.picture_log.length - 1; i >= 0; i -= 2) {
+        this.data1.picture_log.splice(i, 1);
+      }
+    },
     async createDocx() {
       console.log("CREATED DOCX: ");
+
       console.log(this.data1);
-      // try {
-      //   this.status = "";
+      try {
+        this.status = "";
 
-      //   // 1. read template file
-      //   this.status = "Getting the template...";
-      //   const templateFile = await this.getTemplate();
-      //   console.log(templateFile);
-      //   console.log("1");
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplate();
+        console.log(templateFile);
+        console.log("1");
 
-      //   // 2. read json data
-      //   this.status = "Parsing data...";
-      //   // const jsonData = this.data1;
-      //   // const data = JSON.parse(jsonData);
-      //   const data = this.data1;
-      //   console.log("2");
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
 
-      //   // 3. process the template
-      //   this.status = "Creating document...";
-      //   const handler = new TemplateHandler();
-      //   console.log("3.1");
-      //   let docx = await handler.process(this.theTemplate, data);
-      //   console.log("3.2:" + docx);
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
 
-      //   // 4. save output
-      //   this.status = "Done!";
-      //   this.saveFile("result.docx", docx);
-      //   console.log("4");
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("result.docx", docx);
+        console.log("4");
 
-      //   setTimeout(() => (this.status = ""), 1000);
-      // } catch (e) {
-      //   // error handling
-      //   this.status = "Error: " + e.message;
-      //   console.error(e);
-      // }
+        setTimeout(() => (this.status = ""), 1000);
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -323,7 +378,7 @@ export default {
           console.log("tank info:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             //this.data1 = res.data[0];
             this.data1.company_name = res.data[0].company_name;
             this.data1.tank_no = res.data[0].tank_no;
@@ -367,7 +422,7 @@ export default {
           console.log("eval shell point:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.shell_settlement_point = res.data;
           }
         })
@@ -397,7 +452,7 @@ export default {
           console.log("eval shell api:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.shell_settlement_api = res.data;
           }
         })
@@ -406,6 +461,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const temp = this.data1.shell_settlement_api;
+          this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
         });
     },
     FETCH_PLUMBNESS() {
@@ -427,7 +484,7 @@ export default {
           console.log("plumness:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.plumbness = res.data;
           }
         })
@@ -456,7 +513,7 @@ export default {
           console.log("BOTTOM THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.bottom_thk = res.data;
           }
         })
@@ -465,6 +522,9 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const temp = this.data1.bottom_thk;
+          this.DATE_FOR_BOTTOM_THK(temp);
+          this.NUMBER_ROUNDING_BOTTOM_THK(temp);
         });
     },
     FETCH_CRITICAL_THK() {
@@ -485,7 +545,7 @@ export default {
           console.log("CRITICAL THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.critical_thk = res.data;
           }
         })
@@ -494,6 +554,9 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          const temp = this.data1.critical_thk;
+          this.DATE_FOR_CRIT_ZONE(temp);
+          this.NUMBER_ROUNDING_CRIT_ZONE(temp);
         });
     },
     FETCH_ROOF_THK() {
@@ -514,7 +577,7 @@ export default {
           console.log("ROOF THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.roof_thk = res.data;
           }
         })
@@ -547,7 +610,7 @@ export default {
           console.log("ROOFNZ THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.roofnz_thk = res.data;
           }
         })
@@ -580,7 +643,7 @@ export default {
           console.log("SHELL THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.shell_thk = res.data;
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
@@ -611,7 +674,7 @@ export default {
           console.log("SHELL THK:");
           //console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
+            //console.log(res.data);
             this.data1.shell_course = res.data;
           }
         })
@@ -622,6 +685,7 @@ export default {
           this.isLoading = false;
         });
     },
+
     VIEW_ITEM(item) {
       //this.isLoading = true;
 
@@ -630,7 +694,8 @@ export default {
       console.log(item);
       console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
-      this.getImageData();
+      this.FETCH_IMAGE();
+
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
@@ -656,26 +721,105 @@ export default {
         return reader.result;
       };
     },
-
+    FETCH_IMAGE() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "visual-report/layout-visual-report-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("GET IMAGE");
+          //console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.imgpath = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          console.log("finish image fetch:");
+          console.log(this.imgpath);
+          this.getImageData();
+        });
+    },
     async getImageData() {
-      console.log("get image data");
-      const imagePath =
-        "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
-      const response = await fetch(imagePath);
-      const imageData = await response.arrayBuffer();
-      const mimeType = response.headers.get("content-type");
-      const imageBlob = new Blob([imageData], { type: mimeType });
-      const imageObject = {
-        _type: "image",
-        source: imageBlob,
-        format: mimeType,
-        width: 200,
-        height: 200
-      };
-      console.log(imageObject);
-      this.data1.picture_log[0].findings = "Testtttttttttttttt";
-      this.data1.picture_log[0].overview_pic = imageObject;
-      //return imageObject;
+      //const obj = this.imgpath;
+      console.log("get image data:");
+
+      //console.log(obj);
+
+      //overview pic
+      // for (let i = 0; i < obj.length; i++) {
+      //   const s = obj[i].file_path_1;
+      //   encodeURI(s);
+      //   const img = toString(this.baseURL + s);
+      //   const response = await fetch(img);
+      //   const imageData = await response.arrayBuffer();
+      //   const mimeType = response.headers.get("content-type");
+      //   const imageBlob = new Blob([imageData], { type: mimeType });
+      //   const imageObject = {
+      //     _type: "image",
+      //     source: imageBlob,
+      //     format: mimeType,
+      //     width: 200,
+      //     height: 200
+      //   };
+      //   this.data1.picture_log[i].overview_pic = imageObject;
+      //   this.data1.picture_log[i].findings = obj[i].finding;
+      //   this.data1.picture_log[i].recommendation = obj[i].recommendation;
+      // }
+
+      // close up view
+      // for (let j = 0; j < obj.length; j++) {
+      //   const img = encodeURI(this.baseURL + obj[j].file_path_2);
+      //   const response = await fetch(img);
+      //   const imageData = await response.arrayBuffer();
+      //   const mimeType = response.headers.get("content-type");
+      //   const imageBlob = new Blob([imageData], { type: mimeType });
+      //   const imageObject = {
+      //     _type: "image",
+      //     source: imageBlob,
+      //     format: mimeType,
+      //     width: 200,
+      //     height: 200
+      //   };
+      //   this.data1.picture_log[j].close_up_view_pic = imageObject;
+      // }
+
+      //const imagePath = "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
+      const o = this.imgpath;
+      console.log(o.length);
+      console.log(encodeURI(this.baseURL + o[1].file_path_2));
+
+      for (let j = 0; j < o.length; j++) {
+        console.log("j :" + j);
+        const response = await fetch(
+          encodeURI(this.baseURL + o[j].file_path_1)
+        );
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+
+        this.data1.picture_log.push({
+          overview_pic: imageObject,
+          findings: o[j].finding
+        });
+      }
     }
   }
 };
