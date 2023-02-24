@@ -15,7 +15,7 @@
 export default {
   name: "chart-floor-gradient-line",
   props: {
-    floorGradientData: Array,
+    floorGradientData: Object,
   },
   created() {},
   data() {
@@ -30,7 +30,7 @@ export default {
           enabled: false,
         },
         title: {
-          text: "Floor Gradient Evaluation Graph",
+          text: "Bottom Settlement Evaluation Graph",
         },
         // subtitle: {
         //   text: "Dexon Technology Public Company Limited",
@@ -39,7 +39,7 @@ export default {
           title: {
             text: "Value",
             style: {
-              fontSize: "14",
+              fontSize: "12",
             },
           },
           labels: {
@@ -47,7 +47,7 @@ export default {
               return this.value;
             },
             style: {
-              fontSize: "14",
+              fontSize: "12",
             },
           },
         },
@@ -57,7 +57,7 @@ export default {
           },
           labels: {
             style: {
-              fontSize: "14",
+              fontSize: "12",
             },
           },
           categories: [],
@@ -83,58 +83,6 @@ export default {
           },
         },
         series: [
-          {
-            name: "N to S",
-            data: [],
-            color: "#140a4b",
-            lineWidth: 2,
-            marker: {
-              symbol: "circle",
-            },
-            dataLabels: {
-              enabled: false,
-            },
-          },
-          {
-            name: "NNE to SSW",
-            data: [],
-            color: "#c12400",
-            lineWidth: 2,
-            marker: {
-              enabled: false,
-              symbol: "none",
-            },
-          },
-          {
-            name: "NE to SW",
-            data: [],
-            color: "#ffac00",
-            lineWidth: 2,
-            marker: {
-              enabled: false,
-              symbol: "circle",
-            },
-          },
-          {
-            name: "ENE to WSW",
-            data: [],
-            color: "#fff000",
-            lineWidth: 2,
-            marker: {
-              enabled: false,
-              symbol: "circle",
-            },
-          },
-          {
-            name: "E to W",
-            data: [],
-            color: "#fff000",
-            lineWidth: 2,
-            marker: {
-              enabled: false,
-              symbol: "circle",
-            },
-          },
         ],
         tooltip: {
           formatter: function () {
@@ -168,25 +116,52 @@ export default {
     };
   },
   mounted() {
-    console.log("Have data: PROPS");
-    console.log(this.floorGradientData);
+    // console.log("Have data: PROPS");
+    // console.log(this.floorGradientData);
     if (this.floorGradientData && this.floorGradientData.length > 0) {
       this.dataList = this.floorGradientData;
       console.log("Have data: DATA LIST");
       console.log(this.dataList);
 
+      // if (this.dataList.length > 0) {
+      //   for (var i = 0; i < this.dataList.length; i++) {
+      //     this.chartOptions.series[0].data.push(this.dataList[i].n_s);
+      //     this.chartOptions.series[1].data.push(this.dataList[i].nne_ssw);
+      //     this.chartOptions.series[2].data.push(this.dataList[i].ne_sw);
+      //     this.chartOptions.series[3].data.push(this.dataList[i].ene_wsw);
+      //     this.chartOptions.series[4].data.push(this.dataList[i].e_w);
+      //     this.chartOptions.xAxis.categories.push(
+      //       this.dataList[i].survey_point
+      //     );
+      //   }
+      // }
+
       if (this.dataList.length > 0) {
         for (var i = 0; i < this.dataList.length; i++) {
-          this.chartOptions.series[0].data.push(this.dataList[i].n_s);
-          this.chartOptions.series[1].data.push(this.dataList[i].nne_ssw);
-          this.chartOptions.series[2].data.push(this.dataList[i].ne_sw);
-          this.chartOptions.series[3].data.push(this.dataList[i].ene_wsw);
-          this.chartOptions.series[4].data.push(this.dataList[i].e_w);
-          this.chartOptions.xAxis.categories.push(
-            this.dataList[i].survey_point
-          );
+          var name = this.dataList[i].direction_from + "->" + this.dataList[i].direction_to;
+          var line = {
+            name: name,
+            data: [],
+            lineWidth: 2,
+            marker: {
+              symbol: "circle",
+            },
+            dataLabels: {
+              enabled: false,
+            },
+          };
+          this.chartOptions.series[i] = line;
+
+          for (var j = 1; j <= this.dataList[i].point_total; j++) {
+            this.chartOptions.series[i].data.push(this.dataList[i].point_data[0][j]);
+            this.chartOptions.xAxis.categories.push(j);  
+          }
+          
         }
       }
+
+      console.log(this.chartOptions);
+
     }
   },
   methods: {},
@@ -197,12 +172,12 @@ export default {
 <style lang="scss" scoped>
 .chart-item {
   height: -webkit-fill-available;
-  min-height: 200px;
+  min-height: 400px;
   border: 1px solid #000;
   border-radius: 6px;
   overflow: hidden;
   padding-top: 20px;
-  margin-top: 46px;
+  margin-top: 5px;
   .highcharts-container {
     height: 100% !important;
     margin: auto 0;

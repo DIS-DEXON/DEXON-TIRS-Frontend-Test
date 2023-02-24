@@ -20,10 +20,17 @@
       </v-ons-list>
       <div class="content">
         <div class="table-wrapper">
+          <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+            <div class="left">
+              <label>Line</label>
+            </div>
+            <div class="right">
+            </div>
+          </div>
           <DxDataGrid
-            id="roundness-grid"
-            key-expr="id_eval"
-            :data-source="floorList"
+            id="bottom-set-line-grid"
+            key-expr="id_line"
+            :data-source="bottomSetLine"
             :element-attr="dataGridAttributes"
             :selection="{ mode: 'single' }"
             :hover-state-enabled="true"
@@ -32,9 +39,10 @@
             :show-row-lines="true"
             :row-alternation-enabled="false"
             :word-wrap-enabled="true"
-            @row-inserted="CREATE_FLOOR"
-            @row-updated="UPDATE_FLOOR"
-            @row-removed="DELETE_FLOOR"
+            @row-inserted="CREATE_LINE"
+            @row-updated="UPDATE_LINE"
+            @row-removed="DELETE_LINE"
+            @selection-changed="VIEW_POINT"
           >
             <DxFilterRow :visible="true" />
             <DxHeaderFilter :visible="true" />
@@ -47,45 +55,15 @@
               mode="row"
             />
 
-            <DxColumn data-field="survey_point" caption="Point No." />
+            <DxColumn data-field="direction_from" caption="Direction From" />
 
-            <DxColumn
-              data-field="distance"
-              caption="Distance (m)"
-              format="#,##0.00"
-            />
+            <DxColumn data-field="direction_to" caption="Direction To" />
 
-            <DxColumn data-field="n_s" caption="N to S" format="#,##0.00" />
+            <DxColumn data-field="degree_from" caption="Degree From  (x°)" format="#,##0.00" />
 
-            <DxColumn
-              data-field="nne_ssw"
-              caption="NNE to SSW"
-              format="#,##0.00"
-            />
+            <DxColumn data-field="degree_to" caption="Degree To (x°)" format="#,##0.00" />
 
-            <DxColumn data-field="ne_sw" caption="NE to SW" format="#,##0.00" />
-
-            <DxColumn
-              data-field="ene_wsw"
-              caption="ENE to WSW"
-              format="#,##0.00"
-            />
-
-            <DxColumn data-field="e_w" caption="E to W" format="#,##0.00" />
-
-            <DxColumn
-              data-field="ese_wnw"
-              caption="ESE to WNW"
-              format="#,##0.00"
-            />
-
-            <DxColumn data-field="se_nw" caption="SE to NW" format="#,##0.00" />
-
-            <DxColumn
-              data-field="sse_nnw"
-              caption="SSE to NNW"
-              format="#,##0.00"
-            />
+            <DxColumn data-field="remark" caption="Remark" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -97,7 +75,7 @@
             <!-- <DxFilterRow :visible="true" /> -->
             <DxScrolling mode="standard" />
             <DxSearchPanel :visible="false" />
-            <DxPaging :page-size="10" :page-index="0" />
+            <DxPaging :page-size="5" :page-index="0" />
             <DxPager
               :show-page-size-selector="true"
               :allowed-page-sizes="[5, 10, 20]"
@@ -108,12 +86,74 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
-        <div class="chart-wrapper">
-          <chart :floorGradientData="floorList" :key="floorList" />
-        </div>
-        <div class="table-wrapper" style="grid-column: span 2">
+        <div class="table-wrapper">
+          <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+            <div class="left">
+              <label>Point</label>
+            </div>
+            <div class="right">
+            </div>
+          </div>
           <DxDataGrid
-            id="roundness-grid"
+            id="bottom-set-point-grid"
+            key-expr="id_point"
+            :data-source="bottomSetPoint"
+            :element-attr="dataGridAttributes"
+            :selection="{ mode: 'single' }"
+            :hover-state-enabled="true"
+            :allow-column-reordering="true"
+            :show-borders="true"
+            :show-row-lines="true"
+            :row-alternation-enabled="false"
+            :word-wrap-enabled="true"
+            @row-inserted="CREATE_POINT"
+            @row-updated="UPDATE_POINT"
+            @row-removed="DELETE_POINT"
+          >
+            <DxFilterRow :visible="true" />
+            <DxHeaderFilter :visible="true" />
+
+            <DxEditing
+              :allow-updating="true"
+              :allow-deleting="true"
+              :allow-adding="true"
+              :use-icons="true"
+              mode="row"
+            />
+
+            <DxColumn data-field="point_no" caption="Direction From" />
+
+            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00"  />
+
+            <DxColumn data-field="value" caption="Value" format="#,##0.00" />
+
+            <DxColumn type="buttons">
+              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+              <DxButton name="edit" hint="Edit" icon="edit" />
+              <DxButton name="delete" hint="Delete" icon="trash" />
+            </DxColumn>
+
+            <!-- Configuration goes here -->
+            <!-- <DxFilterRow :visible="true" /> -->
+            <DxScrolling mode="standard" />
+            <DxSearchPanel :visible="false" />
+            <DxPaging :page-size="5" :page-index="0" />
+            <DxPager
+              :show-page-size-selector="true"
+              :allowed-page-sizes="[5, 10, 20]"
+              :show-navigation-buttons="true"
+              :show-info="true"
+              info-text="Page {0} of {1} ({2} items)"
+            />
+            <!-- <DxExport :enabled="true" /> -->
+          </DxDataGrid>
+        </div>
+        <div class="chart-wrapper" style="grid-column: span 2;">
+          <chart :floorGradientData="bottomSetGraph" :key="bottomSetGraph" />
+        </div>
+        <div class="table-wrapper" style="grid-column: span 2; margin-top: 30px;">
+          <DxDataGrid
+            id="bulge-depression-grid"
             key-expr="id_eval"
             :data-source="bulgeList"
             :element-attr="dataGridAttributes"
@@ -321,7 +361,9 @@ export default {
   },
   data() {
     return {
-      floorList: {},
+      bottomSetLine: {},
+      bottomSetPoint: {},
+      bottomSetGraph: {},
       bulgeList: {},
       inspRecordList: {},
       campaignList: {},
@@ -332,6 +374,7 @@ export default {
         class: "data-grid-style",
       },
       pagePanelHiding: false,
+      id_line: 0,
     };
   },
   computed: {
@@ -366,7 +409,7 @@ export default {
       //floor gradient
       axios({
         method: "post",
-        url: "floor-gradient/get-floor-gradient",
+        url: "bottom-settlement/get-bottom-settlement-line",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -376,10 +419,11 @@ export default {
         },
       })
         .then((res) => {
-          console.log("get floor list:");
+          console.log("get-bottom-settlement-line:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.floorList = res.data;
+            this.bottomSetLine = res.data;
+            this.FETCH_GRAPH();
           }
         })
         .catch((error) => {
@@ -392,7 +436,7 @@ export default {
       //bulge
       axios({
         method: "post",
-        url: "floor-gradient/get-bulge-depression",
+        url: "bottom-settlement/get-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -415,90 +459,225 @@ export default {
           this.isLoading = false;
         });
     },
+    CREATE_LINE(e) {
+      this.isLoading = true;
+      var id_tag = this.$route.params.id_tag;
+      e.data.id_line = 0;
+      e.data.id_tag = id_tag;
+      e.data.id_inspection_record = this.id_inspection_record;
+      console.log(e.data);
+      axios({
+        method: "post",
+        url: "bottom-settlement/add-bottom-settlement-line",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_LINE(e) {
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "bottom-settlement/edit-bottom-settlement-line",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_LINE(e) {
+      console.log(e.data);
+      axios({
+        method: "delete",
+        url: "bottom-settlement/delete-bottom-settlement-line",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VIEW_POINT(e) {
+      console.log(e);
+      this.id_line = e.selectedRowKeys[0];
+      this.FETCH_POINT();
+    },
+    FETCH_POINT() {
+      axios({
+        method: "post",
+        url: "bottom-settlement/get-bottom-settlement-point",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_line: this.id_line,
+        },
+      })
+        .then((res) => {
+          console.log("get-bottom-settlement-point:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.bottomSetPoint = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+
+    },
+    CREATE_POINT(e) {
+      if(this.id_line > 0) {
+        e.data.id_point = 0;
+        e.data.id_line = this.id_line;
+        console.log(e.data);
+        axios({
+          method: "post",
+          url: "bottom-settlement/add-bottom-settlement-point",
+          headers: {
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          },
+          data: e.data,
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.status == 200 && res.data) {
+              console.log(res.data);
+              this.FETCH_POINT();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
+    },
+    UPDATE_POINT(e) {
+      console.log(e.data);
+      axios({
+        method: "put",
+        url: "bottom-settlement/edit-bottom-settlement-point",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.FETCH_POINT();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_POINT(e) {
+      console.log(e.data);
+      axios({
+        method: "delete",
+        url: "bottom-settlement/delete-bottom-settlement-point",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: e.data,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.FETCH_POINT();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_GRAPH() {
+      var id_tag = this.$route.params.id_tag;
+      var id_inspection_record = this.current_view.id_inspection_record;
+      axios({
+        method: "post",
+        url: "bottom-settlement/get-bottom-settlement-graph",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log("get-bottom-settlement-graph:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.bottomSetGraph = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+
+    },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
         return false;
       } else {
         return true;
       }
-    },
-    CREATE_FLOOR(e) {
-      this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_eval = 0;
-      e.data.id_tag = id_tag;
-      e.data.id_inspection_record = this.id_inspection_record;
-
-      console.log(e.data);
-      axios({
-        method: "post",
-        url: "floor-gradient/add-floor-gradient",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_FLOOR(e) {
-      console.log(e.data);
-      axios({
-        method: "put",
-        url: "floor-gradient/edit-floor-gradient",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    DELETE_FLOOR(e) {
-      console.log(e.data);
-      axios({
-        method: "delete",
-        url: "floor-gradient/delete-floor-gradient",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: e.data,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status == 200 && res.data) {
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
     },
     CREATE_BULGE(e) {
       this.isLoading = true;
@@ -510,7 +689,7 @@ export default {
       console.log(e.data);
       axios({
         method: "post",
-        url: "floor-gradient/add-bulge-depression",
+        url: "bottom-settlement/add-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -534,7 +713,7 @@ export default {
       console.log(e.data);
       axios({
         method: "put",
-        url: "floor-gradient/edit-bulge-depression",
+        url: "bottom-settlement/edit-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -558,6 +737,7 @@ export default {
       console.log(e.data);
       axios({
         method: "delete",
+        url: "bottom-settlement/delete-bulge-depression",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
