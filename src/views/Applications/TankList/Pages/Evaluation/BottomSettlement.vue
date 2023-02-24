@@ -244,7 +244,7 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
-        <div class="app-instruction" style="grid-column: span 2">
+        <div class="app-instruction" style="grid-column: span 2; margin-top: 30px;">
           <appInstruction title="Instruction" desc="Floor Gradient Survey">
             <ol>
               <li>
@@ -793,9 +793,18 @@ export default {
   .content {
     width: calc(100% - 20px);
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 60% 40%;
     grid-template-rows: auto 400px;
     grid-gap: 20px;
+  }
+
+  @media (max-width: 1219px) {
+    .content {
+      display: inline;
+    }
+    .table-wrapper {
+      height: auto;
+    }
   }
 }
 

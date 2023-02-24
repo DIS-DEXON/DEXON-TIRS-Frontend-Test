@@ -565,6 +565,17 @@ export default {
       }
     }
   }
+  @media (max-width: 1130px) {
+    .report-container {
+      display: inline;
+      .sheet-body {
+        margin-bottom: 15px;
+        .form-item {
+          grid-template-columns: 200px calc(100% - 300px) 100px;
+        }
+      }
+    }
+  }
 }
 
 input:disabled {
