@@ -517,5 +517,13 @@ export default {
       }
     }
   }
+  @media (max-width: 1180px) {
+    .report-container {
+      display: inline;
+      .sheet-body {
+        margin-bottom: 15px;
+      }
+    }
+  }
 }
 </style>
