@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import { TemplateHandler } from "easy-template-x";
+//import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
@@ -273,42 +273,42 @@ export default {
     },
     async createDocx() {
       console.log("CREATED DOCX: ");
-
+      this.data1.picture_log.shift();
       console.log(this.data1);
-      try {
-        this.status = "";
+      // try {
+      //   this.status = "";
 
-        // 1. read template file
-        this.status = "Getting the template...";
-        const templateFile = await this.getTemplate();
-        console.log(templateFile);
-        console.log("1");
+      //   // 1. read template file
+      //   this.status = "Getting the template...";
+      //   const templateFile = await this.getTemplate();
+      //   console.log(templateFile);
+      //   console.log("1");
 
-        // 2. read json data
-        this.status = "Parsing data...";
-        // const jsonData = this.data1;
-        // const data = JSON.parse(jsonData);
-        const data = this.data1;
-        console.log("2");
+      //   // 2. read json data
+      //   this.status = "Parsing data...";
+      //   // const jsonData = this.data1;
+      //   // const data = JSON.parse(jsonData);
+      //   const data = this.data1;
+      //   console.log("2");
 
-        // 3. process the template
-        this.status = "Creating document...";
-        const handler = new TemplateHandler();
-        console.log("3.1");
-        let docx = await handler.process(this.theTemplate, data);
-        console.log("3.2:" + docx);
+      //   // 3. process the template
+      //   this.status = "Creating document...";
+      //   const handler = new TemplateHandler();
+      //   console.log("3.1");
+      //   let docx = await handler.process(this.theTemplate, data);
+      //   console.log("3.2:" + docx);
 
-        // 4. save output
-        this.status = "Done!";
-        this.saveFile("result.docx", docx);
-        console.log("4");
+      //   // 4. save output
+      //   this.status = "Done!";
+      //   this.saveFile("result.docx", docx);
+      //   console.log("4");
 
-        setTimeout(() => (this.status = ""), 1000);
-      } catch (e) {
-        // error handling
-        this.status = "Error: " + e.message;
-        console.error(e);
-      }
+      //   setTimeout(() => (this.status = ""), 1000);
+      // } catch (e) {
+      //   // error handling
+      //   this.status = "Error: " + e.message;
+      //   console.error(e);
+      // }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -753,9 +753,7 @@ export default {
     async getImageData() {
       //const obj = this.imgpath;
       console.log("get image data:");
-
       //console.log(obj);
-
       //overview pic
       // for (let i = 0; i < obj.length; i++) {
       //   const s = obj[i].file_path_1;
