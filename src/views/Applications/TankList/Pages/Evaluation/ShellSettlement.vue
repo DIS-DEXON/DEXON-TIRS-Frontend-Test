@@ -185,12 +185,6 @@
         <div v-if="this.settlementCalPointList.length > 0">
           <div
             class="content"
-            style="
-              width: 100%;
-              display: grid;
-              grid-template-columns: auto 240px;
-              grid-gap: 20px;
-            "
           >
             <div class="table-wrapper">
               <DxDataGrid
@@ -324,11 +318,11 @@
               </DxDataGrid>
             </div>
             <div class="report-sheet">
-              <div class="custom-table-header">
+              <!-- <div class="custom-table-header">
                 <label></label>
-              </div>
-              <div class="report-container">
-                <div class="sheet-body">
+              </div> -->
+              <div class="report-container" style="display: grid; grid-template-columns: 50% 50%; gap: 20px; width: calc(100% - 20px);">
+                <div class="sheet-body" style="border: none;">
                   <div class="section-label" style="grid-column: span 4">
                     <label style="line-height: 34px"
                       >Y = A + B Cos(Theta - C)</label
@@ -513,6 +507,7 @@
               </div>
             </div>
           </div>
+          <!-- Chart-->
           <div
             style="
               display: grid;
