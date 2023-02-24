@@ -36,7 +36,7 @@
           </span>
         </div>
         <div class="right">
-          <v-ons-toolbar-button v-on:click="VIEW_ITEM(item)">
+          <v-ons-toolbar-button>
             <i class="las la-search"></i>
           </v-ons-toolbar-button>
         </div>
