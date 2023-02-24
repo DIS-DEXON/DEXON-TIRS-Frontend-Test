@@ -405,10 +405,10 @@ export default {
     margin: -20px -20px 20px -20px;
   }
   .content {
-    width: calc(100% - 20px);
-    display: grid;
-    grid-template-columns: 600px calc(100% - 600px);
-    grid-gap: 20px;
+    // width: calc(100% - 20px);
+    display: inline;
+    // grid-template-columns: 600px calc(100% - 600px);
+    // grid-gap: 20px;
   }
 }
 
@@ -426,7 +426,7 @@ export default {
 }
 
 .table-wrapper {
-  height: 100%;
+  height: auto;
 }
 
 .instruction-table {
