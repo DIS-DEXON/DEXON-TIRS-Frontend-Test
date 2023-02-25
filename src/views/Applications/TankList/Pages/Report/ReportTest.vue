@@ -81,6 +81,10 @@ export default {
       // console.log("data:");
       // console.log(this.data1);
     }
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Reports",
+      subpageInnerName: null,
+    });
   },
   data() {
     return {
@@ -695,7 +699,6 @@ export default {
       console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
       this.FETCH_IMAGE();
-
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
@@ -751,74 +754,46 @@ export default {
         });
     },
     async getImageData() {
-      //const obj = this.imgpath;
       console.log("get image data:");
-      //console.log(obj);
-      //overview pic
-      // for (let i = 0; i < obj.length; i++) {
-      //   const s = obj[i].file_path_1;
-      //   encodeURI(s);
-      //   const img = toString(this.baseURL + s);
-      //   const response = await fetch(img);
-      //   const imageData = await response.arrayBuffer();
-      //   const mimeType = response.headers.get("content-type");
-      //   const imageBlob = new Blob([imageData], { type: mimeType });
-      //   const imageObject = {
-      //     _type: "image",
-      //     source: imageBlob,
-      //     format: mimeType,
-      //     width: 200,
-      //     height: 200
-      //   };
-      //   this.data1.picture_log[i].overview_pic = imageObject;
-      //   this.data1.picture_log[i].findings = obj[i].finding;
-      //   this.data1.picture_log[i].recommendation = obj[i].recommendation;
-      // }
-
-      // close up view
-      // for (let j = 0; j < obj.length; j++) {
-      //   const img = encodeURI(this.baseURL + obj[j].file_path_2);
-      //   const response = await fetch(img);
-      //   const imageData = await response.arrayBuffer();
-      //   const mimeType = response.headers.get("content-type");
-      //   const imageBlob = new Blob([imageData], { type: mimeType });
-      //   const imageObject = {
-      //     _type: "image",
-      //     source: imageBlob,
-      //     format: mimeType,
-      //     width: 200,
-      //     height: 200
-      //   };
-      //   this.data1.picture_log[j].close_up_view_pic = imageObject;
-      // }
-
       //const imagePath = "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
       const o = this.imgpath;
       console.log(o.length);
       console.log(encodeURI(this.baseURL + o[1].file_path_2));
-
-      for (let j = 0; j < o.length; j++) {
-        console.log("j :" + j);
-        const response = await fetch(
-          encodeURI(this.baseURL + o[j].file_path_1)
-        );
-        const imageData = await response.arrayBuffer();
-        const mimeType = response.headers.get("content-type");
-        const imageBlob = new Blob([imageData], { type: mimeType });
-        const imageObject = {
-          _type: "image",
-          source: imageBlob,
-          format: mimeType,
-          width: 200,
-          height: 200
-        };
-
-        this.data1.picture_log.push({
-          overview_pic: imageObject,
-          findings: o[j].finding
-        });
-      }
-    }
+      
+        for (let j = 0; j < o.length; j++) {
+          
+            const response = await fetch(
+            encodeURI(this.baseURL + o[j].file_path_1));
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 200,
+            height: 200
+          };
+          const response2 = await fetch(
+            encodeURI(this.baseURL + o[j].file_path_2));
+            const imageData2 = await response2.arrayBuffer();
+            const imageBlob2 = new Blob([imageData2], { type: mimeType });
+            const imageObject2 = {
+            _type: "image",
+            source: imageBlob2,
+            format: mimeType,
+            width: 200,
+            height: 200
+          };
+            this.data1.picture_log.push({
+            overview_pic: imageObject,
+            close_up_view_pic: imageObject2,
+            findings: o[j].finding,
+            recommendation: o[j].recommendation
+          });
+          
+        }
+    },
   }
 };
 </script>
