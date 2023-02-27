@@ -21,7 +21,7 @@
         <button type="button" v-on:click="createDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
-        <button type="button" v-on:click="createDocx()">Create docx</button>
+        <button type="button" v-on:click="createILASTDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
@@ -57,7 +57,7 @@ export default {
       // console.log(this.data1);
     }
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
-      subpageName: "Reports",
+      subpageName: "Report",
       subpageInnerName: null
     });
   },
@@ -65,25 +65,12 @@ export default {
     return {
       theTemplate: null,
       imgpath: [],
-      valueContent: "",
       current_view: {},
       buffer: "",
       status: "",
       pagePanelHiding: false,
       tabCurrent: "tab2",
       id_inspection_record: "",
-      selectedItems: [{ text: "Html" }],
-      sizeValues: ["8pt", "10pt", "12pt", "14pt", "18pt", "24pt", "36pt"],
-      fontValues: [
-        "Arial",
-        "Courier New",
-        "Georgia",
-        "Impact",
-        "Lucida Console",
-        "Tahoma",
-        "Times New Roman",
-        "Verdana"
-      ],
       tabs: [
         {
           label: "Generic",
@@ -251,7 +238,7 @@ export default {
       this.theTemplate = await request.blob();
     },
 
-    async createDocx() {
+    async createILASTDocx() {
       console.log("CREATED DOCX: ");
       this.data1.picture_log.shift();
       console.log(this.data1);
