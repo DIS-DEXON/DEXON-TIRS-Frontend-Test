@@ -21,6 +21,7 @@
         :allow-updating="true"
         :allow-deleting="true"
         :allow-adding="true"
+        :use-icons="true"
         mode="row"
       />
       <!-- <DxToolbar>
@@ -31,20 +32,26 @@
         data-field="created_time"
         :width="0"
         caption=""
-        sort-order="asc"
       />
-      <DxColumn data-field="course_no" caption="Course No" />
+      <DxColumn
+        data-field="course_no" 
+        caption="Course No" 
+        sort-order="asc"
+        :width="80"
+      />
       <DxColumn
         data-field="t_nom_plate_mm"
         caption="Nominal Shell Thk (mm)"
         format="#,##0.00"
         header-cell-template="headerTnom"
+        :width="80"
       />
       <DxColumn
         data-field="height_of_course_m"
         caption="Height of course (m)"
         format="#,##0.00"
         header-cell-template="headerHofC"
+        :width="80"
       />
       <DxColumn
         data-field="height_accumulate_course_m"
@@ -52,6 +59,7 @@
         format="#,##0.00"
         header-cell-template="headerAccuH"
         :allow-editing="false"
+        :width="80"
       />
       <DxColumn data-field="id_material" caption="Tank Material">
         <DxLookup
@@ -64,18 +72,26 @@
         data-field="mat_type"
         caption="Material Type"
         :allow-editing="false"
+        :width="80"
+        alignment="center"
       />
       <DxColumn
         data-field="y_value"
         caption="Y"
         header-cell-template="headerY"
         :allow-editing="false"
+        :width="70"
+        alignment="center"
+        format="#,##0"
       />
       <DxColumn
         data-field="t_value"
         caption="T"
         header-cell-template="headerT"
         :allow-editing="false"
+        :width="70"
+        alignment="center"
+        format="#,##0"
       />
       <DxColumn
         data-field="height_of_course_hydro_m"
@@ -83,6 +99,7 @@
         format="#,##0.00"
         header-cell-template="headerHhydro"
         :allow-editing="false"
+        :width="70"
       />
       <DxColumn
         data-field="height_of_course_prod_m"
@@ -90,6 +107,7 @@
         format="#,##0.00"
         header-cell-template="headerHprod"
         :allow-editing="false"
+        :width="70"
       />
       <DxColumn
         data-field="tmin_hydro_mm"
@@ -97,6 +115,7 @@
         format="#,##0.00"
         header-cell-template="headerTrHydro"
         :allow-editing="false"
+        :width="70"
       />
       <DxColumn
         data-field="tmin_prod_mm"
@@ -104,6 +123,7 @@
         format="#,##0.00"
         header-cell-template="headerTrProd"
         :allow-editing="false"
+        :width="70"
       />
       <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
       <template #headerTnom>
