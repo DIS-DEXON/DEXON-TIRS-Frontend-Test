@@ -585,6 +585,7 @@ export default {
             if (res.status == 200 && res.data) {
               console.log(res.data);
               this.FETCH_POINT();
+              this.FETCH_GRAPH();
             }
           })
           .catch((error) => {
