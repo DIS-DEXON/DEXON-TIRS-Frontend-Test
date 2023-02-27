@@ -18,42 +18,20 @@
       </div>
 
       <div v-if="tabCurrent == 'tab1'">
-        <div class="widget-container">
-          <DxHtmlEditor :value="valueContent" @valueChanged="onTextChanged" :height="300">
-            <DxToolbar :multiline="isMultiline">
-              <DxItem name="undo" />
-              <DxItem name="redo" />
-              <DxItem name="separator" />
-              <DxItem :accepted-values="sizeValues" name="size" />
-              <DxItem :accepted-values="fontValues" name="font" />
-              <DxItem name="separator" />
-              <DxItem name="bold" />
-              <DxItem name="italic" />
-              <DxItem name="strike" />
-              <DxItem name="underline" />
-              <DxItem name="separator" />
-              <DxItem name="alignLeft" />
-              <DxItem name="alignCenter" />
-              <DxItem name="alignRight" />
-              <DxItem name="alignJustify" />
-              <DxItem name="separator" />
-              <DxItem name="orderedList" />
-              <DxItem name="bulletList" />
-            </DxToolbar>
-          </DxHtmlEditor>
-        </div>
-        <div class="value-content">value:{{ valueContent }}</div>
+        <button type="button" v-on:click="createDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
       </div>
-      <div v-if="tabCurrent == 'tab3'"></div>
+      <div v-if="tabCurrent == 'tab3'">
+        <button type="button" v-on:click="createDocx()">Create docx</button>
+      </div>
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template>
 <script>
-//import { TemplateHandler } from "easy-template-x";
+import { TemplateHandler } from "easy-template-x";
 //import { createResolver } from "easy-template-x";
 //import { createResolver } from "easy-template-x-angular-expressions";
 import axios from "/axios.js";
@@ -63,7 +41,7 @@ import SelectInspRecord from "@/components/select-insp-record.vue";
 import VueTabsChrome from "vue-tabs-chrome";
 //import { saveAs } from "@progress/kendo-file-saver";
 //import { markup } from "./data.js";
-import { DxHtmlEditor, DxToolbar, DxItem } from "devextreme-vue/html-editor";
+//import { DxHtmlEditor, DxToolbar, DxItem } from "devextreme-vue/html-editor";
 
 export default {
   name: "report-test",
@@ -71,9 +49,6 @@ export default {
   components: {
     InspectionRecordPanel,
     SelectInspRecord,
-    DxHtmlEditor,
-    DxToolbar,
-    DxItem,
     VueTabsChrome
   },
   created() {
@@ -83,15 +58,13 @@ export default {
     }
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Reports",
-      subpageInnerName: null,
+      subpageInnerName: null
     });
   },
   data() {
     return {
       theTemplate: null,
-      isMultiline: true,
       imgpath: [],
-      temp: {},
       valueContent: "",
       current_view: {},
       buffer: "",
@@ -139,11 +112,18 @@ export default {
         tank_height_m: "",
         tank_capacity_litre: "",
         max_liquid_level_m: "",
-        roof_shade: "",
+        roof_shape: "",
         diameter_ft: "",
         tank_height_ft: "",
         product_code: "",
         g: "",
+        insulation: "",
+        foundation: "",
+        name_api_653: "",
+        name_inspection_engineer: "",
+        name_ndt_examineer: "",
+        site_name: "",
+        joint_efficiency: "",
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
@@ -270,49 +250,45 @@ export default {
       //console.log(request);
       this.theTemplate = await request.blob();
     },
-    REMOVER() {
-      for (let i = this.data1.picture_log.length - 1; i >= 0; i -= 2) {
-        this.data1.picture_log.splice(i, 1);
-      }
-    },
+
     async createDocx() {
       console.log("CREATED DOCX: ");
       this.data1.picture_log.shift();
       console.log(this.data1);
-      // try {
-      //   this.status = "";
+      try {
+        this.status = "";
 
-      //   // 1. read template file
-      //   this.status = "Getting the template...";
-      //   const templateFile = await this.getTemplate();
-      //   console.log(templateFile);
-      //   console.log("1");
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplate();
+        console.log(templateFile);
+        console.log("1");
 
-      //   // 2. read json data
-      //   this.status = "Parsing data...";
-      //   // const jsonData = this.data1;
-      //   // const data = JSON.parse(jsonData);
-      //   const data = this.data1;
-      //   console.log("2");
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
 
-      //   // 3. process the template
-      //   this.status = "Creating document...";
-      //   const handler = new TemplateHandler();
-      //   console.log("3.1");
-      //   let docx = await handler.process(this.theTemplate, data);
-      //   console.log("3.2:" + docx);
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
 
-      //   // 4. save output
-      //   this.status = "Done!";
-      //   this.saveFile("result.docx", docx);
-      //   console.log("4");
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("result.docx", docx);
+        console.log("4");
 
-      //   setTimeout(() => (this.status = ""), 1000);
-      // } catch (e) {
-      //   // error handling
-      //   this.status = "Error: " + e.message;
-      //   console.error(e);
-      // }
+        setTimeout(() => (this.status = ""), 1000);
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -364,8 +340,6 @@ export default {
     },
     FETCH_TANK_INFO() {
       const id_tag = this.$route.params.id_tag;
-
-      console.log("id_tag (fetch_tank):" + id_tag);
       //console.log("id_insp:" + id_insp_record);
       axios({
         method: "post",
@@ -392,11 +366,15 @@ export default {
             this.data1.tank_height_m = res.data[0].tank_height_m;
             this.data1.tank_capacity_litre = res.data[0].tank_capacity_litre;
             this.data1.max_liquid_level_m = res.data[0].max_liquid_level_m;
-            this.data1.roof_shade = res.data[0].roof_shade;
+            this.data1.roof_shape = res.data[0].roof_shape;
             this.data1.diameter_ft = res.data[0].diameter_ft;
             this.data1.tank_height_ft = res.data[0].tank_height_ft;
             this.data1.product_code = res.data[0].product_code;
-            this.data1.g = res.data[0].g;
+            this.data1.g = res.data[0].sg_of_product;
+            this.data1.site_name = res.data[0].site_name;
+            this.data1.joint_efficiency = res.data[0].joint_efficiency;
+            this.data1.foundation = res.data[0].foundation;
+            this.data1.insulation = res.data[0].insulation;
           }
         })
         .catch(error => {
@@ -692,12 +670,19 @@ export default {
 
     VIEW_ITEM(item) {
       //this.isLoading = true;
-
+      console.clear();
       this.current_view = item;
-      console.log("view " + item.inspection_date);
+      console.log("records:");
       console.log(item);
       console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
+      this.data1.insp_campaign = item.campaign_desc;
+      this.data1.insp_date = moment(item.inspection_date).format(
+        "MMM DD, YYYY"
+      );
+      this.data1.name_api_653 = item.name_api_653;
+      this.data1.name_inspection_engineer = item.name_inspection_engineer;
+      this.data1.name_ndt_examineer = item.name_ndt_examineer;
       this.FETCH_IMAGE();
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
@@ -737,7 +722,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("GET IMAGE");
+          //console.log("GET IMAGE");
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.imgpath = res.data;
@@ -748,52 +733,51 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          console.log("finish image fetch:");
+          console.log("image:");
           console.log(this.imgpath);
           this.getImageData();
         });
     },
     async getImageData() {
-      console.log("get image data:");
+      console.log("create image obj:");
       //const imagePath = "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
       const o = this.imgpath;
-      console.log(o.length);
-      console.log(encodeURI(this.baseURL + o[1].file_path_2));
-      
-        for (let j = 0; j < o.length; j++) {
-          
-            const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path_1));
-            const imageData = await response.arrayBuffer();
-            const mimeType = response.headers.get("content-type");
-            const imageBlob = new Blob([imageData], { type: mimeType });
-            const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 200,
-            height: 200
-          };
-          const response2 = await fetch(
-            encodeURI(this.baseURL + o[j].file_path_2));
-            const imageData2 = await response2.arrayBuffer();
-            const imageBlob2 = new Blob([imageData2], { type: mimeType });
-            const imageObject2 = {
-            _type: "image",
-            source: imageBlob2,
-            format: mimeType,
-            width: 200,
-            height: 200
-          };
-            this.data1.picture_log.push({
-            overview_pic: imageObject,
-            close_up_view_pic: imageObject2,
-            findings: o[j].finding,
-            recommendation: o[j].recommendation
-          });
-          
-        }
-    },
+      //console.log(encodeURI(this.baseURL + o[1].file_path_2));
+
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(
+          encodeURI(this.baseURL + o[j].file_path_1)
+        );
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        const response2 = await fetch(
+          encodeURI(this.baseURL + o[j].file_path_2)
+        );
+        const imageData2 = await response2.arrayBuffer();
+        const imageBlob2 = new Blob([imageData2], { type: mimeType });
+        const imageObject2 = {
+          _type: "image",
+          source: imageBlob2,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.picture_log.push({
+          overview_pic: imageObject,
+          close_up_view_pic: imageObject2,
+          findings: o[j].finding,
+          recommendation: o[j].recommendation
+        });
+      }
+    }
   }
 };
 </script>
