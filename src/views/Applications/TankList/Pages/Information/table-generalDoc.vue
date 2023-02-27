@@ -2,7 +2,7 @@
   <div class="page-section">
     <DxDataGrid
       id="data-grid-style"
-      :data-source="pidList"
+      :data-source="generalDoc"
       :element-attr="dataGridAttributes"
       :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
@@ -16,16 +16,11 @@
         <DxItem location="before" template="table-header" />
         <DxItem location="after" template="table-header-button-set" />
       </DxToolbar>
-      <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-        sort-order="asc"
-      />
+      <DxColumn data-field="created_time" :width="0" caption sort-order="asc" />
       <DxColumn data-field="file_name" caption="File Name" />
       <DxColumn data-field="file_type" caption="File Type" :width="120" />
       <DxColumn data-field="created_time" caption="Uploaded On" :width="200" />
-      <DxColumn :width="110" caption="" cell-template="cell-button-set" />
+      <DxColumn :width="110" caption cell-template="cell-button-set" />
       <template #cell-button-set="{ data }">
         <div class="table-btn-group">
           <div class="table-btn" v-on:click="DOWNLOAD_INFO(data)">
@@ -90,7 +85,7 @@ import {
   DxColumn,
   DxExport,
   DxToolbar,
-  DxItem,
+  DxItem
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -104,7 +99,7 @@ export default {
     DxColumn,
     DxExport,
     DxToolbar,
-    DxItem,
+    DxItem
   },
   created() {},
   data() {
@@ -116,7 +111,7 @@ export default {
           file_type: "pdf",
           file_url: "/wwwroot/file/drawing/tank/file.pdf",
           created_time: "2022-08-15 08:35:00",
-          created_by: 2,
+          created_by: 2
         },
         {
           id: 2,
@@ -124,12 +119,12 @@ export default {
           file_type: "docx",
           file_url: "/wwwroot/file/drawing/tank/file.pdf",
           created_time: "2022-10-28 15:35:00",
-          created_by: 3,
-        },
+          created_by: 3
+        }
       ],
       dataGridAttributes: {
-        class: "data-grid-style",
-      },
+        class: "data-grid-style"
+      }
     };
   },
   computed: {},
@@ -139,9 +134,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -149,8 +144,8 @@ export default {
         });
       });
       e.cancel = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
