@@ -39,6 +39,7 @@
           :allow-updating="true"
           :allow-deleting="true"
           :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
           mode="row"
         >
           <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
@@ -56,15 +57,19 @@
           caption="Marked-up Drawing"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor"
-          :width="520"
+          :width="320"
         />
 
-        <DxColumn data-field="file_name" caption="File Name" :width="300" />
+        <DxColumn
+          data-field="file_name"
+          caption="File Name"
+          :editor-options="fileNameInputOptions"
+        />
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
             <a :href="baseURL + data.value" download="dwg" target="_blank">
-              <img :src="baseURL + data.value" width="500" /><br />
+              <img :src="baseURL + data.value" width="300" /><br />
             </a>
             <!-- <a
               :href="baseURL + data.value"
@@ -77,20 +82,20 @@
         </template>
 
         <template #dwg-img-editor="{ data }">
-          <div>
+          <div style="padding: 10px;">
             <img
               :src="baseURL + data.value"
-              width="500"
+              width="300"
               v-if="imgDwg != '' && isInitEdit == 0"
             />
             <img
               :src="imgDwg"
-              width="500"
+              width="300"
               v-if="imgDwg != '' && isInitEdit == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
-              width="500"
+              width="300"
               v-if="imgDwg == ''"
             />
 
@@ -214,6 +219,7 @@ export default {
       current_view: {},
       is_changed_dwg: 0,
       dataDwgTemp: "",
+      fileNameInputOptions: { placeholder: 'Enter file name ...' },
     };
   },
   computed: {
@@ -474,4 +480,5 @@ export default {
     margin: -20px -20px 20px -20px;
   }
 }
+
 </style>

@@ -1526,3 +1526,15 @@ td {
 .dx-datagrid-adaptive-more {
     font-family: 'DXIcons' !important;
 }
+
+.toolbar-button--material:first-of-type {
+    margin-left: 0;
+}
+
+.dx-fileuploader-wrapper {
+    padding-left: 0;
+}
+
+.dx-fileuploader-input-wrapper {
+    border: none;
+}

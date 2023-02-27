@@ -81,12 +81,14 @@
           data-field="finding"
           caption="Finding"
           cell-template="dxTextArea"
+          :editor-options="findingInputOptions"
         />
 
         <DxColumn
           data-field="recommendation"
           caption="Recommendation"
           cell-template="dxTextArea"
+          :editor-options="recInputOptions"
         />
 
         <template #dwg-img="{ data }">
@@ -129,22 +131,25 @@
               height="200"
               v-if="imgDwg1 == ''"
             />
+            <div style="position:relative;">
+              <DxFileUploader
+                select-button-text="Select photo"
+                label-text=""
+                accept="image/*"
+                upload-mode="useForm"
+                @value-changed="ON_DWG_CHANGE_1"
+                style="position:absolute;"
+              />
 
-            <DxFileUploader
-              select-button-text="Select photo"
-              label-text=""
-              accept="image/*"
-              upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE_1"
-            />
-
-            <DxButton
-              :width="120"
-              text="Delete"
-              type="normal"
-              styling-mode="contained"
-              @click="DEL_PIC(1)"
-            />
+              <DxButton
+                :width="120"
+                text="Delete"
+                type="normal"
+                styling-mode="contained"
+                @click="DEL_PIC(1)"
+                style="position:absolute; left:130px;"
+              />
+            </div>
           </div>
         </template>
         <template #dwg-img-editor2="{ data }">
@@ -170,13 +175,14 @@
               v-if="imgDwg2 == ''"
             />
 
-            <div>
+            <div style="position:relative; height:50px;">
               <DxFileUploader
                 select-button-text="Select photo"
                 label-text=""
                 accept="image/*"
                 upload-mode="useForm"
                 @value-changed="ON_DWG_CHANGE_2"
+                style="position:absolute;"
               />
 
               <DxButton
@@ -185,6 +191,7 @@
                 type="normal"
                 styling-mode="contained"
                 @click="DEL_PIC(2)"
+                style="position:absolute; left:130px;"
               />
             </div>
           </div>
@@ -314,6 +321,8 @@ export default {
       popUpWidth: 0,
       pictureLog: "",
       pagePanelHiding: false,
+      findingInputOptions: { placeholder: 'Enter finding ...' },
+      recInputOptions: { placeholder: 'Enter recommendation ...' },
     };
   },
   computed: {
