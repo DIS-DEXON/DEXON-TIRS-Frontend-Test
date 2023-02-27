@@ -18,7 +18,7 @@
       </v-ons-list>
       <div class="report-sheet">
         <div class="report-container">
-          <div class="sheet-body" style="border: 0">
+          <div class="sheet-body" style="border: 0; margin-bottom: 15px;">
             <DxDataGrid
               id="ground-connect-grid"
               key-expr="id_eval"
@@ -49,12 +49,14 @@
               <DxColumn
                 data-field="ground_no"
                 caption="Grounding connection no"
+                :width="180"
               />
 
               <DxColumn
                 data-field="measured"
                 caption="The measured resistance to ground (ohms)"
                 format="#,##0.00"
+                :width="180"
               />
 
               <DxColumn data-field="note" caption="Note" />
@@ -92,6 +94,7 @@
                 <input
                   v-model="groundConnectDetail.total"
                   @focusout="UPDATE_GC()"
+                  readonly
                 />
               </div>
             </div>
@@ -107,14 +110,15 @@
               </div>
             </div>
 
-            <div class="form-item" style="grid-template-rows: 101px">
+            <div class="form-item">
               <div class="form-item-label">
                 <label>Result</label>
               </div>
-              <div class="form-item-textarea">
-                <textarea
+              <div class="form-item-value">
+                <input
                   @focusout="UPDATE_GC()"
                   v-model="groundConnectDetail.result"
+                  readonly
                 />
               </div>
             </div>
@@ -472,10 +476,10 @@ export default {
   margin-top: 0;
   margin-bottom: 0;
   .report-container {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: 20px;
-    width: calc(100% - 20px);
+    display: inline;
+    // grid-template-columns: 50% 50%;
+    // grid-gap: 20px;
+    // width: calc(100% - 20px);
 
     .header {
       .title {
@@ -488,7 +492,7 @@ export default {
       overflow: hidden;
       .form-item {
         display: grid;
-        grid-template-columns: 200px calc(100% - 200px);
+        grid-template-columns: 180px calc(100% - 180px);
         grid-template-rows: 35px;
         .form-item-label {
         }
