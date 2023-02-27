@@ -23,7 +23,8 @@
           :allow-updating="true"
           :allow-deleting="true"
           :allow-adding="true"
-          mode="row"
+          :use-icons="true"
+          mode="form"
         />
         <!-- <DxColumn
         data-field="created_time"
@@ -38,15 +39,23 @@
           format="dd MMM yyyy"
           sort-order="desc"
           :width="140"
-        />
+        >
+        <DxRequiredRule />
+        </DxColumn>
 
         <DxColumn
           data-field="project_no"
           caption="Project number"
           :width="140"
-        />
+        >
+        <DxRequiredRule />
+        </DxColumn>
 
-        <DxColumn data-field="report_no" caption="Report number" :width="140" />
+        <DxColumn 
+          data-field="report_no" 
+          caption="Report number" 
+          :width="140" 
+        />
 
         <DxColumn data-field="id_campaign" caption="Campaign" :width="100">
           <DxLookup
@@ -54,21 +63,39 @@
             value-expr="id_campaign"
             display-expr="campaign_desc"
           />
+          <DxRequiredRule />
         </DxColumn>
-        <DxColumn data-field="remark" caption="Remark" :width="auto" />
-        <template #table-header>
-          <div>
-            <div class="page-section-label">Shell Course</div>
-          </div>
-        </template>
-        <!-- <template #table-header-button-set>
-        <div>
-          <v-ons-toolbar-button>
-            <i class="las la-plus"></i>
-            <span>Add New Tank Course</span>
-          </v-ons-toolbar-button>
-        </div>
-      </template> -->
+        
+        <DxColumn 
+          data-field="name_api_653" 
+          caption="Name of API 653" 
+          :width="200" 
+        />
+
+        <DxColumn 
+          data-field="cert_no" 
+          caption="API 653 cert no" 
+          :width="200" 
+        />
+
+        <DxColumn 
+          data-field="name_inspection_engineer" 
+          caption="Name of inspection engineer" 
+          :width="200" 
+        />
+
+        <DxColumn 
+          data-field="name_ndt_examiner" 
+          caption="Name of NDT examiner" 
+          :width="200" 
+        />
+
+
+        <DxColumn 
+          data-field="remark" 
+          caption="Remark" 
+          :width="auto" 
+        />
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
         <DxScrolling mode="standard" />
@@ -112,6 +139,7 @@ import {
   //DxItem,
   DxEditing,
   DxLookup,
+  DxRequiredRule,
 } from "devextreme-vue/data-grid";
 
 //Structures
@@ -130,6 +158,7 @@ export default {
     //DxItem,
     DxEditing,
     DxLookup,
+    DxRequiredRule,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
