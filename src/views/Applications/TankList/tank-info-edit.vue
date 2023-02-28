@@ -593,7 +593,7 @@
             <DxDateBox
               :value="formSelect.now"
               type="date"
-              v-model="formData.fei_last_coated"
+              v-model="formData.fei_last_cleaned"
               placeholder="FEI Last Coated"
             />
           </div>
@@ -941,12 +941,30 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(
-        this.formData.installation_date
-      ).format("L");
-      this.formData.inservice_date = moment(
-        this.formData.inservice_date
-      ).format("L");
+      this.formData.installation_date = moment(this.formData.installation_date).format("L");
+      this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
+      if(this.formData.fei_last_inspected) {
+        this.formData.fei_last_inspected = moment(this.formData.fei_last_inspected).format("L");
+      }
+      if(this.formData.fei_last_coated) {
+        this.formData.fei_last_coated = moment(this.formData.fei_last_coated).format("L");
+      }
+      if(this.formData.fei_last_cleaned) {
+        this.formData.fei_last_cleaned = moment(this.formData.fei_last_cleaned).format("L");
+      }
+      if(this.formData.fei_recommended_next) {
+        this.formData.fei_recommended_next = moment(this.formData.fei_recommended_next).format("L");
+      }
+      if(this.formData.fii_last_inspected) {
+        this.formData.fii_last_inspected = moment(this.formData.fii_last_inspected).format("L");
+      }
+      if(this.formData.fii_last_coated) {
+        this.formData.fii_last_coated = moment(this.formData.fii_last_coated).format("L");
+      }
+      if(this.formData.fii_last_cleaned) {
+        this.formData.fii_last_cleaned = moment(this.formData.fii_last_cleaned).format("L");
+      }
+      
       console.log(this.formData);
       if (
         this.formData.tag_no &&
