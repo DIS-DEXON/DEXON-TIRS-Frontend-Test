@@ -1,7 +1,8 @@
 <template>
   <div class="page-section">
     <DxDataGrid
-      id="id_library"
+      id="drawing"
+      key-expr="id_library"
       :data-source="library"
       :element-attr="dataGridAttributes"
       :hover-state-enabled="true"
@@ -21,29 +22,29 @@
         :use-icons="true"
         mode="form"
       ></DxEditing>
-      <DxToolbar>
-        <!-- <DxItem location="before" template="table-header" /> -->
-        <!-- <DxItem location="after" template="table-header-button-set" /> -->
-      </DxToolbar>
-      <DxForm>
-        <DxItem data-field="file" />
-      </DxForm>
-      <DxColumn data-field="file_name" caption="File Name" />
-      <DxColumn data-field="file" edit-cell-template="editCellTemplate" :visible="false"></DxColumn>
+
+      <!-- <DxToolbar>
+        <DxItem location="before" template="table-header" />
+        <DxItem location="after" template="table-header-button-set" />
+      </DxToolbar>-->
+
+      <DxColumn data-field="file" caption :visible="false" edit-cell-template="editCellTemplate" />
+      <DxColumn
+        data-field="file_name"
+        :allow-adding="false"
+        :allow-editing="false"
+        caption="File name"
+      />
 
       <template #table-header>
         <div>
           <div class="page-section-label">Drawing</div>
         </div>
       </template>
-      <template #editCellTemplate="{ data }">
+
+      <template #editCellTemplate="{  }">
         <div>
-          <img
-            src="http://tmt-solution.com/public/image-empty.png"
-            width="500"
-            height="400"
-            v-if="data.value == ''"
-          />
+          <img src="http://tmt-solution.com/public/image-empty.png" width="150" height="100" />
           <DxFileUploader
             select-button-text="Select File"
             label-text
@@ -52,6 +53,7 @@
           />
         </div>
       </template>
+
       <!-- <template #table-header-button-set>
         <div>
           <v-ons-toolbar-button>
@@ -60,16 +62,17 @@
           </v-ons-toolbar-button>
         </div>
       </template>-->
+
       <DxColumn type="buttons">
         <DxButton name="image" hint="download" icon="download" :on-click="DOWNLOAD" />
-        <DxButton name="edit" hint="Edit" icon="edit" />
+        <!-- <DxButton name="edit" hint="Edit" icon="edit" /> -->
         <DxButton name="delete" hint="Delete" icon="trash" />
       </DxColumn>
-      <!-- Configuration goes here -->
+
       <DxHeaderFilter :visible="true" />
-      <DxFilterRow :visible="false" />
+      <!-- <DxFilterRow :visible="false" /> -->
       <DxScrolling mode="standard" />
-      <!-- <DxSearchPanel :visible="true" /> -->
+      <DxSearchPanel :visible="true" />
       <DxPaging :page-size="10" :page-index="0" />
       <DxPager
         :show-page-size-selector="true"
@@ -100,17 +103,18 @@ import { exportDataGrid } from "devextreme/excel_exporter";
 import {
   DxDataGrid,
   DxEditing,
-  // DxSearchPanel,
+  DxSearchPanel,
   DxPaging,
   DxPager,
   DxScrolling,
   DxColumn,
   DxExport,
-  DxToolbar,
-  DxItem,
+  //DxToolbar,
+  //DxItem,
+  //DxForm,
+  //DxFormItem,
   DxButton,
-  DxHeaderFilter,
-  DxForm
+  DxHeaderFilter
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -118,24 +122,28 @@ export default {
   components: {
     DxDataGrid,
     DxEditing,
-    // DxSearchPanel,
+    DxSearchPanel,
     DxPaging,
     DxPager,
     DxScrolling,
     DxColumn,
     DxExport,
-    DxToolbar,
-    DxItem,
+    //DxToolbar,
+    //DxItem,
+    //DxFormItem,
+    //DxForm,
     DxButton,
     DxHeaderFilter,
-    DxFileUploader,
-    DxForm
+    DxFileUploader
   },
-  created() {},
+  created() {
+    console.clear();
+    this.FETCH_LIBRARY();
+  },
   data() {
     return {
       file: [],
-
+      file_name: "",
       DxDataGrid,
       DxPaging,
       DxPager,
@@ -168,14 +176,44 @@ export default {
       });
       e.cancel = true;
     },
+    FETCH_LIBRARY() {
+      let id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "/tank-library/tank-library-by-type-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_library_type: 1
+        }
+      })
+        .then(res => {
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log("in");
+            console.log(res.data);
+            this.library = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     ADD_NEW_FILE(e) {
-      //console.log("value img:");
+      console.log("INSERTING . . .");
       console.log(e);
-
+      console.log(e.data);
       var formData = new FormData();
       formData.append("id_tag", this.$route.params.id_tag);
-      formData.append("file_name", this.library.file_name);
+      formData.append("file_name", e.data.file_name);
       formData.append("id_library_type", 1);
+      //console.log("id account: " + this.$store.state.user.id_account);
+      formData.append("created_by", this.$store.state.user.id_account);
       formData.append("file", this.file);
       axios({
         method: "post",
@@ -191,7 +229,6 @@ export default {
           if (res.status == 201) {
             //console.log("in");
             //console.log(res.data);
-            this.FETCH_ASSETPIC();
           }
         })
         .catch(error => {
@@ -199,18 +236,29 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          console.log("UPLOAD COMPLETED");
+          this.FETCH_LIBRARY();
         });
     },
     VALUE_CHANGE(e) {
       //console.log("fileReader e data:");
-      //console.log(e);
+      console.log(e);
+      console.log(e.value[0].name);
       let reader = new FileReader();
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
         // this.drawingList.file = reader.result;
       };
       this.file = e.value[0];
-    }
+      this.file_name = e.value[0].name;
+    },
+    setCellValue(newData, value) {
+      console.log("newData:" + newData);
+      console.log("value:" + value);
+      newData.file_name = this.file_name;
+    },
+    DOWNLOAD() {},
+    DELETE_DOC() {}
   }
 };
 </script>
