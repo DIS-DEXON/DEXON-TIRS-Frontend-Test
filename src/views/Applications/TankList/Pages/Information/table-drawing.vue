@@ -1,5 +1,8 @@
 <template>
   <div class="page-section">
+    <div class="datagrid-header">
+      <span>Drawing</span>
+    </div>
     <DxDataGrid
       id="drawing"
       key-expr="id_library"
@@ -14,25 +17,34 @@
       @row-inserted="ADD_NEW_FILE"
       @row-removed="DELETE_DOC"
       @exporting="EXPORT_DATA"
+      @edit-canceled="CANCEL_FORM"
     >
       <DxEditing
         :allow-deleting="true"
         :allow-adding="true"
         :allow-updating="true"
         :use-icons="true"
+        :show-borders="true"
         mode="form"
-      ></DxEditing>
+      >
+        <!-- THIS FORM DOES NOT SHOW UP -->
+        <!-- <DxForm>
+          <DxItem :col-count="2" :col-span="2" caption="Home Address" />
+          <DxItem data-field="file_name" />
+          <DxItem data-field="file" edit-cell-template="editCellTemplate" />
+        </DxForm>-->
+      </DxEditing>
 
       <!-- <DxToolbar>
         <DxItem location="before" template="table-header" />
-        <DxItem location="after" template="table-header-button-set" />
       </DxToolbar>-->
 
-      <DxColumn data-field="file" caption :visible="false" edit-cell-template="editCellTemplate" />
+      <DxColumn data-field="file" :visible="false" edit-cell-template="insertCellTemplate" />
+      <!-- <DxColumn data-field="file" :visible="false" /> -->
       <DxColumn
         data-field="file_name"
-        :allow-adding="false"
-        :allow-editing="false"
+        :allow-adding="true"
+        :allow-editing="true"
         caption="File name"
       />
 
@@ -51,6 +63,35 @@
             upload-mode="useForm"
             @value-changed="VALUE_CHANGE"
           />
+        </div>
+      </template>
+
+      <template #insertCellTemplate>
+        <div class="widget-container">
+          <DxFileUploader
+            id="file-uploader"
+            dialog-trigger="#dropzone-external"
+            drop-zone="#dropzone-external"
+            :multiple="false"
+            upload-mode="useForm"
+            @value-changed="VALUE_CHANGE"
+            :visible="true"
+            @drop-zone-enter="onDropZoneEnter"
+            @drop-zone-leave="onDropZoneLeave"
+            @uploaded="VALUE_CHANGE"
+          />
+          <!-- <div
+            id="dropzone-external"
+            class="flex-box"
+            :class="[isDropZoneActive
+        ? 'dx-theme-accent-as-border-color dropzone-active'
+        : 'dx-theme-border-color']"
+          >
+            <div id="dropzone-text" class="flex-box" v-if="textVisible">
+              <span>Drag & Drop the desired file</span>
+              <span>…or click to browse for a file instead.</span>
+            </div>
+          </div>-->
         </div>
       </template>
 
@@ -81,7 +122,10 @@
         :show-info="true"
         info-text="Page {0} of {1} ({2} items)"
       />
-      <DxExport :enabled="false" />
+      <DxExport :enabled="true" />
+      <DxForm>
+        <DxItem></DxItem>
+      </DxForm>
     </DxDataGrid>
   </div>
 </template> 
@@ -96,6 +140,7 @@
 //DataGrid
 import axios from "/axios.js";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
+import DxForm from "devextreme-vue/form";
 import "devextreme/dist/css/dx.light.css";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -110,8 +155,8 @@ import {
   DxColumn,
   DxExport,
   //DxToolbar,
-  //DxItem,
-  //DxForm,
+  DxItem,
+
   //DxFormItem,
   DxButton,
   DxHeaderFilter
@@ -129,9 +174,9 @@ export default {
     DxColumn,
     DxExport,
     //DxToolbar,
-    //DxItem,
+    DxItem,
     //DxFormItem,
-    //DxForm,
+    DxForm,
     DxButton,
     DxHeaderFilter,
     DxFileUploader
@@ -145,6 +190,8 @@ export default {
       file: [],
       file_name: "",
       DxDataGrid,
+      isDropZoneActive: false,
+      textVisible: true,
       DxPaging,
       DxPager,
       DxScrolling,
@@ -160,6 +207,19 @@ export default {
   },
   computed: {},
   methods: {
+    onDropZoneEnter(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = true;
+      }
+    },
+    onDropZoneLeave(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = false;
+      }
+    },
+    CANCEL_FORM() {
+      this.textVisible = true;
+    },
     EXPORT_DATA(e) {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet("Projects");
@@ -251,6 +311,7 @@ export default {
       };
       this.file = e.value[0];
       this.file_name = e.value[0].name;
+      this.textVisible = false;
     },
     setCellValue(newData, value) {
       console.log("newData:" + newData);
@@ -308,5 +369,58 @@ export default {
   span {
     color: $web-font-color-white;
   }
+}
+#dropzone-external {
+  width: 350px;
+  height: 350px;
+  background-color: rgba(183, 183, 183, 0.1);
+  border-width: 2px;
+  border-style: dashed;
+  padding: 0px;
+}
+
+#dropzone-external > * {
+  pointer-events: none;
+}
+
+#dropzone-external.dropzone-active {
+  border-style: solid;
+}
+
+.widget-container > span {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+#dropzone-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#dropzone-text > span {
+  font-weight: 100;
+  opacity: 0.5;
+}
+
+#upload-progress {
+  display: flex;
+  margin-top: 10px;
+}
+
+.flex-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+span {
+  font-weight: bold;
+  font-size: 15px;
+  color: $web-font-color-blue;
+  padding: 0%;
+}
+.datagrid-header {
+  padding: 0%;
 }
 </style>
