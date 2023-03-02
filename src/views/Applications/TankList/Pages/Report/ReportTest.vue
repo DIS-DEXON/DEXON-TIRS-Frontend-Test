@@ -95,6 +95,7 @@ export default {
         insp_campaign: "",
         location: "",
         inservice_date: "",
+        inspection_code: "",
         diameter_m: "",
         tank_height_m: "",
         tank_capacity_litre: "",
@@ -108,7 +109,8 @@ export default {
         foundation: "",
         name_api_653: "",
         name_inspection_engineer: "",
-        name_ndt_examineer: "",
+        name_ndt_examiner: "",
+        cert_no: "",
         site_name: "",
         joint_efficiency: "",
         component_bottom: "",
@@ -409,6 +411,7 @@ export default {
             this.data1.tank_no = res.data[0].tank_no;
             this.data1.location = res.data[0].location;
             this.data1.inservice_date = res.data[0].inservice_date;
+            this.data1.inspection_code = res.data[0].inspection_code;
             this.data1.diameter_m = res.data[0].diameter_m;
             this.data1.tank_height_m = res.data[0].tank_height_m;
             this.data1.tank_capacity_litre = res.data[0].tank_capacity_litre;
@@ -792,7 +795,8 @@ export default {
       );
       this.data1.name_api_653 = item.name_api_653;
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
-      this.data1.name_ndt_examineer = item.name_ndt_examineer;
+      this.data1.name_ndt_examiner = item.name_ndt_examiner;
+      this.data1.cert_no = item.cert_no;
       this.FETCH_IMAGE();
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
