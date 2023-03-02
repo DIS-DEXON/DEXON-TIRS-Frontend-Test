@@ -237,8 +237,31 @@ export default {
       for (let i = 0; i < obj.length; i++) {
         const rad = obj[i].theta_radians;
         const degree = obj[i].theta_degrees;
+        const y = obj[i].y;
+        const out_of_plane = obj[i].out_of_plane;
+        const deviation_value = obj[i].deviation_value;
+        const difference_2_value = obj[i].difference_2_value;
+        const deviation_2_value = obj[i].deviation_2_value;
+        const difference_value = obj[i].difference_value;
         this.data1.shell_settlement_api[i].theta_radians = rad.toFixed(2);
         this.data1.shell_settlement_api[i].theta_degrees = degree.toFixed(2);
+        this.data1.shell_settlement_api[i].y = y.toFixed(2);
+        this.data1.shell_settlement_api[
+          i
+        ].difference_value = difference_value.toFixed(2);
+        this.data1.shell_settlement_api[i].out_of_plane = out_of_plane.toFixed(
+          2
+        );
+        this.data1.shell_settlement_api[
+          i
+        ].deviation_value = deviation_value.toFixed(2);
+
+        this.data1.shell_settlement_api[
+          i
+        ].difference_2_value = difference_2_value.toFixed(2);
+        this.data1.shell_settlement_api[
+          i
+        ].deviation_2_value = deviation_2_value.toFixed(2);
       }
     },
     NUMBER_ROUNDING_BOTTOM_THK(obj) {
