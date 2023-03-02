@@ -131,13 +131,6 @@
 </template> 
 
 <script>
-//API
-// import axios from "/axios.js";
-// import moment from "moment";
-
-//Components
-
-//DataGrid
 import axios from "/axios.js";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
 import DxForm from "devextreme-vue/form";
@@ -156,7 +149,6 @@ import {
   DxExport,
   //DxToolbar,
   DxItem,
-
   //DxFormItem,
   DxButton,
   DxHeaderFilter
@@ -205,7 +197,14 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    }
+  },
   methods: {
     onDropZoneEnter(e) {
       if (e.dropZoneElement.id === "dropzone-external") {
@@ -253,7 +252,6 @@ export default {
           //console.log(res);
           if (res.status == 200) {
             //console.log("in");
-            console.log(res.data);
             this.library = res.data;
           }
         })
@@ -262,6 +260,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          console.log("Drawing :");
+          console.log(this.library);
         });
     },
     ADD_NEW_FILE(e) {
@@ -318,8 +318,36 @@ export default {
       console.log("value:" + value);
       newData.file_name = this.file_name;
     },
-    DOWNLOAD() {},
-    DELETE_DOC() {}
+    DOWNLOAD(e) {
+      const url = this.baseURL + e.row.data.file_path;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", e.row.data.file_name);
+      document.body.appendChild(link);
+      link.click();
+    },
+    DELETE_DOC(e) {
+      const id = e.data.id_library;
+      axios({
+        method: "delete",
+        url: "/tank-library/" + id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          if (res.status == 204) {
+            //console.log("deleted");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.FETCH_LIBRARY();
+        });
+    }
   }
 };
 </script>

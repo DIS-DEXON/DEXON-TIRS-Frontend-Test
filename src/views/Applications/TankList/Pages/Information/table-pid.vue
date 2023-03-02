@@ -112,13 +112,6 @@
 </template> 
 
 <script>
-//API
-// import axios from "/axios.js";
-// import moment from "moment";
-
-//Components
-
-//DataGrid
 import "devextreme/dist/css/dx.light.css";
 import axios from "/axios.js";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -157,34 +150,25 @@ export default {
     //DxToolbar,
     //DxItem
   },
-  created() {},
+  created() {
+    this.FETCH_LIBRARY();
+  },
   data() {
     return {
       library: [],
-      pidList: [
-        {
-          id: 1,
-          file_name: "original_pid_unmarked",
-          file_type: "pdf",
-          file_url: "/wwwroot/file/drawing/tank/file.pdf",
-          created_time: "2022-08-15 08:35:00",
-          created_by: 2
-        },
-        {
-          id: 2,
-          file_name: "original_pid_rev01",
-          file_type: "pdf",
-          file_url: "/wwwroot/file/drawing/tank/file.pdf",
-          created_time: "2022-10-28 15:35:00",
-          created_by: 3
-        }
-      ],
       dataGridAttributes: {
         class: "data-grid-style"
       }
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    }
+  },
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();
@@ -219,7 +203,6 @@ export default {
           //console.log(res);
           if (res.status == 200) {
             //console.log("in");
-            console.log(res.data);
             this.library = res.data;
           }
         })
@@ -228,10 +211,12 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          console.log("P&ID :");
+          console.log(this.library);
         });
     },
     ADD_NEW_FILE(e) {
-      console.log("INSERTING . . .");
+      console.log("INSERTING (PID) . . .");
       console.log(e);
       console.log(e.data);
       var formData = new FormData();
@@ -262,7 +247,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          console.log("UPLOAD COMPLETED");
+          console.log("UPLOAD COMPLETED (PID)");
           this.FETCH_LIBRARY();
         });
     },
@@ -278,8 +263,36 @@ export default {
       this.file = e.value[0];
       this.file_name = e.value[0].name;
     },
-    DOWNLOAD() {},
-    DELETE_DOC() {}
+    DOWNLOAD(e) {
+      const url = this.baseURL + e.row.data.file_path;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", e.row.data.file_name);
+      document.body.appendChild(link);
+      link.click();
+    },
+    DELETE_DOC(e) {
+      const id = e.data.id_library;
+      axios({
+        method: "delete",
+        url: "/tank-library/" + id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          if (res.status == 204) {
+            //console.log("deleted");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.FETCH_LIBRARY();
+        });
+    }
   }
 };
 </script>
