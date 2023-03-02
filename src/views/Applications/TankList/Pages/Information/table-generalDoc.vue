@@ -134,7 +134,6 @@ import {
 } from "devextreme-vue/data-grid";
 
 export default {
-  name: "info-drawing",
   components: {
     DxFileUploader,
     DxButton,

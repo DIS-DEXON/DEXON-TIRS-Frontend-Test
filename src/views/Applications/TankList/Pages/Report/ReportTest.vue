@@ -111,6 +111,43 @@ export default {
         name_ndt_examineer: "",
         site_name: "",
         joint_efficiency: "",
+        component_bottom: "",
+        component_shell: "",
+        component_manways: "",
+        component_fixed_roof: "",
+        component_access: "",
+        component_drain: "",
+        component_vents: "",
+        component_floating_roof: "",
+        component_type: "",
+        component_material_and_style: "",
+        component_primary_seal: "",
+        component_secondary_seal: "",
+        component_anti_rotation_device: "",
+        component_gauge_pipe: "",
+        fei_last_inspected: "",
+        fei_last_coated: "",
+        fei_last_cleaned: "",
+        fei_recommended_next: "",
+        fii_last_inspected: "",
+        fii_last_coated: "",
+        fii_last_cleaned: "",
+        fii_recommended_next: "",
+        coating_ext_bottom: "",
+        coating_ext_shell: "",
+        coating_ext_fixed_roof: "",
+        coating_ext_floating_roof: "",
+        coating_int_bottom: "",
+        coating_int_shell: "",
+        coating_int_fixed_roof: "",
+        coating_int_floating_roof: "",
+        desc_cond_visual_finding: "",
+        misc_pressure: "",
+        misc_temp: "",
+        misc_venting: "",
+        misc_flow_rate: "",
+        misc_suction_line: "",
+        misc_receipt: "",
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
@@ -362,6 +399,70 @@ export default {
             this.data1.joint_efficiency = res.data[0].joint_efficiency;
             this.data1.foundation = res.data[0].foundation;
             this.data1.insulation = res.data[0].insulation;
+            this.data1.component_bottom = res.data[0].component_bottom;
+            this.data1.component_shell = res.data[0].component_shell;
+            this.data1.component_manways = res.data[0].component_manways;
+            this.data1.component_fixed_roof = res.data[0].component_fixed_roof;
+            this.data1.component_access = res.data[0].component_access;
+            this.data1.component_drain = res.data[0].component_drain;
+            this.data1.component_vents = res.data[0].component_vents;
+            this.data1.component_manways = res.data[0].component_manways;
+            this.data1.component_floating_roof =
+              res.data[0].component_floating_roof;
+            this.data1.component_type = res.data[0].component_type;
+            this.data1.component_material_and_style =
+              res.data[0].component_material_and_style;
+            this.data1.component_primary_seal =
+              res.data[0].component_primary_seal;
+            this.data1.component_secondary_seal =
+              res.data[0].component_secondary_seal;
+            this.data1.component_anti_rotation_device =
+              res.data[0].component_anti_rotation_device;
+            this.data1.component_gauge_pipe = res.data[0].component_gauge_pipe;
+            this.data1.fei_last_inspected = moment(
+              res.data[0].fei_last_inspected
+            ).format("DD MMM YYYY");
+            this.data1.fei_last_coated = moment(
+              res.data[0].fei_last_coated
+            ).format("DD MMM YYYY");
+            this.data1.fei_last_cleaned = moment(
+              res.data[0].fei_last_cleaned
+            ).format("DD MMM YYYY");
+            this.data1.fei_recommended_next = moment(
+              res.data[0].fei_recommended_next
+            ).format("DD MMM YYYY");
+            this.data1.fii_last_inspected = moment(
+              res.data[0].fii_last_inspected
+            ).format("DD MMM YYYY");
+            this.data1.fii_last_coated = moment(
+              res.data[0].fii_last_coated
+            ).format("DD MMM YYYY");
+            this.data1.fii_last_cleaned = moment(
+              res.data[0].fii_last_cleaned
+            ).format("DD MMM YYYY");
+            this.data1.fii_recommended_next = moment(
+              res.data[0].fii_recommended_next
+            ).format("DD MMM YYYY");
+            this.data1.coating_ext_bottom = res.data[0].coating_ext_bottom;
+            this.data1.coating_ext_shell = res.data[0].coating_ext_shell;
+            this.data1.coating_ext_fixed_roof =
+              res.data[0].coating_ext_fixed_roof;
+            this.data1.coating_ext_floating_roof =
+              res.data[0].coating_ext_floating_roof;
+            this.data1.coating_int_bottom = res.data[0].coating_int_bottom;
+            this.data1.coating_int_shell = res.data[0].coating_int_shell;
+            this.data1.coating_int_fixed_roof =
+              res.data[0].coating_int_fixed_roof;
+            this.data1.coating_int_floating_roof =
+              res.data[0].coating_int_floating_roof;
+            this.data1.desc_cond_visual_finding =
+              res.data[0].desc_cond_visual_finding;
+            this.data1.misc_pressure = res.data[0].misc_pressure;
+            this.data1.misc_temp = res.data[0].misc_temp;
+            this.data1.misc_venting = res.data[0].misc_venting;
+            this.data1.misc_flow_rate = res.data[0].misc_flow_rate;
+            this.data1.misc_suction_line = res.data[0].misc_suction_line;
+            this.data1.misc_receipt = res.data[0].misc_receipt;
           }
         })
         .catch(error => {
@@ -654,7 +755,6 @@ export default {
           this.isLoading = false;
         });
     },
-
     VIEW_ITEM(item) {
       //this.isLoading = true;
       console.clear();
