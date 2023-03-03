@@ -1,8 +1,8 @@
 <template>
   <div class="page-section">
-    <div class="datagrid-header">
+    <!-- <div class="datagrid-header">
       <span>General Document</span>
-    </div>
+    </div>-->
     <DxDataGrid
       id="generalDoc"
       key-expr="id_library"
