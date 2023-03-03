@@ -150,6 +150,17 @@ export default {
         misc_flow_rate: "",
         misc_suction_line: "",
         misc_receipt: "",
+        annular: [],
+        bottom: [],
+        coil: [],
+        critical_zone: [],
+        piping: [],
+        roof: [],
+        roof_nozzle: [],
+        sump: [],
+        shell: [],
+        shell_nozzle: [],
+        projection_plate: [],
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
@@ -359,7 +370,32 @@ export default {
         link = null;
       }, 0);
     },
-
+    FETCH_MARKUP_DWG(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 1,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          // console.log("insp record:");
+          // console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_CHECKLIST_ILAST_EX() {
       const id_insp = this.id_inspection_record;
       axios({
