@@ -18,10 +18,12 @@
       </div>
 
       <div v-if="tabCurrent == 'tab1'">
-        <button type="button" v-on:click="createDocx()">Create docx</button>
+        <button type="button" class v-on:click="createDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
-        <button type="button" v-on:click="createILASTDocx()">Create docx</button>
+        <button type="button" class="button" v-on:click="createILASTDocx()">
+          <span>CREATE ILAST REPORT</span>
+        </button>
       </div>
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
@@ -350,6 +352,7 @@ export default {
         this.saveFile("result.docx", docx);
         console.log("4");
         this.isLoading = false;
+        //this.$ons.notification.alert("Completed!");
         setTimeout(() => (this.status = ""), 1000);
       } catch (e) {
         // error handling
@@ -1472,6 +1475,36 @@ export default {
   height: 110px;
   width: 100%;
   white-space: pre-wrap;
+}
+.button {
+  background-color: #f6f6f6;
+  padding: 0;
+  padding-right: 15px;
+  height: 34px;
+  border: 0px;
+  border-radius: 8px;
+  border: 1px solid #303030;
+  i {
+    padding-left: 3px;
+    font-size: 20px;
+    color: #303030;
+  }
+  span {
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #303030;
+  }
+}
+.button:hover,
+.button:active {
+  background-color: #140a4b;
+  i {
+    color: #ffffff;
+  }
+  span {
+    color: #ffffff;
+  }
 }
 </style>
 
