@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mode: 'prod', //dev, prod
+    mode: 'dev', //dev, prod
     modeURL: {
       dev: 'https://localhost:5001/',
       prod: 'https://ai.dexon-technology.com:444/'

@@ -231,6 +231,7 @@ export default {
         );
       }
     },
+
     NUMBER_ROUNDING_ROOF_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
@@ -388,7 +389,7 @@ export default {
           console.log(res.data);
 
           if (res.status == 200 && res.data) {
-            this.drawingList = res.data;
+            this.drawingList.annular = res.data;
           }
         })
         .catch(error => {
@@ -412,10 +413,10 @@ export default {
         }
       })
         .then(res => {
-          // console.log("DWG bottom:");
-          // console.log(res.data);
+          console.log("DWG bottom:");
+          console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.drawingList = res.data;
+            this.drawingList.bottom = res.data;
           }
         })
         .catch(error => {
@@ -424,8 +425,251 @@ export default {
         .finally(() => {
           this.isLoading = false;
           this.getImgDWG_Bottom();
-          console.log("DWG bottom:");
-          console.log(this.drawingList);
+          // console.log("DWG bottom:");
+          // console.log(this.drawingList);
+        });
+    },
+    FETCH_MARKUP_COIL(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 3,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG coil:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.coil = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Coil();
+        });
+    },
+    FETCH_MARKUP_CRITICAL_ZONE(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 4,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG CRITICAL:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.critical_zone = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Critical_zone();
+        });
+    },
+    FETCH_MARKUP_PIPING(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 5,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG PIPING:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.piping = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Piping();
+        });
+    },
+    FETCH_MARKUP_ROOF(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 6,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG Roof:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.roof = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Roof();
+        });
+    },
+    FETCH_MARKUP_ROOFNZ(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 7,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG Roof nozzle:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.roof_nozzle = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Roofnz();
+        });
+    },
+    FETCH_MARKUP_SUMP(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 8,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG SUMP:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.sump = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Sump();
+        });
+    },
+    FETCH_MARKUP_SHELL(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 9,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG SHELL:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.shell = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Shell();
+        });
+    },
+    FETCH_MARKUP_SHELLNZ(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 10,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG SHELL NOZZLE:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.shell_nozzle = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Shellnz();
+        });
+    },
+    FETCH_MARKUP_PROJECTION_PLATE(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 11,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("DWG PROJECTION PLATE:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.drawingList.projection_plate = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Projection_plate();
         });
     },
     FETCH_CHECKLIST_ILAST_EX() {
@@ -867,6 +1111,15 @@ export default {
       this.data1.cert_no = item.cert_no;
       this.FETCH_MARKUP_ANNULAR(this.current_view);
       this.FETCH_MARKUP_BOTTOM(this.current_view);
+      this.FETCH_MARKUP_COIL(this.current_view);
+      this.FETCH_MARKUP_CRITICAL_ZONE(this.current_view);
+      this.FETCH_MARKUP_PIPING(this.current_view);
+      this.FETCH_MARKUP_ROOF(this.current_view);
+      this.FETCH_MARKUP_ROOFNZ(this.current_view);
+      this.FETCH_MARKUP_SUMP(this.current_view);
+      this.FETCH_MARKUP_SHELL(this.current_view);
+      this.FETCH_MARKUP_SHELLNZ(this.current_view);
+      this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
       this.FETCH_IMAGE();
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
@@ -963,7 +1216,7 @@ export default {
       }
     },
     async getImgDWG_Annular() {
-      const o = this.drawingList;
+      const o = this.drawingList.annular;
       for (let j = 0; j < o.length; j++) {
         const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
         const imageData = await response.arrayBuffer();
@@ -982,7 +1235,7 @@ export default {
       }
     },
     async getImgDWG_Bottom() {
-      const o = this.drawingList;
+      const o = this.drawingList.bottom;
       for (let j = 0; j < o.length; j++) {
         const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
         const imageData = await response.arrayBuffer();
@@ -996,6 +1249,177 @@ export default {
           height: 200
         };
         this.data1.bottom.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Coil() {
+      const o = this.drawingList.coil;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.coil.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Critical_zone() {
+      const o = this.drawingList.critical_zone;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.critical_zone.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Piping() {
+      const o = this.drawingList.piping;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.piping.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Roof() {
+      const o = this.drawingList.roof;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.roof.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Roofnz() {
+      const o = this.drawingList.roof_nozzle;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.roof_nozzle.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Sump() {
+      const o = this.drawingList.sump;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.sump.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Shell() {
+      const o = this.drawingList.shell;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.shell.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Shellnz() {
+      const o = this.drawingList.shell_nozzle;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.shell_nozzle.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Projection_plate() {
+      const o = this.drawingList.projection_plate;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.projection_plate.push({
           marked_up_drawing: imageObject
         });
       }
