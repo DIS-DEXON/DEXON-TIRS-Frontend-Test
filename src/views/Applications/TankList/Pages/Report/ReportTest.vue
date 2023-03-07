@@ -65,6 +65,7 @@ export default {
     return {
       theTemplate: null,
       imgpath: [],
+      drawingList: [],
       current_view: {},
       buffer: "",
       status: "",
@@ -370,7 +371,7 @@ export default {
         link = null;
       }, 0);
     },
-    FETCH_MARKUP_DWG(item) {
+    FETCH_MARKUP_ANNULAR(item) {
       axios({
         method: "post",
         url: "layout-drawing/layout-drawing-by-comp-id",
@@ -383,7 +384,35 @@ export default {
         }
       })
         .then(res => {
-          // console.log("insp record:");
+          console.log("DWG annular:");
+          console.log(res.data);
+
+          if (res.status == 200 && res.data) {
+            this.drawingList = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getImgDWG_Annular();
+        });
+    },
+    FETCH_MARKUP_BOTTOM(item) {
+      axios({
+        method: "post",
+        url: "layout-drawing/layout-drawing-by-comp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_component: 2,
+          id_inspection_record: item.id_inspection_record
+        }
+      })
+        .then(res => {
+          // console.log("DWG bottom:");
           // console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList = res.data;
@@ -394,6 +423,9 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.getImgDWG_Bottom();
+          console.log("DWG bottom:");
+          console.log(this.drawingList);
         });
     },
     FETCH_CHECKLIST_ILAST_EX() {
@@ -833,6 +865,8 @@ export default {
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
       this.data1.name_ndt_examiner = item.name_ndt_examiner;
       this.data1.cert_no = item.cert_no;
+      this.FETCH_MARKUP_ANNULAR(this.current_view);
+      this.FETCH_MARKUP_BOTTOM(this.current_view);
       this.FETCH_IMAGE();
       this.FETCH_CHECKLIST_ILAST_EX();
       this.FETCH_TANK_INFO();
@@ -883,8 +917,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          console.log("image:");
-          console.log(this.imgpath);
+          // console.log("image:");
+          // console.log(this.imgpath);
           this.getImageData();
         });
     },
@@ -925,6 +959,44 @@ export default {
           close_up_view_pic: imageObject2,
           findings: o[j].finding,
           recommendation: o[j].recommendation
+        });
+      }
+    },
+    async getImgDWG_Annular() {
+      const o = this.drawingList;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.annular.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgDWG_Bottom() {
+      const o = this.drawingList;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.bottom.push({
+          marked_up_drawing: imageObject
         });
       }
     }
