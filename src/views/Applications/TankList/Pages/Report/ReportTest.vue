@@ -18,14 +18,17 @@
       </div>
 
       <div v-if="tabCurrent == 'tab1'">
-        <button type="button" v-on:click="createDocx()">Create docx</button>
+        <button type="button" class v-on:click="createDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
-        <button type="button" v-on:click="createILASTDocx()">Create docx</button>
+        <button type="button" class="button" v-on:click="createILASTDocx()">
+          <span>CREATE ILAST REPORT</span>
+        </button>
       </div>
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
       </div>
+      <PageLoading v-if="isLoading == true" text="Logging In" />
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
@@ -39,6 +42,7 @@ import moment from "moment";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 import VueTabsChrome from "vue-tabs-chrome";
+import PageLoading from "@/components/app-structures/app-loading.vue";
 //import { saveAs } from "@progress/kendo-file-saver";
 //import { markup } from "./data.js";
 //import { DxHtmlEditor, DxToolbar, DxItem } from "devextreme-vue/html-editor";
@@ -49,7 +53,8 @@ export default {
   components: {
     InspectionRecordPanel,
     SelectInspRecord,
-    VueTabsChrome
+    VueTabsChrome,
+    PageLoading
   },
   created() {
     if (this.$store.state.status.server == true) {
@@ -64,6 +69,7 @@ export default {
   data() {
     return {
       theTemplate: null,
+      isLoading: false,
       imgpath: [],
       drawingList: [],
       current_view: {},
@@ -317,6 +323,7 @@ export default {
       console.log("CREATED DOCX: ");
       this.data1.picture_log.shift();
       console.log(this.data1);
+      this.isLoading = true;
       try {
         this.status = "";
 
@@ -344,7 +351,8 @@ export default {
         this.status = "Done!";
         this.saveFile("result.docx", docx);
         console.log("4");
-
+        this.isLoading = false;
+        //this.$ons.notification.alert("Completed!");
         setTimeout(() => (this.status = ""), 1000);
       } catch (e) {
         // error handling
@@ -1467,6 +1475,36 @@ export default {
   height: 110px;
   width: 100%;
   white-space: pre-wrap;
+}
+.button {
+  background-color: #f6f6f6;
+  padding: 0;
+  padding-right: 15px;
+  height: 34px;
+  border: 0px;
+  border-radius: 8px;
+  border: 1px solid #303030;
+  i {
+    padding-left: 3px;
+    font-size: 20px;
+    color: #303030;
+  }
+  span {
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #303030;
+  }
+}
+.button:hover,
+.button:active {
+  background-color: #140a4b;
+  i {
+    color: #ffffff;
+  }
+  span {
+    color: #ffffff;
+  }
 }
 </style>
 

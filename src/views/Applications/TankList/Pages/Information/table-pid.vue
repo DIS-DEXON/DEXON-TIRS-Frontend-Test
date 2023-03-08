@@ -106,7 +106,7 @@
         :show-info="true"
         info-text="Page {0} of {1} ({2} items)"
       />
-      <DxExport :enabled="true" />
+      <DxExport :enabled="false" />
     </DxDataGrid>
   </div>
 </template> 
