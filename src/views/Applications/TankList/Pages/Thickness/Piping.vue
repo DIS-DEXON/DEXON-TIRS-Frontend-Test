@@ -31,15 +31,11 @@
             <div>
               <div class="page-section-label">Thickness Summary</div>
             </div>
-          </template> -->
+          </template>-->
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
 
-          <DxColumn
-            data-field="piping_no"
-            caption="Piping No."
-            sort-order="asc"
-          />
+          <DxColumn data-field="piping_no" caption="Piping No." sort-order="asc" />
 
           <DxColumn data-field="cml_name" caption="CML name" sort-order="asc" />
 
@@ -65,11 +61,7 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="first_t_actual"
-            caption="First thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -93,23 +85,11 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="t_actual"
-            caption="Last thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crs"
-            caption="ST_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crl"
-            caption="LT_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
 
           <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
 
@@ -166,12 +146,7 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn
-            data-field="piping_no"
-            caption="Piping no"
-            sort-order="asc"
-            :width="85"
-          />
+          <DxColumn data-field="piping_no" caption="Piping no" sort-order="asc" :width="85" />
 
           <DxColumn data-field="piping_name" caption="Piping name" :width="120" />
 
@@ -203,9 +178,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="cml-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="cml-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -249,7 +224,7 @@
 
           <DxColumn data-field="cml_name" caption="CML name" :width="80" />
 
-          <DxColumn data-field="part" caption="Part" :width="100"/>
+          <DxColumn data-field="part" caption="Part" :width="100" />
 
           <DxColumn data-field="nps" caption="NPS" :width="70" />
 
@@ -270,11 +245,7 @@
           <DxColumn data-field="E" caption="E" :width="60" />
 
           <DxColumn data-field="material_type" caption="Material type" :width="90">
-            <DxLookup
-              :data-source="matList"
-              display-expr="code"
-              value-expr="code"
-            />
+            <DxLookup :data-source="matList" display-expr="code" value-expr="code" />
           </DxColumn>
 
           <DxColumn
@@ -313,9 +284,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="tp-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="tp-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -353,7 +324,7 @@
             <div>
               <div class="page-section-label">TP</div>
             </div>
-          </template> -->
+          </template>-->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -418,7 +389,7 @@
             <div>
               <div class="page-section-label">UTM</div>
             </div>
-          </template> -->
+          </template>-->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -428,7 +399,7 @@
           />
 
           <!-- <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." /> -->
+          <DxColumn data-field="tp_name" caption="TP No." />-->
           <DxColumn
             data-field="id_inspection_record"
             caption="Inspection date"
@@ -461,11 +432,7 @@
       </div>
     </div>
 
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template> 
 
@@ -498,7 +465,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxSelection,
+  DxSelection
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -520,16 +487,16 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
-    VueTabsChrome,
+    VueTabsChrome
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
-      subpageInnerName: "Piping",
+      subpageInnerName: "Piping"
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
@@ -544,38 +511,38 @@ export default {
         cml: [],
         tp: [],
         thk: [],
-        last_insp_thk: [],
+        last_insp_thk: []
       },
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       isLoading: false,
       current_view_item: {
         id_piping: null,
         id_cml: null,
         id_tp: null,
-        id_utm: null,
+        id_utm: null
       },
       inspRecordList: {},
       matList: [
         { code: "CS" },
         { code: "SS" },
         { code: "Duplex" },
-        { code: "Unknown" },
+        { code: "Unknown" }
       ],
       tabCurrent: "A2",
       tabs: [
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false,
+          closable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false,
-        },
-      ],
+          closable: false
+        }
+      ]
     };
   },
   computed: {},
@@ -587,20 +554,20 @@ export default {
         method: "post",
         url: "piping-thickness/piping-info-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id,
-        },
+          id_tag: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> piping");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.piping = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -614,20 +581,20 @@ export default {
         method: "post",
         url: "piping-thickness/piping-thk-cml-view-by-piping-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_piping: id,
-        },
+          id_piping: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> CML");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -640,20 +607,20 @@ export default {
         method: "post",
         url: "piping-thickness/piping-thk-tp-by-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: id,
-        },
+          id_cml: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> TP");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.tp = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -666,20 +633,20 @@ export default {
         method: "post",
         url: "piping-thickness/piping-thk-data-by-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: id,
-        },
+          id_tp: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> UTM");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -692,20 +659,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -718,20 +685,20 @@ export default {
         method: "post",
         url: "piping-thickness/piping-thk-view-last-insp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id,
-        },
+          id_tag: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> LAST INSP THK");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.last_insp_thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -761,11 +728,11 @@ export default {
         method: "post",
         url: "piping-thickness/add-piping-info",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -773,7 +740,7 @@ export default {
             this.FETCH_PIPING();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -786,11 +753,11 @@ export default {
         method: "post",
         url: "piping-thickness/edit-piping-info",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -798,7 +765,7 @@ export default {
             this.FETCH_PIPING();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -811,20 +778,20 @@ export default {
         method: "delete",
         url: "piping-thickness/delete-piping-info",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_piping: e.key,
-        },
+          id_piping: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_PIPING();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -844,17 +811,17 @@ export default {
         method: "post",
         url: "piping-thickness/add-piping-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -870,18 +837,18 @@ export default {
         method: "put",
         url: "piping-thickness/edit-piping-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             // this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -895,20 +862,20 @@ export default {
         method: "delete",
         url: "piping-thickness/delete-piping-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: e.key,
-        },
+          id_cml: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -924,18 +891,18 @@ export default {
         method: "post",
         url: "piping-thickness/add-piping-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             // this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -949,18 +916,18 @@ export default {
         method: "put",
         url: "piping-thickness/edit-piping-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             // this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -973,20 +940,20 @@ export default {
         method: "delete",
         url: "piping-thickness/delete-piping-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: e.key,
-        },
+          id_tp: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -996,7 +963,7 @@ export default {
     CREATE_THK(e) {
       e.data.id_thk = 0;
       e.data.id_tp = this.current_view_item.id_tp;
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = moment(date[0].inspection_date).format("L");
@@ -1006,18 +973,18 @@ export default {
         method: "post",
         url: "piping-thickness/add-piping-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1026,7 +993,7 @@ export default {
     },
     UPDATE_THK(e) {
       console.log(e.data);
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = moment(date[0].inspection_date).format("L");
@@ -1036,18 +1003,18 @@ export default {
         method: "put",
         url: "piping-thickness/edit-piping-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1061,20 +1028,20 @@ export default {
         method: "delete",
         url: "piping-thickness/delete-piping-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_thk: e.key,
-        },
+          id_thk: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1162,26 +1129,26 @@ export default {
           url: "/piping-thickness/upload-piping-thk-cml?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_LAST_INSP_THK();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -1203,34 +1170,34 @@ export default {
           url: "/piping-thickness/upload-piping-thk-tp?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_LAST_INSP_THK();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -6,27 +6,25 @@
       </div>
       <div class="popup-content form">
         <div class="form-item-container">
-          <label class="section-text" style="margin-top: 0"
-            >General Information</label
-          >
+          <label class="section-text" style="margin-top: 0">General Information</label>
 
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tag No:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank No:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.tank_no"
-              placeholder="Tank No"
-            />
+            <input type="text" v-model="formData.tank_no" placeholder="Tank No" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -47,11 +45,7 @@
               <p class="label">Description:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.description"
-              placeholder="Description"
-            />
+            <input type="text" v-model="formData.description" placeholder="Description" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -83,7 +77,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Installation Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -95,7 +91,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">In-service Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -104,17 +102,19 @@
               placeholder="In-service Date"
             />
           </div>
-          <div class="input-set">
+          <!-- <div class="input-set">
             <div class="label-box">
               <p class="label">Year of In-service (year):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
               v-model="formData.inservice_age_of_tank_yrs"
               placeholder="Year of In-service (year)"
             />
-          </div>
+          </div>-->
 
           <hr style="grid-column: span 3" />
           <label class="section-text">Tank Specification</label>
@@ -122,7 +122,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Material Type:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -161,7 +163,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
@@ -172,35 +176,27 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Height (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.tank_height_m"
-              placeholder="Tank Height (m)"
-            />
+            <input type="text" v-model="formData.tank_height_m" placeholder="Tank Height (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.joint_efficiency"
-              placeholder="Joint Efficiency"
-            />
+            <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Max. Liquid Level (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.max_liquid_level_m"
-              placeholder="Liquid Level (m)"
-            />
+            <input type="text" v-model="formData.max_liquid_level_m" placeholder="Liquid Level (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -229,22 +225,16 @@
               <p class="label">Roof Nominal Thk. (mm):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.roof_nominal_thk_mm"
-              placeholder="Thickness (mm)"
-            />
+            <input type="text" v-model="formData.roof_nominal_thk_mm" placeholder="Thickness (mm)" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Diameter (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.diameter_m"
-              placeholder="Diameter (m)"
-            />
+            <input type="text" v-model="formData.diameter_m" placeholder="Diameter (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -312,7 +302,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -325,7 +317,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation Thickness (mm):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
@@ -335,14 +329,12 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">SG of Product:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <p class="label">Specific Gravity:</p>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.sg_of_product"
-              placeholder="SG of Product"
-            />
+            <input type="text" v-model="formData.sg_of_product" placeholder="Specific Gravity" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -403,10 +395,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="popup-content loading-section"
-        v-if="all_form_select_loaded == false"
-      >
+      <div class="popup-content loading-section" v-if="all_form_select_loaded == false">
         <contentLoading text="Loading, please wait..." color="#fc9b21" />
       </div>
       <div class="popup-footer">
@@ -438,12 +427,12 @@ export default {
     DxDateBox,
     // DxLookup,
     // DxDropDownOptions,
-    contentLoading,
+    contentLoading
   },
   data() {
     return {
       formData: {
-        id_client: this.$route.params.id_company,
+        id_client: this.$route.params.id_company
       },
       formSelect: {
         tank_status: [],
@@ -460,13 +449,13 @@ export default {
         now: [],
         mat_type: [
           {
-            code: "CS",
+            code: "CS"
           },
           {
-            code: "SS",
-          },
-        ],
-      },
+            code: "SS"
+          }
+        ]
+      }
     };
   },
   computed: {
@@ -485,7 +474,7 @@ export default {
       ) {
         return true;
       } else return false;
-    },
+    }
   },
   created() {
     this.FETCH_DROPDOWN();
@@ -493,11 +482,29 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(this.formData.installation_date).format("L");
-      this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
+      this.formData.installation_date = moment(
+        this.formData.installation_date
+      ).format("L");
+      this.formData.inservice_date = moment(
+        this.formData.inservice_date
+      ).format("L");
       console.log(this.formData);
-      if (this.formData.tag_no && this.formData.tank_no && this.formData.installation_date && this.formData.inservice_date && this.formData.inservice_age_of_tank_yrs && this.formData.mat_type && this.formData.tank_capacity_litre && this.formData.tank_height_m && this.formData.max_liquid_level_m && this.formData.diameter_m && this.formData.insulation && this.formData.insulation_thk_mm !== "" && this.formData.sg_of_product) {
-        this.$ons.notification.confirm("Confirm save?").then((res) => {
+      if (
+        this.formData.tag_no &&
+        this.formData.tank_no &&
+        this.formData.installation_date &&
+        this.formData.inservice_date &&
+        this.formData.inservice_age_of_tank_yrs &&
+        this.formData.mat_type &&
+        this.formData.tank_capacity_litre &&
+        this.formData.tank_height_m &&
+        this.formData.max_liquid_level_m &&
+        this.formData.diameter_m &&
+        this.formData.insulation &&
+        this.formData.insulation_thk_mm !== "" &&
+        this.formData.sg_of_product
+      ) {
+        this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
             const data = this.formData;
 
@@ -506,11 +513,11 @@ export default {
               url: "/tank-info/add-tank-info",
               headers: {
                 Authorization:
-                  "Bearer " + JSON.parse(localStorage.getItem("token")),
+                  "Bearer " + JSON.parse(localStorage.getItem("token"))
               },
-              data: data,
+              data: data
             })
-              .then((res) => {
+              .then(res => {
                 // console.log(res.data[0]);
                 if (res.status == 200) {
                   this.$ons.notification.alert("Tank Add successful");
@@ -524,7 +531,7 @@ export default {
                   }
                 }
               })
-              .catch((error) => {
+              .catch(error => {
                 this.$ons.notification.alert(
                   error.code + " " + error.response.status + " " + error.message
                 );
@@ -540,7 +547,7 @@ export default {
       if (this.formData != this.formData) {
         this.$ons.notification
           .confirm("Your unsaved changes will be lost")
-          .then((res) => {
+          .then(res => {
             if (res == 1) {
               this.$emit("closePopup");
             }
@@ -567,9 +574,9 @@ export default {
         method: "get",
         url: "/MdTankStatus",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.tank_status = res.data;
         }
@@ -580,9 +587,9 @@ export default {
         method: "get",
         url: "/MdProduct",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.product = res.data;
         }
@@ -593,9 +600,9 @@ export default {
         method: "get",
         url: "/MdConstructionCode",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.construction_code = res.data;
         }
@@ -606,9 +613,9 @@ export default {
         method: "get",
         url: "/MdInspectionCode",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.inspection_code = res.data;
         }
@@ -619,9 +626,9 @@ export default {
         method: "get",
         url: "/MdTankInternalPressure",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.internal_pressure = res.data;
         }
@@ -632,9 +639,9 @@ export default {
         method: "get",
         url: "/MdRoofType",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.roof_type = res.data;
         }
@@ -645,9 +652,9 @@ export default {
         method: "get",
         url: "/MdRoofShape",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.roof_shape = res.data;
         }
@@ -658,9 +665,9 @@ export default {
         method: "get",
         url: "/MdBottomType",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.bottom_type = res.data;
         }
@@ -671,9 +678,9 @@ export default {
         method: "get",
         url: "/MdInsulation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.insulation = res.data;
         }
@@ -684,9 +691,9 @@ export default {
         method: "get",
         url: "/MdFoundation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.foundation = res.data;
         }
@@ -698,15 +705,15 @@ export default {
         method: "get",
         url: "/MdSite/get-md-site-by-client-id?id=" + id_client,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.site = res.data;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

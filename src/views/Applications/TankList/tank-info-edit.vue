@@ -9,26 +9,24 @@
           <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
         </div>
         <div class="form-item-container" v-if="tabCurrent == 'A1'">
-          <label class="section-text" style="margin-top: 0"
-            >General Information</label
-          >
+          <label class="section-text" style="margin-top: 0">General Information</label>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tag No:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input type="text" v-model="formData.tag_no" placeholder="Tag No" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank No:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.tank_no"
-              placeholder="Tank No"
-            />
+            <input type="text" v-model="formData.tank_no" placeholder="Tank No" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -48,11 +46,7 @@
               <p class="label">Description:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.description"
-              placeholder="Description"
-            />
+            <input type="text" v-model="formData.description" placeholder="Description" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -83,7 +77,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Installation Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -95,7 +91,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">In-service Date:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -107,12 +105,15 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Year of In-service (year):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
               v-model="formData.inservice_age_of_tank_yrs"
               placeholder="Year of In-service (year)"
+              disabled
             />
           </div>
         </div>
@@ -122,7 +123,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Material Type:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -162,7 +165,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
@@ -173,35 +178,27 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Height (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.tank_height_m"
-              placeholder="Tank Height (m)"
-            />
+            <input type="text" v-model="formData.tank_height_m" placeholder="Tank Height (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.joint_efficiency"
-              placeholder="Joint Efficiency"
-            />
+            <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Max. Liquid Level (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.max_liquid_level_m"
-              placeholder="Liquid Level (m)"
-            />
+            <input type="text" v-model="formData.max_liquid_level_m" placeholder="Liquid Level (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -230,22 +227,16 @@
               <p class="label">Roof Nominal Thk. (mm):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.roof_nominal_thk_mm"
-              placeholder="Thickness (mm)"
-            />
+            <input type="text" v-model="formData.roof_nominal_thk_mm" placeholder="Thickness (mm)" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Diameter (m):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.diameter_m"
-              placeholder="Diameter (m)"
-            />
+            <input type="text" v-model="formData.diameter_m" placeholder="Diameter (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -313,7 +304,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -326,7 +319,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation Thickness (mm):</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input
               type="text"
@@ -336,14 +331,12 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">SG of Product:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <p class="label">Specific Gravity:</p>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
-            <input
-              type="text"
-              v-model="formData.sg_of_product"
-              placeholder="SG of Product"
-            />
+            <input type="text" v-model="formData.sg_of_product" placeholder="Specific Gravity" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -410,77 +403,49 @@
               <p class="label">Bottom:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_bottom"
-              placeholder="Bottom"
-            />
+            <input type="text" v-model="formData.component_bottom" placeholder="Bottom" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Shell:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_shell"
-              placeholder="Shell"
-            />
+            <input type="text" v-model="formData.component_shell" placeholder="Shell" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Manways:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_manways"
-              placeholder="Manways"
-            />
+            <input type="text" v-model="formData.component_manways" placeholder="Manways" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Fixed Roof:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_fixed_roof"
-              placeholder="Fixed Roof"
-            />
+            <input type="text" v-model="formData.component_fixed_roof" placeholder="Fixed Roof" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Access:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_access"
-              placeholder="Access"
-            />
+            <input type="text" v-model="formData.component_access" placeholder="Access" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Drain:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_drain"
-              placeholder="Drain"
-            />
+            <input type="text" v-model="formData.component_drain" placeholder="Drain" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Vents:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_vents"
-              placeholder="Vents"
-            />
+            <input type="text" v-model="formData.component_vents" placeholder="Vents" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -498,11 +463,7 @@
               <p class="label">Type:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_type"
-              placeholder="Type"
-            />
+            <input type="text" v-model="formData.component_type" placeholder="Type" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -520,11 +481,7 @@
               <p class="label">Primary Seal:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_primary_seal"
-              placeholder="Primary Seal"
-            />
+            <input type="text" v-model="formData.component_primary_seal" placeholder="Primary Seal" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -553,11 +510,7 @@
               <p class="label">Gauge Pipe:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.component_gauge_pipe"
-              placeholder="Gauge Pipe"
-            />
+            <input type="text" v-model="formData.component_gauge_pipe" placeholder="Gauge Pipe" />
           </div>
           <hr style="grid-column: span 3" />
           <label class="section-text">Formal External Inspection (FEI)</label>
@@ -654,22 +607,14 @@
               <p class="label">External Bottom:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.coating_ext_bottom"
-              placeholder="External Bottom"
-            />
+            <input type="text" v-model="formData.coating_ext_bottom" placeholder="External Bottom" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">External Shell:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.coating_ext_shell"
-              placeholder="External Shell"
-            />
+            <input type="text" v-model="formData.coating_ext_shell" placeholder="External Shell" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -698,22 +643,14 @@
               <p class="label">Internal Bottom:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.coating_int_bottom"
-              placeholder="Internal Bottom"
-            />
+            <input type="text" v-model="formData.coating_int_bottom" placeholder="Internal Bottom" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Internal Shell:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.coating_int_shell"
-              placeholder="Internal Shell"
-            />
+            <input type="text" v-model="formData.coating_int_shell" placeholder="Internal Shell" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -760,73 +697,46 @@
               <p class="label">Pressure:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_pressure"
-              placeholder="Pressure"
-            />
+            <input type="text" v-model="formData.misc_pressure" placeholder="Pressure" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Temp:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_temp"
-              placeholder="Temp"
-            />
+            <input type="text" v-model="formData.misc_temp" placeholder="Temp" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Venting:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_venting"
-              placeholder="Venting"
-            />
+            <input type="text" v-model="formData.misc_venting" placeholder="Venting" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Flow Rate:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_flow_rate"
-              placeholder="Flow Rate"
-            />
+            <input type="text" v-model="formData.misc_flow_rate" placeholder="Flow Rate" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Suction Line:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_suction_line"
-              placeholder="Suction Line"
-            />
+            <input type="text" v-model="formData.misc_suction_line" placeholder="Suction Line" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Receipt:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.misc_receipt"
-              placeholder="Receipt"
-            />
+            <input type="text" v-model="formData.misc_receipt" placeholder="Receipt" />
           </div>
         </div>
       </div>
-      <div
-        class="popup-content loading-section"
-        v-if="all_form_select_loaded == false"
-      >
+      <div class="popup-content loading-section" v-if="all_form_select_loaded == false">
         <contentLoading text="Loading, please wait..." color="#fc9b21" />
       </div>
       <div class="popup-footer">
@@ -858,7 +768,7 @@ import VueTabsChrome from "vue-tabs-chrome";
 export default {
   name: "popup-edit-tank",
   props: {
-    editInfo: Object,
+    editInfo: Object
   },
   components: {
     DxSelectBox,
@@ -866,12 +776,12 @@ export default {
     // DxLookup,
     // DxDropDownOptions,
     contentLoading,
-    VueTabsChrome,
+    VueTabsChrome
   },
   data() {
     return {
       formData: {
-        id_client: this.$route.params.id_company,
+        id_client: this.$route.params.id_company
       },
       formSelect: {
         tank_status: [],
@@ -880,11 +790,11 @@ export default {
         inspection_code: [],
         mat_type: [
           {
-            code: "CS",
+            code: "CS"
           },
           {
-            code: "SS",
-          },
+            code: "SS"
+          }
         ],
         internal_pressure: [],
         roof_type: [],
@@ -893,26 +803,26 @@ export default {
         insulation: [],
         foundation: [],
         site: [],
-        now: [],
+        now: []
       },
       tabCurrent: "A1",
       tabs: [
         {
           label: "General Information",
           key: "A1",
-          closable: false,
+          closable: false
         },
         {
           label: "Tank Specification",
           key: "A2",
-          closable: false,
+          closable: false
         },
         {
           label: "ILAST Information",
           key: "A3",
-          closable: false,
-        },
-      ],
+          closable: false
+        }
+      ]
     };
   },
   computed: {
@@ -932,7 +842,7 @@ export default {
       ) {
         return true;
       } else return false;
-    },
+    }
   },
   created() {
     this.formData = clone(this.editInfo);
@@ -941,30 +851,48 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(this.formData.installation_date).format("L");
-      this.formData.inservice_date = moment(this.formData.inservice_date).format("L");
-      if(this.formData.fei_last_inspected) {
-        this.formData.fei_last_inspected = moment(this.formData.fei_last_inspected).format("L");
+      this.formData.installation_date = moment(
+        this.formData.installation_date
+      ).format("L");
+      this.formData.inservice_date = moment(
+        this.formData.inservice_date
+      ).format("L");
+      if (this.formData.fei_last_inspected) {
+        this.formData.fei_last_inspected = moment(
+          this.formData.fei_last_inspected
+        ).format("L");
       }
-      if(this.formData.fei_last_coated) {
-        this.formData.fei_last_coated = moment(this.formData.fei_last_coated).format("L");
+      if (this.formData.fei_last_coated) {
+        this.formData.fei_last_coated = moment(
+          this.formData.fei_last_coated
+        ).format("L");
       }
-      if(this.formData.fei_last_cleaned) {
-        this.formData.fei_last_cleaned = moment(this.formData.fei_last_cleaned).format("L");
+      if (this.formData.fei_last_cleaned) {
+        this.formData.fei_last_cleaned = moment(
+          this.formData.fei_last_cleaned
+        ).format("L");
       }
-      if(this.formData.fei_recommended_next) {
-        this.formData.fei_recommended_next = moment(this.formData.fei_recommended_next).format("L");
+      if (this.formData.fei_recommended_next) {
+        this.formData.fei_recommended_next = moment(
+          this.formData.fei_recommended_next
+        ).format("L");
       }
-      if(this.formData.fii_last_inspected) {
-        this.formData.fii_last_inspected = moment(this.formData.fii_last_inspected).format("L");
+      if (this.formData.fii_last_inspected) {
+        this.formData.fii_last_inspected = moment(
+          this.formData.fii_last_inspected
+        ).format("L");
       }
-      if(this.formData.fii_last_coated) {
-        this.formData.fii_last_coated = moment(this.formData.fii_last_coated).format("L");
+      if (this.formData.fii_last_coated) {
+        this.formData.fii_last_coated = moment(
+          this.formData.fii_last_coated
+        ).format("L");
       }
-      if(this.formData.fii_last_cleaned) {
-        this.formData.fii_last_cleaned = moment(this.formData.fii_last_cleaned).format("L");
+      if (this.formData.fii_last_cleaned) {
+        this.formData.fii_last_cleaned = moment(
+          this.formData.fii_last_cleaned
+        ).format("L");
       }
-      
+
       console.log(this.formData);
       if (
         this.formData.tag_no &&
@@ -981,7 +909,7 @@ export default {
         this.formData.insulation_thk_mm !== "" &&
         this.formData.sg_of_product
       ) {
-        this.$ons.notification.confirm("Confirm save?").then((res) => {
+        this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
             const data = this.formData;
 
@@ -990,11 +918,11 @@ export default {
               url: "/tank-info/edit-tank-info",
               headers: {
                 Authorization:
-                  "Bearer " + JSON.parse(localStorage.getItem("token")),
+                  "Bearer " + JSON.parse(localStorage.getItem("token"))
               },
-              data: data,
+              data: data
             })
-              .then((res) => {
+              .then(res => {
                 // console.log(res.data[0]);
                 if (res.status == 200) {
                   this.$ons.notification.alert("Tank Edit successful");
@@ -1002,7 +930,7 @@ export default {
                   this.$router.go();
                 }
               })
-              .catch((error) => {
+              .catch(error => {
                 this.$ons.notification.alert(
                   error.code + " " + error.response.status + " " + error.message
                 );
@@ -1018,7 +946,7 @@ export default {
       if (this.formData != this.formData) {
         this.$ons.notification
           .confirm("Your unsaved changes will be lost")
-          .then((res) => {
+          .then(res => {
             if (res == 1) {
               this.$emit("closePopup");
             }
@@ -1045,9 +973,9 @@ export default {
         method: "get",
         url: "/MdTankStatus",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.tank_status = res.data;
         }
@@ -1058,9 +986,9 @@ export default {
         method: "get",
         url: "/MdProduct",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.product = res.data;
         }
@@ -1071,9 +999,9 @@ export default {
         method: "get",
         url: "/MdConstructionCode",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.construction_code = res.data;
         }
@@ -1084,9 +1012,9 @@ export default {
         method: "get",
         url: "/MdInspectionCode",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.inspection_code = res.data;
         }
@@ -1097,9 +1025,9 @@ export default {
         method: "get",
         url: "/MdTankInternalPressure",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.internal_pressure = res.data;
         }
@@ -1110,9 +1038,9 @@ export default {
         method: "get",
         url: "/MdRoofType",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.roof_type = res.data;
         }
@@ -1123,9 +1051,9 @@ export default {
         method: "get",
         url: "/MdRoofShape",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.roof_shape = res.data;
         }
@@ -1136,9 +1064,9 @@ export default {
         method: "get",
         url: "/MdBottomType",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.bottom_type = res.data;
         }
@@ -1149,9 +1077,9 @@ export default {
         method: "get",
         url: "/MdInsulation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.insulation = res.data;
         }
@@ -1162,9 +1090,9 @@ export default {
         method: "get",
         url: "/MdFoundation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.foundation = res.data;
         }
@@ -1176,15 +1104,15 @@ export default {
         method: "get",
         url: "/MdSite/get-md-site-by-client-id?id=" + id_client,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-      }).then((res) => {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      }).then(res => {
         if (res.data) {
           this.formSelect.site = res.data;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

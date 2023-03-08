@@ -1,8 +1,12 @@
 <template>
   <div class="page-section">
-    <div class="datagrid-header">
-      <span>Drawing</span>
+    <div class="table-header-toolbar" style="width: calc(100% - 41px)">
+      <div class="left">
+        <label>Drawing</label>
+      </div>
+      <div class="right"></div>
     </div>
+
     <DxDataGrid
       id="drawing"
       key-expr="id_library"

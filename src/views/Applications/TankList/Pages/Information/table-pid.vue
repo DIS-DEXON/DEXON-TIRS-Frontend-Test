@@ -1,7 +1,10 @@
 <template>
   <div class="page-section">
-    <div class="datagrid-header">
-      <span>P&ID</span>
+    <div class="table-header-toolbar" style="width: calc(100% - 41px)">
+      <div class="left">
+        <label>P&ID</label>
+      </div>
+      <div class="right"></div>
     </div>
     <DxDataGrid
       id="pid"

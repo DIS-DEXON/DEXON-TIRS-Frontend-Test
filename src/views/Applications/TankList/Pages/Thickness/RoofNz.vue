@@ -27,11 +27,7 @@
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
 
-          <DxColumn
-            data-field="roofnz_no"
-            caption="Nozzle no."
-            sort-order="asc"
-          />
+          <DxColumn data-field="roofnz_no" caption="Nozzle no." sort-order="asc" />
 
           <DxColumn data-field="tp_name" caption="TP name" />
 
@@ -53,11 +49,7 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn
-            data-field="first_t_actual"
-            caption="First thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -79,23 +71,11 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn
-            data-field="t_actual"
-            caption="Last thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crs"
-            caption="ST_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crl"
-            caption="LT_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
 
           <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
@@ -123,9 +103,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="cml-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="cml-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -165,33 +145,15 @@
             mode="row"
           />
 
-          <DxColumn
-            data-field="roofnz_no"
-            caption="Nozzle no."
-            sort-order="asc"
-            :width="120"
-          />
+          <DxColumn data-field="roofnz_no" caption="Nozzle no." sort-order="asc" :width="120" />
 
           <DxColumn data-field="nps" caption="DIA (in)" :width="80" />
 
-          <DxColumn
-            data-field="material_type"
-            caption="Material type"
-            :width="90"
-          >
-            <DxLookup
-              :data-source="matList"
-              display-expr="code"
-              value-expr="code"
-            />
+          <DxColumn data-field="material_type" caption="Material type" :width="90">
+            <DxLookup :data-source="matList" display-expr="code" value-expr="code" />
           </DxColumn>
 
-          <DxColumn
-            data-field="t_nom"
-            caption="tnom (mm)"
-            format="#,##0.00"
-            :width="100"
-          />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="100" />
 
           <DxColumn
             data-field="t_req"
@@ -239,9 +201,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="tp-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="tp-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -355,12 +317,7 @@
             />
           </DxColumn>
 
-          <DxColumn
-            data-field="t_actual"
-            caption="tactual (mm)"
-            format="#,##0.00"
-            :width="150"
-          />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
@@ -385,11 +342,7 @@
       </div>
     </div>
 
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template> 
 
@@ -422,7 +375,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxSelection,
+  DxSelection
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -444,16 +397,16 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
-    VueTabsChrome,
+    VueTabsChrome
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
-      subpageInnerName: "Roof Nozzle",
+      subpageInnerName: "Roof Nozzle"
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
@@ -467,20 +420,20 @@ export default {
         cml: [],
         tp: [],
         thk: [],
-        view: [],
+        view: []
       },
       isLoading: false,
       id_cml: 0,
       id_tp: 0,
       inspRecordList: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       matList: [
         { code: "CS" },
         { code: "SS" },
         { code: "Duplex" },
-        { code: "Unknown" },
+        { code: "Unknown" }
       ],
       maxID: 0,
       tabCurrent: "A2",
@@ -488,14 +441,14 @@ export default {
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false,
+          closable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false,
-        },
-      ],
+          closable: false
+        }
+      ]
     };
   },
   computed: {},
@@ -507,20 +460,20 @@ export default {
         method: "post",
         url: "roofnz-thickness/roofnz-thk-cml-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("cml:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -534,20 +487,20 @@ export default {
         method: "post",
         url: "roofnz-thickness/roofnz-thk-tp-by-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: this.id_cml,
-        },
+          id_cml: this.id_cml
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("tp:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.tp = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -561,20 +514,20 @@ export default {
         method: "post",
         url: "roofnz-thickness/roofnz-thk-data-by-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: this.id_tp,
-        },
+          id_tp: this.id_tp
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("thk:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -588,20 +541,20 @@ export default {
         method: "post",
         url: "roofnz-thickness/roofnz-thk-view-last-insp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("view:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.view = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -615,20 +568,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -646,18 +599,18 @@ export default {
         method: "post",
         url: "roofnz-thickness/add-roofnz-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -671,18 +624,18 @@ export default {
         method: "put",
         url: "roofnz-thickness/edit-roofnz-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -696,20 +649,20 @@ export default {
         method: "delete",
         url: "roofnz-thickness/delete-roofnz-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: e.key,
-        },
+          id_cml: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -725,18 +678,18 @@ export default {
         method: "post",
         url: "roofnz-thickness/add-roofnz-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -750,18 +703,18 @@ export default {
         method: "put",
         url: "roofnz-thickness/edit-roofnz-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -774,20 +727,20 @@ export default {
         method: "delete",
         url: "roofnz-thickness/delete-roofnz-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: e.key,
-        },
+          id_tp: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -797,7 +750,7 @@ export default {
     CREATE_THK(e) {
       e.data.id_thk = 0;
       e.data.id_tp = this.id_tp;
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = date[0].inspection_date;
@@ -807,18 +760,18 @@ export default {
         method: "post",
         url: "roofnz-thickness/add-roofnz-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -826,7 +779,7 @@ export default {
         });
     },
     UPDATE_THK(e) {
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = date[0].inspection_date;
@@ -836,18 +789,18 @@ export default {
         method: "put",
         url: "roofnz-thickness/edit-roofnz-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -861,20 +814,20 @@ export default {
         method: "delete",
         url: "roofnz-thickness/delete-roofnz-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_thk: e.key,
-        },
+          id_thk: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -909,27 +862,27 @@ export default {
           url: "/roofnz-thickness/upload-roof-nz-thk-cml?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_CML();
               this.FETCH_VIEW();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -951,35 +904,35 @@ export default {
           url: "/roofnz-thickness/upload-roof-nz-thk-tp?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_TP();
               this.FETCH_VIEW();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

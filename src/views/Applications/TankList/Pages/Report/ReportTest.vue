@@ -28,7 +28,7 @@
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
       </div>
-      <PageLoading v-if="isLoading == true" text="Logging In" />
+      <PageLoading v-if="isLoading == true" text="Generaing, Please wait. . ." />
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>

@@ -18,10 +18,7 @@
                 <label>{{ item.value }}</label>
               </div>
             </div>
-            <div
-              class="form-item"
-              style="grid-column: span 2; grid-row: span 2; height: 49px"
-            >
+            <div class="form-item" style="grid-column: span 2; grid-row: span 2; height: 49px">
               <div class="form-item-label" style="height: 36px">
                 <label>Foundation</label>
               </div>
@@ -62,8 +59,9 @@
                         class="pic-toolbar-btn"
                         for="pic-upload-btn"
                         v-if="!infoTank.overview_img_path"
-                        ><i class="las la-plus"></i
-                      ></label>
+                      >
+                        <i class="las la-plus"></i>
+                      </label>
                     </v-ons-toolbar-button>
                   </div>
                   <img
@@ -78,11 +76,8 @@
                     @change="UPLOAD_PIC(1)"
                   />
 
-                  <div class="">
-                    <i
-                      class="las la-image"
-                      v-if="!infoTank.overview_img_path"
-                    ></i>
+                  <div class>
+                    <i class="las la-image" v-if="!infoTank.overview_img_path"></i>
                     <label v-if="!infoTank.overview_img_path">No Image</label>
                   </div>
                 </div>
@@ -121,8 +116,9 @@
                         class="pic-toolbar-btn"
                         for="pic-upload-btn-2"
                         v-if="!infoTank.name_plate_img_path"
-                        ><i class="las la-plus"></i
-                      ></label>
+                      >
+                        <i class="las la-plus"></i>
+                      </label>
                     </v-ons-toolbar-button>
                   </div>
                   <img
@@ -136,10 +132,7 @@
                     ref="pic_upload_np"
                     @change="UPLOAD_PIC(2)"
                   />
-                  <i
-                    class="las la-image"
-                    v-if="!infoTank.name_plate_img_path"
-                  ></i>
+                  <i class="las la-image" v-if="!infoTank.name_plate_img_path"></i>
                   <label v-if="!infoTank.name_plate_img_path">No Image</label>
                 </div>
               </div>
@@ -159,16 +152,8 @@
     <div v-if="tabCurrent == 'doc'">
       <generalDocTable />
     </div>
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
-    <previewImage
-      :imageURL="previewImg"
-      v-if="previewImg"
-      @close-preview="PREVIEW_PIC_CLOSE()"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
+    <previewImage :imageURL="previewImg" v-if="previewImg" @close-preview="PREVIEW_PIC_CLOSE()" />
   </div>
 </template> 
 
@@ -199,16 +184,16 @@ export default {
     generalDocTable,
     contentLoading,
     previewImage,
-    infoAdditional,
+    infoAdditional
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Tank Information",
-      subpageInnerName: null,
+      subpageInnerName: null
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_TANK_INFO();
@@ -225,26 +210,26 @@ export default {
         {
           label: "General Information",
           key: "info",
-          closable: false,
+          closable: false
         },
         {
           label: "Additional Information",
           key: "additional",
-          closable: false,
+          closable: false
         },
         {
           label: "Drawing and P&ID",
           key: "drawing",
-          closable: false,
+          closable: false
         },
         {
           label: "General Document",
           key: "doc",
-          closable: false,
-        },
+          closable: false
+        }
       ],
       previewImg: "",
-      isLoading: false,
+      isLoading: false
     };
   },
   computed: {
@@ -252,116 +237,116 @@ export default {
       var info = [
         {
           desc: "Construction Code",
-          value: this.infoTank.construction_code,
+          value: this.infoTank.construction_code
         },
         {
           desc: "Tank Status",
-          value: this.infoTank.tank_status,
+          value: this.infoTank.tank_status
         },
         {
           desc: "Inspection Code",
-          value: this.infoTank.inspection_code,
+          value: this.infoTank.inspection_code
         },
         {
           desc: "Tank Capacity (Litre)",
-          value: this.infoTank.tank_capacity_litre,
+          value: this.infoTank.tank_capacity_litre
         },
         {
           desc: "Tank Height (m)",
-          value: this.infoTank.tank_height_m,
+          value: this.infoTank.tank_height_m
         },
         {
           desc: "Joint Efficiency",
-          value: this.infoTank.joint_efficiency,
+          value: this.infoTank.joint_efficiency
         },
         {
           desc: "Max. Liquid Level (m)",
-          value: this.infoTank.max_liquid_level_m,
+          value: this.infoTank.max_liquid_level_m
         },
         {
           desc: "Bottom Nominal Thk. (mm)",
-          value: this.infoTank.bottom_nominal_thk_mm,
+          value: this.infoTank.bottom_nominal_thk_mm
         },
         {
           desc: "Diameter (m)",
-          value: this.infoTank.diameter_m,
+          value: this.infoTank.diameter_m
         },
         {
           desc: "Annular Nominal Thk. (mm)",
-          value: this.infoTank.annular_nominal_thk_mm,
+          value: this.infoTank.annular_nominal_thk_mm
         },
         {
           desc: "No. of Shell Course",
-          value: this.infoTank.no_of_shell_course,
+          value: this.infoTank.no_of_shell_course
         },
         {
           desc: "Roof Nominal Thk. (mm)",
-          value: this.infoTank.roof_nominal_thk_mm,
+          value: this.infoTank.roof_nominal_thk_mm
         },
         {
           desc: "Tank Internal Pressure ",
-          value: this.infoTank.tank_internal_pressure,
+          value: this.infoTank.tank_internal_pressure
         },
         {
           desc: "Design Pressure Shell (psig)",
-          value: this.infoTank.design_pressure_shell_psi,
+          value: this.infoTank.design_pressure_shell_psi
         },
         {
           desc: "Roof Type",
-          value: this.infoTank.roof_type,
+          value: this.infoTank.roof_type
         },
         {
           desc: "Operating Pressure Shell (psig)",
-          value: this.infoTank.ope_pressure_shell_psi,
+          value: this.infoTank.ope_pressure_shell_psi
         },
         {
           desc: "Roof Shape",
-          value: this.infoTank.roof_shape,
+          value: this.infoTank.roof_shape
         },
         {
           desc: "Design Pressure Coil (psig)",
-          value: this.infoTank.design_pressure_coil_psi,
+          value: this.infoTank.design_pressure_coil_psi
         },
         {
           desc: "Bottom",
-          value: this.infoTank.bottom_type,
+          value: this.infoTank.bottom_type
         },
         {
           desc: "Operating Pressure Coil (psig)",
-          value: this.infoTank.ope_pressure_coil_psi,
+          value: this.infoTank.ope_pressure_coil_psi
         },
         {
           desc: "Insulation ",
-          value: this.infoTank.insulation,
+          value: this.infoTank.insulation
         },
         {
           desc: "Installation Date ",
-          value: moment(this.infoTank.installation_date).format("LL"),
+          value: moment(this.infoTank.installation_date).format("LL")
         },
         {
           desc: "Insulation Thickness (mm)",
-          value: this.infoTank.insulation_thk_mm,
+          value: this.infoTank.insulation_thk_mm
         },
         {
           desc: "In-service Date ",
-          value: moment(this.infoTank.inservice_date).format("LL"),
+          value: moment(this.infoTank.inservice_date).format("LL")
         },
         {
           desc: "Product",
-          value: this.infoTank.product_code,
+          value: this.infoTank.product_code
         },
         {
           desc: "Previous Inspection Date",
-          value: moment(this.infoTank.last_inspection_date).format("LL"),
+          value: moment(this.infoTank.last_inspection_date).format("LL")
         },
         {
-          desc: "SG of Product",
-          value: this.infoTank.sg_of_product,
+          desc: "Specific Gravity",
+          value: this.infoTank.sg_of_product
         },
         {
           desc: "In-service Age of Tank",
-          value: this.infoTank.inservice_age_of_tank_yrs,
-        },
+          value: this.infoTank.inservice_age_of_tank_yrs
+        }
       ];
       return info;
     },
@@ -369,60 +354,60 @@ export default {
       var info = [
         {
           desc: "Bottom",
-          value: this.infoTank.component_bottom,
+          value: this.infoTank.component_bottom
         },
         {
           desc: "Shell",
-          value: this.infoTank.component_shell,
+          value: this.infoTank.component_shell
         },
         {
           desc: "Manways",
-          value: this.infoTank.component_manways,
+          value: this.infoTank.component_manways
         },
         {
           desc: "Fixed Roof",
-          value: this.infoTank.component_fixed_roof,
+          value: this.infoTank.component_fixed_roof
         },
         {
           desc: "Access",
-          value: this.infoTank.component_access,
+          value: this.infoTank.component_access
         },
         {
           desc: "Drain",
-          value: this.infoTank.component_drain,
+          value: this.infoTank.component_drain
         },
         {
           desc: "Vents",
-          value: this.infoTank.component_vents,
+          value: this.infoTank.component_vents
         },
         {
           desc: "Floating Roof",
-          value: this.infoTank.floating_roof,
+          value: this.infoTank.floating_roof
         },
         {
           desc: "Type",
-          value: this.infoTank.component_type,
+          value: this.infoTank.component_type
         },
         {
           desc: "Material and Style",
-          value: this.infoTank.component_material_and_style,
+          value: this.infoTank.component_material_and_style
         },
         {
           desc: "Primary Seal",
-          value: this.infoTank.component_primary_seal,
+          value: this.infoTank.component_primary_seal
         },
         {
           desc: "Secondary Seal",
-          value: this.infoTank.component_secondary_seal,
+          value: this.infoTank.component_secondary_seal
         },
         {
           desc: "Anti Rotation Device",
-          value: this.infoTank.component_anti_rotation_device,
+          value: this.infoTank.component_anti_rotation_device
         },
         {
           desc: "Gauge Pipe",
-          value: this.infoTank.component_gauge_pipe,
-        },
+          value: this.infoTank.component_gauge_pipe
+        }
       ];
       return info;
     },
@@ -430,113 +415,113 @@ export default {
       var info = [
         {
           desc: "FEI Last Inspected",
-          value: this.infoTank.fei_last_inspected,
+          value: this.infoTank.fei_last_inspected
         },
         {
           desc: "FEI Last Coated",
-          value: this.infoTank.fei_last_coated,
+          value: this.infoTank.fei_last_coated
         },
         {
           desc: "FEI Last Cleaned",
-          value: this.infoTank.fei_last_cleaned,
+          value: this.infoTank.fei_last_cleaned
         },
         {
           desc: "FEI Recommended Next",
-          value: this.infoTank.fei_recommended_next,
-        },
-      ]
+          value: this.infoTank.fei_recommended_next
+        }
+      ];
       return info;
     },
     fiiInfo() {
       var info = [
         {
           desc: "FII Last Inspected",
-          value: this.infoTank.fii_last_inspected,
+          value: this.infoTank.fii_last_inspected
         },
         {
           desc: "FII Last Coated",
-          value: this.infoTank.fii_last_coated,
+          value: this.infoTank.fii_last_coated
         },
         {
           desc: "FII Last Cleaned",
-          value: this.infoTank.fii_last_cleaned,
-        },
-      ]
+          value: this.infoTank.fii_last_cleaned
+        }
+      ];
       return info;
     },
     coatingInfo() {
       var info = [
         {
           desc: "Ext Bottom",
-          value: this.infoTank.coating_ext_bottom,
+          value: this.infoTank.coating_ext_bottom
         },
         {
           desc: "Ext Shell",
-          value: this.infoTank.coating_ext_shell,
+          value: this.infoTank.coating_ext_shell
         },
         {
           desc: "Ext Fixed Roof",
-          value: this.infoTank.coating_ext_fixed_roof,
+          value: this.infoTank.coating_ext_fixed_roof
         },
         {
           desc: "Ext Floating Roof",
-          value: this.infoTank.coating_ext_floating_roof,
+          value: this.infoTank.coating_ext_floating_roof
         },
         {
           desc: "Int Bottom",
-          value: this.infoTank.coating_int_bottom,
+          value: this.infoTank.coating_int_bottom
         },
         {
           desc: "Int Shell",
-          value: this.infoTank.coating_int_shell,
+          value: this.infoTank.coating_int_shell
         },
         {
           desc: "Int Fixed Roof",
-          value: this.infoTank.coating_int_fixed_roof,
+          value: this.infoTank.coating_int_fixed_roof
         },
         {
           desc: "Int Floating Roof",
-          value: this.infoTank.coating_int_floating_roof,
-        },
-      ]
+          value: this.infoTank.coating_int_floating_roof
+        }
+      ];
       return info;
     },
     miscInfo() {
       var info = [
         {
           desc: "Pressure (operating/design)",
-          value: this.infoTank.misc_pressure,
+          value: this.infoTank.misc_pressure
         },
         {
           desc: "Temperature (operating/design)",
-          value: this.infoTank.misc_temp,
+          value: this.infoTank.misc_temp
         },
         {
           desc: "Venting",
-          value: this.infoTank.misc_venting,
+          value: this.infoTank.misc_venting
         },
         {
           desc: "Flow Rates",
-          value: this.infoTank.misc_flow_rate,
+          value: this.infoTank.misc_flow_rate
         },
         {
           desc: "Suction Line",
-          value: this.infoTank.misc_suction_line,
+          value: this.infoTank.misc_suction_line
         },
         {
           desc: "Receipt",
-          value: this.infoTank.misc_receipt,
-        },
-      ]
+          value: this.infoTank.misc_receipt
+        }
+      ];
       return info;
     },
     secondContInfo() {
       var info = [
         {
           desc: "Description/Condition/Visual Findings",
-          value: this.infoTank.desc_cond_visual_finding,
-        },
-      ]
+          value: this.infoTank.desc_cond_visual_finding
+        }
+      ];
       return info;
     },
     baseURL() {
@@ -544,7 +529,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     FETCH_TANK_INFO() {
@@ -556,20 +541,20 @@ export default {
         method: "post",
         url: "tank-info/tank-info-by-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> FETCH TANK INFO: DONE");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.infoTank = res.data[0];
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -585,21 +570,21 @@ export default {
         method: "get",
         url: "/MdClientCompany/" + id_company,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> FETCH CLIENT INFO: DONE");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.infoClient = res.data;
             this.$store.commit("UPDATE_CURRENT_CLIENT", {
               name: this.infoClient.company_name,
-              logo: this.infoClient.logo,
+              logo: this.infoClient.logo
             });
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -631,15 +616,15 @@ export default {
             headers: {
               "Content-Type": "multipart/form-data",
               Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
             },
             data: {
               id_tag: id_tag,
               file: this.file_pic_upload,
-              type: pic_type,
-            },
+              type: pic_type
+            }
           })
-            .then((res) => {
+            .then(res => {
               console.log(res);
 
               if (res.status == 200) {
@@ -648,7 +633,7 @@ export default {
                 this.isLoading = false;
               }
             })
-            .catch((error) => {
+            .catch(error => {
               this.isLoading = false;
               this.$ons.notification.alert(
                 error.code + " " + error.response.status + " " + error.message
@@ -671,7 +656,7 @@ export default {
       }
     },
     DELETE_PIC(file_path, pic_type) {
-      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
         if (res == 1) {
           this.isLoading = true;
           console.log("==> TANK INFO IMG DELETE: START");
@@ -682,15 +667,15 @@ export default {
             url: "/tank-info/delete-pic",
             headers: {
               Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
             },
             data: {
               id_tag: id_tag,
               file_path: file_path,
-              type: pic_type,
-            },
+              type: pic_type
+            }
           })
-            .then((res) => {
+            .then(res => {
               console.log(res);
 
               if (res.status == 200) {
@@ -699,13 +684,15 @@ export default {
                 this.isLoading = false;
               }
             })
-            .catch((error) => {
+            .catch(error => {
               this.isLoading = false;
               this.$ons.notification.alert(
                 error.code + " " + error.response.status + " " + error.message
               );
             })
-            .finally(() => {});
+            .finally(() => {
+              this.FETCH_TANK_INFO();
+            });
         }
       });
     },
@@ -716,8 +703,8 @@ export default {
     },
     PREVIEW_PIC_CLOSE() {
       this.previewImg = "";
-    },
-  },
+    }
+  }
 };
 </script>
 

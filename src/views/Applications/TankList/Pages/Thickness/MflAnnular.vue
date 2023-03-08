@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <DxDataGrid
         id="mfl-grid"
@@ -49,15 +44,9 @@
 
         <DxColumn data-field="t_nom" caption="tnom (mm)" />
 
-        <DxColumn
-          data-field="metal_loss_top"
-          caption="%Metal loss (top side)"
-        />
+        <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" />
 
-        <DxColumn
-          data-field="metal_loss_bottom"
-          caption="%Metal loss (bottom side)"
-        />
+        <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" />
 
         <DxColumn
           data-field="lowest_remaining_thk_top"
@@ -76,27 +65,19 @@
         <DxColumn data-field="defect_y" caption="Y (mm)" />
 
         <DxColumn data-field="type_of_repair" caption="Type of repair">
-          <DxLookup
-            :data-source="typeOfRepair"
-            display-expr="code"
-            value-expr="code"
-          />
+          <DxLookup :data-source="typeOfRepair" display-expr="code" value-expr="code" />
         </DxColumn>
 
-        <DxColumn data-field="repair_width" caption="Width" />
+        <DxColumn data-field="repair_width" caption="Width (mm)" />
 
-        <DxColumn data-field="repair_length" caption="Length" />
+        <DxColumn data-field="repair_length" caption="Length (mm)" />
 
-        <DxColumn data-field="repair_thick" caption="Thick" />
+        <DxColumn data-field="repair_thick" caption="Thick (mm)" />
 
-        <DxColumn data-field="repair_radius" caption="Radius" />
+        <DxColumn data-field="repair_radius" caption="Radius (mm)" />
 
         <DxColumn data-field="repair_status" caption="Repair status">
-          <DxLookup
-            :data-source="repairStatus"
-            display-expr="code"
-            value-expr="code"
-          />
+          <DxLookup :data-source="repairStatus" display-expr="code" value-expr="code" />
         </DxColumn>
 
         <DxColumn type="buttons">
@@ -125,9 +106,9 @@
         <div class="page-content-message-wrapper">
           <i class="las la-search"></i>
           <span>
-            Select inspection record <br />
-            to view information</span
-          >
+            Select inspection record
+            <br />to view information
+          </span>
         </div>
       </div>
     </div>
@@ -158,7 +139,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxLookup,
+  DxLookup
 } from "devextreme-vue/data-grid";
 
 //FileUpload
@@ -185,16 +166,16 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     InspectionRecordPanel,
-    DxLookup,
+    DxLookup
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
-      subpageInnerName: "MFL - Annular",
+      subpageInnerName: "MFL - Annular"
     });
   },
   data() {
@@ -211,19 +192,16 @@ export default {
       id_component: 0,
       id_inspection_record: 0,
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       pagePanelHiding: false,
       current_view: {},
       typeOfRepair: [
-        {"code":"Patch Plate"},
-        {"code":"Recoating"},
-        {"code":"Deposited weld"}
+        { code: "Patch Plate" },
+        { code: "Recoating" },
+        { code: "Deposited weld" }
       ],
-      repairStatus: [
-        {"code":"Yes"},
-        {"code":"No"}
-      ]
+      repairStatus: [{ code: "Yes" }, { code: "No" }]
     };
   },
   computed: {
@@ -232,7 +210,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -240,9 +218,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -257,20 +235,20 @@ export default {
         method: "post",
         url: "mfl-annular-thickness/get-mfl-annular-data-by-insp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("mfl:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.mflAnnular = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -288,11 +266,11 @@ export default {
         method: "post",
         url: "mfl-annular-thickness/add-mfl-annular-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -301,7 +279,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -314,11 +292,11 @@ export default {
         method: "put",
         url: "mfl-annular-thickness/edit-mfl-annular-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -327,7 +305,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -340,13 +318,13 @@ export default {
         method: "delete",
         url: "mfl-annular-thickness/delete-mfl-annular-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_thk: e.key,
-        },
+          id_thk: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -355,7 +333,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -374,8 +352,8 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
-  },
+    }
+  }
 };
 </script>
 

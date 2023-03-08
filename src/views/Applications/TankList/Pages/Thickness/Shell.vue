@@ -53,11 +53,7 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="first_t_actual"
-            caption="First thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -81,23 +77,11 @@
             :width="120"
           />
 
-          <DxColumn
-            data-field="t_actual"
-            caption="Last thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crs"
-            caption="ST_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crl"
-            caption="LT_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
 
           <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
 
@@ -151,21 +135,9 @@
             mode="row"
           />
           <DxColumn data-field="course_no" caption="Shell Course" :width="80" />
-          <DxColumn
-            data-field="height_of_course_m"
-            caption="Height (m)"
-            :width="80"
-          />
-          <DxColumn
-            data-field="t_nom_plate_mm"
-            caption="tnom (mm)"
-            :width="80"
-          />
-          <DxColumn
-            data-field="tmin_prod_mm"
-            caption="tretire (mm)"
-            :width="80"
-          />
+          <DxColumn data-field="height_of_course_m" caption="Height (m)" :width="80" />
+          <DxColumn data-field="t_nom_plate_mm" caption="tnom (mm)" :width="80" />
+          <DxColumn data-field="tmin_prod_mm" caption="tretire (mm)" :width="80" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -195,9 +167,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="cml-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="cml-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -275,9 +247,9 @@
           </div>
           <div class="right">
             <v-ons-toolbar-button>
-              <label for="tp-upload-btn"
-                ><i class="las la-file-import"></i>Import Excel</label
-              >
+              <label for="tp-upload-btn">
+                <i class="las la-file-import"></i>Import Excel
+              </label>
             </v-ons-toolbar-button>
           </div>
         </div>
@@ -315,7 +287,7 @@
             <div>
               <div class="page-section-label">TP</div>
             </div>
-          </template> -->
+          </template>-->
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
@@ -382,12 +354,8 @@
           />
 
           <!-- <DxColumn data-field="plate_no" caption="Plate No." />
-          <DxColumn data-field="tp_name" caption="TP No." /> -->
-          <DxColumn
-            data-field="id_inspection_record"
-            caption="Inspection date"
-            :width="150"
-          >
+          <DxColumn data-field="tp_name" caption="TP No." />-->
+          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="150">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -414,11 +382,7 @@
       </div>
     </div>
 
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template> 
 
@@ -451,7 +415,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxSelection,
+  DxSelection
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -473,16 +437,16 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
-    VueTabsChrome,
+    VueTabsChrome
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
-      subpageInnerName: "Shell",
+      subpageInnerName: "Shell"
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
@@ -497,17 +461,17 @@ export default {
         cml: [],
         tp: [],
         thk: [],
-        last_insp_thk: [],
+        last_insp_thk: []
       },
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       isLoading: false,
       current_view_item: {
         id_tank_course: null,
         id_cml: null,
         id_tp: null,
-        id_utm: null,
+        id_utm: null
       },
       inspRecordList: {},
       tabCurrent: "A2",
@@ -515,14 +479,14 @@ export default {
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false,
+          closable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false,
-        },
-      ],
+          closable: false
+        }
+      ]
     };
   },
   computed: {},
@@ -534,20 +498,20 @@ export default {
         method: "post",
         url: "tank-course/tank-course-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id,
-        },
+          id_tag: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> SHELL COURSE");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.shellcourse = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -561,20 +525,20 @@ export default {
         method: "post",
         url: "shell-thickness/shell-thk-cml-by-Course-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tank_course: id,
-        },
+          id_tank_course: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> CML");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.cml = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -588,20 +552,20 @@ export default {
         method: "post",
         url: "shell-thickness/shell-thk-tp-by-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: id,
-        },
+          id_cml: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> TP");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.tp = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -615,20 +579,20 @@ export default {
         method: "post",
         url: "shell-thickness/shell-thk-data-by-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: id,
-        },
+          id_tp: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> UTM");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -642,20 +606,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -669,20 +633,20 @@ export default {
         method: "post",
         url: "shell-thickness/shell-thk-view-last-insp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id,
-        },
+          id_tag: id
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> LAST INSP THK");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.last_insp_thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -713,18 +677,18 @@ export default {
         method: "post",
         url: "shell-thickness/add-shell-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             //this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -739,18 +703,18 @@ export default {
         method: "put",
         url: "shell-thickness/edit-shell-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -764,20 +728,20 @@ export default {
         method: "delete",
         url: "shell-thickness/delete-shell-thk-cml",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_cml: e.key,
-        },
+          id_cml: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_CML();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -793,18 +757,18 @@ export default {
         method: "post",
         url: "shell-thickness/add-shell-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             // this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -818,18 +782,18 @@ export default {
         method: "put",
         url: "shell-thickness/edit-shell-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -842,20 +806,20 @@ export default {
         method: "delete",
         url: "shell-thickness/delete-shell-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: e.key,
-        },
+          id_tp: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -865,7 +829,7 @@ export default {
     CREATE_THK(e) {
       e.data.id_thk = 0;
       e.data.id_tp = this.current_view_item.id_tp;
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = moment(date[0].inspection_date).format("L");
@@ -875,18 +839,18 @@ export default {
         method: "post",
         url: "shell-thickness/add-shell-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -895,7 +859,7 @@ export default {
     },
     UPDATE_THK(e) {
       console.log(e.data);
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = moment(date[0].inspection_date).format("L");
@@ -905,18 +869,18 @@ export default {
         method: "put",
         url: "shell-thickness/edit-shell-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -930,20 +894,20 @@ export default {
         method: "delete",
         url: "shell-thickness/delete-shell-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_thk: e.key,
-        },
+          id_thk: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_UTM();
             this.FETCH_LAST_INSP_THK();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -968,14 +932,13 @@ export default {
           url: "/shell-thickness/upload-shell-thk-cml?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               console.log("success");
@@ -983,13 +946,14 @@ export default {
               // this.FETCH_LAST_INSP_THK();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -1011,34 +975,34 @@ export default {
           url: "/shell-thickness/upload-shell-thk-tp?id_tag=" + id_tag,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
           data: {
-            file: file,
-          },
+            file: file
+          }
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_LAST_INSP_THK();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.$ons.notification.alert(
               error.code + " " + error.response.status + " " + error.message
             );
           })
           .finally(() => {
             this.isLoading = false;
+            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
