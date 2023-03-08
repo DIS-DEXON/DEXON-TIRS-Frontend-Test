@@ -203,7 +203,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+        <div class="table-header-toolbar" :style="px">
           <div class="left">
             <label>TP</label>
           </div>
@@ -420,6 +420,7 @@ export default {
   },
   data() {
     return {
+      px: "width: calc(100% - 41px)",
       cml_flag: false,
       tp_flag: false,
       dataList: {
@@ -951,6 +952,7 @@ export default {
     },
     CML_FLAGER() {
       this.cml_flag = true;
+      this.px = "width: calc(100% - 82px)";
     }
   }
 };

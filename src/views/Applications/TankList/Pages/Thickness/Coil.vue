@@ -173,7 +173,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>CML</label>
           </div>
@@ -208,6 +208,7 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
+          @row-click="CML_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -275,11 +276,11 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>TP</label>
           </div>
@@ -314,6 +315,7 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
           @selection-changed="VIEW_UTM"
+          @row-click="TP_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -355,7 +357,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
@@ -429,7 +431,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>
@@ -508,6 +510,8 @@ export default {
   },
   data() {
     return {
+      cml_flag: false,
+      tp_flag: false,
       dataList: {
         coil: [],
         cml: [],
@@ -547,7 +551,22 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    SELECTION() {
+      if (this.tp_flag) {
+        console.warn(this.tp_flag);
+        return true;
+      }
+      return false;
+    },
+    SELECTION_CML() {
+      if (this.cml_flag) {
+        console.warn(this.cml_flag);
+        return true;
+      }
+      return false;
+    }
+  },
   methods: {
     FETCH_COIL() {
       this.isLoading = true;
@@ -1202,6 +1221,12 @@ export default {
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
+    },
+    TP_FLAGER() {
+      this.tp_flag = true;
+    },
+    CML_FLAGER() {
+      this.cml_flag = true;
     }
   }
 };

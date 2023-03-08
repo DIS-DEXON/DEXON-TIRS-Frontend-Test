@@ -1,6 +1,6 @@
 <template>
   <div class="page-section">
-    <div class="table-header-toolbar left" style="width: calc(100% - 250px)">
+    <div class="table-header-toolbar left" style="width: calc(100% - 231px)">
       <label id="hd">Drawing</label>
     </div>
     <DxDataGrid
@@ -116,8 +116,9 @@
       <DxSearchPanel :visible="true" />
       <DxPaging :page-size="10" :page-index="0" />
       <DxPager
+        :visible="false"
         :show-page-size-selector="true"
-        :allowed-page-sizes="[5, 10, 20]"
+        :allowed-page-sizes="[5, 10, 'all']"
         :show-navigation-buttons="true"
         :show-info="true"
         info-text="Page {0} of {1} ({2} items)"

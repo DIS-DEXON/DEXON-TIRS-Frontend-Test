@@ -132,6 +132,7 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
+          @row-click="CML_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -191,7 +192,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+        <div class="table-header-toolbar" :style="px">
           <div class="left">
             <label>TP</label>
           </div>
@@ -226,6 +227,7 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
           @selection-changed="VIEW_THK"
+          @row-click="TP_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -234,7 +236,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_CML"
             :use-icons="true"
             mode="row"
           />
@@ -295,7 +297,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION"
             :use-icons="true"
             mode="row"
           />
@@ -412,6 +414,9 @@ export default {
   },
   data() {
     return {
+      px: "width: calc(100% - 41px)",
+      cml_flag: false,
+      tp_flag: false,
       dataList: {
         cml: [],
         tp: [],
@@ -440,7 +445,22 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    SELECTION() {
+      if (this.tp_flag) {
+        console.warn(this.tp_flag);
+        return true;
+      }
+      return false;
+    },
+    SELECTION_CML() {
+      if (this.cml_flag) {
+        console.warn(this.cml_flag);
+        return true;
+      }
+      return false;
+    }
+  },
   methods: {
     FETCH_CML() {
       this.isLoading = true;
@@ -911,6 +931,13 @@ export default {
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
+    },
+    TP_FLAGER() {
+      this.tp_flag = true;
+    },
+    CML_FLAGER() {
+      this.cml_flag = true;
+      this.px = "width: calc(100% - 82px)";
     }
   }
 };

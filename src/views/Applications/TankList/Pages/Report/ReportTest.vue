@@ -18,7 +18,7 @@
       </div>
 
       <div v-if="tabCurrent == 'tab1'">
-        <button type="button" class v-on:click="createDocx()">Create docx</button>
+        <button type="button" class v-on:click="createGeneralDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
         <!-- <button type="button" class="table-toolbar-btn" v-on:click="createILASTDocx()">
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div v-if="tabCurrent == 'tab3'">
-        <button type="button" v-on:click="createDocx()">Create docx</button>
+        <button type="button" v-on:click="createILASTInter()">Create docx</button>
       </div>
       <PageLoading v-if="isLoading == true" text="Generaing, Please wait. . ." />
     </div>
@@ -207,6 +207,55 @@ export default {
     }
   },
   methods: {
+    async getTemplate() {
+      if (this.theTemplate) return this.theTemplate;
+      const request = await fetch(
+        "/report_template/Inspection Report Template.docx"
+      );
+      //console.log(request);
+      this.theTemplate = await request.blob();
+    },
+    async createILASTDocx() {
+      console.log("CREATED DOCX: ");
+      this.data1.picture_log.shift();
+      console.log(this.data1);
+      this.isLoading = true;
+      try {
+        this.status = "";
+
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplate();
+        console.log(templateFile);
+        console.log("1");
+
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
+
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
+
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("result.docx", docx);
+        console.log("4");
+        this.isLoading = false;
+        //this.$ons.notification.alert("Completed!");
+        setTimeout(() => (this.status = ""), 1000);
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
+    },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
@@ -253,7 +302,6 @@ export default {
         );
       }
     },
-
     NUMBER_ROUNDING_ROOF_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
@@ -315,65 +363,6 @@ export default {
         const rl = obj[i].rl;
         this.data1.critical_thk[i].scr = scr.toFixed(2);
         this.data1.critical_thk[i].rl = rl.toFixed(2);
-      }
-    },
-    onTextChanged(e) {
-      this.valueContent = e.component.option("value");
-      this.data1.htmleditor = e.component.option("value");
-      //this.data1.htmleditor = e.component.option("value");
-      //console.log("e: " + e);
-      // axios.post("/save-text", {
-      //   text: e.component.option("value")
-      // });
-    },
-    async getTemplate() {
-      if (this.theTemplate) return this.theTemplate;
-      const request = await fetch(
-        "/report_template/Inspection Report Template.docx"
-      );
-      //console.log(request);
-      this.theTemplate = await request.blob();
-    },
-
-    async createILASTDocx() {
-      console.log("CREATED DOCX: ");
-      this.data1.picture_log.shift();
-      console.log(this.data1);
-      this.isLoading = true;
-      try {
-        this.status = "";
-
-        // 1. read template file
-        this.status = "Getting the template...";
-        const templateFile = await this.getTemplate();
-        console.log(templateFile);
-        console.log("1");
-
-        // 2. read json data
-        this.status = "Parsing data...";
-        // const jsonData = this.data1;
-        // const data = JSON.parse(jsonData);
-        const data = this.data1;
-        console.log("2");
-
-        // 3. process the template
-        this.status = "Creating document...";
-        const handler = new TemplateHandler();
-        console.log("3.1");
-        let docx = await handler.process(this.theTemplate, data);
-        console.log("3.2:" + docx);
-
-        // 4. save output
-        this.status = "Done!";
-        this.saveFile("result.docx", docx);
-        console.log("4");
-        this.isLoading = false;
-        //this.$ons.notification.alert("Completed!");
-        setTimeout(() => (this.status = ""), 1000);
-      } catch (e) {
-        // error handling
-        this.status = "Error: " + e.message;
-        console.error(e);
       }
     },
     saveFile(filename, blob) {
