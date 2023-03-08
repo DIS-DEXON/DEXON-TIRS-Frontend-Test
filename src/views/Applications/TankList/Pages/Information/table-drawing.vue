@@ -1,12 +1,8 @@
 <template>
   <div class="page-section">
-    <div class="table-header-toolbar" style="width: calc(100% - 41px)">
-      <div class="left">
-        <label>Drawing</label>
-      </div>
-      <div class="right"></div>
+    <div class="table-header-toolbar left" style="width: calc(100% - 250px)">
+      <label id="hd">Drawing</label>
     </div>
-
     <DxDataGrid
       id="drawing"
       key-expr="id_library"
@@ -132,7 +128,7 @@
       </DxForm>
     </DxDataGrid>
   </div>
-</template> 
+</template>
 
 <script>
 import axios from "/axios.js";
@@ -454,5 +450,13 @@ span {
 }
 .datagrid-header {
   padding: 0%;
+}
+#hd {
+  line-height: 36px;
+  user-select: text;
+  cursor: text;
+  font-size: 18px;
+  font-weight: 700;
+  color: $dexon-primary-blue;
 }
 </style>

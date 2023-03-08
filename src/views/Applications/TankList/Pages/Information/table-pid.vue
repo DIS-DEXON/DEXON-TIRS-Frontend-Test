@@ -1,6 +1,6 @@
 <template>
   <div class="page-section">
-    <div class="table-header-toolbar" style="width: calc(100% - 41px)">
+    <div class="table-header-toolbar" style="width: calc(100% - 250px)">
       <div class="left">
         <label>P&ID</label>
       </div>

@@ -21,9 +21,24 @@
         <button type="button" class v-on:click="createDocx()">Create docx</button>
       </div>
       <div v-if="tabCurrent == 'tab2'">
-        <button type="button" class="button" v-on:click="createILASTDocx()">
-          <span>CREATE ILAST REPORT</span>
-        </button>
+        <!-- <button type="button" class="table-toolbar-btn" v-on:click="createILASTDocx()">
+          <i class="las la-file-alt"></i>
+          <span>ILAST REPORT</span>
+        </button>-->
+        <div class="dx-table-style">
+          <div class="table-toolbar-set">
+            <v-ons-toolbar-button
+              class="table-toolbar-btn"
+              id="ilast"
+              @mouseover="isHovering=true"
+              @mouseleave="isHovering=false"
+              v-on:click="createILASTDocx()"
+            >
+              <i class="las" :class="{'la-file-alt' : !isHovering, 'la-download' : isHovering}"></i>
+              <span>ILAST REPORT</span>
+            </v-ons-toolbar-button>
+          </div>
+        </div>
       </div>
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createDocx()">Create docx</button>
@@ -70,6 +85,7 @@ export default {
     return {
       theTemplate: null,
       isLoading: false,
+      isHovering: false,
       imgpath: [],
       drawingList: [],
       current_view: {},
@@ -1476,28 +1492,18 @@ export default {
   width: 100%;
   white-space: pre-wrap;
 }
-.button {
+#ilast {
   background-color: #f6f6f6;
-  padding: 0;
-  padding-right: 15px;
-  height: 34px;
-  border: 0px;
-  border-radius: 8px;
   border: 1px solid #303030;
   i {
-    padding-left: 3px;
-    font-size: 20px;
     color: #303030;
   }
   span {
-    padding-left: 15px;
-    font-size: 14px;
-    font-weight: 500;
     color: #303030;
   }
 }
-.button:hover,
-.button:active {
+#ilast:hover,
+#ilast:active {
   background-color: #140a4b;
   i {
     color: #ffffff;
