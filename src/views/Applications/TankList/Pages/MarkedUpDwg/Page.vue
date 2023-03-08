@@ -324,6 +324,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.is_changed_dwg = 0;
         });
     },
     UPDATE_DWG(e) {
