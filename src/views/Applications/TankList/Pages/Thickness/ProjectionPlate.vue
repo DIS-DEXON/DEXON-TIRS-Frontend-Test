@@ -50,11 +50,7 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn
-            data-field="first_t_actual"
-            caption="First thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -76,23 +72,11 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn
-            data-field="t_actual"
-            caption="Last thickness (mm)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crs"
-            caption="ST_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
 
-          <DxColumn
-            data-field="crl"
-            caption="LT_CR (mm/yr)"
-            format="#,##0.00"
-          />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
 
           <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
 
@@ -118,8 +102,7 @@
           <div class="left">
             <label>TP</label>
           </div>
-          <div class="right">
-          </div>
+          <div class="right"></div>
         </div>
         <DxDataGrid
           id="tp-grid"
@@ -139,6 +122,7 @@
           @init-new-row="ADDING"
           @editing-start="EDITING"
           @selection-changed="VIEW_THK"
+          @row-click="TP_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -152,15 +136,38 @@
             mode="form"
           />
 
-          <DxColumn data-field="tp_no" caption="TP No." sort-order="asc" :allow-editing="editTpNo" :width="100" />
+          <DxColumn
+            data-field="tp_no"
+            caption="TP No."
+            sort-order="asc"
+            :allow-editing="editTpNo"
+            :width="100"
+          />
 
           <DxColumn data-field="tp_num" caption="TP num" width="0" :allow-editing="editTpNum" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" :allow-editing="editTpDesc" :width="100"  />
+          <DxColumn
+            data-field="tp_desc"
+            caption="TP desc"
+            :allow-editing="editTpDesc"
+            :width="100"
+          />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :allow-editing="editTnom" :width="100" />
+          <DxColumn
+            data-field="t_nom"
+            caption="tnom (mm)"
+            format="#,##0.00"
+            :allow-editing="editTnom"
+            :width="100"
+          />
 
-          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :allow-editing="editTreq" :width="100" />
+          <DxColumn
+            data-field="t_req"
+            caption="treq (mm)"
+            format="#,##0.00"
+            :allow-editing="editTreq"
+            :width="100"
+          />
 
           <DxColumn
             data-field="inservice_date"
@@ -221,7 +228,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION"
             :use-icons="true"
             mode="row"
           />
@@ -234,12 +241,7 @@
             />
           </DxColumn>
 
-          <DxColumn
-            data-field="t_actual"
-            caption="tactual (mm)"
-            format="#,##0.00"
-            :width="150" 
-          />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
@@ -264,11 +266,7 @@
       </div>
     </div>
 
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template> 
 
@@ -301,7 +299,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxSelection,
+  DxSelection
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -323,16 +321,16 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
-    VueTabsChrome,
+    VueTabsChrome
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
-      subpageInnerName: "Projection Plate",
+      subpageInnerName: "Projection Plate"
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
@@ -342,17 +340,18 @@ export default {
   },
   data() {
     return {
+      tp_flag: false,
       dataList: {
         tp: [],
         thk: [],
-        view: [],
+        view: []
       },
       isLoading: false,
       id_cml: 0,
       id_tp: 0,
       inspRecordList: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       editInserviceDate: false,
       editTnom: false,
@@ -365,17 +364,25 @@ export default {
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false,
+          closable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false,
-        },
-      ],
+          closable: false
+        }
+      ]
     };
   },
-  computed: {},
+  computed: {
+    SELECTION() {
+      if (this.tp_flag) {
+        console.warn(this.tp_flag);
+        return true;
+      }
+      return false;
+    }
+  },
   methods: {
     FETCH_TP() {
       var id_tag = this.$route.params.id_tag;
@@ -383,20 +390,20 @@ export default {
         method: "post",
         url: "projection-plate-thickness/projection-plate-thk-tp-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("tp:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.tp = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {});
@@ -408,20 +415,20 @@ export default {
         method: "post",
         url: "projection-plate-thickness/projection-plate-thk-data-by-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: this.id_tp,
-        },
+          id_tp: this.id_tp
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("thk:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.thk = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {});
@@ -432,20 +439,20 @@ export default {
         method: "post",
         url: "projection-plate-thickness/projection-plate-thk-view-last-insp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("view:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataList.view = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {});
@@ -457,20 +464,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -487,18 +494,18 @@ export default {
         method: "post",
         url: "projection-plate-thickness/add-projection-plate-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -512,18 +519,18 @@ export default {
         method: "put",
         url: "projection-plate-thickness/edit-projection-plate-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -536,20 +543,20 @@ export default {
         method: "delete",
         url: "projection-plate-thickness/delete-projection-plate-thk-tp",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tp: e.key,
-        },
+          id_tp: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -559,7 +566,7 @@ export default {
     CREATE_THK(e) {
       e.data.id_thk = 0;
       e.data.id_tp = this.id_tp;
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = date[0].inspection_date;
@@ -569,18 +576,18 @@ export default {
         method: "post",
         url: "projection-plate-thickness/add-projection-plate-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -588,7 +595,7 @@ export default {
         });
     },
     UPDATE_THK(e) {
-      var date = this.inspRecordList.filter(function (v) {
+      var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
       e.data.inspection_date = date[0].inspection_date;
@@ -598,18 +605,18 @@ export default {
         method: "put",
         url: "projection-plate-thickness/edit-projection-plate-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -623,20 +630,20 @@ export default {
         method: "delete",
         url: "projection-plate-thickness/delete-projection-plate-thk-data",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_thk: e.key,
-        },
+          id_thk: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
             this.FETCH_VIEW();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -647,6 +654,7 @@ export default {
       console.log(e);
       this.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
     },
     VIEW_THK(e) {
       console.log(e);
@@ -680,7 +688,10 @@ export default {
       this.editTpNum = true;
       this.editTreq = false;
     },
-  },
+    TP_FLAGER() {
+      this.tp_flag = true;
+    }
+  }
 };
 </script>
 
@@ -711,5 +722,4 @@ export default {
 .data-grid-style {
   height: 100%;
 }
-
 </style>

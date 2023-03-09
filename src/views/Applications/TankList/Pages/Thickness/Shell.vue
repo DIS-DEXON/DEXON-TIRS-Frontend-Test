@@ -104,7 +104,7 @@
     </div>
     <div id="x-page" class="page-section overflow-x" v-if="tabCurrent == 'A2'">
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+        <div class="table-header-toolbar" style="width: calc(100% - 216px)">
           <div class="left">
             <label>Shell Course</label>
           </div>
@@ -123,6 +123,7 @@
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
           @selection-changed="VIEW_CML"
+          @row-click="SHELL_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -148,7 +149,7 @@
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
           <DxScrolling mode="standard" />
-          <DxSearchPanel :visible="true" />
+          <DxSearchPanel id="search-pn" :visible="true" />
           <DxPaging :page-size="10" :page-index="0" />
           <DxPager
             :show-page-size-selector="true"
@@ -161,7 +162,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" :style="px_cml">
           <div class="left">
             <label>CML</label>
           </div>
@@ -179,6 +180,7 @@
           id="cml-upload-btn"
           ref="cml_upload_file"
           @change="UPLOAD_CML()"
+          :disabled="IMPORT_CML"
         />
         <DxDataGrid
           id="data-table-cml"
@@ -196,6 +198,7 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
+          @row-click="CML_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -241,7 +244,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" :style="px">
           <div class="left">
             <label>TP</label>
           </div>
@@ -259,6 +262,7 @@
           id="tp-upload-btn"
           ref="tp_upload_file"
           @change="UPLOAD_TP()"
+          :disabled="IMPORT_TP"
         />
         <DxDataGrid
           id="data-table-tp"
@@ -276,6 +280,7 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
           @selection-changed="VIEW_UTM"
+          @row-click="TP_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -321,7 +326,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+        <div class="table-header-toolbar" :style="px_thk">
           <div class="left">
             <label>Thickness</label>
           </div>
@@ -377,7 +382,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="false" />
         </DxDataGrid>
       </div>
     </div>
@@ -456,6 +461,12 @@ export default {
   },
   data() {
     return {
+      px_thk: "width: calc(100% - 0px)",
+      px: "width: calc(100% - 0px)",
+      px_cml: "width: calc(100% - 0px)",
+      shell_flag: false,
+      cml_flag: false,
+      tp_flag: false,
       dataList: {
         shellcourse: [],
         cml: [],
@@ -489,7 +500,28 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    SELECTION() {
+      if (this.tp_flag) {
+        return true;
+      }
+      return false;
+    },
+    IMPORT_CML() {
+      if (this.shell_flag) {
+        console.warn(this.shell_flag);
+        return false;
+      }
+      return true;
+    },
+    IMPORT_TP() {
+      if (this.tp_flag) {
+        console.warn(this.tp_flag);
+        return false;
+      }
+      return true;
+    }
+  },
   methods: {
     FETCH_SHELL_COURSE() {
       this.isLoading = true;
@@ -656,10 +688,14 @@ export default {
     VIEW_CML(e) {
       this.current_view_item.id_tank_course = e.selectedRowKeys[0];
       this.FETCH_CML();
+      this.tp_flag = false;
+      this.px = "width: calc(100% - 0px)";
+      this.px_thk = "width: calc(100% - 0px)";
     },
     VIEW_TP(e) {
       this.current_view_item.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
     },
     VIEW_UTM(e) {
       this.current_view_item.id_tp = e.selectedRowKeys[0];
@@ -1001,6 +1037,16 @@ export default {
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
+    },
+    TP_FLAGER() {
+      this.tp_flag = true;
+      this.px_thk = "width: calc(100% - 42px)";
+    },
+    CML_FLAGER() {
+      this.px = "width: calc(100% - 42px)";
+    },
+    SHELL_FLAGER() {
+      this.px_cml = "width: calc(100% - 42px)";
     }
   }
 };

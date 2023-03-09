@@ -168,11 +168,11 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>CML</label>
           </div>
@@ -264,11 +264,11 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 42px)">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>TP</label>
           </div>
@@ -344,7 +344,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
@@ -404,7 +404,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>

@@ -733,6 +733,7 @@ export default {
     VIEW_TP(e) {
       this.current_view_item.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
     },
     VIEW_UTM(e) {
       this.current_view_item.id_tp = e.selectedRowKeys[0];

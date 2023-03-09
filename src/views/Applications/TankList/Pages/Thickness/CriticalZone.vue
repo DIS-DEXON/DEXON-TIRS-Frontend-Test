@@ -838,6 +838,7 @@ export default {
       console.log(e);
       this.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
     },
     VIEW_THK(e) {
       console.log(e);

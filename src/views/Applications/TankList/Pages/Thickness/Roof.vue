@@ -200,7 +200,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_CML">
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -272,7 +272,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+        <div class="table-header-toolbar" :style="px_thk">
           <div class="left">
             <label>Thickness</label>
           </div>
@@ -417,7 +417,8 @@ export default {
   },
   data() {
     return {
-      px: "width: calc(100% - 41px)",
+      px: "width: calc(100% - 0px)",
+      px_thk: "width: calc(100% - 0px)",
       cml_flag: false,
       tp_flag: false,
       dataList: {
@@ -842,6 +843,8 @@ export default {
       console.log(e);
       this.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
+      this.px_thk = "width: calc(100% - 0px)";
     },
     VIEW_THK(e) {
       console.log(e);
@@ -976,6 +979,7 @@ export default {
     },
     TP_FLAGER() {
       this.tp_flag = true;
+      this.px_thk = "width: calc(100% - 82px)";
     },
     CML_FLAGER() {
       this.cml_flag = true;

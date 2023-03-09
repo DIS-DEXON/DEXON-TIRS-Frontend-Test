@@ -105,9 +105,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Year of In-service (year):</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <input
               type="text"
