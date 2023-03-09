@@ -134,6 +134,7 @@
           @row-updated="UPDATE_PIPING"
           @row-removed="DELETE_PIPING"
           @selection-changed="VIEW_CML"
+          @row-click="PIPING_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -177,7 +178,7 @@
             <label>CML</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_PIPING">
               <label for="cml-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -207,6 +208,7 @@
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
           @selection-changed="VIEW_TP"
+          @row-click="CML_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -215,7 +217,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_PIPING"
             :use-icons="true"
             mode="row"
           />
@@ -283,7 +285,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_CML">
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -313,6 +315,7 @@
           @row-updated="UPDATE_TP"
           @row-removed="DELETE_TP"
           @selection-changed="VIEW_UTM"
+          @row-click="TP_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -328,7 +331,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_CML"
             :use-icons="true"
             mode="row"
           />
@@ -393,7 +396,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION"
             :use-icons="true"
             mode="row"
           />
@@ -506,6 +509,9 @@ export default {
   },
   data() {
     return {
+      piping_flag: false,
+      cml_flag: false,
+      tp_flag: false,
       dataList: {
         piping: [],
         cml: [],
@@ -545,7 +551,26 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    SELECTION() {
+      if (this.tp_flag) {
+        return true;
+      }
+      return false;
+    },
+    SELECTION_CML() {
+      if (this.cml_flag) {
+        return true;
+      }
+      return false;
+    },
+    SELECTION_PIPING() {
+      if (this.piping_flag) {
+        return true;
+      }
+      return false;
+    }
+  },
   methods: {
     FETCH_PIPING() {
       this.isLoading = true;
@@ -708,10 +733,13 @@ export default {
     VIEW_CML(e) {
       this.current_view_item.id_piping = e.selectedRowKeys[0];
       this.FETCH_CML();
+      this.tp_flag = false;
+      this.cml_flag = false;
     },
     VIEW_TP(e) {
       this.current_view_item.id_cml = e.selectedRowKeys[0];
       this.FETCH_TP();
+      this.tp_flag = false;
     },
     VIEW_UTM(e) {
       this.current_view_item.id_tp = e.selectedRowKeys[0];
@@ -1196,6 +1224,15 @@ export default {
           "Incorrect filetype. <br/> Only XLS/XLSX file can be uploaded."
         );
       }
+    },
+    TP_FLAGER() {
+      this.tp_flag = true;
+    },
+    CML_FLAGER() {
+      this.cml_flag = true;
+    },
+    PIPING_FLAGER() {
+      this.piping_flag = true;
     }
   }
 };

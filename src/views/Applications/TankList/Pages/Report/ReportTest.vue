@@ -428,7 +428,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Annular();
         });
     },
@@ -455,7 +455,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          // this.isLoading = false;
           this.getImgDWG_Bottom();
           // console.log("DWG bottom:");
           // console.log(this.drawingList);
@@ -484,7 +484,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Coil();
         });
     },
@@ -511,7 +511,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Critical_zone();
         });
     },
@@ -538,7 +538,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Piping();
         });
     },
@@ -565,7 +565,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Roof();
         });
     },
@@ -592,7 +592,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Roofnz();
         });
     },
@@ -619,7 +619,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Sump();
         });
     },
@@ -646,7 +646,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Shell();
         });
     },
@@ -673,7 +673,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Shellnz();
         });
     },
@@ -700,7 +700,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           this.getImgDWG_Projection_plate();
         });
     },
@@ -728,7 +728,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
         });
     },
     FETCH_TANK_INFO() {
@@ -839,7 +839,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const temp = this.data1.inservice_date;
           this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
         });
@@ -870,7 +870,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
         });
     },
     FETCH_SHELL_API() {
@@ -900,7 +900,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const temp = this.data1.shell_settlement_api;
           this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
         });
@@ -932,7 +932,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
         });
     },
     FETCH_BOTTOM_THK() {
@@ -961,7 +961,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const temp = this.data1.bottom_thk;
           this.DATE_FOR_BOTTOM_THK(temp);
           this.NUMBER_ROUNDING_BOTTOM_THK(temp);
@@ -993,7 +993,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const temp = this.data1.critical_thk;
           this.DATE_FOR_CRIT_ZONE(temp);
           this.NUMBER_ROUNDING_CRIT_ZONE(temp);
@@ -1025,7 +1025,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const s = this.data1.roof_thk;
           this.DATE_FOR_ROOF_THK(s);
           const obj = this.data1.roof_thk;
@@ -1058,7 +1058,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const s = this.data1.roofnz_thk;
           this.DATE_FOR_ROOFNZ_THK(s);
           const obj = this.data1.roofnz_thk;
@@ -1093,7 +1093,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           const s = this.data1.shell_thk;
           this.DATE_FOR_SHELL_THK(s);
         });
@@ -1122,7 +1122,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
         });
     },
     FETCH_ACCPT() {
@@ -1157,7 +1157,7 @@ export default {
         });
     },
     VIEW_ITEM(item) {
-      //this.isLoading = true;
+      this.isLoading = true;
       console.clear();
       this.current_view = item;
       console.log("records:");
@@ -1233,7 +1233,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
           // console.log("image:");
           // console.log(this.imgpath);
           this.getImageData();

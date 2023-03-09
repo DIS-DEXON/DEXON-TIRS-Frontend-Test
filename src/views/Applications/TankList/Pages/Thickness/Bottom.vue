@@ -208,7 +208,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_CML">
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -945,7 +945,6 @@ export default {
     },
     CML_FLAGER() {
       this.cml_flag = true;
-      this.px = "width: calc(100% - 82px)";
     }
   }
 };

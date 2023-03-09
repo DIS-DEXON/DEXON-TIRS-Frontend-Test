@@ -135,6 +135,7 @@
           @row-updated="UPDATE_COIL"
           @row-removed="DELETE_COIL"
           @selection-changed="VIEW_CML"
+          @row-click="COIL_FLAGER"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -178,7 +179,7 @@
             <label>CML</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_COIL">
               <label for="cml-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -217,7 +218,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_COIL"
             :use-icons="true"
             mode="row"
           />
@@ -285,7 +286,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_CML">
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -331,7 +332,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_CML"
             :use-icons="true"
             mode="row"
           />
@@ -397,7 +398,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION"
             :use-icons="true"
             mode="row"
           />
@@ -510,6 +511,7 @@ export default {
   },
   data() {
     return {
+      coil_flag: false,
       cml_flag: false,
       tp_flag: false,
       dataList: {
@@ -554,14 +556,18 @@ export default {
   computed: {
     SELECTION() {
       if (this.tp_flag) {
-        console.warn(this.tp_flag);
         return true;
       }
       return false;
     },
     SELECTION_CML() {
       if (this.cml_flag) {
-        console.warn(this.cml_flag);
+        return true;
+      }
+      return false;
+    },
+    SELECTION_COIL() {
+      if (this.coil_flag) {
         return true;
       }
       return false;
@@ -729,6 +735,8 @@ export default {
     VIEW_CML(e) {
       this.current_view_item.id_coil = e.selectedRowKeys[0];
       this.FETCH_CML();
+      this.tp_flag = false;
+      this.cml_flag = false;
     },
     VIEW_TP(e) {
       this.current_view_item.id_cml = e.selectedRowKeys[0];
@@ -1228,6 +1236,9 @@ export default {
     },
     CML_FLAGER() {
       this.cml_flag = true;
+    },
+    COIL_FLAGER() {
+      this.coil_flag = true;
     }
   }
 };

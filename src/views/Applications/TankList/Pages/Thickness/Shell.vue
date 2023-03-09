@@ -167,7 +167,7 @@
             <label>CML</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_SHELL">
               <label for="cml-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -207,7 +207,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_SHELL"
             :use-icons="true"
             mode="row"
           />
@@ -240,7 +240,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
@@ -249,7 +249,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
+            <v-ons-toolbar-button v-if="SELECTION_CML">
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -262,7 +262,6 @@
           id="tp-upload-btn"
           ref="tp_upload_file"
           @change="UPLOAD_TP()"
-          :disabled="IMPORT_TP"
         />
         <DxDataGrid
           id="data-table-tp"
@@ -296,7 +295,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION_CML"
             :use-icons="true"
             mode="row"
           />
@@ -322,7 +321,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <!-- <DxExport :enabled="true" /> -->
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
@@ -353,7 +352,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="SELECTION"
             :use-icons="true"
             mode="row"
           />
@@ -382,7 +381,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="false" />
+          <DxExport :enabled="true" />
         </DxDataGrid>
       </div>
     </div>
@@ -461,9 +460,9 @@ export default {
   },
   data() {
     return {
-      px_thk: "width: calc(100% - 0px)",
-      px: "width: calc(100% - 0px)",
-      px_cml: "width: calc(100% - 0px)",
+      px_thk: "width: calc(100% - 82px)",
+      px: "width: calc(100% - 82px)",
+      px_cml: "width: calc(100% - 82px)",
       shell_flag: false,
       cml_flag: false,
       tp_flag: false,
@@ -507,19 +506,17 @@ export default {
       }
       return false;
     },
-    IMPORT_CML() {
-      if (this.shell_flag) {
-        console.warn(this.shell_flag);
-        return false;
+    SELECTION_CML() {
+      if (this.cml_flag) {
+        return true;
       }
-      return true;
+      return false;
     },
-    IMPORT_TP() {
-      if (this.tp_flag) {
-        console.warn(this.tp_flag);
-        return false;
+    SELECTION_SHELL() {
+      if (this.shell_flag) {
+        return true;
       }
-      return true;
+      return false;
     }
   },
   methods: {
@@ -551,7 +548,7 @@ export default {
         });
     },
     FETCH_CML() {
-      // this.isLoading = true;
+      //this.isLoading = true;
       var id = this.current_view_item.id_tank_course;
       axios({
         method: "post",
@@ -688,9 +685,10 @@ export default {
     VIEW_CML(e) {
       this.current_view_item.id_tank_course = e.selectedRowKeys[0];
       this.FETCH_CML();
+      this.dataList.tp = [];
+      this.dataList.thk = [];
       this.tp_flag = false;
-      this.px = "width: calc(100% - 0px)";
-      this.px_thk = "width: calc(100% - 0px)";
+      this.cml_flag = false;
     },
     VIEW_TP(e) {
       this.current_view_item.id_cml = e.selectedRowKeys[0];
@@ -1040,13 +1038,12 @@ export default {
     },
     TP_FLAGER() {
       this.tp_flag = true;
-      this.px_thk = "width: calc(100% - 42px)";
     },
     CML_FLAGER() {
-      this.px = "width: calc(100% - 42px)";
+      this.cml_flag = true;
     },
     SHELL_FLAGER() {
-      this.px_cml = "width: calc(100% - 42px)";
+      this.shell_flag = true;
     }
   }
 };
