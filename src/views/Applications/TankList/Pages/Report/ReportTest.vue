@@ -43,7 +43,7 @@
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createILASTInter()">Create docx</button>
       </div>
-      <PageLoading v-if="isLoading == true" text="Generaing, Please wait. . ." />
+      <PageLoading v-if="isLoading == true" text="Please wait. . ." />
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
@@ -123,6 +123,7 @@ export default {
         tank_height_m: "",
         tank_capacity_litre: "",
         max_liquid_level_m: "",
+        max_liquid_level_ft: "",
         roof_shape: "",
         diameter_ft: "",
         tank_height_ft: "",
@@ -418,7 +419,7 @@ export default {
       })
         .then(res => {
           console.log("DWG annular:");
-          console.log(res.data);
+          //console.log(res.data);
 
           if (res.status == 200 && res.data) {
             this.drawingList.annular = res.data;
@@ -446,7 +447,7 @@ export default {
       })
         .then(res => {
           console.log("DWG bottom:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.bottom = res.data;
           }
@@ -475,7 +476,7 @@ export default {
       })
         .then(res => {
           console.log("DWG coil:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.coil = res.data;
           }
@@ -502,7 +503,7 @@ export default {
       })
         .then(res => {
           console.log("DWG CRITICAL:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.critical_zone = res.data;
           }
@@ -529,7 +530,7 @@ export default {
       })
         .then(res => {
           console.log("DWG PIPING:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.piping = res.data;
           }
@@ -556,7 +557,7 @@ export default {
       })
         .then(res => {
           console.log("DWG Roof:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof = res.data;
           }
@@ -583,7 +584,7 @@ export default {
       })
         .then(res => {
           console.log("DWG Roof nozzle:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof_nozzle = res.data;
           }
@@ -610,7 +611,7 @@ export default {
       })
         .then(res => {
           console.log("DWG SUMP:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.sump = res.data;
           }
@@ -637,7 +638,7 @@ export default {
       })
         .then(res => {
           console.log("DWG SHELL:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell = res.data;
           }
@@ -664,7 +665,7 @@ export default {
       })
         .then(res => {
           console.log("DWG SHELL NOZZLE:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell_nozzle = res.data;
           }
@@ -691,7 +692,7 @@ export default {
       })
         .then(res => {
           console.log("DWG PROJECTION PLATE:");
-          console.log(res.data);
+          //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.projection_plate = res.data;
           }
@@ -760,6 +761,7 @@ export default {
             this.data1.tank_height_m = res.data[0].tank_height_m;
             this.data1.tank_capacity_litre = res.data[0].tank_capacity_litre;
             this.data1.max_liquid_level_m = res.data[0].max_liquid_level_m;
+            this.data1.max_liquid_level_ft = res.data[0].max_liquid_level_ft;
             this.data1.roof_shape = res.data[0].roof_shape;
             this.data1.diameter_ft = res.data[0].diameter_ft;
             this.data1.tank_height_ft = res.data[0].tank_height_ft;
@@ -1142,7 +1144,7 @@ export default {
       })
         .then(res => {
           console.log("FETCH ACCEPTANCE: ");
-          console.log(res.data[0]);
+          //console.log(res.data[0]);
           if (res.status == 200 && res.data) {
             //console.log("==> SUCCESS: Acceptance Determination");
             this.data1.accept = res.data;
