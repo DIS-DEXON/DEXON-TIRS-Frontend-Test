@@ -173,6 +173,7 @@ export default {
         misc_flow_rate: "",
         misc_suction_line: "",
         misc_receipt: "",
+        accept: [],
         annular: [],
         bottom: [],
         coil: [],
@@ -364,6 +365,24 @@ export default {
         this.data1.critical_thk[i].scr = scr.toFixed(2);
         this.data1.critical_thk[i].rl = rl.toFixed(2);
       }
+    },
+    NUMBER_ROUNDING_ACCEPT(obj) {
+      this.data1.accept[0].angle_degrees = obj.angle_degrees.toFixed(2);
+      this.data1.accept[0].deflection_ft = obj.deflection_ft.toFixed(2);
+      this.data1.accept[0].deflection_mm = obj.deflection_mm.toFixed(2);
+      this.data1.accept[0].direction_degrees_cw_pi = obj.direction_degrees_cw_pi.toFixed(
+        2
+      );
+      this.data1.accept[0].l_value = obj.l_value.toFixed(2);
+      this.data1.accept[0].predicted_tilt = obj.predicted_tilt.toFixed(2);
+      this.data1.accept[0].r_2 = obj.r_2.toFixed(2);
+      this.data1.accept[0].s_max_in = obj.s_max_in.toFixed(2);
+      this.data1.accept[0].s_max_mm = obj.s_max_mm.toFixed(2);
+      this.data1.accept[0].s_value = obj.s_value.toFixed(2);
+      this.data1.accept[0].st_value = obj.st_value.toFixed(2);
+      this.data1.accept[0].ui_before_max = obj.ui_before_max.toFixed(2);
+      this.data1.accept[0].ui_max = obj.ui_max.toFixed(2);
+      this.data1.accept[0].ui_next_max = obj.ui_next_max.toFixed(2);
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -1106,6 +1125,37 @@ export default {
           this.isLoading = false;
         });
     },
+    FETCH_ACCPT() {
+      //console.log("==> FETCH: Acceptance Determination");
+      //this.isLoading = true;
+      const id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "shell-settlement/get-shell-settlement-accept",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: this.id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("FETCH ACCEPTANCE: ");
+          console.log(res.data[0]);
+          if (res.status == 200 && res.data) {
+            //console.log("==> SUCCESS: Acceptance Determination");
+            this.data1.accept = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.NUMBER_ROUNDING_ACCEPT(this.data1.accept[0]);
+        });
+    },
     VIEW_ITEM(item) {
       //this.isLoading = true;
       console.clear();
@@ -1145,6 +1195,7 @@ export default {
       this.FETCH_ROOFNZ_THK();
       this.FETCH_SHELL_COURSE();
       this.FETCH_SHELL_THK();
+      this.FETCH_ACCPT();
     },
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
