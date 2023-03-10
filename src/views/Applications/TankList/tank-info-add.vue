@@ -317,9 +317,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation Thickness (mm):</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <input
               type="text"
@@ -494,14 +494,12 @@ export default {
         this.formData.tank_no &&
         this.formData.installation_date &&
         this.formData.inservice_date &&
-        this.formData.inservice_age_of_tank_yrs &&
         this.formData.mat_type &&
         this.formData.tank_capacity_litre &&
         this.formData.tank_height_m &&
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
-        this.formData.insulation &&
-        this.formData.insulation_thk_mm !== "" &&
+        this.formData.insulation !== "" &&
         this.formData.sg_of_product
       ) {
         this.$ons.notification.confirm("Confirm save?").then(res => {
