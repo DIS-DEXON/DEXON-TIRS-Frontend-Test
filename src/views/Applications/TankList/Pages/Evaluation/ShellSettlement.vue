@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
         <v-ons-list-header>
           Inspection Detail of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <div class="tab-wrapper">
         <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
@@ -148,10 +143,7 @@
             </DxDataGrid>
           </div>
         </div>
-        <div
-          class="app-instruction"
-          style="padding-top: 20px; padding-left: 20px"
-        >
+        <div class="app-instruction" style="padding-top: 20px; padding-left: 20px">
           <appInstruction
             title="Measurement Conceptualization"
             desc="Measurements of Shell Settlement (External)"
@@ -169,23 +161,17 @@
               <li>The spacing settlement and quantity of measurement points</li>
             </ol>
           </appInstruction>
-          <appInstruction
-            style="margin-top: 20px"
-            title="The Maximum Spacing of Settlement Points"
-          >
+          <appInstruction style="margin-top: 20px" title="The Maximum Spacing of Settlement Points">
             <div class="img-box">
               <img src="/img/tank-shell-max-space-settlement.png" />
             </div>
           </appInstruction>
-          <appInstruction style="margin-top: 20px" title="Datum Point Location">
-          </appInstruction>
+          <appInstruction style="margin-top: 20px" title="Datum Point Location"></appInstruction>
         </div>
       </div>
       <div v-if="tabCurrent == 'cal'" class="tab2-grid">
         <div v-if="this.settlementCalPointList.length > 0">
-          <div
-            class="content"
-          >
+          <div class="content">
             <div class="table-wrapper">
               <DxDataGrid
                 id="settlement-2-grid"
@@ -208,11 +194,7 @@
                   <!-- <DxItem location="after" template="table-header-button-set" /> -->
                 </DxToolbar>
 
-                <DxColumn
-                  data-field="location"
-                  caption="Data Point"
-                  :allow-editing="false"
-                />
+                <DxColumn data-field="location" caption="Data Point" :allow-editing="false" />
 
                 <DxColumn
                   data-field="cumulative"
@@ -228,29 +210,13 @@
                   :allow-editing="false"
                 />
 
-                <DxColumn
-                  data-field="theta_radians"
-                  caption="Theta Radians"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="theta_radians" caption="Theta Radians" format="#,##0.00" />
 
-                <DxColumn
-                  data-field="theta_degrees"
-                  caption="Theta Degrees"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="theta_degrees" caption="Theta Degrees" format="#,##0.00" />
 
-                <DxColumn
-                  data-field="relative_value"
-                  caption="Relative Level"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="relative_value" caption="Relative Level" format="#,##0.00" />
 
-                <DxColumn
-                  data-field="y"
-                  caption="Y=A+B Cos(Theta-C)"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="y" caption="Y=A+B Cos(Theta-C)" format="#,##0.00" />
 
                 <DxColumn
                   data-field="difference_value"
@@ -264,11 +230,7 @@
                   format="#,##0.00"
                 />
 
-                <DxColumn
-                  data-field="deviation_value"
-                  caption="Deviation"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="deviation_value" caption="Deviation" format="#,##0.00" />
 
                 <DxColumn
                   data-field="difference_2_value"
@@ -276,11 +238,7 @@
                   format="#,##0.00"
                 />
 
-                <DxColumn
-                  data-field="deviation_2_value"
-                  caption="Deviation(2)"
-                  format="#,##0.00"
-                />
+                <DxColumn data-field="deviation_2_value" caption="Deviation(2)" format="#,##0.00" />
 
                 <template #table-header>
                   <div class="dx-table-style">
@@ -300,7 +258,7 @@
                     </v-ons-toolbar-button>
                   </div>
                 </div>
-              </template> -->
+                </template>-->
 
                 <!-- Configuration goes here -->
                 <!-- <DxFilterRow :visible="true" /> -->
@@ -320,13 +278,14 @@
             <div class="report-sheet">
               <!-- <div class="custom-table-header">
                 <label></label>
-              </div> -->
-              <div class="report-container" style="display: grid; grid-template-columns: 50% 50%; gap: 20px; width: calc(100% - 20px);">
+              </div>-->
+              <div
+                class="report-container"
+                style="display: grid; grid-template-columns: 50% 50%; gap: 20px; width: calc(100% - 20px);"
+              >
                 <div class="sheet-body" style="border: none;">
                   <div class="section-label" style="grid-column: span 4">
-                    <label style="line-height: 34px"
-                      >Y = A + B Cos(Theta - C)</label
-                    >
+                    <label style="line-height: 34px">Y = A + B Cos(Theta - C)</label>
                   </div>
                   <div class="section-label">
                     <label></label>
@@ -355,23 +314,20 @@
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].asv
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                       <label
                         v-if="
                           settlementCalPointList.length > 0 &&
                           this.settlementCalPointList[0].asv
                         "
-                        >{{
-                          this.settlementCalPointList[0].asv.toFixed(4)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].asv.toFixed(4)
+                        }}
+                      </label>
                     </div>
                     <div class="form-item-value">
-                      <input
-                        v-model="formData.multi.abf"
-                        v-on:keyup.enter="EDIT_CALC()"
-                      />
+                      <input v-model="formData.multi.abf" v-on:keyup.enter="EDIT_CALC()" />
                     </div>
                   </div>
                   <div class="form-item" style="grid-row: span 2">
@@ -381,23 +337,20 @@
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].bsv
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                       <label
                         v-if="
                           settlementCalPointList.length > 0 &&
                           this.settlementCalPointList[0].bsv
                         "
-                        >{{
-                          this.settlementCalPointList[0].bsv.toFixed(4)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].bsv.toFixed(4)
+                        }}
+                      </label>
                     </div>
                     <div class="form-item-value">
-                      <input
-                        v-model="formData.multi.bbf"
-                        v-on:keyup.enter="EDIT_CALC()"
-                      />
+                      <input v-model="formData.multi.bbf" v-on:keyup.enter="EDIT_CALC()" />
                     </div>
                   </div>
                   <div class="form-item" style="grid-row: span 2">
@@ -407,23 +360,20 @@
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].csv
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                       <label
                         v-if="
                           settlementCalPointList.length > 0 &&
                           this.settlementCalPointList[0].csv
                         "
-                        >{{
-                          this.settlementCalPointList[0].csv.toFixed(4)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].csv.toFixed(4)
+                        }}
+                      </label>
                     </div>
                     <div class="form-item-value">
-                      <input
-                        v-model="formData.multi.cbf"
-                        v-on:keyup.enter="EDIT_CALC()"
-                      />
+                      <input v-model="formData.multi.cbf" v-on:keyup.enter="EDIT_CALC()" />
                     </div>
                   </div>
                 </div>
@@ -439,18 +389,18 @@
                           settlementCalPointList.length > 0 &&
                           settlementCalPointList[0].syy
                         "
-                        >{{
-                          this.settlementCalPointList[0].syy.toFixed(2)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].syy.toFixed(2)
+                        }}
+                      </label>
                       <label
                         style="line-height: 34px"
                         v-if="
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].syy
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                     </div>
                   </div>
                   <div class="section-label" style="grid-column: span 4">
@@ -464,18 +414,18 @@
                           settlementCalPointList.length > 0 &&
                           settlementCalPointList[0].sse
                         "
-                        >{{
-                          this.settlementCalPointList[0].sse.toFixed(2)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].sse.toFixed(2)
+                        }}
+                      </label>
                       <label
                         style="line-height: 34px"
                         v-if="
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].sse
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                     </div>
                   </div>
                   <div class="section-label" style="grid-column: span 4">
@@ -489,18 +439,18 @@
                           settlementCalPointList.length > 0 &&
                           settlementCalPointList[0].r_2
                         "
-                        >{{
-                          this.settlementCalPointList[0].r_2.toFixed(4)
-                        }}</label
                       >
+                        {{
+                        this.settlementCalPointList[0].r_2.toFixed(4)
+                        }}
+                      </label>
                       <label
                         style="line-height: 34px"
                         v-if="
                           settlementCalPointList.length == 0 ||
                           !settlementCalPointList[0].r_2
                         "
-                        >N/A</label
-                      >
+                      >N/A</label>
                     </div>
                   </div>
                 </div>
@@ -528,7 +478,7 @@
           <div class="app-instruction" style="margin-top: 20px">
             <appInstruction
               title="Tank Settlement Evaluation Acceptance criteria as per API 653"
-              desc=""
+              desc
             >
               <label class="desc">
                 When using the procedure with an optimal cosine curve approach
@@ -547,7 +497,7 @@
             </appInstruction>
           </div>
           <div class="app-instruction" style="margin-top: 20px">
-            <appInstruction title="Acceptance criteria per API 653" desc="">
+            <appInstruction title="Acceptance criteria per API 653" desc>
               <label class="desc">
                 The maximum of out-of-plane deflection, where the greatest
                 deviation of the bottom from the optimum cosine curve over the
@@ -575,16 +525,16 @@
               <div class="report-container">
                 <div class="sheet-body">
                   <div class="section-label" style="grid-column: span 2">
-                    <label style="line-height: 34px"
-                      >API 653, Paragraph B.3 - Determination of Permissible
-                      Out-of-Plane Settlement</label
-                    >
+                    <label style="line-height: 34px">
+                      API 653, Paragraph B.3 - Determination of Permissible
+                      Out-of-Plane Settlement
+                    </label>
                   </div>
                   <div class="section-label" style="grid-row: span 2">
-                    <label style="line-height: 14px"
-                      >API 653, Paragraph B.3 - Determination of Permissible
-                      Out-of-Plane Settlement</label
-                    >
+                    <label style="line-height: 14px">
+                      API 653, Paragraph B.3 - Determination of Permissible
+                      Out-of-Plane Settlement
+                    </label>
                   </div>
                   <div class="section-label">
                     <label>The optimal cosine curve is valid</label>
@@ -599,14 +549,17 @@
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
-                          <b>L : </b> Arc length between measurement points
-                          (ft)(Max. 32 feet)</label
-                        >
+                          <b>L :</b> Arc length between measurement points
+                          (ft)(Max. 32 feet)
+                        </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label v-if="!acceptanceDetermination.l_value">-</label>
+                        <label v-if="acceptanceDetermination.l_value">
+                          {{
                           acceptanceDetermination.l_value.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
                     <div class="form-item">
@@ -614,46 +567,44 @@
                         <label>
                           <b>Y :</b> Yield strength (lbf/in2) (Min Specified
                           Yield Stress [lbf/in2]Obtained from API653 Table
-                          4.1)</label
-                        >
+                          4.1)
+                        </label>
                       </div>
                       <div class="form-item-value">
-                        <input
-                          v-model="acceptDetInfo.yield"
-                          v-on:keyup.enter="EDIT_ACCPT()"
-                        />
+                        <input v-model="acceptDetInfo.yield" v-on:keyup.enter="EDIT_ACCPT()" />
                       </div>
                     </div>
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
                           <b>E :</b> Youngs Modulus (lbf/in2) (30.7 E, 106
-                          psi)(Metals handbook, constant for Mild Steel)</label
-                        >
+                          psi)(Metals handbook, constant for Mild Steel)
+                        </label>
                       </div>
                       <div class="form-item-value">
-                        <input
-                          v-model="acceptDetInfo.e"
-                          v-on:keyup.enter="EDIT_ACCPT()"
-                        />
+                        <input v-model="acceptDetInfo.e" v-on:keyup.enter="EDIT_ACCPT()" />
                       </div>
                     </div>
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
                           <b>H :</b> Tank Height (ft) (Obtained from Tank
-                          Data)</label
-                        >
+                          Data)
+                        </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label>
+                          {{
                           acceptanceDetermination.tank_height_ft
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
                     <div class="form-item">
                       <div class="form-item-label">
-                        <label> <b>n :</b> Number of measurement points</label>
+                        <label>
+                          <b>n :</b> Number of measurement points
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label>{{ acceptanceDetermination.points }}</label>
@@ -664,40 +615,44 @@
                       style="
                         display: flex;
                         justify-content: center;
-                        padding-top: 40px;
-                      "
+                        padding-top: 40px;"
                     >
                       <div class="form-item-label">
                         <label>
-                          <b>S<sub>max</sub></b></label
-                        >
+                          <b>
+                            S
+                            <sub>max</sub>
+                          </b>
+                        </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.deflection_ft"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.deflection_ft">{{
+                        <label v-if="!acceptanceDetermination.deflection_ft">-</label>
+                        <label v-if="acceptanceDetermination.deflection_ft">
+                          {{
                           acceptanceDetermination.deflection_ft.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
                         <label>
-                          <b
-                            >ft
+                          <b>
+                            ft
                             &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;
-                          </b></label
-                        >
+                          </b>
+                        </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.deflection_mm"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.deflection_mm">{{
+                        <label v-if="!acceptanceDetermination.deflection_mm">-</label>
+                        <label v-if="acceptanceDetermination.deflection_mm">
+                          {{
                           acceptanceDetermination.deflection_mm.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
-                        <label> <b>mm </b></label>
+                        <label>
+                          <b>mm</b>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -707,7 +662,9 @@
                     </div>
                     <div class="form-item">
                       <div class="form-item-label">
-                        <label> <b>K : </b> API 653, Paragraph B.3.2.2</label>
+                        <label>
+                          <b>K :</b> API 653, Paragraph B.3.2.2
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label>{{ acceptanceDetermination.k_value }}</label>
@@ -716,21 +673,23 @@
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
-                          <b>S<sub>arc</sub> : </b>Effective settlement arc, see
-                          B.2.2.5.1 (ft)</label
-                        >
+                          <b>
+                            S
+                            <sub>arc</sub> :
+                          </b>Effective settlement arc, see
+                          B.2.2.5.1 (ft)
+                        </label>
                       </div>
                       <div class="form-item-value">
-                        <input
-                          v-model="acceptDetInfo.s_arc"
-                          v-on:keyup.enter="EDIT_ACCPT()"
-                        />
+                        <input v-model="acceptDetInfo.s_arc" v-on:keyup.enter="EDIT_ACCPT()" />
                       </div>
                     </div>
 
                     <div class="form-item">
                       <div class="form-item-label">
-                        <label> <b>D : </b> Tank inside diameter (ft)</label>
+                        <label>
+                          <b>D :</b> Tank inside diameter (ft)
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label>{{ acceptanceDetermination.diameter_ft }}</label>
@@ -740,51 +699,59 @@
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
-                          <b>H : </b> Tank Height (ft) (Obtained from Tank
-                          Data)</label
-                        >
+                          <b>H :</b> Tank Height (ft) (Obtained from Tank
+                          Data)
+                        </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label>
+                          {{
                           acceptanceDetermination.tank_height_ft
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
 
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
-                          <b>Y : </b> Yield strength (lbf/in2) (Min Specified
+                          <b>Y :</b> Yield strength (lbf/in2) (Min Specified
                           Yield Stress [lbf/in2]Obtained from API653 Table
-                          4.1)</label
-                        >
+                          4.1)
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label v-if="!acceptanceDetermination.yield">-</label>
-                        <label v-if="acceptanceDetermination.yield">{{
+                        <label v-if="acceptanceDetermination.yield">
+                          {{
                           acceptanceDetermination.yield
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
 
                     <div class="form-item">
                       <div class="form-item-label">
                         <label>
-                          <b>E : </b> Youngs Modulus (lbf/in2) (30.7 E, 106
-                          psi)(Metals handbook, constant for Mild Steel)</label
-                        >
+                          <b>E :</b> Youngs Modulus (lbf/in2) (30.7 E, 106
+                          psi)(Metals handbook, constant for Mild Steel)
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label v-if="!acceptanceDetermination.e">-</label>
-                        <label v-if="acceptanceDetermination.e">{{
+                        <label v-if="acceptanceDetermination.e">
+                          {{
                           acceptanceDetermination.e
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
 
                     <div class="form-item">
                       <div class="form-item-label">
-                        <label> <b>n : </b> Number of measurement points</label>
+                        <label>
+                          <b>n :</b> Number of measurement points
+                        </label>
                       </div>
                       <div class="form-item-unit">
                         <label>{{ acceptanceDetermination.points }}</label>
@@ -801,35 +768,40 @@
                     >
                       <div class="form-item-label">
                         <label>
-                          <b>S<sub>max</sub></b></label
-                        >
+                          <b>
+                            S
+                            <sub>max</sub>
+                          </b>
+                        </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.s_max_in"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.s_max_in">{{
+                        <label v-if="!acceptanceDetermination.s_max_in">-</label>
+                        <label v-if="acceptanceDetermination.s_max_in">
+                          {{
                           acceptanceDetermination.s_max_in
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
                         <label>
-                          <b
-                            >in
+                          <b>
+                            in
                             &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;
-                          </b></label
-                        >
+                          </b>
+                        </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.s_max_mm"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.s_max_mm">{{
+                        <label v-if="!acceptanceDetermination.s_max_mm">-</label>
+                        <label v-if="acceptanceDetermination.s_max_mm">
+                          {{
                           acceptanceDetermination.s_max_mm
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
-                        <label> <b>mm </b></label>
+                        <label>
+                          <b>mm</b>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -837,125 +809,117 @@
                     <div class="formula-container">
                       <img src="/img/formula/out-of-plane-settlement.svg" />
                     </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
                         <label style="text-align: right">
-                          U<sub>i</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                          U
+                          <sub>i</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
                         </label>
                       </div>
                       <div class="form-item-unit">
                         <label v-if="!acceptanceDetermination.ui_max">-</label>
-                        <label v-if="acceptanceDetermination.ui_max">{{
+                        <label v-if="acceptanceDetermination.ui_max">
+                          {{
                           acceptanceDetermination.ui_max.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
                         <label style="text-align: right">
-                          U<sub>i-1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                          U
+                          <sub>i-1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label v-if="!acceptanceDetermination.ui_before_max"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.ui_before_max">{{
+                        <label v-if="!acceptanceDetermination.ui_before_max">-</label>
+                        <label v-if="acceptanceDetermination.ui_before_max">
+                          {{
                           acceptanceDetermination.ui_before_max.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
                         <label style="text-align: right">
-                          U<sub>i+1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
+                          U
+                          <sub>i+1</sub> &nbsp;&nbsp;&nbsp;&nbsp;=
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label v-if="!acceptanceDetermination.ui_next_max"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.ui_next_max">{{
+                        <label v-if="!acceptanceDetermination.ui_next_max">-</label>
+                        <label v-if="acceptanceDetermination.ui_next_max">
+                          {{
                           acceptanceDetermination.ui_next_max.toFixed(2)
-                        }}</label>
-                      </div>
-                    </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
-                      <div class="form-item-label">
-                        <label style="text-align: right">
-                          S&nbsp;&nbsp;&nbsp;&nbsp;=
+                          }}
                         </label>
                       </div>
+                    </div>
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                      <div class="form-item-label">
+                        <label style="text-align: right">S&nbsp;&nbsp;&nbsp;&nbsp;=</label>
+                      </div>
                       <div class="form-item-unit">
-                        <label v-if="!acceptanceDetermination.st_value"
-                          >-</label
-                        >
-                        <label v-if="acceptanceDetermination.st_value">{{
+                        <label v-if="!acceptanceDetermination.st_value">-</label>
+                        <label v-if="acceptanceDetermination.st_value">
+                          {{
                           acceptanceDetermination.st_value.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                     </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
                         <label style="text-align: right">
-                          R<sup>2</sup> &nbsp;&nbsp;&nbsp;&nbsp;=
+                          R
+                          <sup>2</sup> &nbsp;&nbsp;&nbsp;&nbsp;=
                         </label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label v-if="!acceptanceDetermination.r_2">-</label>
+                        <label v-if="acceptanceDetermination.r_2">
+                          {{
                           acceptanceDetermination.r_2.toFixed(2)
-                        }}</label>
-                      </div>
-                    </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
-                      <div class="form-item-label">
-                        <label style="text-align: right">
-                          Predicted deflection (tilt) &nbsp;&nbsp;&nbsp;&nbsp;=
+                          }}
                         </label>
                       </div>
+                    </div>
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                      <div class="form-item-label">
+                        <label
+                          style="text-align: right"
+                        >Predicted deflection (tilt) &nbsp;&nbsp;&nbsp;&nbsp;=</label>
+                      </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label v-if="!acceptanceDetermination.predicted_tilt">-</label>
+                        <label v-if="acceptanceDetermination.predicted_tilt">
+                          {{
                           acceptanceDetermination.predicted_tilt.toFixed(2)
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
-                        <label> mm </label>
+                        <label>mm</label>
                       </div>
                     </div>
-                    <div
-                      class="form-item"
-                      style="grid-template-columns: auto 120px 50px"
-                    >
+                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
-                        <label style="text-align: right"> at </label>
+                        <label style="text-align: right">at</label>
                       </div>
                       <div class="form-item-unit">
-                        <label>{{
+                        <label v-if="!acceptanceDetermination.direction_degrees_cw_pi">-</label>
+                        <label v-if="acceptanceDetermination.direction_degrees_cw_pi">
+                          {{
                           acceptanceDetermination.direction_degrees_cw_pi.toFixed(
-                            2
+                          2
                           )
-                        }}</label>
+                          }}
+                        </label>
                       </div>
                       <div class="form-item-label">
-                        <label> degrees </label>
+                        <label>degrees</label>
                       </div>
                     </div>
                   </div>
@@ -966,10 +930,7 @@
           <div class="content">
             <div class="report-sheet">
               <div class="report-container">
-                <div
-                  class="sheet-body"
-                  style="grid-template-columns: 50% 12.5% 12.5% 12.5% 12.5%"
-                >
+                <div class="sheet-body" style="grid-template-columns: 50% 12.5% 12.5% 12.5% 12.5%">
                   <div class="section-label">
                     <label>Acceptance Criteria</label>
                   </div>
@@ -977,7 +938,10 @@
                     <label>Cosine Curve</label>
                   </div>
                   <div class="section-label">
-                    <label>S<sub>max</sub> (mm)</label>
+                    <label>
+                      S
+                      <sub>max</sub> (mm)
+                    </label>
                   </div>
                   <div class="section-label">
                     <label>S (mm)</label>
@@ -992,16 +956,15 @@
                         grid-column: span 2;
                         display: flex;
                         height: auto;
-                        padding-left: 30px;
-                      "
+                        padding-left: 30px;"
                     >
-                      <label
-                        >The maximum out of plane deflection, where the greatest
+                      <label>
+                        The maximum out of plane deflection, where the greatest
                         deviation of the bottom from the optimum cosine curve
                         occurs over the shortest interval between measurements,
                         shell not exceed the maximum permissible out-of-plane
-                        deflection calculated from formula in B3.2</label
-                      >
+                        deflection calculated from formula in B3.2
+                      </label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -1010,38 +973,33 @@
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
                       <label v-if="!acceptanceDetermination.s_value">-</label>
-                      <label v-if="acceptanceDetermination.s_value">{{
+                      <label v-if="acceptanceDetermination.s_value">
+                        {{
                         acceptanceDetermination.s_value.toFixed(2)
-                      }}</label>
+                        }}
+                      </label>
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
                       <label v-if="!acceptanceDetermination.st_value">-</label>
-                      <label v-if="acceptanceDetermination.st_value">{{
+                      <label v-if="acceptanceDetermination.st_value">
+                        {{
                         acceptanceDetermination.st_value.toFixed(2)
-                      }}</label>
+                        }}
+                      </label>
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
-                      <label v-if="!acceptanceDetermination.insp_result"
-                        >-</label
-                      >
-                      <label v-if="acceptanceDetermination.insp_result">{{
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                      <label v-if="!acceptanceDetermination.insp_result">-</label>
+                      <label v-if="acceptanceDetermination.insp_result">
+                        {{
                         acceptanceDetermination.insp_result
-                      }}</label>
+                        }}
+                      </label>
                     </div>
                   </div>
 
@@ -1051,41 +1009,33 @@
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
                       <label v-if="!acceptanceDetermination.s_max_mm">-</label>
-                      <label v-if="acceptanceDetermination.s_max_mm">{{
+                      <label v-if="acceptanceDetermination.s_max_mm">
+                        {{
                         acceptanceDetermination.s_max_mm.toFixed(2)
-                      }}</label>
+                        }}
+                      </label>
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
                       <label v-if="!acceptanceDetermination.st_value">-</label>
-                      <label v-if="acceptanceDetermination.st_value">{{
+                      <label v-if="acceptanceDetermination.st_value">
+                        {{
                         acceptanceDetermination.st_value.toFixed(2)
-                      }}</label>
+                        }}
+                      </label>
                     </div>
                   </div>
                   <div class="form-item">
-                    <div
-                      class="form-item-unit"
-                      style="grid-column: span 2; width: auto"
-                    >
-                      <label v-if="!acceptanceDetermination.insp_result_invalid"
-                        >-</label
-                      >
-                      <label
-                        v-if="acceptanceDetermination.insp_result_invalid"
-                        >{{
-                          acceptanceDetermination.insp_result_invalid
-                        }}</label
-                      >
+                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                      <label v-if="!acceptanceDetermination.insp_result_invalid">-</label>
+                      <label v-if="acceptanceDetermination.insp_result_invalid">
+                        {{
+                        acceptanceDetermination.insp_result_invalid
+                        }}
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -1101,9 +1051,7 @@
                   </div>
                   <div class="form-item">
                     <div class="form-item-label" style="grid-column: span 2">
-                      <label style="text-align: center"
-                        >ยังไม่มี API ไม่มีที่ลงใน Database</label
-                      >
+                      <label style="text-align: center">ยังไม่มี API ไม่มีที่ลงใน Database</label>
                     </div>
                   </div>
                 </div>
@@ -1117,18 +1065,10 @@
           message="No evaluation points created. Please create points in 'Settlement Evaluation Data' Tab. "
         />
       </div>
-      <contentLoading
-        text="Loading, please wait..."
-        v-if="isLoading == true"
-        color="#fc9b21"
-      />
+      <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
-    <popupAdd
-      v-if="isAdd == true"
-      @closePopup="CLOSE_ADD()"
-      :info="this.current_view"
-    />
+    <popupAdd v-if="isAdd == true" @closePopup="CLOSE_ADD()" :info="this.current_view" />
     <popupEditUIActive
       v-if="isEdit == true"
       @closePopup="CLOSE_EDIT()"
@@ -1173,7 +1113,7 @@ import {
   DxHeaderFilter,
   DxFilterRow,
   DxToolbar,
-  DxItem,
+  DxItem
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -1200,16 +1140,16 @@ export default {
     contentLoading,
     noticeMessage,
     chartShellSettlement1,
-    chartShellSettlement2,
+    chartShellSettlement2
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Shell Settlement",
+      subpageInnerName: "Shell Settlement"
     });
   },
   data() {
@@ -1223,7 +1163,7 @@ export default {
       isEdit: false,
       isLoading: false,
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       pagePanelHiding: false,
       tabCurrent: "data",
@@ -1231,23 +1171,23 @@ export default {
         {
           label: "Settlement Evaluation Data",
           key: "data",
-          closable: false,
+          closable: false
         },
         {
           label: "Settlement Calculation (API 653)",
           key: "cal",
-          closable: false,
+          closable: false
         },
         {
           label: "Acceptance Determination",
           key: "ad",
-          closable: false,
-        },
+          closable: false
+        }
       ],
       formData: {
         item: null,
-        multi: null,
-      },
+        multi: null
+      }
     };
   },
   computed: {
@@ -1285,11 +1225,11 @@ export default {
           s_value: this.acceptDetInfo.s_value,
           st_value: this.acceptDetInfo.st_value,
           insp_result: this.acceptDetInfo.insp_result,
-          insp_result_invalid: this.acceptDetInfo.insp_result_invalid,
+          insp_result_invalid: this.acceptDetInfo.insp_result_invalid
         };
         return info;
       } else return "no data";
-    },
+    }
   },
   watch: {
     tabCurrent() {
@@ -1303,7 +1243,7 @@ export default {
       this.VIEW_ITEM(this.current_view);
       this.shellPointList = [];
       this.settlementCalPointList = [];
-    },
+    }
   },
   mounted() {},
   methods: {
@@ -1312,9 +1252,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -1334,14 +1274,14 @@ export default {
         method: "post",
         url: "shell-settlement/get-shell-settlement",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> RES: Eval Points");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -1349,7 +1289,7 @@ export default {
             this.shellPointList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1364,14 +1304,14 @@ export default {
         method: "post",
         url: "shell-settlement/get-shell-settlement-cal",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_inspection_record,
-        },
+          id_inspection_record: this.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> RES: Calculation");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -1381,7 +1321,7 @@ export default {
             this.formData.multi = res.data[0];
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1396,14 +1336,14 @@ export default {
         method: "post",
         url: "shell-settlement/get-shell-settlement-accept",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.id_inspection_record,
-        },
+          id_inspection_record: this.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> RES: Acceptance Determination");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -1411,7 +1351,7 @@ export default {
             this.acceptDetInfo = res.data[0];
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1425,11 +1365,11 @@ export default {
         method: "put",
         url: "shell-settlement/edit-shell-settlement-cal",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.formData.multi,
+        data: this.formData.multi
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> RES: Edit Multi Item");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -1437,7 +1377,7 @@ export default {
             this.FETCH_CALC();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1451,11 +1391,11 @@ export default {
         method: "put",
         url: "shell-settlement/edit-shell-settlement-acc",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.acceptDetInfo,
+        data: this.acceptDetInfo
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> RES: Edit Acceptance Criteria");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -1463,7 +1403,7 @@ export default {
             this.FETCH_ACCPT();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1490,18 +1430,18 @@ export default {
         method: "put",
         url: "shell-settlement/edit-shell-settlement",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -1525,27 +1465,27 @@ export default {
       return moment(d).format("LL");
     },
     DELETE_POINT() {
-      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
         if (res == 1) {
           axios({
             method: "delete",
             url: "/shell-settlement/delete-shell-settlement",
             headers: {
               Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
             },
             data: {
-              id_inspection_record: this.current_view.id_inspection_record,
-            },
+              id_inspection_record: this.current_view.id_inspection_record
+            }
           })
-            .then((res) => {
+            .then(res => {
               console.log(res);
               if (res.status == 200) {
                 this.$ons.notification.alert("Points Deleted");
                 this.VIEW_ITEM(this.current_view);
               }
             })
-            .catch((error) => {
+            .catch(error => {
               this.$ons.notification.alert(
                 error.code + " " + error.response.status + " " + error.message
               );
@@ -1553,8 +1493,8 @@ export default {
             .finally(() => {});
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
