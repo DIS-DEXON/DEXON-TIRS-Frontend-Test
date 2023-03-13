@@ -458,6 +458,7 @@
             </div>
           </div>
           <!-- Chart-->
+
           <div
             style="
               display: grid;
@@ -466,10 +467,24 @@
               width: calc(100% - 20px);
             "
           >
-            <chartShellSettlement1
-              :current_view="this.current_view"
-              :key="this.formData.multi.r_2"
-            />
+            <div class="table-toolbar-set">
+              <!-- <v-ons-toolbar-button
+                class="upload-graph"
+                id="upload"
+                @mouseover="isHovering=true"
+                @mouseleave="isHovering=false"
+                v-on:click="UPLOAD()"
+              >
+                <i class="las" :class="{'la-upload' : !isHovering, 'la-download' : isHovering}"></i>
+                <span>UPLOAD GRAPH TO REPORT</span>
+              </v-ons-toolbar-button>-->
+
+              <chartShellSettlement1
+                :current_view="this.current_view"
+                :key="this.formData.multi.r_2"
+              />
+            </div>
+
             <chartShellSettlement2
               :current_view="this.current_view"
               :key="this.formData.multi.sse"
@@ -1802,6 +1817,33 @@ export default {
   }
   .app-instruction {
     padding-left: 0 !important;
+  }
+}
+.upload-graph {
+  justify-content: right;
+  align-items: right;
+}
+#upload {
+  background-color: #f6f6f6;
+  border: 1px solid #303030;
+  align-items: right;
+  height: 20px;
+  width: 225px;
+  i {
+    color: #303030;
+  }
+  span {
+    color: #303030;
+  }
+}
+#upload:hover,
+#upload:active {
+  background-color: #140a4b;
+  i {
+    color: #ffffff;
+  }
+  span {
+    color: #ffffff;
   }
 }
 </style>

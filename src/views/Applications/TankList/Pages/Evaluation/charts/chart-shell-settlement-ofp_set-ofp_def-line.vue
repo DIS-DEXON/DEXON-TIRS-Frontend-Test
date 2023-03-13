@@ -1,15 +1,7 @@
 <template>
   <div class="chart-item">
-    <highcharts
-      :options="chartOptions"
-      v-if="this.chartData"
-      :key="chartData.length"
-    ></highcharts>
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <highcharts :options="chartOptions" v-if="this.chartData" :key="chartData.length"></highcharts>
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template>
 
@@ -17,14 +9,23 @@
 // import moment from "moment";
 import axios from "/axios.js";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import { Chart } from "highcharts-vue";
+import Highcharts from "highcharts";
+import exportingInit from "highcharts/modules/exporting";
+//import stockInit from "highcharts/modules/stock";
+import offlineExporting from "highcharts/modules/offline-exporting";
+// stockInit(Highcharts);
+exportingInit(Highcharts);
+offlineExporting(Highcharts);
 
 export default {
   name: "chart-shell-settlement-ofp_set-ofp_def-line",
   props: {
-    current_view: Object,
+    current_view: Object
   },
   components: {
     contentLoading,
+    highcharts: Chart
   },
   created() {
     this.FETCH_POINT();
@@ -35,13 +36,13 @@ export default {
       chartData: {},
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "spline"
         },
         credits: {
-          enabled: false,
+          enabled: false
         },
         title: {
-          text: undefined,
+          text: undefined
         },
         // subtitle: {
         //   text: "Dexon Technology Public Company Limited",
@@ -50,48 +51,48 @@ export default {
           title: {
             text: "",
             style: {
-              fontSize: "14",
-            },
+              fontSize: "14"
+            }
           },
           labels: {
-            formatter: function () {
+            formatter: function() {
               return this.value;
             },
             style: {
-              fontSize: "14",
-            },
-          },
+              fontSize: "14"
+            }
+          }
         },
         xAxis: {
           title: {
-            text: "Theta degrees",
+            text: "Theta degrees"
           },
           labels: {
             style: {
-              fontSize: "14",
-            },
+              fontSize: "14"
+            }
           },
-          categories: [],
+          categories: []
         },
         legend: {
           layout: "horizontal",
           align: "center",
-          verticalAlign: "top",
+          verticalAlign: "top"
         },
         plotOptions: {
           series: {
             label: {
-              connectorAllowed: false,
-            },
+              connectorAllowed: false
+            }
           },
           spline: {
             dataLabels: {
               enabled: false,
-              formatter: function () {
+              formatter: function() {
                 return this.point.y + " mm";
-              },
-            },
-          },
+              }
+            }
+          }
         },
         series: [
           {
@@ -100,11 +101,11 @@ export default {
             color: "#140a4b",
             lineWidth: 2,
             marker: {
-              symbol: "circle",
+              symbol: "circle"
             },
             dataLabels: {
-              enabled: false,
-            },
+              enabled: false
+            }
           },
           {
             name: "Out of Plane Deflection Si",
@@ -112,12 +113,12 @@ export default {
             color: "#c12400",
             lineWidth: 2,
             marker: {
-              symbol: "square",
-            },
-          },
+              symbol: "square"
+            }
+          }
         ],
         tooltip: {
-          formatter: function () {
+          formatter: function() {
             return (
               "The <b>" +
               this.series.name +
@@ -126,25 +127,25 @@ export default {
               "</b> is <b>" +
               this.y
             );
-          },
+          }
         },
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500,
+                maxWidth: 500
               },
               chartOptions: {
                 legend: {
                   layout: "horizontal",
                   align: "center",
-                  verticalAlign: "bottom",
-                },
-              },
-            },
-          ],
-        },
-      },
+                  verticalAlign: "bottom"
+                }
+              }
+            }
+          ]
+        }
+      }
     };
   },
   mounted() {},
@@ -156,14 +157,14 @@ export default {
         method: "post",
         url: "shell-settlement/get-shell-settlement-graph",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: this.current_view.id_inspection_record,
-        },
+          id_inspection_record: this.current_view.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("==> FETCH: Graph Level / Cosine");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -184,15 +185,15 @@ export default {
             }
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
           this.isLoading = false;
         });
-    },
+    }
   },
-  computed: {},
+  computed: {}
 };
 </script>
 

@@ -21,6 +21,8 @@ import SignaturePad from 'signature_pad'
 import Highchart from "highcharts/highcharts";
 import HighchartsVue from "highcharts-vue";
 import stockInit from "highcharts/modules/stock";
+//import exportingInit from "highcharts/modules/exporting";
+//import offlineExporting from "highcharts/modules/offline-exporting";
 
 //text editor
 import VueWysiwyg from '@mycure/vue-wysiwyg';
@@ -33,7 +35,8 @@ Highchart.setOptions({
   }
 })
 Vue.use(HighchartsVue);
-
+//Vue.use(offlineExporting);
+//Vue.use(exportingInit);
 Vue.use(VueSpinners)
 // Vue.use(require('vue-moment'));
 Vue.use(VueOnsen);
