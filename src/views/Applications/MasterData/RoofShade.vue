@@ -156,7 +156,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "/MdRoofShade",
+        url: "/MdRoofShape",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -180,7 +180,7 @@ export default {
       console.log(e);
       axios({
         method: "post",
-        url: "/MdRoofShade",
+        url: "/MdRoofShape",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -202,7 +202,7 @@ export default {
       console.log(e);
       axios({
         method: "put",
-        url: "/MdRoofShade/" + e.data.id,
+        url: "/MdRoofShape/" + e.data.id,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -224,7 +224,7 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "/MdRoofShade/" + e.data.id,
+        url: "/MdRoofShape/" + e.data.id,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
