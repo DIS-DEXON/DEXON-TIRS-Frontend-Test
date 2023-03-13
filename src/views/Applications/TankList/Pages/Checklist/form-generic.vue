@@ -2,15 +2,14 @@
   <div class="report-sheet checklist-sheet">
     <div class="report-container">
       <div class="sheet-header">
-        <div class="logo"><img src="/img/logo.png" /></div>
+        <div class="logo">
+          <img src="/img/logo.png" />
+        </div>
         <div class="title">Generic Checklist</div>
         <div class="docno"></div>
       </div>
       <div class="sheet-body" v-for="item in checklistInfo" :key="item.id">
-        <div
-          class="section-label header-label"
-          style="grid-row: span 2; grid-column: span 2"
-        >
+        <div class="section-label header-label" style="grid-row: span 2; grid-column: span 2">
           <label>{{ item.header_content }}</label>
         </div>
         <div class="section-label rating-label" style="grid-column: span 6">
@@ -38,16 +37,9 @@
           <label>Not Applicable</label>
         </div>
         <!-- LOOP DISPLAY SUB HEADER -->
-        <div
-          v-for="item2 in item.sub_header"
-          :key="item2.id"
-          style="grid-column: span 9"
-        >
+        <div v-for="item2 in item.sub_header" :key="item2.id" style="grid-column: span 9">
           <div class="topic-label">
-            <div
-              class="section-label subheader-label"
-              style="grid-column: span 2"
-            >
+            <div class="section-label subheader-label" style="grid-column: span 2">
               <label>{{ item2.subheader_content }}</label>
             </div>
           </div>
@@ -167,22 +159,18 @@
           </div>
         </div>
         <div class="topic-label" style="grid-column: span 9">
-          <div
-            class="section-label subheader-label"
-            style="grid-column: span 2"
-          >
+          <div class="section-label subheader-label" style="grid-column: span 2">
             <label>Remarks and Recommendations:</label>
           </div>
         </div>
         <div class="form-item-textarea" style="grid-column: span 9">
           <textarea
             placeholder="Type remarks and recommendations here..."
-            v-model="item.remark_desc"
+            v-model="item.remark"
             @focusout="
               UPDATE_RESULT(
-                item3.result[0],
-                item3.result[0].result_desc,
-                item3.result[0].comments
+                item[0],
+                item[0].remark
               )
             "
           />
@@ -199,20 +187,23 @@ import axios from "/axios.js";
 export default {
   name: "checklist-generic",
   props: {
-    checklistInfo: Array,
+    checklistInfo: Array
   },
   data() {
     return {
       formData: {
         id: null,
         result_desc: null,
-        comments: null,
+        comments: null
       },
       formDataRemark: {
         id_header: null,
-        remark_desc: null,
-      },
+        remark: null
+      }
     };
+  },
+  created() {
+    console.warn(this.checklistInfo);
   },
   methods: {
     UPDATE_RESULT(item, new_result_desc, comment) {
@@ -224,16 +215,16 @@ export default {
         method: "put",
         url: "chk-generic/edit-chkgeneric",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.formData,
+        data: this.formData
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200 && res.data) {
             console.log("==> RESULT UPDATED (generic)");
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           this.$ons.notification.alert(
             "Update Failed!<br/>Please try again later"
@@ -243,30 +234,32 @@ export default {
     },
     UPDATE_REMARK(item, new_remark) {
       console.log("==> REMARK UPDATE START");
-      this.formDataRemark.id = item.id;
-      this.formDataRemark.remark_desc = new_remark;
+      console.warn(item);
+      this.formDataRemark.id_header = item.id;
+      this.formDataRemark.remark = new_remark;
+      this.formDataRemark.id_insp_record = item.id_insp_record;
       axios({
         method: "put",
-        url: "",
+        url: "chk-generic/edit-remark",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.formDataRemark,
+        data: this.formDataRemark
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200 && res.data) {
             console.log("==> REMARK UPDATED (generic)");
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           this.$ons.notification.alert(
             "Update Failed!<br/>Please try again later"
           );
         })
         .finally(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 

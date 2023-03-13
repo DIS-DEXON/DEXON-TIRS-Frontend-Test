@@ -209,6 +209,7 @@ export default {
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
+        checklist_generic: [],
         plumbness: [],
         roof_thk: [],
         roofnz_thk: [],
@@ -255,6 +256,7 @@ export default {
     },
     async createILASTDocx() {
       console.log("CREATED DOCX: ");
+      setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
       this.data1.picture_log.shift();
       console.log(this.data1);
       this.isLoading = true;
@@ -283,7 +285,7 @@ export default {
 
         // 4. save output
         this.status = "Done!";
-        this.saveFile("result.docx", docx);
+        this.saveFile("general_REPORT.docx", docx);
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
@@ -297,6 +299,7 @@ export default {
     async createGENERALDocx() {
       console.log("CREATED DOCX: ");
       this.data1.picture_log.shift();
+      const myTimeout = setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
       console.log(this.data1);
       this.isLoading = true;
       try {
@@ -324,11 +327,12 @@ export default {
 
         // 4. save output
         this.status = "Done!";
-        this.saveFile("result.docx", docx);
+        this.saveFile("ILAST_REPORT.docx", docx);
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
-        setTimeout(() => (this.status = ""), 1000);
+        //setTimeout(() => (this.status = ""), 1000);
+        clearTimeout(myTimeout);
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
@@ -900,6 +904,33 @@ export default {
           if (res.status == 200 && res.data) {
             //console.log(res.data);
             this.data1.checklist = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_CHECKLIST_GENERIC() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "chk-generic/get-chkgeneric-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("checklist generic :");
+          //console.log(res);
+          if (res.status == 200 && res.data) {
+            //console.log(res.data);
+            this.data1.checklist_generic = res.data;
           }
         })
         .catch(error => {
@@ -1627,6 +1658,7 @@ export default {
       this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
       this.FETCH_IMAGE();
       this.FETCH_CHECKLIST_ILAST_EX();
+      this.FETCH_CHECKLIST_GENERIC();
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
@@ -1689,6 +1721,12 @@ export default {
           this.getImageData();
         });
     },
+    alertTimeOUT() {
+      this.isLoading = false;
+      this.$ons.notification.alert(
+        "Something went wrong ! Please try again later"
+      );
+    },
     async getImageData() {
       console.log("create image obj:");
       //const imagePath = "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
@@ -1699,6 +1737,7 @@ export default {
         const response = await fetch(
           encodeURI(this.baseURL + o[j].file_path_1)
         );
+
         const imageData = await response.arrayBuffer();
         const mimeType = response.headers.get("content-type");
         const imageBlob = new Blob([imageData], { type: mimeType });
@@ -1919,25 +1958,6 @@ export default {
         });
       }
     },
-    async getImgGraph() {
-      const o = this.graph;
-      for (let j = 0; j < o.length; j++) {
-        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
-        const imageData = await response.arrayBuffer();
-        const mimeType = response.headers.get("content-type");
-        const imageBlob = new Blob([imageData], { type: mimeType });
-        const imageObject = {
-          _type: "image",
-          source: imageBlob,
-          format: mimeType,
-          width: 200,
-          height: 200
-        };
-        this.data1.graph.push({
-          img: imageObject
-        });
-      }
-    },
     async getImgDWG_Projection_plate() {
       const o = this.drawingList.projection_plate;
       for (let j = 0; j < o.length; j++) {
@@ -1954,6 +1974,25 @@ export default {
         };
         this.data1.projection_plate.push({
           marked_up_drawing: imageObject
+        });
+      }
+    },
+    async getImgGraph() {
+      const o = this.graph;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.graph.push({
+          img: imageObject
         });
       }
     }
