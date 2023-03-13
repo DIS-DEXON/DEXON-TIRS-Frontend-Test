@@ -18,7 +18,21 @@
       </div>
 
       <div v-if="tabCurrent == 'tab1'">
-        <button type="button" class v-on:click="createGeneralDocx()">Create docx</button>
+        <!-- <button type="button" class v-on:click="createGENERALDocx()">Create docx</button> -->
+        <div class="dx-table-style">
+          <div class="table-toolbar-set">
+            <v-ons-toolbar-button
+              class="table-toolbar-btn"
+              id="ilast"
+              @mouseover="isHovering=true"
+              @mouseleave="isHovering=false"
+              v-on:click="createGENERALDocx()"
+            >
+              <i class="las" :class="{'la-file-alt' : !isHovering, 'la-download' : isHovering}"></i>
+              <span>GENERAL REPORT</span>
+            </v-ons-toolbar-button>
+          </div>
+        </div>
       </div>
       <div v-if="tabCurrent == 'tab2'">
         <!-- <button type="button" class="table-toolbar-btn" v-on:click="createILASTDocx()">
@@ -174,6 +188,12 @@ export default {
         misc_flow_rate: "",
         misc_suction_line: "",
         misc_receipt: "",
+        installation_date: "",
+        roof_type: "",
+        applicable_status: "",
+        roof_nominal_thk_mm: "",
+        annular_nominal_thk_mm: "",
+        bottom_nominal_thk_mm: "",
         accept: [],
         annular: [],
         bottom: [],
@@ -192,6 +212,14 @@ export default {
         plumbness: [],
         roof_thk: [],
         roofnz_thk: [],
+        shellnz_thk: [],
+        annular_thk: [],
+        projection_thk: [],
+        piping_thk: [],
+        coil_thk: [],
+        sump_thk: [],
+        mfl_bottom: [],
+        mfl_annular: [],
         shell_course: [{}],
         shell_settlement_point: [],
         shell_settlement_api: [],
@@ -217,6 +245,14 @@ export default {
       //console.log(request);
       this.theTemplate = await request.blob();
     },
+    async getTemplateGeneral() {
+      if (this.theTemplate) return this.theTemplate;
+      const request = await fetch(
+        "/report_template/General_Report_Template.docx"
+      );
+      //console.log(request);
+      this.theTemplate = await request.blob();
+    },
     async createILASTDocx() {
       console.log("CREATED DOCX: ");
       this.data1.picture_log.shift();
@@ -228,6 +264,47 @@ export default {
         // 1. read template file
         this.status = "Getting the template...";
         const templateFile = await this.getTemplate();
+        console.log(templateFile);
+        console.log("1");
+
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
+
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
+
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("result.docx", docx);
+        console.log("4");
+        this.isLoading = false;
+        //this.$ons.notification.alert("Completed!");
+        setTimeout(() => (this.status = ""), 1000);
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
+    },
+    async createGENERALDocx() {
+      console.log("CREATED DOCX: ");
+      this.data1.picture_log.shift();
+      console.log(this.data1);
+      this.isLoading = true;
+      try {
+        this.status = "";
+
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplateGeneral();
         console.log(templateFile);
         console.log("1");
 
@@ -318,6 +395,106 @@ export default {
         const rl = obj[i].rl;
         this.data1.roofnz_thk[i].scr = scr.toFixed(2);
         this.data1.roofnz_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_SHELLNZ_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.shellnz_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.shellnz_thk[i].scr = scr.toFixed(2);
+        this.data1.shellnz_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_ANNULAR_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.annular_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.annular_thk[i].scr = scr.toFixed(2);
+        this.data1.annular_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_PIPING_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.piping_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.piping_thk[i].scr = scr.toFixed(2);
+        this.data1.piping_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_COIL_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.coil_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.coil_thk[i].scr = scr.toFixed(2);
+        this.data1.coil_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_PROJECTION_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.projection_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.projection_thk[i].scr = scr.toFixed(2);
+        this.data1.projection_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_SUMP_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
+        const date = obj[i].inspection_date;
+        this.data1.sump_thk[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.sump_thk[i].scr = scr.toFixed(2);
+        this.data1.sump_thk[i].rl = rl.toFixed(2);
+      }
+    },
+    NUMBER_ROUNDING_MFLANNULAR_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.mfl_annular[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.mfl_annular[i].scr = obj[
+          i
+        ].lowest_remaining_thk_bottom.toFixed(2);
+        this.data1.mfl_annular[i].rl = obj[i].lowest_remaining_thk_top.toFixed(
+          2
+        );
+      }
+    },
+    NUMBER_ROUNDING_MFLBOTTOM_THK(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const date = obj[i].inspection_date;
+        this.data1.mfl_bottom[i].inspection_date = moment(date).format(
+          "DD MMM YYYY"
+        );
+        this.data1.mfl_bottom[i].scr = obj[
+          i
+        ].lowest_remaining_thk_bottom.toFixed(2);
+        this.data1.mfl_bottom[i].rl = obj[i].lowest_remaining_thk_top.toFixed(
+          2
+        );
       }
     },
     NUMBER_ROUNDING_SHELL_SETTLE_API(obj) {
@@ -835,6 +1012,16 @@ export default {
             this.data1.misc_flow_rate = res.data[0].misc_flow_rate;
             this.data1.misc_suction_line = res.data[0].misc_suction_line;
             this.data1.misc_receipt = res.data[0].misc_receipt;
+            this.data1.installation_date = moment(
+              res.data[0].installation_date
+            ).format("DD MMM YYYY");
+            this.data1.roof_type = res.data[0].roof_type;
+            this.data1.applicable_status = res.data[0].applicable_status;
+            this.data1.bottom_nominal_thk_mm =
+              res.data[0].bottom_nominal_thk_mm;
+            this.data1.annular_nominal_thk_mm =
+              res.data[0].annular_nominal_thk_mm;
+            this.data1.roof_nominal_thk_mm = res.data[0].roof_nominal_thk_mm;
           }
         })
         .catch(error => {
@@ -1100,6 +1287,259 @@ export default {
           this.DATE_FOR_SHELL_THK(s);
         });
     },
+    FETCH_SHELLNZ_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "shellnz-thickness/shellnz-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("SHELLNZ THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.shellnz_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_SHELLNZ_THK(this.data1.shellnz_thk);
+        });
+    },
+    FETCH_ANNULAR_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "annular-thickness/annular-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("ANNULAR THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.annular_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_ANNULAR_THK(this.data1.annular_thk);
+        });
+    },
+    FETCH_MFLANNULAR_THK() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "mfl-annular-thickness/get-mfl-annular-data-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("MFL ANNULAR THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.mfl_annular = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_MFLANNULAR_THK(this.data1.mfl_annular);
+        });
+    },
+    FETCH_MFLBOTTOM_THK() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "mfl-bottom-thickness/get-mfl-bottom-data-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("MFL BOTTOM THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.mfl_bottom = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_MFLBOTTOM_THK(this.data1.mfl_bottom);
+        });
+    },
+    FETCH_PIPING_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "piping-thickness/piping-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("PIPING THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.piping_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_PIPING_THK(this.data1.piping_thk);
+        });
+    },
+    FETCH_PROJECTION_PLATE_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url:
+          "projection-plate-thickness/projection-plate-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("PIPING THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.projection_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_PROJECTION_THK(this.data1.projection_thk);
+        });
+    },
+    FETCH_SUMP_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "sump-thickness/sump-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("PIPING THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.sump_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_SUMP_THK(this.data1.sump_thk);
+        });
+    },
+    FETCH_COIL_THK() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "coil-thickness/coil-thk-view-by-inspection-record-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("PIPING THK:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.coil_thk = res.data;
+            // const s = res.data.shell_thk;
+            // this.DATE_FOR_DOCX(s);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+          this.NUMBER_ROUNDING_COIL_THK(this.data1.coil_thk);
+        });
+    },
     FETCH_SHELL_COURSE() {
       const id_tag = this.$route.params.id_tag;
       axios({
@@ -1197,7 +1637,15 @@ export default {
       this.FETCH_ROOFNZ_THK();
       this.FETCH_SHELL_COURSE();
       this.FETCH_SHELL_THK();
-      this.FETCH_ACCPT();
+      this.FETCH_ANNULAR_THK();
+      this.FETCH_SHELLNZ_THK();
+      this.FETCH_COIL_THK();
+      this.FETCH_MFLANNULAR_THK();
+      this.FETCH_MFLBOTTOM_THK();
+      this.FETCH_SUMP_THK();
+      this.FETCH_PROJECTION_PLATE_THK();
+      this.FETCH_PIPING_THK();
+      this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
@@ -1472,7 +1920,7 @@ export default {
       }
     },
     async getImgGraph() {
-      const o = this.drawingList.shell_nozzle;
+      const o = this.graph;
       for (let j = 0; j < o.length; j++) {
         const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
         const imageData = await response.arrayBuffer();
@@ -1485,8 +1933,8 @@ export default {
           width: 200,
           height: 200
         };
-        this.data1.shell_nozzle.push({
-          marked_up_drawing: imageObject
+        this.data1.graph.push({
+          img: imageObject
         });
       }
     },

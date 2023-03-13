@@ -468,7 +468,24 @@
             "
           >
             <div class="table-toolbar-set">
-              <!-- <v-ons-toolbar-button
+              <chartShellSettlement1
+                :current_view="this.current_view"
+                :key="this.formData.multi.r_2"
+              />
+
+              <DxFileUploader
+                select-button-text="Select File"
+                label-text
+                upload-mode="useForm"
+                @value-changed="VALUE_CHANGE"
+              />
+            </div>
+            <div class="table-toolbar-set">
+              <chartShellSettlement2
+                :current_view="this.current_view"
+                :key="this.formData.multi.sse"
+              />
+              <v-ons-toolbar-button
                 class="upload-graph"
                 id="upload"
                 @mouseover="isHovering=true"
@@ -477,18 +494,8 @@
               >
                 <i class="las" :class="{'la-upload' : !isHovering, 'la-download' : isHovering}"></i>
                 <span>UPLOAD GRAPH TO REPORT</span>
-              </v-ons-toolbar-button>-->
-
-              <chartShellSettlement1
-                :current_view="this.current_view"
-                :key="this.formData.multi.r_2"
-              />
+              </v-ons-toolbar-button>
             </div>
-
-            <chartShellSettlement2
-              :current_view="this.current_view"
-              :key="this.formData.multi.sse"
-            />
           </div>
           <div class="app-instruction" style="margin-top: 20px">
             <appInstruction
@@ -1113,6 +1120,7 @@ import chartShellSettlement1 from "@/views/Applications/TankList/Pages/Evaluatio
 import chartShellSettlement2 from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-shell-settlement-ofp_set-ofp_def-line.vue";
 
 //DataGrid
+import { DxFileUploader } from "devextreme-vue/file-uploader";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
@@ -1155,7 +1163,8 @@ export default {
     contentLoading,
     noticeMessage,
     chartShellSettlement1,
-    chartShellSettlement2
+    chartShellSettlement2,
+    DxFileUploader
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -1824,6 +1833,7 @@ export default {
   align-items: right;
 }
 #upload {
+  margin-top: 5px;
   background-color: #f6f6f6;
   border: 1px solid #303030;
   align-items: right;
