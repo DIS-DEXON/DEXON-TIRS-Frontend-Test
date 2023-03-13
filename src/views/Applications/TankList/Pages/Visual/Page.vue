@@ -44,7 +44,8 @@
           :allow-adding="IS_VISIBLE_ADD()"
           mode="form"
         >
-          <DxForm>
+          <DxForm label-location="top"
+          >
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path_1" :col-span="1" />
               <DxItem data-field="file_path_2" :col-span="1" />
@@ -64,17 +65,17 @@
 
         <DxColumn
           data-field="file_path_1"
-          caption="Overview Picture"
+          caption="Overview"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor1"
-          :width="315"
+          :width="0"
         />
         <DxColumn
           data-field="file_path_2"
-          caption="Close-Up Picture"
+          caption="Close-up view"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-editor2"
-          :width="315"
+          :width="0"
         />
 
         <DxColumn
@@ -82,6 +83,7 @@
           caption="Finding"
           cell-template="dxTextArea"
           :editor-options="findingInputOptions"
+          :width="0"
         />
 
         <DxColumn
@@ -89,7 +91,68 @@
           caption="Recommendation"
           cell-template="dxTextArea"
           :editor-options="recInputOptions"
+          :width="0"
         />
+
+        <DxColumn
+          caption="Picture Log"
+          cell-template="picture-log-template"
+        />
+
+        <template #picture-log-template="{ data }">
+          
+          <div>
+            <div style="display: flex;">
+              <div>
+                <div class="header-custom-field">Overview</div> 
+                <a
+                  :href="baseURL + data.data.file_path_1"
+                  download="dwg"
+                  target="_blank"
+                  v-if="data.data.file_path_1 != ''"
+                >
+                  <img :src="baseURL + data.data.file_path_1" width="300" height="200" style="border: 1px solid #140a4b;" />
+                </a>
+
+                <img
+                  src="http://tmt-solution.com/public/image-empty.png"
+                  width="300"
+                  height="200"
+                  v-if="data.data.file_path_1 == ''"
+                />
+              </div>
+              <div style="margin-left: 10px;">
+                <div class="header-custom-field">Close-up view</div> 
+                <a
+                  :href="baseURL + data.data.file_path_2"
+                  download="dwg"
+                  target="_blank"
+                  v-if="data.data.file_path_2 != ''"
+                >
+                  <img :src="baseURL + data.data.file_path_2" width="300" height="200" style="border: 1px solid #140a4b;" />
+                </a>
+
+                <img
+                  src="http://tmt-solution.com/public/image-empty.png"
+                  width="300"
+                  height="200"
+                  v-if="data.data.file_path_2 == ''"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <div class="header-custom-field">Finding</div>
+                <DxTextArea :height="80" :width="610" :read-only="true" :value="data.data.finding" />
+              </div>
+              <div style="margin-top: 5px;">
+                <div class="header-custom-field">Recommendation</div>
+                <DxTextArea :height="80" :width="610" :read-only="true" :value="data.data.recommendation" />
+              </div>
+            </div>  
+          </div>
+        </template>
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
@@ -649,5 +712,10 @@ export default {
   .list {
     margin: -20px -20px 20px -20px;
   }
+}
+
+.header-custom-field {
+  font-weight: 600;
+  font-size: 14px;
 }
 </style>
