@@ -21,7 +21,6 @@
         key-expr="id"
         :data-source="drawingList"
         :element-attr="dataGridAttributes"
-        :selection="{ mode: 'single' }"
         :hover-state-enabled="true"
         :allow-column-reordering="true"
         :show-borders="true"
