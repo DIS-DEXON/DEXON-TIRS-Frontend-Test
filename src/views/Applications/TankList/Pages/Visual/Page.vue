@@ -323,6 +323,8 @@ export default {
       pagePanelHiding: false,
       findingInputOptions: { placeholder: 'Enter finding ...' },
       recInputOptions: { placeholder: 'Enter recommendation ...' },
+      is_changed_dwg_1: 0,
+      is_changed_dwg_2: 0,
     };
   },
   computed: {
@@ -424,17 +426,21 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.is_changed_dwg_1 = 0;
+          this.is_changed_dwg_2 = 0;
         });
     },
     UPDATE_DWG(e) {
       console.log("UPDATE_DWG");
       console.log(e);
+      console.log("is_changed_dwg_1: " + this.is_changed_dwg_1);
+      console.log("is_changed_dwg_2: " + this.is_changed_dwg_2);
       console.log("file1:");
       console.log(this.file1);
-      console.log("file_path: " + this.file_path_1);
+      console.log("file_path: " + this.file_path_1_tmp);
       console.log("file2:");
       console.log(this.file2);
-      console.log("file_path: " + this.file_path_2);
+      console.log("file_path: " + this.file_path_2_tmp);
       const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
@@ -448,10 +454,12 @@ export default {
       formData.append("recommendation", e.data.recommendation);
       formData.append("file_1", this.file1);
       formData.append("file_2", this.file2);
-      formData.append("file_path_1", this.file_path_1);
-      formData.append("file_path_2", this.file_path_2);
+      formData.append("file_path_1", this.file_path_1_tmp);
+      formData.append("file_path_2", this.file_path_2_tmp);
       formData.append("created_by", e.data.created_by);
       formData.append("updated_by", user.id_account);
+      formData.append("is_changed_dwg_1", this.is_changed_dwg_1);
+      formData.append("is_changed_dwg_2", this.is_changed_dwg_2);
       axios({
         method: "put",
         url: "visual-report/edit-visual-record",
@@ -476,6 +484,8 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.is_changed_dwg_1 = 0;
+          this.is_changed_dwg_2 = 0;
         });
     },
     DELETE_DWG(e) {
@@ -513,8 +523,9 @@ export default {
         this.imgDwg1 = reader.result;
       };
       this.file1 = e.value[0];
-      this.file_path_1 = this.file_path_1_tmp;
+      //this.file_path_1 = this.file_path_1_tmp;
       this.isInitEdit_1 = 1;
+      this.is_changed_dwg_1 = 1;
     },
     ON_DWG_CHANGE_2(e) {
       console.log(e);
@@ -524,8 +535,9 @@ export default {
         this.imgDwg2 = reader.result;
       };
       this.file2 = e.value[0];
-      this.file_path_2 = this.file_path_2_tmp;
+      //this.file_path_2 = this.file_path_2_tmp;
       this.isInitEdit_2 = 1;
+      this.is_changed_dwg_2 = 1;
     },
     EDITING_START_DWG(e) {
       console.log("EDITING_START_DWG");
@@ -583,10 +595,12 @@ export default {
     DEL_PIC(seq) {
       if (seq == 1) {
         this.imgDwg1 = "";
-        this.file_path_1 = this.file_path_1_tmp;
+        this.is_changed_dwg_1 = 1;
+        //this.file_path_1 = this.file_path_1_tmp;
       } else if (seq == 2) {
         this.imgDwg2 = "";
-        this.file_path_2 = this.file_path_2_tmp;
+        this.is_changed_dwg_2 = 1;
+        //this.file_path_2 = this.file_path_2_tmp;
       }
     },
     SAVE(e) {
