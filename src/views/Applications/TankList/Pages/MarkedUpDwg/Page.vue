@@ -40,11 +40,9 @@
           :allow-deleting="true"
           :allow-adding="IS_VISIBLE_ADD()"
           :use-icons="true"
-          mode="row"
+          mode="form"
         >
-          <DxPopup :show-title="true" :width="700" title="Marked-up Drawing">
-          </DxPopup>
-          <DxForm>
+          <DxForm label-location="top">
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path" :col-span="2" />
               <DxItem data-field="file_name" :col-span="2" />
@@ -69,7 +67,7 @@
         <template #dwg-img="{ data }">
           <div style="position: relative">
             <a :href="baseURL + data.value" download="dwg" target="_blank">
-              <img :src="baseURL + data.value" width="300" /><br />
+              <img :src="baseURL + data.value" width="300" height="200" /><br />
             </a>
             <!-- <a
               :href="baseURL + data.value"
@@ -82,20 +80,23 @@
         </template>
 
         <template #dwg-img-editor="{ data }">
-          <div style="padding: 10px;">
+          <div>
             <img
               :src="baseURL + data.value"
               width="300"
+              height="200"
               v-if="imgDwg != '' && isInitEdit == 0"
             />
             <img
               :src="imgDwg"
               width="300"
+              height="200"
               v-if="imgDwg != '' && isInitEdit == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="300"
+              height="200"
               v-if="imgDwg == ''"
             />
 
@@ -152,7 +153,7 @@ import {
   DxColumn,
   DxExport,
   DxEditing,
-  DxPopup,
+  //DxPopup,
   DxForm,
 } from "devextreme-vue/data-grid";
 
@@ -183,7 +184,7 @@ export default {
     DxFileUploader,
     DxForm,
     DxItem,
-    DxPopup,
+    //DxPopup,
     //DxButton,
     // innerPageName,
     InspectionRecordPanel,
