@@ -1,21 +1,26 @@
 <template>
   <div class="chart-item">
-    <highcharts
-      :options="chartOptions"
-      v-if="this.chartData"
-      :key="dataList"
-    ></highcharts>
+    <highcharts :options="chartOptions" v-if="this.chartData" :key="dataList"></highcharts>
   </div>
 </template>
 
 <script>
 // import moment from "moment";
 // import axios from "/axios.js";
+import { Chart } from "highcharts-vue";
+import Highcharts from "highcharts";
+import exportingInit from "highcharts/modules/exporting";
+//import stockInit from "highcharts/modules/stock";
+import offlineExporting from "highcharts/modules/offline-exporting";
+// stockInit(Highcharts);
+exportingInit(Highcharts);
+offlineExporting(Highcharts);
 
 export default {
   name: "chart-floor-gradient-line",
+  highcharts: Chart,
   props: {
-    floorGradientData: Object,
+    floorGradientData: Object
   },
   created() {},
   data() {
@@ -24,13 +29,13 @@ export default {
       chartData: {},
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "spline"
         },
         credits: {
-          enabled: false,
+          enabled: false
         },
         title: {
-          text: "Bottom Settlement Evaluation Graph",
+          text: "Bottom Settlement Evaluation Graph"
         },
         // subtitle: {
         //   text: "Dexon Technology Public Company Limited",
@@ -39,17 +44,17 @@ export default {
           title: {
             text: "Value",
             style: {
-              fontSize: "12",
-            },
+              fontSize: "12"
+            }
           },
           labels: {
-            formatter: function () {
+            formatter: function() {
               return this.value;
             },
             style: {
-              fontSize: "12",
-            },
-          },
+              fontSize: "12"
+            }
+          }
         },
         xAxis: {
           title: {
@@ -57,35 +62,34 @@ export default {
           },
           labels: {
             style: {
-              fontSize: "12",
-            },
+              fontSize: "12"
+            }
           },
-          categories: [],
+          categories: []
         },
         legend: {
           layout: "horizontal",
           align: "center",
-          verticalAlign: "bottom",
+          verticalAlign: "bottom"
         },
         plotOptions: {
           series: {
             label: {
-              connectorAllowed: false,
-            },
+              connectorAllowed: false
+            }
           },
           spline: {
             dataLabels: {
               enabled: true,
-              formatter: function () {
+              formatter: function() {
                 return this.point.y + " mm";
-              },
-            },
-          },
+              }
+            }
+          }
         },
-        series: [
-        ],
+        series: [],
         tooltip: {
-          formatter: function () {
+          formatter: function() {
             return (
               "The <b>" +
               this.series.name +
@@ -94,25 +98,25 @@ export default {
               "</b> is <b>" +
               this.y
             );
-          },
+          }
         },
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500,
+                maxWidth: 500
               },
               chartOptions: {
                 legend: {
                   layout: "horizontal",
                   align: "center",
-                  verticalAlign: "bottom",
-                },
-              },
-            },
-          ],
-        },
-      },
+                  verticalAlign: "bottom"
+                }
+              }
+            }
+          ]
+        }
+      }
     };
   },
   mounted() {
@@ -138,34 +142,37 @@ export default {
 
       if (this.dataList.length > 0) {
         for (var i = 0; i < this.dataList.length; i++) {
-          var name = this.dataList[i].direction_from + "->" + this.dataList[i].direction_to;
+          var name =
+            this.dataList[i].direction_from +
+            "->" +
+            this.dataList[i].direction_to;
           var line = {
             name: name,
             data: [],
             lineWidth: 2,
             marker: {
-              symbol: "circle",
+              symbol: "circle"
             },
             dataLabels: {
-              enabled: false,
-            },
+              enabled: false
+            }
           };
           this.chartOptions.series[i] = line;
 
           for (var j = 1; j <= this.dataList[i].point_total; j++) {
-            this.chartOptions.series[i].data.push(this.dataList[i].point_data[0][j]);
-            this.chartOptions.xAxis.categories.push(j);  
+            this.chartOptions.series[i].data.push(
+              this.dataList[i].point_data[0][j]
+            );
+            this.chartOptions.xAxis.categories.push(j);
           }
-          
         }
       }
 
       console.log(this.chartOptions);
-
     }
   },
   methods: {},
-  computed: {},
+  computed: {}
 };
 </script>
 

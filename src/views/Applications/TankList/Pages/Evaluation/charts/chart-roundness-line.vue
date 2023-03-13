@@ -1,21 +1,26 @@
 <template>
   <div class="chart-item">
-    <highcharts
-      :options="chartOptions"
-      v-if="this.chartData"
-      :key="dataList"
-    ></highcharts>
+    <highcharts :options="chartOptions" v-if="this.chartData" :key="dataList"></highcharts>
   </div>
 </template>
 
 <script>
 // import moment from "moment";
 // import axios from "/axios.js";
+import { Chart } from "highcharts-vue";
+import Highcharts from "highcharts";
+import exportingInit from "highcharts/modules/exporting";
+//import stockInit from "highcharts/modules/stock";
+import offlineExporting from "highcharts/modules/offline-exporting";
+// stockInit(Highcharts);
+exportingInit(Highcharts);
+offlineExporting(Highcharts);
 
 export default {
   name: "chart-roundness-line",
+  highcharts: Chart,
   props: {
-    roundnessData: Object,
+    roundnessData: Object
   },
   created() {},
   data() {
@@ -24,13 +29,13 @@ export default {
       chartData: {},
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "spline"
         },
         credits: {
-          enabled: false,
+          enabled: false
         },
         title: {
-          text: "Roundness Evaluation Graph",
+          text: "Roundness Evaluation Graph"
         },
         // subtitle: {
         //   text: "Dexon Technology Public Company Limited",
@@ -39,48 +44,48 @@ export default {
           title: {
             text: "Radius Meassured Value (mm)",
             style: {
-              fontSize: "14",
-            },
+              fontSize: "14"
+            }
           },
           labels: {
-            formatter: function () {
+            formatter: function() {
               return this.value;
             },
             style: {
-              fontSize: "14",
-            },
-          },
+              fontSize: "14"
+            }
+          }
         },
         xAxis: {
           title: {
-            text: "Meassured Point (clockwise)",
+            text: "Meassured Point (clockwise)"
           },
           labels: {
             style: {
-              fontSize: "14",
-            },
+              fontSize: "14"
+            }
           },
-          categories: [],
+          categories: []
         },
         legend: {
           layout: "horizontal",
           align: "center",
-          verticalAlign: "bottom",
+          verticalAlign: "bottom"
         },
         plotOptions: {
           series: {
             label: {
-              connectorAllowed: false,
-            },
+              connectorAllowed: false
+            }
           },
           spline: {
             dataLabels: {
               enabled: true,
-              formatter: function () {
+              formatter: function() {
                 return this.point.y + " mm";
-              },
-            },
-          },
+              }
+            }
+          }
         },
         series: [
           {
@@ -89,11 +94,11 @@ export default {
             color: "#140a4b",
             lineWidth: 2,
             marker: {
-              symbol: "circle",
+              symbol: "circle"
             },
             dataLabels: {
-              enabled: false,
-            },
+              enabled: false
+            }
           },
           {
             name: "Max",
@@ -102,8 +107,8 @@ export default {
             lineWidth: 2,
             marker: {
               enabled: false,
-              symbol: "none",
-            },
+              symbol: "none"
+            }
           },
           {
             name: "Nom.",
@@ -112,8 +117,8 @@ export default {
             lineWidth: 2,
             marker: {
               enabled: false,
-              symbol: "circle",
-            },
+              symbol: "circle"
+            }
           },
           {
             name: "Min",
@@ -122,12 +127,12 @@ export default {
             lineWidth: 2,
             marker: {
               enabled: false,
-              symbol: "circle",
-            },
-          },
+              symbol: "circle"
+            }
+          }
         ],
         tooltip: {
-          formatter: function () {
+          formatter: function() {
             return (
               "The <b>" +
               this.series.name +
@@ -136,25 +141,25 @@ export default {
               "</b> is <b>" +
               this.y
             );
-          },
+          }
         },
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500,
+                maxWidth: 500
               },
               chartOptions: {
                 legend: {
                   layout: "horizontal",
                   align: "center",
-                  verticalAlign: "bottom",
-                },
-              },
-            },
-          ],
-        },
-      },
+                  verticalAlign: "bottom"
+                }
+              }
+            }
+          ]
+        }
+      }
     };
   },
   mounted() {
@@ -175,7 +180,7 @@ export default {
     }
   },
   methods: {},
-  computed: {},
+  computed: {}
 };
 </script>
 

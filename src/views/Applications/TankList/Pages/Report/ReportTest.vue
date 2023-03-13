@@ -1471,6 +1471,25 @@ export default {
         });
       }
     },
+    async getImgGraph() {
+      const o = this.drawingList.shell_nozzle;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.shell_nozzle.push({
+          marked_up_drawing: imageObject
+        });
+      }
+    },
     async getImgDWG_Projection_plate() {
       const o = this.drawingList.projection_plate;
       for (let j = 0; j < o.length; j++) {
