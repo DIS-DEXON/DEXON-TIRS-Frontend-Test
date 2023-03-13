@@ -25,7 +25,22 @@
           :allow-adding="true"
           :use-icons="true"
           mode="form"
-        />
+        >
+          <DxForm label-location="top">
+            <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="inspection_date" :col-span="1" />
+              <DxItem data-field="project_no" :col-span="1" />
+              <DxItem data-field="report_no" :col-span="1" />
+              <DxItem data-field="id_campaign" :col-span="1" />
+              <DxItem data-field="name_api_653" :col-span="1" />
+              <DxItem data-field="cert_no" :col-span="1" />
+              <DxItem data-field="name_inspection_engineer" :col-span="1" />
+              <DxItem data-field="name_ndt_examiner" :col-span="1" />
+              <DxItem data-field="remark" :col-span="2" />
+            </DxItem>
+          </DxForm>
+        </DxEditing>
+      
         <!-- <DxColumn
         data-field="created_time"
         :width="0"
@@ -101,11 +116,10 @@
         <DxColumn 
           data-field="remark" 
           caption="Remark" 
-          :width="auto" 
         >
-          <DxFormItem
+          <!-- <DxFormItem
             :col-span="2"
-          />
+          /> -->
         </DxColumn>
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
@@ -138,6 +152,7 @@ import "devextreme/dist/css/dx.light.css";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
+import { DxItem } from "devextreme-vue/form";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -147,11 +162,11 @@ import {
   DxColumn,
   DxExport,
   //DxToolbar,
-  //DxItem,
   DxEditing,
   DxLookup,
   DxRequiredRule,
-  DxFormItem,
+  //DxFormItem,
+  DxForm,
 } from "devextreme-vue/data-grid";
 
 //Structures
@@ -167,11 +182,12 @@ export default {
     DxColumn,
     DxExport,
     //DxToolbar,
-    //DxItem,
+    DxForm,
+    DxItem,
     DxEditing,
     DxLookup,
     DxRequiredRule,
-    DxFormItem,
+    //DxFormItem,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
