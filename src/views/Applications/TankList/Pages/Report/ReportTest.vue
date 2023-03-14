@@ -203,6 +203,11 @@ export default {
         bottom_nominal_thk_mm: "",
         accept: [],
         mrt: [],
+        roundness: [],
+        local_deviation: [],
+        shell_buckling: [],
+        grounding: [],
+        grounding_detail: [],
         annular: [],
         bottom: [],
         coil: [],
@@ -1170,6 +1175,149 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_EVAL_BUCKLING() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "buckling/get-buckling",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("EVAL SHELL BUCKLING :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.shell_buckling = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_EVAL_DEVIATION() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "local-deviation/get-local-deviation",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("EVAL LOCAL DEVIATION :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.local_deviation = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_EVAL_ROUNDNESS() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "roundness/get-roundness",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("EVAL ROUNDNESS :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.roundness = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_EVAL_GROUNDING() {
+      //const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "grounding-connection/grounding-connection-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("EVAL GROUNDING :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.grounding = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_EVAL_GROUNDING_DETAIL() {
+      //const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "grounding-connection/grounding-connection-detail-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("EVAL GROUNDING DETAL :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.grounding_detail = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_PLUMBNESS() {
       const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
@@ -1732,6 +1880,7 @@ export default {
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
+
       this.FETCH_BOTTOM_THK();
       this.FETCH_PLUMBNESS();
       this.FETCH_CRITICAL_THK();
@@ -1749,6 +1898,11 @@ export default {
       this.FETCH_PIPING_THK();
       this.FETCH_GRAPH_IMG();
       this.FETCH_EVAL_MRT();
+      this.FETCH_EVAL_BUCKLING();
+      this.FETCH_EVAL_DEVIATION();
+      this.FETCH_EVAL_ROUNDNESS();
+      this.FETCH_EVAL_GROUNDING();
+      this.FETCH_EVAL_GROUNDING_DETAIL();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
