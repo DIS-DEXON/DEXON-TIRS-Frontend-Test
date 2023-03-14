@@ -127,6 +127,9 @@ export default {
       ],
       data1: {
         company_name: "",
+        overview_img_path: "",
+        overview_pic: {},
+        name_plate_img_path: "",
         tank_no: "",
         insp_date: "",
         insp_campaign: "",
@@ -285,7 +288,7 @@ export default {
 
         // 4. save output
         this.status = "Done!";
-        this.saveFile("general_REPORT.docx", docx);
+        this.saveFile("ILAST_REPORT.docx", docx);
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
@@ -327,12 +330,11 @@ export default {
 
         // 4. save output
         this.status = "Done!";
-        this.saveFile("ILAST_REPORT.docx", docx);
+        this.saveFile("General_REPORT.docx", docx);
         console.log("4");
         this.isLoading = false;
-        //this.$ons.notification.alert("Completed!");
-        //setTimeout(() => (this.status = ""), 1000);
-        clearTimeout(myTimeout);
+
+        clearTimeout(myTimeout); // cancel timeout popup
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
@@ -961,6 +963,8 @@ export default {
             //console.log(res.data);
             //this.data1 = res.data[0];
             this.data1.company_name = res.data[0].company_name;
+            this.data1.overview_img_path = res.data[0].overview_img_path;
+            this.data1.name_plate_img_path = res.data[0].name_plate_img_path;
             this.data1.tank_no = res.data[0].tank_no;
             this.data1.location = res.data[0].location;
             this.data1.inservice_date = res.data[0].inservice_date;
@@ -1062,6 +1066,7 @@ export default {
           //this.isLoading = false;
           const temp = this.data1.inservice_date;
           this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
+          this.getImgTankInfo();
         });
     },
     FETCH_SHELL_POINT() {
@@ -1995,6 +2000,22 @@ export default {
           img: imageObject
         });
       }
+    },
+    async getImgTankInfo() {
+      const response = await fetch(
+        encodeURI(this.baseURL + this.data1.overview_img_path)
+      );
+      const imageData = await response.arrayBuffer();
+      const mimeType = response.headers.get("content-type");
+      const imageBlob = new Blob([imageData], { type: mimeType });
+      const imageObject = {
+        _type: "image",
+        source: imageBlob,
+        format: mimeType,
+        width: 200,
+        height: 200
+      };
+      this.data1.overview_pic = imageObject;
     }
   }
 };

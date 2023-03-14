@@ -166,11 +166,11 @@
         <div class="form-item-textarea" style="grid-column: span 9">
           <textarea
             placeholder="Type remarks and recommendations here..."
-            v-model="item.remark"
+            v-model="item.remark_desc[0].remark"
             @focusout="
-              UPDATE_RESULT(
-                item[0],
-                item[0].remark
+              UPDATE_REMARK(
+                item.remark_desc[0],
+                item.remark_desc[0].remark
               )
             "
           />
@@ -235,7 +235,8 @@ export default {
     UPDATE_REMARK(item, new_remark) {
       console.log("==> REMARK UPDATE START");
       console.warn(item);
-      this.formDataRemark.id_header = item.id;
+      this.formDataRemark.id_remark = item.id_remark;
+      this.formDataRemark.id_header = item.id_header;
       this.formDataRemark.remark = new_remark;
       this.formDataRemark.id_insp_record = item.id_insp_record;
       axios({
