@@ -26,6 +26,10 @@
         :show-borders="true"
         mode="form"
       >
+        <DxForm label-location="top">
+
+        </DxForm>
+      
         <!-- THIS FORM DOES NOT SHOW UP -->
         <!-- <DxForm>
           <DxItem :col-count="2" :col-span="2" caption="Home Address" />
@@ -45,6 +49,7 @@
         :allow-adding="true"
         :allow-editing="true"
         caption="File name"
+        :editor-options="fileNameInputOptions"
       />
 
       <template #table-header>
@@ -128,7 +133,8 @@ import {
   DxPager,
   DxScrolling,
   DxColumn,
-  DxExport
+  DxExport,
+  DxForm,
   //DxToolbar,
   //DxItem
 } from "devextreme-vue/data-grid";
@@ -145,7 +151,8 @@ export default {
     DxPager,
     DxScrolling,
     DxColumn,
-    DxExport
+    DxExport,
+    DxForm,
     //DxToolbar,
     //DxItem
   },
@@ -158,7 +165,8 @@ export default {
       library: [],
       dataGridAttributes: {
         class: "data-grid-style"
-      }
+      },
+      fileNameInputOptions: { placeholder: 'Enter file name' },
     };
   },
   computed: {

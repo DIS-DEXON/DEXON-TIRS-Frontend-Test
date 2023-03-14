@@ -27,6 +27,9 @@
         :show-borders="true"
         mode="form"
       >
+      <DxForm label-location="top">
+
+      </DxForm>
         <!-- THIS FORM DOES NOT SHOW UP -->
         <!-- <DxForm>
           <DxItem :col-count="2" :col-span="2" caption="Home Address" />
@@ -46,6 +49,7 @@
         :allow-adding="true"
         :allow-editing="true"
         caption="File name"
+        :editor-options="fileNameInputOptions"
       />
 
       <template #table-header>
@@ -134,7 +138,7 @@
 <script>
 import axios from "/axios.js";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
-import DxForm from "devextreme-vue/form";
+//import DxForm from "devextreme-vue/form";
 import "devextreme/dist/css/dx.light.css";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -152,7 +156,8 @@ import {
   DxItem,
   //DxFormItem,
   DxButton,
-  DxHeaderFilter
+  DxHeaderFilter,
+  DxForm
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -195,7 +200,8 @@ export default {
       library: [],
       dataGridAttributes: {
         class: "data-grid-style"
-      }
+      },
+      fileNameInputOptions: { placeholder: 'Enter file name' },
     };
   },
   computed: {
