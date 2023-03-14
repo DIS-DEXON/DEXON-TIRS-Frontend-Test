@@ -101,6 +101,14 @@
           <span>Picture Log </span>
         </v-ons-toolbar-button>
       </router-link>
+      <router-link
+        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/repair'"
+      >
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/visual.png" />
+          <span>Repair Record </span>
+        </v-ons-toolbar-button>
+      </router-link>
 
       <!-- SECTION REPORT -->
       <div class="section-label">

@@ -1,0 +1,475 @@
+<template>
+  <div
+    class="page-container"
+    :class="[
+      pagePanelHiding == false ? 'page-container' : 'page-container-hide',
+    ]"
+  >
+    <InspectionRecordPanel
+      @showHidePanel="SHOW_HIDE_PANEL"
+      @viewItem="VIEW_ITEM"
+    />
+    <div class="list-page" v-if="this.id_inspection_record != ''">
+      <v-ons-list>
+        <v-ons-list-header
+          >Inspection Details of
+          <b>
+            {{ DATE_FORMAT(current_view.inspection_date) }}</b
+          ></v-ons-list-header
+        >
+      </v-ons-list>
+      <DxDataGrid
+        id="data-grid-style"
+        key-expr="id"
+        :data-source="repairList"
+        :element-attr="dataGridAttributes"
+        :hover-state-enabled="true"
+        :allow-column-reordering="true"
+        :show-borders="true"
+        :show-row-lines="true"
+        :row-alternation-enabled="false"
+        @exporting="EXPORT_DATA"
+        @row-inserted="CREATE_REPAIR"
+        @row-updated="UPDATE_REPAIR"
+        @row-removed="DELETE_REPAIR"
+        @editing-start="EDITING_START_DWG"
+        @init-new-row="INIT_NEW_ROW_DWG"
+        @saved="SAVE"
+      >
+        <DxEditing
+          :allow-updating="true"
+          :allow-deleting="true"
+          :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
+          mode="form"
+        >
+          <DxForm label-location="top">
+            <!-- <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="file_path" :col-span="2" />
+              <DxItem data-field="file_name" :col-span="2" />
+            </DxItem> -->
+          </DxForm>
+        </DxEditing>
+
+        <DxColumn
+          data-field="file_path"
+          caption="Image"
+          cell-template="dwg-img"
+          edit-cell-template="dwg-img-editor"
+          :width="320"
+        />
+
+        <DxColumn
+          data-field="part"
+          caption="Part"
+          :editor-options="partInputOptions"
+        />
+
+        <DxColumn
+          data-field="recommendation"
+          caption="Recommendation"
+          :editor-options="recInputOptions"
+        />
+
+        <template #dwg-img="{ data }">
+          <div style="position: relative">
+            <a :href="baseURL + data.value" download="dwg" target="_blank">
+              <img :src="baseURL + data.value" width="300" height="200" /><br />
+            </a>
+            <!-- <a
+              :href="baseURL + data.value"
+              download="dwg"
+              target="_blank"
+              class="btn-view-dwg"
+              >VIEW</a
+            > -->
+          </div>
+        </template>
+
+        <template #dwg-img-editor="{ data }">
+          <div>
+            <img
+              :src="baseURL + data.value"
+              width="300"
+              height="200"
+              v-if="imgDwg != '' && isInitEdit == 0"
+            />
+            <img
+              :src="imgDwg"
+              width="300"
+              height="200"
+              v-if="imgDwg != '' && isInitEdit == 1"
+            />
+            <img
+              src="http://tmt-solution.com/public/image-empty.png"
+              width="300"
+              height="200"
+              v-if="imgDwg == ''"
+            />
+
+            <DxFileUploader
+              select-button-text="Select photo"
+              label-text=""
+              accept="image/*"
+              upload-mode="useForm"
+              @value-changed="ON_DWG_CHANGE"
+            />
+          </div>
+        </template>
+
+        <!-- Configuration goes here -->
+        <!-- <DxFilterRow :visible="true" /> -->
+        <DxScrolling mode="standard" />
+        <DxSearchPanel :visible="true" />
+        <DxPaging :page-size="10" :page-index="0" />
+        <DxPager
+          :show-page-size-selector="true"
+          :allowed-page-sizes="[5, 10, 20]"
+          :show-navigation-buttons="true"
+          :show-info="true"
+          info-text="Page {0} of {1} ({2} items)"
+        />
+        <DxExport :enabled="true" />
+      </DxDataGrid>
+    </div>
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
+  </div>
+</template> 
+
+<script>
+//API
+import axios from "/axios.js";
+import moment from "moment";
+
+//Components
+import "devextreme/dist/css/dx.light.css";
+// import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
+import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
+
+//DataGrid
+import { Workbook } from "exceljs";
+import saveAs from "file-saver";
+import { exportDataGrid } from "devextreme/excel_exporter";
+import {
+  DxDataGrid,
+  DxSearchPanel,
+  DxPaging,
+  DxPager,
+  DxScrolling,
+  DxColumn,
+  DxExport,
+  DxEditing,
+  //DxPopup,
+  DxForm,
+} from "devextreme-vue/data-grid";
+
+//List
+// import { DxList } from "devextreme-vue/list";
+
+//FileUpload
+import { DxFileUploader } from "devextreme-vue/file-uploader";
+//import { DxButton } from 'devextreme-vue/button';
+//import { DxItem } from "devextreme-vue/form";
+
+const fileUploaderRef = "fu";
+const imgRef = "img";
+
+export default {
+  name: "ViewProjectList",
+  components: {
+    //VueTabsChrome,
+    // DxList,
+    DxDataGrid,
+    DxSearchPanel,
+    DxPaging,
+    DxPager,
+    DxScrolling,
+    DxColumn,
+    DxExport,
+    DxEditing,
+    DxFileUploader,
+    DxForm,
+    //DxItem,
+    //DxPopup,
+    //DxButton,
+    // innerPageName,
+    InspectionRecordPanel,
+    SelectInspRecord,
+  },
+  created() {
+    this.$store.commit("UPDATE_CURRENT_INAPP", {
+      name: "Tank Management",
+      icon: "/img/icon_menu/tank/tank.png",
+    });
+    this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+      subpageName: "Repair Record",
+      subpageInnerName: this.currentPage,
+    });
+  },
+  data() {
+    return {
+      repairList: null,
+      inspRecordList: {},
+      campaignList: {},
+      isLoading: false,
+      fileUploaderRef,
+      imgRef,
+      imgDwg: "",
+      file: [],
+      isInitEdit: 0,
+      id_inspection_record: 0,
+      dataGridAttributes: {
+        class: "data-grid-style",
+      },
+      pagePanelHiding: false,
+      current_view: {},
+      is_changed_dwg: 0,
+      dataDwgTemp: "",
+      partInputOptions: { placeholder: 'Enter part ...' },
+      recInputOptions: { placeholder: 'Enter recommendation ...' },
+    };
+  },
+  computed: {},
+  methods: {
+    EXPORT_DATA(e) {
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet("Projects");
+      exportDataGrid({
+        worksheet: worksheet,
+        component: e.component,
+      }).then(function () {
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+          saveAs(
+            new Blob([buffer], { type: "application/octet-stream" }),
+            "Projects.xlsx"
+          );
+        });
+      });
+      e.cancel = true;
+    },
+    VIEW_ITEM(item) {
+      this.current_view = {};
+      this.id_inspection_record = item.id_inspection_record;
+      this.current_view = item;
+      axios({
+        method: "get",
+        url: "repair-record/get-repair-record-by-ir-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id_inspection_record: item.id_inspection_record,
+        },
+      })
+        .then((res) => {
+          console.log("repair record:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.repairList = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    CREATE_REPAIR(e) {
+      console.log(e);
+      var formData = new FormData();
+      formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append("part", e.data.part);
+      formData.append("recommendation", e.data.recommendation);
+      formData.append("file", this.file);
+
+      axios({
+        method: "post",
+        url: "repair-record/add-repair-record",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: formData,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 201 && res.data) {
+            console.log(res.data);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.is_changed_dwg = 0;
+        });
+    },
+    UPDATE_REPAIR(e) {
+      console.log(e);
+      var formData = new FormData();
+      formData.append("id", e.key);
+      formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append("part", e.data.part);
+      formData.append("file", this.file);
+      formData.append("file_path", this.file_path);
+      formData.append("recommendation", this.recommendation);
+      formData.append("is_changed_dwg", this.is_changed_dwg);
+      axios({
+        method: "put",
+        url: "repair-record/edit-repair-record",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: formData,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 201 && res.data) {
+            console.log(res.data);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.is_changed_dwg = 0;
+        });
+    },
+    DELETE_REPAIR(e) {
+      console.log(e);
+      axios({
+        method: "delete",
+        url: "repair-record/delete-repair-record",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        },
+        data: {
+          id: e.key,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            var item = [];
+            item.id_inspection_record = this.id_inspection_record;
+            this.VIEW_ITEM(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    ON_DWG_CHANGE(e) {
+      console.log(e);
+      this.isInitEdit = 1;
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {
+        this.imgDwg = reader.result;
+      };
+      this.file = e.value[0];
+      this.is_changed_dwg = 1;
+    },
+    EDITING_START_DWG(e) {
+      console.log(e);
+      this.imgDwg = e.data.path_dwg;
+      this.file = [];
+      this.isInitEdit = 0;
+      this.file_path = e.data.file_path;
+      this.dataDwgTemp = e;
+    },
+    INIT_NEW_ROW_DWG() {
+      this.imgDwg = "";
+      this.file = [];
+      this.isInitEdit = 1;
+    },
+    SAVE(e) {
+      console.log('save:');
+      console.log(e);
+      if(e.changes.length == 0) {
+        this.UPDATE_DWG(this.dataDwgTemp);
+      } 
+    },
+    IS_VISIBLE_ADD() {
+      if (this.id_inspection_record == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    SHOW_HIDE_PANEL() {
+      this.pagePanelHiding = !this.pagePanelHiding;
+    },
+    DATE_FORMAT(d) {
+      return moment(d).format("LL");
+    },
+  },
+  watch: {
+    $route() {
+      console.log("PATH CHANGED");
+      this.id_inspection_record = "";
+      this.current_view = {};
+      this.drawingList = null;
+      this.$store.commit("UPDATE_CURRENT_PAGENAME", {
+        subpageName: "Marked-Up Drawing",
+        subpageInnerName: this.currentPage,
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/style/main.scss";
+
+.page-container {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  // padding: 20px;
+  display: grid;
+  grid-template-columns: 201px calc(100% - 201px);
+}
+
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 51px);
+}
+
+.dx-list-item-content::before {
+  content: none;
+}
+
+#data-grid-style {
+  width: 100%;
+}
+
+.list-page {
+  position: relative;
+  overflow-y: auto;
+  .list {
+    margin: -20px -20px 20px -20px;
+  }
+}
+
+.header-custom-field {
+  font-weight: 600;
+  font-size: 14px;
+}
+</style>

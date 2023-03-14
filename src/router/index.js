@@ -83,6 +83,11 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Visual/Page.vue'),
           },
           {
+            path: 'repair',
+            alias: 'Repair Record',
+            component: () => import('../views/Applications/TankList/Pages/RepairRecord/Page.vue'),
+          },
+          {
             path: 'thickness/roof-nozzle',
             alias: 'Thickness Roof Nozzle',
             component: () => import('../views/Applications/TankList/Pages/Thickness/RoofNz.vue'),
