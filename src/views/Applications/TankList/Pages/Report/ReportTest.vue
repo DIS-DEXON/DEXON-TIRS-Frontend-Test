@@ -1818,8 +1818,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.annular.push({
           marked_up_drawing: imageObject
@@ -1837,8 +1837,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.bottom.push({
           marked_up_drawing: imageObject
@@ -1856,8 +1856,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.coil.push({
           marked_up_drawing: imageObject
@@ -1875,8 +1875,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.critical_zone.push({
           marked_up_drawing: imageObject
@@ -1894,8 +1894,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.piping.push({
           marked_up_drawing: imageObject
@@ -1913,8 +1913,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.roof.push({
           marked_up_drawing: imageObject
@@ -1932,8 +1932,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.roof_nozzle.push({
           marked_up_drawing: imageObject
@@ -1951,8 +1951,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.sump.push({
           marked_up_drawing: imageObject
@@ -1970,8 +1970,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.shell.push({
           marked_up_drawing: imageObject
@@ -1989,8 +1989,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.shell_nozzle.push({
           marked_up_drawing: imageObject
@@ -2008,8 +2008,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
-          height: 200
+          width: 500,
+          height: 300
         };
         this.data1.projection_plate.push({
           marked_up_drawing: imageObject
