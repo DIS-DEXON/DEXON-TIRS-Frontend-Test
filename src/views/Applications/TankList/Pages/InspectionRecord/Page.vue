@@ -6,7 +6,6 @@
         key-expr="id_inspection_record"
         :data-source="inspRecordList"
         :element-attr="dataGridAttributes"
-        :selection="{ mode: 'single' }"
         :hover-state-enabled="true"
         :allow-column-reordering="true"
         :show-borders="true"
