@@ -102,7 +102,6 @@ export default {
       isHovering: false,
       imgpath: [],
       drawingList: [],
-      graph: [],
       current_view: {},
       buffer: "",
       status: "",
@@ -127,6 +126,10 @@ export default {
         }
       ],
       data1: {
+        new_page: {
+          _type: 'rawXml',
+          xml: '<w:br w:type="page"/>',
+        },
         company_name: "",
         overview_img_path: "",
         overview_pic: {},
@@ -229,11 +232,7 @@ export default {
         shell_settlement_point: [],
         shell_settlement_api: [],
         shell_thk: [],
-        picture_log: [{}],
-        shell_settlement_1: {},
-        shell_settlement_2: {},
-        shell_roundness: {},
-        bottom_settlement: {}
+        picture_log: [{}]
       }
     };
   },
@@ -264,7 +263,7 @@ export default {
     },
     async createILASTDocx() {
       console.log("CREATED DOCX: ");
-      const myTimeout = setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
+      setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
       this.data1.picture_log.shift();
       console.log(this.data1);
       this.isLoading = true;
@@ -297,7 +296,7 @@ export default {
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
-        clearTimeout(myTimeout); // cancel timeout popup
+        setTimeout(() => (this.status = ""), 1000);
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
@@ -611,7 +610,6 @@ export default {
 
           if (res.status == 200 && res.data) {
             this.drawingList.annular = res.data;
-            this.getImgDWG_Annular();
           }
         })
         .catch(error => {
@@ -619,6 +617,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Annular();
         });
     },
     FETCH_MARKUP_BOTTOM(item) {
@@ -638,7 +637,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.bottom = res.data;
-            this.getImgDWG_Bottom();
           }
         })
         .catch(error => {
@@ -646,6 +644,7 @@ export default {
         })
         .finally(() => {
           // this.isLoading = false;
+          this.getImgDWG_Bottom();
           // console.log("DWG bottom:");
           // console.log(this.drawingList);
         });
@@ -667,7 +666,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.coil = res.data;
-            this.getImgDWG_Coil();
           }
         })
         .catch(error => {
@@ -675,6 +673,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Coil();
         });
     },
     FETCH_MARKUP_CRITICAL_ZONE(item) {
@@ -694,7 +693,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.critical_zone = res.data;
-            this.getImgDWG_Critical_zone();
           }
         })
         .catch(error => {
@@ -702,6 +700,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Critical_zone();
         });
     },
     FETCH_MARKUP_PIPING(item) {
@@ -721,7 +720,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.piping = res.data;
-            this.getImgDWG_Piping();
           }
         })
         .catch(error => {
@@ -729,6 +727,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Piping();
         });
     },
     FETCH_MARKUP_ROOF(item) {
@@ -748,7 +747,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof = res.data;
-            this.getImgDWG_Roof();
           }
         })
         .catch(error => {
@@ -756,6 +754,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Roof();
         });
     },
     FETCH_MARKUP_ROOFNZ(item) {
@@ -775,7 +774,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof_nozzle = res.data;
-            this.getImgDWG_Roofnz();
           }
         })
         .catch(error => {
@@ -783,6 +781,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Roofnz();
         });
     },
     FETCH_MARKUP_SUMP(item) {
@@ -802,7 +801,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.sump = res.data;
-            this.getImgDWG_Sump();
           }
         })
         .catch(error => {
@@ -810,6 +808,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Sump();
         });
     },
     FETCH_MARKUP_SHELL(item) {
@@ -829,7 +828,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell = res.data;
-            this.getImgDWG_Shell();
           }
         })
         .catch(error => {
@@ -837,6 +835,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
+          this.getImgDWG_Shell();
         });
     },
     FETCH_MARKUP_SHELLNZ(item) {
@@ -856,7 +855,6 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell_nozzle = res.data;
-            this.getImgDWG_Shellnz();
           }
         })
         .catch(error => {
@@ -864,33 +862,7 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-        });
-    },
-    FETCH_GRAPH_IMG() {
-      axios({
-        method: "get",
-        url:
-          "chart-image-file/get-chart-image-file-by-ir-id?id=" +
-          this.id_inspection_record,
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: {}
-      })
-        .then(res => {
-          console.log("FETCH GRAPH :");
-          //console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.graph = res.data;
-            console.log(this.graph);
-            this.getImgGraph();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          //this.isLoading = false;
+          this.getImgDWG_Shellnz();
         });
     },
     FETCH_MARKUP_PROJECTION_PLATE(item) {
@@ -1714,7 +1686,6 @@ export default {
       this.FETCH_SUMP_THK();
       this.FETCH_PROJECTION_PLATE_THK();
       this.FETCH_PIPING_THK();
-      this.FETCH_GRAPH_IMG();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
@@ -2017,72 +1988,21 @@ export default {
     },
     async getImgGraph() {
       const o = this.graph;
-      // console.log(o)
       for (let j = 0; j < o.length; j++) {
-        if (o[j].type == "shell_settlement_1") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_settlement_1 = imageObject;
-        }
-        if (o[j].type == "shell_settlement_2") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_settlement_2 = imageObject;
-        }
-        if (o[j].type == "shell_roundness") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_roundness = imageObject;
-        }
-        if (o[j].type == "bottom_settlement") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.bottom_settlement = imageObject;
-        }
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.graph.push({
+          img: imageObject
+        });
       }
     },
     async getImgTankInfo() {
