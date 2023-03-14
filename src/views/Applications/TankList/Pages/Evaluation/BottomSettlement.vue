@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <div class="content">
         <div class="table-wrapper">
@@ -24,8 +19,7 @@
             <div class="left">
               <label>Line</label>
             </div>
-            <div class="right">
-            </div>
+            <div class="right"></div>
           </div>
           <DxDataGrid
             id="bottom-set-line-grid"
@@ -91,8 +85,7 @@
             <div class="left">
               <label>Point</label>
             </div>
-            <div class="right">
-            </div>
+            <div class="right"></div>
           </div>
           <DxDataGrid
             id="bottom-set-point-grid"
@@ -123,7 +116,7 @@
 
             <DxColumn data-field="point_no" caption="Direction From" />
 
-            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00"  />
+            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00" />
 
             <DxColumn data-field="value" caption="Value" format="#,##0.00" />
 
@@ -148,8 +141,19 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
+
         <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :floorGradientData="bottomSetGraph" :key="bottomSetGraph" />
+        </div>
+        <div class="upload-graph">
+          <DxFileUploader
+            select-button-text="Select File"
+            label-text="or Drop an image here"
+            upload-mode="useForm"
+            :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+            ready-to-upload-message="UPLOAD SUCCESSFULLY"
+            @value-changed="VALUE_CHANGE"
+          />
         </div>
         <div class="table-wrapper" style="grid-column: span 2; margin-top: 30px;">
           <DxDataGrid
@@ -181,45 +185,17 @@
 
             <DxColumn data-field="no" caption="No." width="100" />
 
-            <DxColumn
-              data-field="bulge_depression"
-              caption="Bulge or Depression"
-            />
+            <DxColumn data-field="bulge_depression" caption="Bulge or Depression" />
 
-            <DxColumn
-              data-field="bbm_mm"
-              caption="BBM (mm)"
-              format="#,##0.00"
-              width="100"
-            />
+            <DxColumn data-field="bbm_mm" caption="BBM (mm)" format="#,##0.00" width="100" />
 
-            <DxColumn
-              data-field="bbm_inch"
-              caption="BBM (inch)"
-              format="#,##0.00"
-              width="100"
-            />
+            <DxColumn data-field="bbm_inch" caption="BBM (inch)" format="#,##0.00" width="100" />
 
-            <DxColumn
-              data-field="radius_mm"
-              caption="R (mm)"
-              format="#,##0.00"
-              width="100"
-            />
+            <DxColumn data-field="radius_mm" caption="R (mm)" format="#,##0.00" width="100" />
 
-            <DxColumn
-              data-field="radius_ft"
-              caption="R (ft)"
-              format="#,##0.00"
-              width="100"
-            />
+            <DxColumn data-field="radius_ft" caption="R (ft)" format="#,##0.00" width="100" />
 
-            <DxColumn
-              data-field="bb_inch"
-              caption="BB (inch)"
-              format="#,##0.00"
-              width="100"
-            />
+            <DxColumn data-field="bb_inch" caption="BB (inch)" format="#,##0.00" width="100" />
 
             <DxColumn data-field="result" caption="Result" />
 
@@ -244,6 +220,7 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
+
         <div class="app-instruction" style="grid-column: span 2; margin-top: 30px;">
           <appInstruction title="Instruction" desc="Floor Gradient Survey">
             <ol>
@@ -318,14 +295,14 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow,
+  DxFilterRow
 } from "devextreme-vue/data-grid";
 
 //List
 // import { DxList } from "devextreme-vue/list";
 
 //FileUpload
-//import { DxFileUploader } from "devextreme-vue/file-uploader";
+import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
 //import { DxItem } from "devextreme-vue/form";
 
@@ -335,6 +312,7 @@ export default {
     //VueTabsChrome,
     //DxList,
     DxDataGrid,
+    DxFileUploader,
     DxSearchPanel,
     DxPaging,
     DxPager,
@@ -347,16 +325,16 @@ export default {
     appInstruction,
     InspectionRecordPanel,
     SelectInspRecord,
-    chart,
+    chart
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Bottom Settlement",
+      subpageInnerName: "Bottom Settlement"
     });
   },
   data() {
@@ -371,10 +349,10 @@ export default {
       id_inspection_record: "",
       current_view: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       pagePanelHiding: false,
-      id_line: 0,
+      id_line: 0
     };
   },
   computed: {
@@ -383,7 +361,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -391,9 +369,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -411,14 +389,14 @@ export default {
         method: "post",
         url: "bottom-settlement/get-bottom-settlement-line",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("get-bottom-settlement-line:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
@@ -426,7 +404,7 @@ export default {
             this.FETCH_GRAPH();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -438,21 +416,21 @@ export default {
         method: "post",
         url: "bottom-settlement/get-bulge-depression",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("get bulge list:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.bulgeList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -470,18 +448,18 @@ export default {
         method: "post",
         url: "bottom-settlement/add-bottom-settlement-line",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -494,18 +472,18 @@ export default {
         method: "put",
         url: "bottom-settlement/edit-bottom-settlement-line",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -518,18 +496,18 @@ export default {
         method: "delete",
         url: "bottom-settlement/delete-bottom-settlement-line",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -546,29 +524,28 @@ export default {
         method: "post",
         url: "bottom-settlement/get-bottom-settlement-point",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_line: this.id_line,
-        },
+          id_line: this.id_line
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("get-bottom-settlement-point:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.bottomSetPoint = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
           this.isLoading = false;
         });
-
     },
     CREATE_POINT(e) {
-      if(this.id_line > 0) {
+      if (this.id_line > 0) {
         e.data.id_point = 0;
         e.data.id_line = this.id_line;
         console.log(e.data);
@@ -576,11 +553,11 @@ export default {
           method: "post",
           url: "bottom-settlement/add-bottom-settlement-point",
           headers: {
-            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
-          data: e.data,
+          data: e.data
         })
-          .then((res) => {
+          .then(res => {
             console.log(res);
             if (res.status == 200 && res.data) {
               console.log(res.data);
@@ -588,7 +565,7 @@ export default {
               this.FETCH_GRAPH();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error);
           })
           .finally(() => {
@@ -602,18 +579,18 @@ export default {
         method: "put",
         url: "bottom-settlement/edit-bottom-settlement-point",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.FETCH_POINT();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -626,18 +603,18 @@ export default {
         method: "delete",
         url: "bottom-settlement/delete-bottom-settlement-point",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.FETCH_POINT();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -651,27 +628,26 @@ export default {
         method: "post",
         url: "bottom-settlement/get-bottom-settlement-graph",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: id_inspection_record,
-        },
+          id_inspection_record: id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("get-bottom-settlement-graph:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.bottomSetGraph = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
           this.isLoading = false;
         });
-
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
@@ -692,18 +668,18 @@ export default {
         method: "post",
         url: "bottom-settlement/add-bulge-depression",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -716,18 +692,18 @@ export default {
         method: "put",
         url: "bottom-settlement/edit-bulge-depression",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -740,18 +716,18 @@ export default {
         method: "delete",
         url: "bottom-settlement/delete-bulge-depression",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -764,7 +740,54 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-  },
+    UPLOAD_CHART(type) {
+      var formData = new FormData();
+      formData.append(
+        "id_inspection_record",
+        this.current_view.id_inspection_record
+      );
+      formData.append("type", type);
+      formData.append("created_by", this.$store.state.user.id_account);
+      formData.append("file", this.file);
+      axios({
+        method: "post",
+        url: "chart-image-file/add-chart-image-file",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: formData
+      })
+        .then(res => {
+          //console.log(res);
+          if (res.status == 201) {
+            //console.log("in");
+            //console.log(res.data);
+            //this.$ons.notification.alert("UPLOAD COMPLETED");
+            console.log("UPLOAD COMPLETED");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$ons.notification.alert(
+            "Only image files are allowed. [ jpg, jpeg, png, gif, bmp ]"
+          );
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VALUE_CHANGE(e) {
+      //console.log("fileReader e data:");
+      //console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {};
+      this.file = e.value[0];
+      this.file_name = e.value[0].name;
+      this.UPLOAD_CHART("bottom_settlement");
+    }
+  }
 };
 </script>
 

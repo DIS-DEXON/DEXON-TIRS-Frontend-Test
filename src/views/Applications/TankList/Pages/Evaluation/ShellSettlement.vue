@@ -467,7 +467,7 @@
               width: calc(100% - 20px);
             "
           >
-            <div class="table-toolbar-set">
+            <div class="upload-graph">
               <chartShellSettlement1
                 :current_view="this.current_view"
                 :key="this.formData.multi.r_2"
@@ -475,26 +475,30 @@
 
               <DxFileUploader
                 select-button-text="Select File"
-                label-text
+                label-text="or Drop an image here"
                 upload-mode="useForm"
+                :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+                ready-to-upload-message="UPLOAD SUCCESSFULLY"
                 @value-changed="VALUE_CHANGE"
               />
             </div>
-            <div class="table-toolbar-set">
+            <div class="upload-graph">
               <chartShellSettlement2
                 :current_view="this.current_view"
                 :key="this.formData.multi.sse"
               />
-              <v-ons-toolbar-button
-                class="upload-graph"
-                id="upload"
-                @mouseover="isHovering=true"
-                @mouseleave="isHovering=false"
-                v-on:click="UPLOAD()"
-              >
-                <i class="las" :class="{'la-upload' : !isHovering, 'la-download' : isHovering}"></i>
+              <!-- <v-ons-toolbar-button id="upload" v-on:click="UPLOAD()">
+                <i class="las la-upload"></i>
                 <span>UPLOAD GRAPH TO REPORT</span>
-              </v-ons-toolbar-button>
+              </v-ons-toolbar-button>-->
+              <DxFileUploader
+                select-button-text="Select File"
+                label-text="or Drop an image here"
+                upload-mode="useForm"
+                ready-to-upload-message="UPLOAD SUCCESSFULLY"
+                :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+                @value-changed="VALUE_CHANGE2"
+              />
             </div>
           </div>
           <div class="app-instruction" style="margin-top: 20px">
@@ -1186,6 +1190,7 @@ export default {
       isAdd: false,
       isEdit: false,
       isLoading: false,
+      upload_flag: true,
       dataGridAttributes: {
         class: "data-grid-style"
       },
@@ -1271,6 +1276,9 @@ export default {
   },
   mounted() {},
   methods: {
+    UPLOAD() {
+      this.upload_flag = false;
+    },
     EXPORT_DATA(e) {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet("Projects");
@@ -1517,6 +1525,63 @@ export default {
             .finally(() => {});
         }
       });
+    },
+    UPLOAD_CHART(type) {
+      var formData = new FormData();
+      formData.append(
+        "id_inspection_record",
+        this.current_view.id_inspection_record
+      );
+      formData.append("type", type);
+      formData.append("created_by", this.$store.state.user.id_account);
+      formData.append("file", this.file);
+      axios({
+        method: "post",
+        url: "chart-image-file/add-chart-image-file",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: formData
+      })
+        .then(res => {
+          //console.log(res);
+          if (res.status == 201) {
+            //console.log("in");
+            //console.log(res.data);
+            //this.$ons.notification.alert("UPLOAD COMPLETED");
+            console.log("UPLOAD COMPLETED");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$ons.notification.alert(
+            "Only image files are allowed. [ jpg, jpeg, png, gif, bmp ]"
+          );
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VALUE_CHANGE(e) {
+      //console.log("fileReader e data:");
+      //console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {};
+      this.file = e.value[0];
+      this.file_name = e.value[0].name;
+      this.UPLOAD_CHART("shell_settlement_1");
+    },
+    VALUE_CHANGE2(e) {
+      //console.log("fileReader e data:");
+      //console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {};
+      this.file = e.value[0];
+      this.file_name = e.value[0].name;
+      this.UPLOAD_CHART("shell_settlement_2");
     }
   }
 };
@@ -1831,13 +1896,14 @@ export default {
 .upload-graph {
   justify-content: right;
   align-items: right;
+  align-content: right;
 }
 #upload {
-  margin-top: 5px;
+  margin-top: 10px;
   background-color: #f6f6f6;
   border: 1px solid #303030;
   align-items: right;
-  height: 20px;
+  height: 15px;
   width: 225px;
   i {
     color: #303030;

@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <div class="content">
         <div class="table-wrapper">
@@ -75,11 +70,7 @@
               :allow-editing="false"
             />
 
-            <DxColumn
-              data-field="result"
-              caption="Inspection Result"
-              :allow-editing="false"
-            />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -106,6 +97,16 @@
           <chart :roundnessData="roundnessList" :key="roundnessList" />
         </div>
       </div>
+      <div class="upload-graph">
+        <DxFileUploader
+          select-button-text="Select File"
+          label-text="or Drop an image here"
+          upload-mode="useForm"
+          :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+          ready-to-upload-message="UPLOAD SUCCESSFULLY"
+          @value-changed="VALUE_CHANGE"
+        />
+      </div>
       <div class="app-instruction">
         <appInstruction
           title="Instruction"
@@ -115,12 +116,12 @@
             <tr>
               <th>Tank Diameter m (ft)</th>
               <th>
-                Radius Tolerance mm (in)<br />
-                (≤ 0.3048 m)
+                Radius Tolerance mm (in)
+                <br />(≤ 0.3048 m)
               </th>
               <th>
-                Radius Tolerance mm (in)<br />
-                (> 0.3048 m)
+                Radius Tolerance mm (in)
+                <br />(> 0.3048 m)
               </th>
             </tr>
             <tr>
@@ -163,7 +164,7 @@ import appInstruction from "@/components/app-structures/app-instruction-dialog.v
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
-
+import { DxFileUploader } from "devextreme-vue/file-uploader";
 //DataGrid
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -178,7 +179,7 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow,
+  DxFilterRow
 } from "devextreme-vue/data-grid";
 
 //List
@@ -195,6 +196,7 @@ export default {
     //VueTabsChrome,
     //DxList,
     DxDataGrid,
+    DxFileUploader,
     DxSearchPanel,
     DxPaging,
     DxPager,
@@ -207,16 +209,16 @@ export default {
     appInstruction,
     chart,
     InspectionRecordPanel,
-    SelectInspRecord,
+    SelectInspRecord
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Roundness",
+      subpageInnerName: "Roundness"
     });
   },
   data() {
@@ -229,9 +231,9 @@ export default {
       id_inspection_record: "",
       current_view: "",
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
-      pagePanelHiding: false,
+      pagePanelHiding: false
     };
   },
   computed: {
@@ -240,7 +242,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -248,9 +250,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -267,21 +269,21 @@ export default {
         method: "post",
         url: "roundness/get-roundness",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("get roundness list:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.roundnessList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -307,18 +309,18 @@ export default {
         method: "post",
         url: "roundness/add-roundness",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -331,18 +333,18 @@ export default {
         method: "put",
         url: "roundness/edit-roundness",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -355,18 +357,18 @@ export default {
         method: "delete",
         url: "roundness/delete-roundness",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -379,7 +381,54 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-  },
+    UPLOAD_CHART(type) {
+      var formData = new FormData();
+      formData.append(
+        "id_inspection_record",
+        this.current_view.id_inspection_record
+      );
+      formData.append("type", type);
+      formData.append("created_by", this.$store.state.user.id_account);
+      formData.append("file", this.file);
+      axios({
+        method: "post",
+        url: "chart-image-file/add-chart-image-file",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: formData
+      })
+        .then(res => {
+          //console.log(res);
+          if (res.status == 201) {
+            //console.log("in");
+            //console.log(res.data);
+            //this.$ons.notification.alert("UPLOAD COMPLETED");
+            console.log("UPLOAD COMPLETED");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$ons.notification.alert(
+            "Only image files are allowed. [ jpg, jpeg, png, gif, bmp ]"
+          );
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    VALUE_CHANGE(e) {
+      //console.log("fileReader e data:");
+      //console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {};
+      this.file = e.value[0];
+      this.file_name = e.value[0].name;
+      this.UPLOAD_CHART("shell_roundness");
+    }
+  }
 };
 </script>
 
