@@ -127,8 +127,8 @@ export default {
       ],
       data1: {
         new_page: {
-          _type: 'rawXml',
-          xml: '<w:br w:type="page"/>',
+          _type: "rawXml",
+          xml: '<w:br w:type="page"/>'
         },
         company_name: "",
         overview_img_path: "",
@@ -232,7 +232,11 @@ export default {
         shell_settlement_point: [],
         shell_settlement_api: [],
         shell_thk: [],
-        picture_log: [{}]
+        picture_log: [{}],
+        shell_settlement_1: {},
+        shell_settlement_2: {},
+        shell_roundness: {},
+        bottom_settlement: {}
       }
     };
   },
@@ -263,7 +267,7 @@ export default {
     },
     async createILASTDocx() {
       console.log("CREATED DOCX: ");
-      setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
+      const myTimeout = setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
       this.data1.picture_log.shift();
       console.log(this.data1);
       this.isLoading = true;
@@ -296,7 +300,7 @@ export default {
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
-        setTimeout(() => (this.status = ""), 1000);
+        clearTimeout(myTimeout); // cancel timeout popup
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
@@ -610,6 +614,7 @@ export default {
 
           if (res.status == 200 && res.data) {
             this.drawingList.annular = res.data;
+            this.getImgDWG_Annular();
           }
         })
         .catch(error => {
@@ -617,7 +622,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Annular();
         });
     },
     FETCH_MARKUP_BOTTOM(item) {
@@ -637,6 +641,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.bottom = res.data;
+            this.getImgDWG_Bottom();
           }
         })
         .catch(error => {
@@ -644,7 +649,6 @@ export default {
         })
         .finally(() => {
           // this.isLoading = false;
-          this.getImgDWG_Bottom();
           // console.log("DWG bottom:");
           // console.log(this.drawingList);
         });
@@ -666,6 +670,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.coil = res.data;
+            this.getImgDWG_Coil();
           }
         })
         .catch(error => {
@@ -673,7 +678,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Coil();
         });
     },
     FETCH_MARKUP_CRITICAL_ZONE(item) {
@@ -693,6 +697,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.critical_zone = res.data;
+            this.getImgDWG_Critical_zone();
           }
         })
         .catch(error => {
@@ -700,7 +705,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Critical_zone();
         });
     },
     FETCH_MARKUP_PIPING(item) {
@@ -720,6 +724,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.piping = res.data;
+            this.getImgDWG_Piping();
           }
         })
         .catch(error => {
@@ -727,7 +732,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Piping();
         });
     },
     FETCH_MARKUP_ROOF(item) {
@@ -747,6 +751,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof = res.data;
+            this.getImgDWG_Roof();
           }
         })
         .catch(error => {
@@ -754,7 +759,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Roof();
         });
     },
     FETCH_MARKUP_ROOFNZ(item) {
@@ -774,6 +778,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof_nozzle = res.data;
+            this.getImgDWG_Roofnz();
           }
         })
         .catch(error => {
@@ -781,7 +786,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Roofnz();
         });
     },
     FETCH_MARKUP_SUMP(item) {
@@ -801,6 +805,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.sump = res.data;
+            this.getImgDWG_Sump();
           }
         })
         .catch(error => {
@@ -808,7 +813,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Sump();
         });
     },
     FETCH_MARKUP_SHELL(item) {
@@ -828,6 +832,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell = res.data;
+            this.getImgDWG_Shell();
           }
         })
         .catch(error => {
@@ -835,7 +840,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Shell();
         });
     },
     FETCH_MARKUP_SHELLNZ(item) {
@@ -855,6 +859,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell_nozzle = res.data;
+            this.getImgDWG_Shellnz();
           }
         })
         .catch(error => {
@@ -862,7 +867,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Shellnz();
         });
     },
     FETCH_MARKUP_PROJECTION_PLATE(item) {
@@ -882,6 +886,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.projection_plate = res.data;
+            this.getImgDWG_Projection_plate();
           }
         })
         .catch(error => {
@@ -889,7 +894,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.getImgDWG_Projection_plate();
         });
     },
     FETCH_CHECKLIST_ILAST_EX() {
@@ -1061,6 +1065,7 @@ export default {
             this.data1.annular_nominal_thk_mm =
               res.data[0].annular_nominal_thk_mm;
             this.data1.roof_nominal_thk_mm = res.data[0].roof_nominal_thk_mm;
+            this.getImgTankInfo();
           }
         })
         .catch(error => {
@@ -1070,7 +1075,6 @@ export default {
           //this.isLoading = false;
           const temp = this.data1.inservice_date;
           this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
-          this.getImgTankInfo();
         });
     },
     FETCH_SHELL_POINT() {
@@ -1123,6 +1127,8 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_settlement_api = res.data;
+            const temp = this.data1.shell_settlement_api;
+            this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
           }
         })
         .catch(error => {
@@ -1130,8 +1136,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const temp = this.data1.shell_settlement_api;
-          this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
         });
     },
     FETCH_PLUMBNESS() {
@@ -1184,6 +1188,9 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.bottom_thk = res.data;
+            const temp = this.data1.bottom_thk;
+            this.DATE_FOR_BOTTOM_THK(temp);
+            this.NUMBER_ROUNDING_BOTTOM_THK(temp);
           }
         })
         .catch(error => {
@@ -1191,9 +1198,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const temp = this.data1.bottom_thk;
-          this.DATE_FOR_BOTTOM_THK(temp);
-          this.NUMBER_ROUNDING_BOTTOM_THK(temp);
         });
     },
     FETCH_CRITICAL_THK() {
@@ -1216,6 +1220,9 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.critical_thk = res.data;
+            const temp = this.data1.critical_thk;
+            this.DATE_FOR_CRIT_ZONE(temp);
+            this.NUMBER_ROUNDING_CRIT_ZONE(temp);
           }
         })
         .catch(error => {
@@ -1223,9 +1230,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const temp = this.data1.critical_thk;
-          this.DATE_FOR_CRIT_ZONE(temp);
-          this.NUMBER_ROUNDING_CRIT_ZONE(temp);
         });
     },
     FETCH_ROOF_THK() {
@@ -1248,6 +1252,10 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.roof_thk = res.data;
+            const s = this.data1.roof_thk;
+            this.DATE_FOR_ROOF_THK(s);
+            const obj = this.data1.roof_thk;
+            this.NUMBER_ROUNDING_ROOF_THK(obj);
           }
         })
         .catch(error => {
@@ -1255,10 +1263,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const s = this.data1.roof_thk;
-          this.DATE_FOR_ROOF_THK(s);
-          const obj = this.data1.roof_thk;
-          this.NUMBER_ROUNDING_ROOF_THK(obj);
         });
     },
     FETCH_ROOFNZ_THK() {
@@ -1281,6 +1285,10 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.roofnz_thk = res.data;
+            const s = this.data1.roofnz_thk;
+            this.DATE_FOR_ROOFNZ_THK(s);
+            const obj = this.data1.roofnz_thk;
+            this.NUMBER_ROUNDING_ROOFNZ_THK(obj);
           }
         })
         .catch(error => {
@@ -1288,10 +1296,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const s = this.data1.roofnz_thk;
-          this.DATE_FOR_ROOFNZ_THK(s);
-          const obj = this.data1.roofnz_thk;
-          this.NUMBER_ROUNDING_ROOFNZ_THK(obj);
         });
     },
     FETCH_SHELL_THK() {
@@ -1314,8 +1318,8 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_thk = res.data;
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
+            const s = this.data1.shell_thk;
+            this.DATE_FOR_SHELL_THK(s);
           }
         })
         .catch(error => {
@@ -1323,8 +1327,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          const s = this.data1.shell_thk;
-          this.DATE_FOR_SHELL_THK(s);
         });
     },
     FETCH_SHELLNZ_THK() {
@@ -1347,6 +1349,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shellnz_thk = res.data;
+            this.NUMBER_ROUNDING_SHELLNZ_THK(this.data1.shellnz_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1356,7 +1359,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_SHELLNZ_THK(this.data1.shellnz_thk);
         });
     },
     FETCH_ANNULAR_THK() {
@@ -1379,6 +1381,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.annular_thk = res.data;
+            this.NUMBER_ROUNDING_ANNULAR_THK(this.data1.annular_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1388,7 +1391,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_ANNULAR_THK(this.data1.annular_thk);
         });
     },
     FETCH_MFLANNULAR_THK() {
@@ -1409,6 +1411,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.mfl_annular = res.data;
+            this.NUMBER_ROUNDING_MFLANNULAR_THK(this.data1.mfl_annular);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1418,7 +1421,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_MFLANNULAR_THK(this.data1.mfl_annular);
         });
     },
     FETCH_MFLBOTTOM_THK() {
@@ -1439,6 +1441,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.mfl_bottom = res.data;
+            this.NUMBER_ROUNDING_MFLBOTTOM_THK(this.data1.mfl_bottom);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1448,7 +1451,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_MFLBOTTOM_THK(this.data1.mfl_bottom);
         });
     },
     FETCH_PIPING_THK() {
@@ -1471,6 +1473,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.piping_thk = res.data;
+            this.NUMBER_ROUNDING_PIPING_THK(this.data1.piping_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1480,7 +1483,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_PIPING_THK(this.data1.piping_thk);
         });
     },
     FETCH_PROJECTION_PLATE_THK() {
@@ -1504,6 +1506,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.projection_thk = res.data;
+            this.NUMBER_ROUNDING_PROJECTION_THK(this.data1.projection_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1513,7 +1516,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_PROJECTION_THK(this.data1.projection_thk);
         });
     },
     FETCH_SUMP_THK() {
@@ -1536,6 +1538,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.sump_thk = res.data;
+            this.NUMBER_ROUNDING_SUMP_THK(this.data1.sump_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1545,7 +1548,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_SUMP_THK(this.data1.sump_thk);
         });
     },
     FETCH_COIL_THK() {
@@ -1568,6 +1570,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.coil_thk = res.data;
+            this.NUMBER_ROUNDING_COIL_THK(this.data1.coil_thk);
             // const s = res.data.shell_thk;
             // this.DATE_FOR_DOCX(s);
           }
@@ -1577,7 +1580,6 @@ export default {
         })
         .finally(() => {
           //this.isLoading = false;
-          this.NUMBER_ROUNDING_COIL_THK(this.data1.coil_thk);
         });
     },
     FETCH_SHELL_COURSE() {
@@ -1598,6 +1600,33 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_course = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_GRAPH_IMG() {
+      axios({
+        method: "get",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id?id=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("FETCH GRAPH :");
+          //console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.graph = res.data;
+            console.log(this.graph);
+            this.getImgGraph();
           }
         })
         .catch(error => {
@@ -1628,6 +1657,7 @@ export default {
           if (res.status == 200 && res.data) {
             //console.log("==> SUCCESS: Acceptance Determination");
             this.data1.accept = res.data;
+            this.NUMBER_ROUNDING_ACCEPT(this.data1.accept[0]);
           }
         })
         .catch(error => {
@@ -1635,7 +1665,6 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.NUMBER_ROUNDING_ACCEPT(this.data1.accept[0]);
         });
     },
     VIEW_ITEM(item) {
@@ -1686,6 +1715,7 @@ export default {
       this.FETCH_SUMP_THK();
       this.FETCH_PROJECTION_PLATE_THK();
       this.FETCH_PIPING_THK();
+      this.FETCH_GRAPH_IMG();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
@@ -1988,21 +2018,72 @@ export default {
     },
     async getImgGraph() {
       const o = this.graph;
+      // console.log(o)
       for (let j = 0; j < o.length; j++) {
-        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
-        const imageData = await response.arrayBuffer();
-        const mimeType = response.headers.get("content-type");
-        const imageBlob = new Blob([imageData], { type: mimeType });
-        const imageObject = {
-          _type: "image",
-          source: imageBlob,
-          format: mimeType,
-          width: 200,
-          height: 200
-        };
-        this.data1.graph.push({
-          img: imageObject
-        });
+        if (o[j].type == "shell_settlement_1") {
+          const response = await fetch(
+            encodeURI(this.baseURL + o[j].file_path)
+          );
+          const imageData = await response.arrayBuffer();
+          const mimeType = response.headers.get("content-type");
+          const imageBlob = new Blob([imageData], { type: mimeType });
+          const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 600,
+            height: 400
+          };
+          this.data1.shell_settlement_1 = imageObject;
+        }
+        if (o[j].type == "shell_settlement_2") {
+          const response = await fetch(
+            encodeURI(this.baseURL + o[j].file_path)
+          );
+          const imageData = await response.arrayBuffer();
+          const mimeType = response.headers.get("content-type");
+          const imageBlob = new Blob([imageData], { type: mimeType });
+          const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 600,
+            height: 400
+          };
+          this.data1.shell_settlement_2 = imageObject;
+        }
+        if (o[j].type == "shell_roundness") {
+          const response = await fetch(
+            encodeURI(this.baseURL + o[j].file_path)
+          );
+          const imageData = await response.arrayBuffer();
+          const mimeType = response.headers.get("content-type");
+          const imageBlob = new Blob([imageData], { type: mimeType });
+          const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 600,
+            height: 400
+          };
+          this.data1.shell_roundness = imageObject;
+        }
+        if (o[j].type == "bottom_settlement") {
+          const response = await fetch(
+            encodeURI(this.baseURL + o[j].file_path)
+          );
+          const imageData = await response.arrayBuffer();
+          const mimeType = response.headers.get("content-type");
+          const imageBlob = new Blob([imageData], { type: mimeType });
+          const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 600,
+            height: 400
+          };
+          this.data1.bottom_settlement = imageObject;
+        }
       }
     },
     async getImgTankInfo() {
