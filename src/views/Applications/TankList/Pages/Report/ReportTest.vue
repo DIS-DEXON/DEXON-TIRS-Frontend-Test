@@ -202,6 +202,7 @@ export default {
         annular_nominal_thk_mm: "",
         bottom_nominal_thk_mm: "",
         accept: [],
+        mrt: [],
         annular: [],
         bottom: [],
         coil: [],
@@ -523,6 +524,7 @@ export default {
         const difference_value = obj[i].difference_value;
         this.data1.shell_settlement_api[i].theta_radians = rad.toFixed(2);
         this.data1.shell_settlement_api[i].theta_degrees = degree.toFixed(2);
+
         this.data1.shell_settlement_api[i].y = y.toFixed(2);
         this.data1.shell_settlement_api[
           i
@@ -1075,6 +1077,36 @@ export default {
           //this.isLoading = false;
           const temp = this.data1.inservice_date;
           this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
+        });
+    },
+    FETCH_EVAL_MRT() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "mrt/get-mrt",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: parseInt(id_tag),
+          id_inspection_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("FETCH EVAL MRT :");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.mrt = res.data;
+            this.data1.mrt[0].an_tmin = this.data1.mrt[0].an_tmin.toFixed(2);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
         });
     },
     FETCH_SHELL_POINT() {
@@ -1716,6 +1748,7 @@ export default {
       this.FETCH_PROJECTION_PLATE_THK();
       this.FETCH_PIPING_THK();
       this.FETCH_GRAPH_IMG();
+      this.FETCH_EVAL_MRT();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
