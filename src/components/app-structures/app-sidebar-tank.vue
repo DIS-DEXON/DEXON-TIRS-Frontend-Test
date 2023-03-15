@@ -105,7 +105,7 @@
         :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/repair'"
       >
         <v-ons-toolbar-button class="item">
-          <img src="/img/icon_sidebar/tank/visual.png" />
+          <img src="/img/icon_sidebar/tank/repair.png" />
           <span>Repair Record </span>
         </v-ons-toolbar-button>
       </router-link>
