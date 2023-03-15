@@ -241,8 +241,8 @@ export default {
         shell_settlement_api: [],
         shell_thk: [],
         picture_log: [{}],
-        shell_settlement_1: {},
-        shell_settlement_2: {},
+        shell_settlement_1: "",
+        shell_settlement_2: "",
         shell_roundness: {},
         bottom_settlement: {},
         repair: [{}]
