@@ -307,6 +307,7 @@ export default {
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
         clearTimeout(myTimeout); // cancel timeout popup
+        this.theTemplate = null;
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
@@ -349,6 +350,7 @@ export default {
         this.isLoading = false;
 
         clearTimeout(myTimeout); // cancel timeout popup
+        this.theTemplate = null;
       } catch (e) {
         // error handling
         this.status = "Error: " + e.message;
