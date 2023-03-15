@@ -235,6 +235,7 @@ export default {
         mfl_bottom: [],
         mfl_annular: [],
         shell_course: [{}],
+        tank_course: [],
         shell_settlement_point: [],
         shell_settlement_api: [],
         shell_thk: [],
@@ -584,6 +585,14 @@ export default {
       this.data1.accept[0].ui_before_max = obj.ui_before_max.toFixed(2);
       this.data1.accept[0].ui_max = obj.ui_max.toFixed(2);
       this.data1.accept[0].ui_next_max = obj.ui_next_max.toFixed(2);
+    },
+    NUMBER_ROUNDING_TANK_COURSE(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        //const scr = obj[i].scr;
+        const min_rl = obj[i].min_rl;
+        //this.data1.tank_course[i].scr = scr.toFixed(2)
+        this.data1.tank_course[i].min_rl = min_rl.toFixed(2);
+      }
     },
     saveFile(filename, blob) {
       // get downloadable url from the blob
@@ -1777,11 +1786,39 @@ export default {
         }
       })
         .then(res => {
-          console.log("SHELL THK:");
+          console.log("SHELL COURSE:");
           //console.log(res);
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_course = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_TANK_COURSE() {
+      const id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "tank-course/tank-course-for-report-by-tank-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag
+        }
+      })
+        .then(res => {
+          console.log("TANK COURSE:");
+          //console.log(res);
+          if (res.status == 200) {
+            //console.log(res.data);
+            this.data1.tank_course = res.data;
+            this.NUMBER_ROUNDING_TANK_COURSE(this.data1.tank_course);
           }
         })
         .catch(error => {
@@ -1882,7 +1919,7 @@ export default {
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
-
+      this.FETCH_TANK_COURSE();
       this.FETCH_BOTTOM_THK();
       this.FETCH_PLUMBNESS();
       this.FETCH_CRITICAL_THK();
