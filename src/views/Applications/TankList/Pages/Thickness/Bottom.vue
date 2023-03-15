@@ -945,6 +945,7 @@ export default {
     },
     CML_FLAGER() {
       this.cml_flag = true;
+      this.px = "width: calc(100% - 82px)";
     }
   }
 };
