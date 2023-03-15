@@ -459,14 +459,7 @@
           </div>
           <!-- Chart-->
 
-          <div
-            style="
-              display: grid;
-              grid-template-columns: 50% 50%;
-              grid-gap: 20px;
-              width: calc(100% - 20px);
-            "
-          >
+          <div style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px; width: calc(100% - 20px);">
             <div class="upload-graph">
               <chartShellSettlement1
                 :current_view="this.current_view"
@@ -480,7 +473,17 @@
                 :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
                 ready-to-upload-message="UPLOAD SUCCESSFULLY"
                 @value-changed="VALUE_CHANGE"
+                v-if="chart_1==0"
               />
+              <div v-if="chart_1!=0" style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;">
+                <img
+                  :src="baseURL + chart_img_1"
+                  width="100%"
+                  height="200"
+                  style="margin-top: 5px;"
+                />
+                <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART(1)"><i class="las la-trash"></i></button>
+              </div>
             </div>
             <div class="upload-graph">
               <chartShellSettlement2
@@ -498,7 +501,17 @@
                 ready-to-upload-message="UPLOAD SUCCESSFULLY"
                 :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
                 @value-changed="VALUE_CHANGE2"
+                v-if="chart_2==0"
               />
+              <div v-if="chart_2!=0" style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;">
+                <img
+                  :src="baseURL + chart_img_2"
+                  width="100%"
+                  height="200"
+                  style="margin-top: 5px;"
+                />
+                <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART(2)"><i class="las la-trash"></i></button>
+              </div>
             </div>
           </div>
           <div class="app-instruction" style="margin-top: 20px">
@@ -638,10 +651,7 @@
                     </div>
                     <div
                       class="form-item"
-                      style="
-                        display: flex;
-                        justify-content: center;
-                        padding-top: 40px;"
+                      style="display: flex;justify-content: center;padding-top: 40px;"
                     >
                       <div class="form-item-label">
                         <label>
@@ -1216,7 +1226,11 @@ export default {
       formData: {
         item: null,
         multi: null
-      }
+      },
+      chart_1: 0,
+      chart_2: 0,
+      chart_img_1: "",
+      chart_img_2: "",
     };
   },
   computed: {
@@ -1262,10 +1276,20 @@ export default {
   },
   watch: {
     tabCurrent() {
-      if (this.tabCurrent == "data") this.VIEW_ITEM(this.current_view);
-      else if (this.tabCurrent == "cal") this.FETCH_CALC();
-      else if (this.tabCurrent == "ad") this.FETCH_ACCPT();
-      else console.log("tab select error");
+      if (this.tabCurrent == "data"){
+        this.VIEW_ITEM(this.current_view);
+      } 
+      else if (this.tabCurrent == "cal") {
+        this.FETCH_CALC();
+        this.FETCH_CHART_1();
+        this.FETCH_CHART_2();
+      } 
+      else if (this.tabCurrent == "ad") {
+        this.FETCH_ACCPT();
+      }
+      else {
+        console.log("tab select error");
+      }
     },
     current_view() {
       this.tabCurrent = "data";
@@ -1526,6 +1550,58 @@ export default {
         }
       });
     },
+    FETCH_CHART_1() {
+      console.log("==> FETCH: Chart 1");
+      var id = this.current_view.id_inspection_record;
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url: "chart-image-file/get-chart-image-file-by-ir-id-type?id=" + id + "&type=shell_settlement_1",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+      })
+        .then(res => {
+          console.log("==> RES: Chart 1");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.chart_1 = res.data[0].id_chart;
+            this.chart_img_1 = res.data[0].file_path;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CHART_2() {
+      console.log("==> FETCH: Chart 2");
+      var id = this.current_view.id_inspection_record;
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url: "chart-image-file/get-chart-image-file-by-ir-id-type?id=" + id + "&type=shell_settlement_2",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+      })
+        .then(res => {
+          console.log("==> RES: Chart 2");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.chart_2 = res.data[0].id_chart;
+            this.chart_img_2 = res.data[0].file_path;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     UPLOAD_CHART(type) {
       var formData = new FormData();
       formData.append(
@@ -1547,10 +1623,9 @@ export default {
         .then(res => {
           //console.log(res);
           if (res.status == 201) {
-            //console.log("in");
-            //console.log(res.data);
-            //this.$ons.notification.alert("UPLOAD COMPLETED");
             console.log("UPLOAD COMPLETED");
+            this.FETCH_CHART_1();
+            this.FETCH_CHART_2();
           }
         })
         .catch(error => {
@@ -1582,6 +1657,49 @@ export default {
       this.file = e.value[0];
       this.file_name = e.value[0].name;
       this.UPLOAD_CHART("shell_settlement_2");
+    },
+    DELETE_CHART(i) {
+      console.log(i);
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
+        if (res == 1) {
+          var id = 0;
+          if(i == 1) {
+            id = this.chart_1;
+          }else {
+            id = this.chart_2;
+          }
+          console.log(id);
+          axios({
+            method: "delete",
+            url: "/chart-image-file/delete-chart-image-file?id=" + id,
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
+            },
+          })
+            .then(res => {
+              console.log(res);
+
+              if (res.status == 200) {
+                if(i == 1) {
+                  this.chart_1 = 0;
+                  //this.FETCH_CHART_1();
+                }else {
+                  //this.FETCH_CHART_2();
+                  this.chart_2 = 0;
+                }    
+              }
+            })
+            .catch(error => {
+              this.isLoading = false;
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {
+            });
+        }
+      });
     }
   }
 };
