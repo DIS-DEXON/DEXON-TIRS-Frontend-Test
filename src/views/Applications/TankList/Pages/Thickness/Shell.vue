@@ -167,7 +167,7 @@
             <label>CML</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button v-if="SELECTION_SHELL">
+            <v-ons-toolbar-button>
               <label for="cml-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
@@ -249,7 +249,7 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button v-if="SELECTION_CML">
+            <v-ons-toolbar-button>
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
               </label>
