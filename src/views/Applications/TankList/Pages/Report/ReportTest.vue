@@ -133,7 +133,7 @@ export default {
         },
         company_name: "",
         overview_img_path: "",
-        overview_pic: {},
+        overview_pic: "",
         name_plate_img_path: "",
         tank_no: "",
         insp_date: "",

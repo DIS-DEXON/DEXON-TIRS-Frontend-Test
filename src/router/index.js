@@ -58,6 +58,11 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/InspectionRecord/Page.vue'),
           },
           {
+            path: 'other-attachment',
+            alias: 'Other Attachment',
+            component: () => import('../views/Applications/TankList/Pages/OtherAttachment/Page.vue'),
+          },
+          {
             path: 'marked-up-drawing/component/:id_component',
             alias: 'Marked-up Drawing',
             component: () => import('../views/Applications/TankList/Pages/MarkedUpDwg/Page.vue'),
