@@ -345,6 +345,7 @@ export default {
     DxTextArea,
     // DxPopup,
     DxButton,
+
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {

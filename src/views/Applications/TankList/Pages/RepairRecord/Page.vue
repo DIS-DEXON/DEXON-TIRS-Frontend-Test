@@ -32,8 +32,8 @@
         @row-inserted="CREATE_REPAIR"
         @row-updated="UPDATE_REPAIR"
         @row-removed="DELETE_REPAIR"
-        @editing-start="EDITING_START_DWG"
-        @init-new-row="INIT_NEW_ROW_DWG"
+        @editing-start="EDITING_START_REPAIR"
+        @init-new-row="INIT_NEW_ROW_REPAIR"
         @saved="SAVE"
       >
         <DxEditing
@@ -44,18 +44,19 @@
           mode="form"
         >
           <DxForm label-location="top">
-            <!-- <DxItem :col-count="2" :col-span="2" item-type="group">
+            <DxItem :col-count="2" :col-span="2" item-type="group">
+              <DxItem data-field="part" :col-span="2" />
               <DxItem data-field="file_path" :col-span="2" />
-              <DxItem data-field="file_name" :col-span="2" />
-            </DxItem> -->
+              <DxItem data-field="recommendation" :col-span="2" editor-type="dxTextArea" />
+            </DxItem>
           </DxForm>
         </DxEditing>
 
         <DxColumn
           data-field="file_path"
           caption="Image"
-          cell-template="dwg-img"
-          edit-cell-template="dwg-img-editor"
+          cell-template="repair-img"
+          edit-cell-template="repair-img-editor"
           :width="320"
         />
 
@@ -63,48 +64,59 @@
           data-field="part"
           caption="Part"
           :editor-options="partInputOptions"
+          :width="0"
         />
 
         <DxColumn
           data-field="recommendation"
           caption="Recommendation"
+          cell-template="dxTextArea"
           :editor-options="recInputOptions"
+          :width="0"
         />
 
-        <template #dwg-img="{ data }">
+        <DxColumn
+          caption="Detail"
+          cell-template="detail-template"
+          css-class="text-vertical-align-top"
+        />
+
+        <template #detail-template="{ data }">
+          <div>
+            <div class="header-custom-field">Part: <span>{{ data.data.part }}</span></div>
+            <hr>
+            <div class="header-custom-field">Recommendation</div> 
+            <DxTextArea :height="80" :read-only="true" :value="data.data.recommendation" />
+          </div>
+        </template>
+
+        <template #repair-img="{ data }">
           <div style="position: relative">
             <a :href="baseURL + data.value" download="dwg" target="_blank">
               <img :src="baseURL + data.value" width="300" height="200" /><br />
             </a>
-            <!-- <a
-              :href="baseURL + data.value"
-              download="dwg"
-              target="_blank"
-              class="btn-view-dwg"
-              >VIEW</a
-            > -->
           </div>
         </template>
 
-        <template #dwg-img-editor="{ data }">
+        <template #repair-img-editor="{ data }">
           <div>
             <img
               :src="baseURL + data.value"
               width="300"
               height="200"
-              v-if="imgDwg != '' && isInitEdit == 0"
+              v-if="imgRepair != '' && isInitEdit == 0"
             />
             <img
-              :src="imgDwg"
+              :src="imgRepair"
               width="300"
               height="200"
-              v-if="imgDwg != '' && isInitEdit == 1"
+              v-if="imgRepair != '' && isInitEdit == 1"
             />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="300"
               height="200"
-              v-if="imgDwg == ''"
+              v-if="imgRepair == ''"
             />
 
             <DxFileUploader
@@ -112,10 +124,17 @@
               label-text=""
               accept="image/*"
               upload-mode="useForm"
-              @value-changed="ON_DWG_CHANGE"
+              @value-changed="ON_REPAIR_CHANGE"
             />
           </div>
         </template>
+
+        <template #dxTextArea="{ data }">
+          <div>
+            <DxTextArea :height="200" :read-only="true" :value="data.value" />
+          </div>
+        </template>
+
 
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
@@ -146,6 +165,7 @@ import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
+import DxTextArea from "devextreme-vue/text-area";
 
 //DataGrid
 import { Workbook } from "exceljs";
@@ -170,7 +190,7 @@ import {
 //FileUpload
 import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
-//import { DxItem } from "devextreme-vue/form";
+import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
 const imgRef = "img";
@@ -190,12 +210,13 @@ export default {
     DxEditing,
     DxFileUploader,
     DxForm,
-    //DxItem,
+    DxItem,
     //DxPopup,
     //DxButton,
     // innerPageName,
     InspectionRecordPanel,
     SelectInspRecord,
+    DxTextArea,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -215,7 +236,7 @@ export default {
       isLoading: false,
       fileUploaderRef,
       imgRef,
-      imgDwg: "",
+      imgRepair: "",
       file: [],
       isInitEdit: 0,
       id_inspection_record: 0,
@@ -224,13 +245,20 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
-      is_changed_dwg: 0,
-      dataDwgTemp: "",
+      is_changed_repair: 0,
+      dataRepairTemp: "",
       partInputOptions: { placeholder: 'Enter part ...' },
       recInputOptions: { placeholder: 'Enter recommendation ...' },
     };
   },
-  computed: {},
+  computed: {
+    baseURL() {
+      var mode = this.$store.state.mode;
+      if (mode == "dev") return this.$store.state.modeURL.dev;
+      else if (mode == "prod") return this.$store.state.modeURL.prod;
+      else return console.log("develpment mode set up incorrect.");
+    },
+  },
   methods: {
     EXPORT_DATA(e) {
       const workbook = new Workbook();
@@ -252,14 +280,12 @@ export default {
       this.current_view = {};
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
+      console.log(this.id_inspection_record);
       axios({
         method: "get",
-        url: "repair-record/get-repair-record-by-ir-id",
+        url: "repair-record/get-repair-record-by-ir-id?id=" + this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id_inspection_record: item.id_inspection_record,
         },
       })
         .then((res) => {
@@ -308,7 +334,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.is_changed_dwg = 0;
+          this.is_changed_repair = 0;
         });
     },
     UPDATE_REPAIR(e) {
@@ -321,7 +347,7 @@ export default {
       formData.append("file", this.file);
       formData.append("file_path", this.file_path);
       formData.append("recommendation", this.recommendation);
-      formData.append("is_changed_dwg", this.is_changed_dwg);
+      formData.append("is_changed_repair", this.is_changed_repair);
       axios({
         method: "put",
         url: "repair-record/edit-repair-record",
@@ -352,12 +378,9 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "repair-record/delete-repair-record",
+        url: "repair-record/delete-repair-record?id=" + e.key,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
-        data: {
-          id: e.key,
         },
       })
         .then((res) => {
@@ -376,27 +399,27 @@ export default {
           this.isLoading = false;
         });
     },
-    ON_DWG_CHANGE(e) {
+    ON_REPAIR_CHANGE(e) {
       console.log(e);
       this.isInitEdit = 1;
       let reader = new FileReader();
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
-        this.imgDwg = reader.result;
+        this.imgRepair = reader.result;
       };
       this.file = e.value[0];
-      this.is_changed_dwg = 1;
+      this.is_changed_repair = 1;
     },
-    EDITING_START_DWG(e) {
+    EDITING_START_REPAIR(e) {
       console.log(e);
-      this.imgDwg = e.data.path_dwg;
+      this.imgRepair = e.data.path_repair;
       this.file = [];
       this.isInitEdit = 0;
       this.file_path = e.data.file_path;
-      this.dataDwgTemp = e;
+      this.dataRepairTemp = e;
     },
-    INIT_NEW_ROW_DWG() {
-      this.imgDwg = "";
+    INIT_NEW_ROW_REPAIR() {
+      this.imgRepair = "";
       this.file = [];
       this.isInitEdit = 1;
     },
@@ -404,7 +427,7 @@ export default {
       console.log('save:');
       console.log(e);
       if(e.changes.length == 0) {
-        this.UPDATE_DWG(this.dataDwgTemp);
+        this.UPDATE_REPAIR(this.dataRepairTemp);
       } 
     },
     IS_VISIBLE_ADD() {
