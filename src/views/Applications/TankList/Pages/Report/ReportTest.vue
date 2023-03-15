@@ -101,6 +101,7 @@ export default {
       isLoading: false,
       isHovering: false,
       imgpath: [],
+      repairList: [],
       drawingList: [],
       current_view: {},
       buffer: "",
@@ -243,7 +244,8 @@ export default {
         shell_settlement_1: {},
         shell_settlement_2: {},
         shell_roundness: {},
-        bottom_settlement: {}
+        bottom_settlement: {},
+        repair: [{}]
       }
     };
   },
@@ -442,6 +444,7 @@ export default {
         );
         this.data1.annular_thk[i].scr = scr.toFixed(2);
         this.data1.annular_thk[i].rl = rl.toFixed(2);
+        this.data1.annular_thk[i].t_req = obj[i].t_req.toFixed(2);
       }
     },
     NUMBER_ROUNDING_PIPING_THK(obj) {
@@ -1573,8 +1576,6 @@ export default {
             //console.log(res.data);
             this.data1.annular_thk = res.data;
             this.NUMBER_ROUNDING_ANNULAR_THK(this.data1.annular_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
@@ -1855,6 +1856,31 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_REPAIR_RECORD() {
+      axios({
+        method: "get",
+        url:
+          "repair-record/get-repair-record-by-ir-id?id=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("repair record:");
+          //console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.repairList = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_ACCPT() {
       //console.log("==> FETCH: Acceptance Determination");
       //this.isLoading = true;
@@ -2010,7 +2036,7 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 200,
+          width: 300,
           height: 200
         };
         const response2 = await fetch(
@@ -2022,13 +2048,34 @@ export default {
           _type: "image",
           source: imageBlob2,
           format: mimeType,
-          width: 200,
+          width: 300,
           height: 200
         };
         this.data1.picture_log.push({
           overview_pic: imageObject,
           close_up_view_pic: imageObject2,
           findings: o[j].finding,
+          recommendation: o[j].recommendation
+        });
+      }
+    },
+    async getImgRepair() {
+      const o = this.repairList;
+      for (let j = 0; j < o.length; j++) {
+        const response = await fetch(encodeURI(this.baseURL + o[j].file_path));
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 500,
+          height: 300
+        };
+        this.data1.repair.push({
+          img: imageObject,
+          part: o[j].part,
           recommendation: o[j].recommendation
         });
       }
@@ -2245,88 +2292,94 @@ export default {
     async getImgGraph() {
       const o = this.graph;
       // console.log(o)
-      for (let j = 0; j < o.length; j++) {
-        if (o[j].type == "shell_settlement_1") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_settlement_1 = imageObject;
-        }
-        if (o[j].type == "shell_settlement_2") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_settlement_2 = imageObject;
-        }
-        if (o[j].type == "shell_roundness") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.shell_roundness = imageObject;
-        }
-        if (o[j].type == "bottom_settlement") {
-          const response = await fetch(
-            encodeURI(this.baseURL + o[j].file_path)
-          );
-          const imageData = await response.arrayBuffer();
-          const mimeType = response.headers.get("content-type");
-          const imageBlob = new Blob([imageData], { type: mimeType });
-          const imageObject = {
-            _type: "image",
-            source: imageBlob,
-            format: mimeType,
-            width: 600,
-            height: 400
-          };
-          this.data1.bottom_settlement = imageObject;
+      if (o.length != 0) {
+        console.warn("graph image");
+        for (let j = 0; j < o.length; j++) {
+          if (o[j].type == "shell_settlement_1") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.shell_settlement_1 = imageObject;
+          }
+          if (o[j].type == "shell_settlement_2") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.shell_settlement_2 = imageObject;
+          }
+          if (o[j].type == "shell_roundness") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.shell_roundness = imageObject;
+          }
+          if (o[j].type == "bottom_settlement") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.bottom_settlement = imageObject;
+          }
         }
       }
     },
     async getImgTankInfo() {
-      const response = await fetch(
-        encodeURI(this.baseURL + this.data1.overview_img_path)
-      );
-      const imageData = await response.arrayBuffer();
-      const mimeType = response.headers.get("content-type");
-      const imageBlob = new Blob([imageData], { type: mimeType });
-      const imageObject = {
-        _type: "image",
-        source: imageBlob,
-        format: mimeType,
-        width: 200,
-        height: 200
-      };
-      this.data1.overview_pic = imageObject;
+      if (this.data1.overview_img_path != null) {
+        console.warn("TANK IMAGE");
+        const response = await fetch(
+          encodeURI(this.baseURL + this.data1.overview_img_path)
+        );
+        const imageData = await response.arrayBuffer();
+        const mimeType = response.headers.get("content-type");
+        const imageBlob = new Blob([imageData], { type: mimeType });
+        const imageObject = {
+          _type: "image",
+          source: imageBlob,
+          format: mimeType,
+          width: 200,
+          height: 200
+        };
+        this.data1.overview_pic = imageObject;
+      }
     }
   }
 };
