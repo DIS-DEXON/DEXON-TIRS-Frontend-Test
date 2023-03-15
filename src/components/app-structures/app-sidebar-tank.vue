@@ -1,27 +1,26 @@
 <template>
-  <div
-    class="app-sidebar"
-    :class="[sidebarHiding == true ? 'app-sidebar-hide' : 'app-sidebar']"
-  >
+  <div class="app-sidebar" :class="[sidebarHiding == true ? 'app-sidebar-hide' : 'app-sidebar']">
     <div class="item-container">
       <!-- SECTION INFO -->
       <div class="section-label">
         <label>Information</label>
       </div>
-      <router-link
-        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/info'"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/info'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/info.png" />
           <span>Tank Information</span>
         </v-ons-toolbar-button>
       </router-link>
-      <router-link
-        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/insp-record'"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/insp-record'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/inspection-record.png" />
           <span>Inspection Record</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/other-attachment'">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/inspection-record.png" />
+          <span>Other Attachment</span>
         </v-ons-toolbar-button>
       </router-link>
 
@@ -93,20 +92,16 @@
           <i class="las la-angle-right right-arrow"></i>
         </v-ons-toolbar-button>
       </router-link>
-      <router-link
-        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/visual'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/visual.png" />
-          <span>Picture Log </span>
+          <span>Picture Log</span>
         </v-ons-toolbar-button>
       </router-link>
-      <router-link
-        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/repair'"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/repair'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/repair.png" />
-          <span>Repair Record </span>
+          <span>Repair Record</span>
         </v-ons-toolbar-button>
       </router-link>
 
@@ -115,9 +110,7 @@
         <label>Report</label>
         <hr />
       </div>
-      <router-link
-        :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/report'"
-      >
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/report'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/report.png" />
           <span>Report</span>
@@ -203,10 +196,7 @@
       </v-ons-popover>
     </div>
     <div class="item-container fixed-panel">
-      <v-ons-toolbar-button
-        class="item bottom-btn"
-        v-on:click="SHOW_HIDE_SIDEBAR()"
-      >
+      <v-ons-toolbar-button class="item bottom-btn" v-on:click="SHOW_HIDE_SIDEBAR()">
         <i class="las la-caret-square-left" v-if="sidebarHiding == false"></i>
         <i class="las la-caret-square-right" v-if="sidebarHiding == true"></i>
         <span>Hide Sidebar</span>
@@ -233,7 +223,7 @@ export default {
         markup_drawing: false,
         checklist: false,
         thickness: false,
-        evaluation: false,
+        evaluation: false
       },
       popoverTarget: null,
       popoverDirection: "right",
@@ -242,179 +232,179 @@ export default {
         markup_drawing: [
           {
             id: 1,
-            component_code: "Annular",
+            component_code: "Annular"
           },
           {
             id: 2,
-            component_code: "Bottom",
+            component_code: "Bottom"
           },
           {
             id: 3,
-            component_code: "Coil",
+            component_code: "Coil"
           },
           {
             id: 4,
-            component_code: "Critical Zone",
+            component_code: "Critical Zone"
           },
           {
             id: 5,
-            component_code: "Piping",
+            component_code: "Piping"
           },
           {
             id: 6,
-            component_code: "Roof",
+            component_code: "Roof"
           },
           {
             id: 7,
-            component_code: "Roof Nozzle",
+            component_code: "Roof Nozzle"
           },
           {
             id: 8,
-            component_code: "Sump",
+            component_code: "Sump"
           },
           {
             id: 9,
-            component_code: "Shell",
+            component_code: "Shell"
           },
           {
             id: 10,
-            component_code: "Shell Nozzle",
+            component_code: "Shell Nozzle"
           },
           {
             id: 11,
-            component_code: "Projection Plate",
-          },
+            component_code: "Projection Plate"
+          }
         ],
         checklist: [
           {
             id: 1,
-            checklist_code: "Generic",
+            checklist_code: "Generic"
           },
           {
             id: 2,
-            checklist_code: "ILAST External",
+            checklist_code: "ILAST External"
           },
           {
             id: 3,
-            checklist_code: "ILAST Internal",
-          },
+            checklist_code: "ILAST Internal"
+          }
         ],
         thickness: [
           {
             id: 1,
             code: "Roof",
-            path: "roof",
+            path: "roof"
           },
           {
             id: 2,
             code: "Roof Nozzle",
-            path: "roof-nozzle",
+            path: "roof-nozzle"
           },
           {
             id: 3,
             code: "Shell",
-            path: "shell",
+            path: "shell"
           },
           {
             id: 4,
             code: "Shell API Calculation",
-            path: "shell-api-calculation",
+            path: "shell-api-calculation"
           },
           {
             id: 5,
             code: "Shell Nozzle",
-            path: "shell-nozzle",
+            path: "shell-nozzle"
           },
           {
             id: 6,
             code: "Coil",
-            path: "coil",
+            path: "coil"
           },
           {
             id: 7,
             code: "Piping",
-            path: "piping",
+            path: "piping"
           },
           {
             id: 8,
             code: "Bottom",
-            path: "bottom",
+            path: "bottom"
           },
           {
             id: 9,
             code: "Annular",
-            path: "annular",
+            path: "annular"
           },
           {
             id: 10,
             code: "Critical Zone",
-            path: "critical-zone",
+            path: "critical-zone"
           },
           {
             id: 11,
             code: "Projection Plate",
-            path: "project-plate",
+            path: "project-plate"
           },
           {
             id: 12,
             code: "MFL - Bottom",
-            path: "mfl-bottom",
+            path: "mfl-bottom"
           },
           {
             id: 13,
             code: "MFL - Annular",
-            path: "mfl-annular",
+            path: "mfl-annular"
           },
           {
             id: 14,
             code: "Sump",
-            path: "sump",
-          },
+            path: "sump"
+          }
         ],
         evaluation: [
           {
             id: 1,
             code: "Shell Settlement",
-            path: "shell-settlement",
+            path: "shell-settlement"
           },
           {
             id: 2,
             code: "Shell Plumbness",
-            path: "shell-plumness",
+            path: "shell-plumness"
           },
           {
             id: 3,
             code: "Shell Buckling",
-            path: "shell-buckling",
+            path: "shell-buckling"
           },
           {
             id: 4,
             code: "Local Deviations",
-            path: "local-deviations",
+            path: "local-deviations"
           },
           {
             id: 5,
             code: "Roundness",
-            path: "roundness",
+            path: "roundness"
           },
           {
             id: 6,
             code: "Grounding Connection",
-            path: "ground-connection",
+            path: "ground-connection"
           },
           {
             id: 7,
             code: "MRT",
-            path: "mrt",
+            path: "mrt"
           },
           {
             id: 8,
             code: "Bottom Settlement",
-            path: "bottom-settlement",
-          },
-        ],
+            path: "bottom-settlement"
+          }
+        ]
       },
-      sidebarHiding: false,
+      sidebarHiding: false
     };
   },
   computed: {},
@@ -459,7 +449,7 @@ export default {
             this.id_tag +
             "/marked-up-drawing/component/" +
             item.id,
-          replace: true,
+          replace: true
         });
       } else if (target == "checklist") {
         this.$router.push({
@@ -470,7 +460,7 @@ export default {
             this.id_tag +
             "/checklist/form/" +
             item.id,
-          replace: true,
+          replace: true
         });
       } else if (target == "thickness") {
         this.$router.push({
@@ -481,7 +471,7 @@ export default {
             this.id_tag +
             "/thickness/" +
             item.path,
-          replace: true,
+          replace: true
         });
       } else if (target == "evaluation") {
         this.$router.push({
@@ -492,7 +482,7 @@ export default {
             this.id_tag +
             "/evaluation/" +
             item.path,
-          replace: true,
+          replace: true
         });
       }
     },
@@ -500,8 +490,8 @@ export default {
       if (this.sidebarHiding == false) this.sidebarHiding = true;
       else this.sidebarHiding = false;
       this.$emit("resizeGridLayout");
-    },
-  },
+    }
+  }
 };
 </script>
 
