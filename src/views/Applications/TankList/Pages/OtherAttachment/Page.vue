@@ -41,7 +41,7 @@
           <DxForm label-location="top">
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path" :col-span="2" />
-              <DxItem data-field="note" editor-type="dxTextArea" :col-span="2" />
+              <DxItem data-field="note" :col-span="2" />
             </DxItem>
           </DxForm>
         </DxEditing>
@@ -71,14 +71,19 @@
               :src="baseURL + data.value"
               width="300"
               height="200"
-              v-if="imgDwg != '' && isInitEdit == 0"
+              v-if="imgHolder != '' && isInitEdit == 0"
             />
-            <img :src="imgDwg" width="300" height="200" v-if="imgDwg != '' && isInitEdit == 1" />
+            <img
+              :src="imgHolder"
+              width="300"
+              height="200"
+              v-if="imgHolder != '' && isInitEdit == 1"
+            />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="300"
               height="200"
-              v-if="imgDwg == ''"
+              v-if="imgHolder == ''"
             />
 
             <DxFileUploader
@@ -189,7 +194,7 @@ export default {
       isLoading: false,
       fileUploaderRef,
       imgRef,
-      imgDwg: "",
+      imgHolder: "",
       file: [],
       isInitEdit: 0,
       id_component: 0,
@@ -233,7 +238,7 @@ export default {
       axios({
         method: "get",
         url:
-          "other-attachment/get-other-attachment-by-ir-id?id=" +
+          "other-attachment/get-other-attachment-by-ir-id?id_inspection_record=" +
           this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
@@ -264,11 +269,12 @@ export default {
     CREATE_DWG(e) {
       console.log(e);
       var formData = new FormData();
-
+      let user = JSON.parse(localStorage.getItem("user"));
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append("note", e.data.note);
       formData.append("file", this.file);
-      formData.append("created_by", this.$store.state.user.id_account);
+      formData.append("created_by", user.id_account);
+      formData.append("updated_by", user.id_account);
 
       axios({
         method: "post",
@@ -321,15 +327,20 @@ export default {
     },
     UPDATE_DWG(e) {
       console.log(e);
+      let user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id", e.key);
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append("file", this.file);
       formData.append("file_path", this.file_path);
-      formData.append("is_changed_dwg", this.is_changed_dwg);
+
       formData.append("note", e.data.note);
+
+      formData.append("created_time", e.data.created_time);
+      formData.append("created_by", e.data.created_by);
+      formData.append("updated_by", user.id_account);
       axios({
-        method: "post",
+        method: "put",
         url: "other-attachment/edit-other-attachment?id=" + e.key,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -339,7 +350,7 @@ export default {
       })
         .then(res => {
           //console.log(res);
-          if (res.status == 201 && res.data) {
+          if (res.status == 204) {
             //console.log(res.data);
             this.FETCH_ATTACHMENTS();
           }
@@ -358,14 +369,15 @@ export default {
       let reader = new FileReader();
       reader.readAsDataURL(e.value[0]);
       reader.onload = () => {
-        this.imgDwg = reader.result;
+        this.imgHolder = reader.result;
       };
       this.file = e.value[0];
       this.is_changed_dwg = 1;
     },
     EDITING_START_DWG(e) {
+      console.warn("EDIT");
       console.log(e);
-      this.imgDwg = e.data.path_dwg;
+      this.imgHolder = e.data.path_dwg;
       this.file = [];
       this.isInitEdit = 0;
       this.file_path = e.data.file_path;
@@ -379,7 +391,7 @@ export default {
       }
     },
     INIT_NEW_ROW_DWG() {
-      this.imgDwg = "";
+      this.imgHolder = "";
       this.file = [];
       this.isInitEdit = 1;
     },
