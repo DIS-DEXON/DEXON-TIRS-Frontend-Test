@@ -200,6 +200,11 @@
             <label>TP</label>
           </div>
           <div class="right">
+            <v-ons-toolbar-button v-on:click="DOWNLOAD_TP()">
+              <label for="tp-download-tp-btn">
+                Download
+              </label>
+            </v-ons-toolbar-button>
             <v-ons-toolbar-button>
               <label for="tp-upload-btn">
                 <i class="las la-file-import"></i>Import Excel
@@ -984,6 +989,38 @@ export default {
     CML_FLAGER() {
       this.cml_flag = true;
       this.px = "width: calc(100% - 82px)";
+    },
+    DOWNLOAD_TP() {
+      console.log('in');
+      var id_tag = parseInt(this.$route.params.id_tag);
+      axios({
+        method: "get",
+        url: "roof-thickness/download-roof-thk?id_tag=" + id_tag,
+        responseType: 'blob',
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+        }
+      })
+        .then(res => {
+          const blob = res.data;
+          this.downLoadFileExcel(blob, "testtttttttt");
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    downLoadFileExcel(data, filename) {
+      console.log(data);
+      const link = document.createElement('a');
+      //const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      //console.log(blob);
+      link.setAttribute('href', window.URL.createObjectURL(new Blob([data])));
+      link.setAttribute('download', filename + '.xlsx');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 };
