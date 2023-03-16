@@ -342,6 +342,7 @@ export default {
     },
     UPDATE_REPAIR(e) {
       console.log(e);
+      const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id", e.key);
       formData.append("id_tag", this.$route.params.id_tag);
@@ -349,11 +350,15 @@ export default {
       formData.append("part", e.data.part);
       formData.append("file", this.file);
       formData.append("file_path", this.file_path);
-      formData.append("recommendation", this.recommendation);
+      formData.append("recommendation", e.data.recommendation);
       formData.append("is_changed_repair", this.is_changed_repair);
+      formData.append("created_by", e.data.created_by);
+      formData.append("created_time", e.data.created_time);
+      formData.append("updated_by", user.id_account);
+      formData.append("updated_time", e.data.updated_time);
       axios({
         method: "put",
-        url: "repair-record/edit-repair-record",
+        url: "repair-record/" + e.key,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
