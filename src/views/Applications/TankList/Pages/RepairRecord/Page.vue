@@ -283,7 +283,7 @@ export default {
       console.log(this.id_inspection_record);
       axios({
         method: "get",
-        url: "repair-record/get-repair-record-by-ir-id?id=" + this.id_inspection_record,
+        url: "repair-record/get-repair-record-by-ir-id?id_inspection_record=" + this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
@@ -304,12 +304,15 @@ export default {
     },
     CREATE_REPAIR(e) {
       console.log(e);
+      const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append("part", e.data.part);
       formData.append("recommendation", e.data.recommendation);
       formData.append("file", this.file);
+      formData.append("created_by", user.id_account);
+      formData.append("updated_by", user.id_account);
 
       axios({
         method: "post",
