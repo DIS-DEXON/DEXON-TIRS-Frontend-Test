@@ -419,7 +419,7 @@ export default {
   data() {
     return {
       px_thk: "width: calc(100% - 0px)",
-      px: "width: calc(100% - 0px)",
+      px: "width: calc(100% - 41px)",
       cml_flag: false,
       tp_flag: false,
       dataList: {
