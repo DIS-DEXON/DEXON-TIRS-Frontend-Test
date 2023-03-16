@@ -462,14 +462,12 @@ export default {
   computed: {
     SELECTION() {
       if (this.tp_flag) {
-        console.warn(this.tp_flag);
         return true;
       }
       return false;
     },
     SELECTION_CML() {
       if (this.cml_flag) {
-        console.warn(this.cml_flag);
         return true;
       }
       return false;

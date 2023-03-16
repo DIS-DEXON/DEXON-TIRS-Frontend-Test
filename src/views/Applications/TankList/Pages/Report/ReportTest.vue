@@ -1872,7 +1872,7 @@ export default {
       axios({
         method: "get",
         url:
-          "repair-record/get-repair-record-by-ir-id?id=" +
+          "repair-record/get-repair-record-by-ir-id?id_inspection_record=" +
           this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
@@ -1881,9 +1881,10 @@ export default {
       })
         .then(res => {
           console.log("repair record:");
-          //console.log(res.data);
-          if (res.status == 200 && res.data) {
+          console.log(res.data);
+          if (res.status == 200) {
             this.repairList = res.data;
+            this.getImgRepair();
           }
         })
         .catch(error => {
@@ -1940,6 +1941,7 @@ export default {
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
       this.data1.name_ndt_examiner = item.name_ndt_examiner;
       this.data1.cert_no = item.cert_no;
+
       this.FETCH_MARKUP_ANNULAR(this.current_view);
       this.FETCH_MARKUP_BOTTOM(this.current_view);
       this.FETCH_MARKUP_COIL(this.current_view);
@@ -1980,6 +1982,7 @@ export default {
       this.FETCH_EVAL_ROUNDNESS();
       this.FETCH_EVAL_GROUNDING();
       this.FETCH_EVAL_GROUNDING_DETAIL();
+      this.FETCH_REPAIR_RECORD();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
@@ -2091,6 +2094,7 @@ export default {
           recommendation: o[j].recommendation
         });
       }
+      this.data1.repair.shift();
     },
     async getImgDWG_Annular() {
       const o = this.drawingList.annular;
