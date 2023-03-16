@@ -330,7 +330,7 @@ export default {
       formData.append("note", e.data.note);
       axios({
         method: "post",
-        url: "",
+        url: "other-attachment/edit-other-attachment?id=" + e.key,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))

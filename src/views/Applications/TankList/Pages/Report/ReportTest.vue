@@ -136,6 +136,7 @@ export default {
         overview_pic: "",
         name_plate_img_path: "",
         tank_no: "",
+        tank_status: "",
         insp_date: "",
         insp_campaign: "",
         location: "",
@@ -239,11 +240,12 @@ export default {
         tank_course: [],
         shell_settlement_point: [],
         shell_settlement_api: [],
+        shell_settlement_api_sum: [],
         shell_thk: [],
         picture_log: [{}],
         shell_settlement_1: "",
         shell_settlement_2: "",
-        shell_roundness: {},
+        shell_roundness: "",
         bottom_settlement: {},
         repair: [{}]
       }
@@ -995,6 +997,7 @@ export default {
             this.data1.overview_img_path = res.data[0].overview_img_path;
             this.data1.name_plate_img_path = res.data[0].name_plate_img_path;
             this.data1.tank_no = res.data[0].tank_no;
+            this.data1.tank_status = res.data[0].tank_status;
             this.data1.location = res.data[0].location;
             this.data1.inservice_date = res.data[0].inservice_date;
             this.data1.inspection_code = res.data[0].inspection_code;
@@ -1163,7 +1166,6 @@ export default {
       axios({
         method: "post",
         url: "shell-settlement/get-shell-settlement-cal",
-
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -1180,6 +1182,16 @@ export default {
             this.data1.shell_settlement_api = res.data;
             const temp = this.data1.shell_settlement_api;
             this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
+            this.data1.shell_settlement_api_sum.push(
+              this.data1.shell_settlement_api[0]
+            );
+            this.data1.shell_settlement_api_sum[0].syy.toFixed(2);
+            this.data1.shell_settlement_api_sum[0].r_2 = this.data1.shell_settlement_api_sum[0].r_2.toFixed(
+              2
+            );
+            this.data1.shell_settlement_api_sum[0].sse = this.data1.shell_settlement_api_sum[0].sse.toFixed(
+              2
+            );
           }
         })
         .catch(error => {
@@ -1693,7 +1705,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("PIPING THK:");
+          console.log("PROJECTION THK:");
           //console.log(res);
           if (res.status == 200) {
             //console.log(res.data);
@@ -2091,8 +2103,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.annular.push({
           marked_up_drawing: imageObject
@@ -2110,8 +2122,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.bottom.push({
           marked_up_drawing: imageObject
@@ -2129,8 +2141,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.coil.push({
           marked_up_drawing: imageObject
@@ -2148,8 +2160,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.critical_zone.push({
           marked_up_drawing: imageObject
@@ -2167,8 +2179,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.piping.push({
           marked_up_drawing: imageObject
@@ -2186,8 +2198,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.roof.push({
           marked_up_drawing: imageObject
@@ -2205,8 +2217,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.roof_nozzle.push({
           marked_up_drawing: imageObject
@@ -2224,8 +2236,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.sump.push({
           marked_up_drawing: imageObject
@@ -2243,8 +2255,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.shell.push({
           marked_up_drawing: imageObject
@@ -2262,8 +2274,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.shell_nozzle.push({
           marked_up_drawing: imageObject
@@ -2281,8 +2293,8 @@ export default {
           _type: "image",
           source: imageBlob,
           format: mimeType,
-          width: 500,
-          height: 300
+          width: 600,
+          height: 400
         };
         this.data1.projection_plate.push({
           marked_up_drawing: imageObject
