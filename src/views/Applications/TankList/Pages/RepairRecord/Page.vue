@@ -374,7 +374,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          if (res.status == 204 && res.data) {
+          if (res.status == 204) {
             console.log(res.data);
             var item = [];
             item.id_inspection_record = this.id_inspection_record;
