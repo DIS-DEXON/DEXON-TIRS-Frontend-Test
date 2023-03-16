@@ -2319,7 +2319,7 @@ export default {
               source: imageBlob,
               format: mimeType,
               width: 600,
-              height: 400
+              height: 300
             };
             this.data1.shell_settlement_1 = imageObject;
           }
@@ -2335,7 +2335,7 @@ export default {
               source: imageBlob,
               format: mimeType,
               width: 600,
-              height: 400
+              height: 300
             };
             this.data1.shell_settlement_2 = imageObject;
           }
@@ -2351,7 +2351,7 @@ export default {
               source: imageBlob,
               format: mimeType,
               width: 600,
-              height: 400
+              height: 300
             };
             this.data1.shell_roundness = imageObject;
           }

@@ -58,14 +58,18 @@
           cell-template="repair-img"
           edit-cell-template="repair-img-editor"
           :width="320"
-        />
+        >
+         <DxRequiredRule />
+        </DxColumn>
 
         <DxColumn
           data-field="part"
           caption="Part"
           :editor-options="partInputOptions"
           :width="0"
-        />
+        >
+          <DxRequiredRule />
+        </DxColumn>
 
         <DxColumn
           data-field="recommendation"
@@ -73,7 +77,8 @@
           cell-template="dxTextArea"
           :editor-options="recInputOptions"
           :width="0"
-        />
+        >
+        </DxColumn>
 
         <DxColumn
           caption="Detail"
@@ -86,7 +91,7 @@
             <div class="header-custom-field">Part: <span>{{ data.data.part }}</span></div>
             <hr>
             <div class="header-custom-field">Recommendation</div> 
-            <DxTextArea :height="80" :read-only="true" :value="data.data.recommendation" />
+            <DxTextArea :height="150" :read-only="true" :value="data.data.recommendation" />
           </div>
         </template>
 
@@ -182,6 +187,7 @@ import {
   DxEditing,
   //DxPopup,
   DxForm,
+  DxRequiredRule,
 } from "devextreme-vue/data-grid";
 
 //List
@@ -217,6 +223,7 @@ export default {
     InspectionRecordPanel,
     SelectInspRecord,
     DxTextArea,
+    DxRequiredRule,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -367,7 +374,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          if (res.status == 201 && res.data) {
+          if (res.status == 204 && res.data) {
             console.log(res.data);
             var item = [];
             item.id_inspection_record = this.id_inspection_record;
