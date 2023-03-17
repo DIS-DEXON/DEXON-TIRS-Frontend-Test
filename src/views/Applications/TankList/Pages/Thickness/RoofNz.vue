@@ -204,7 +204,7 @@
             <div class="dx-table-style">
               <div class="table-toolbar-set">
                 <div class="download-btn">
-                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="DOWNLOAD_TP()">
+                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="FETCH_FILE_ROOFNZ()">
                     <label for="tp-download-tp-btn">Download</label>
                   </v-ons-toolbar-button>
                 </div>
