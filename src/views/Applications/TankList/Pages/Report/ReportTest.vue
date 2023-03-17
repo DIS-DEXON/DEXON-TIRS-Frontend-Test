@@ -119,7 +119,7 @@ export default {
           label: "ILAST",
           key: "tab2",
           closable: false
-        },
+        }
         // {
         //   label: "ILAST Internal",
         //   key: "tab3",
@@ -210,6 +210,7 @@ export default {
         shell_buckling: [],
         grounding: [],
         grounding_detail: [],
+        eval_bottom: [],
         annular: [],
         bottom: [],
         coil: [],
@@ -260,6 +261,67 @@ export default {
     }
   },
   methods: {
+    VIEW_ITEM(item) {
+      this.isLoading = true;
+      console.clear();
+      this.current_view = item;
+      console.log("records:");
+      console.log(item);
+      console.log("view item insp id :" + item.id_inspection_record);
+      this.id_inspection_record = item.id_inspection_record;
+      this.data1.insp_campaign = item.campaign_desc;
+      this.data1.insp_date = moment(item.inspection_date).format(
+        "MMM DD, YYYY"
+      );
+      this.data1.name_api_653 = item.name_api_653;
+      this.data1.name_inspection_engineer = item.name_inspection_engineer;
+      this.data1.name_ndt_examiner = item.name_ndt_examiner;
+      this.data1.cert_no = item.cert_no;
+
+      this.FETCH_MARKUP_ANNULAR(this.current_view);
+      this.FETCH_MARKUP_BOTTOM(this.current_view);
+      this.FETCH_MARKUP_COIL(this.current_view);
+      this.FETCH_MARKUP_CRITICAL_ZONE(this.current_view);
+      this.FETCH_MARKUP_PIPING(this.current_view);
+      this.FETCH_MARKUP_ROOF(this.current_view);
+      this.FETCH_MARKUP_ROOFNZ(this.current_view);
+      this.FETCH_MARKUP_SUMP(this.current_view);
+      this.FETCH_MARKUP_SHELL(this.current_view);
+      this.FETCH_MARKUP_SHELLNZ(this.current_view);
+      this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
+      this.FETCH_IMAGE();
+      this.FETCH_CHECKLIST_ILAST_EX();
+      this.FETCH_CHECKLIST_GENERIC();
+      this.FETCH_TANK_INFO();
+      this.FETCH_SHELL_POINT();
+      this.FETCH_SHELL_API();
+      this.FETCH_TANK_COURSE();
+      this.FETCH_BOTTOM_THK();
+      this.FETCH_PLUMBNESS();
+      this.FETCH_CRITICAL_THK();
+      this.FETCH_ROOF_THK();
+      this.FETCH_ROOFNZ_THK();
+      this.FETCH_SHELL_COURSE();
+      this.FETCH_SHELL_THK();
+      this.FETCH_ANNULAR_THK();
+      this.FETCH_SHELLNZ_THK();
+      this.FETCH_COIL_THK();
+      this.FETCH_MFLANNULAR_THK();
+      this.FETCH_MFLBOTTOM_THK();
+      this.FETCH_SUMP_THK();
+      this.FETCH_PROJECTION_PLATE_THK();
+      this.FETCH_PIPING_THK();
+      this.FETCH_GRAPH_IMG();
+      this.FETCH_EVAL_MRT();
+      this.FETCH_EVAL_BUCKLING();
+      this.FETCH_EVAL_DEVIATION();
+      this.FETCH_EVAL_ROUNDNESS();
+      this.FETCH_EVAL_GROUNDING();
+      this.FETCH_EVAL_GROUNDING_DETAIL();
+      this.FETCH_EVAL_BOTTOM_SETTLEMENT();
+      this.FETCH_REPAIR_RECORD();
+      this.FETCH_ACCPT(); //FETCH_ACCPT need to be last to Fetch, loading screen flag is in here
+    },
     async getTemplate() {
       if (this.theTemplate) return this.theTemplate;
       const request = await fetch(
@@ -1344,6 +1406,36 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_EVAL_BOTTOM_SETTLEMENT() {
+      const id_tag = this.$route.params.id_tag;
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "get",
+        url:
+          "bottom-settlement/get-bottom-settlement-report?id_tag=" +
+          id_tag +
+          "&id_insp_record=" +
+          id_insp,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("EVAL BOTTOM SETTLEMENT :");
+          //console.log(res);
+          if (res.status == 200) {
+            console.log(res.data);
+            this.data1.eval_bottom = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_PLUMBNESS() {
       const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
@@ -1924,66 +2016,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    VIEW_ITEM(item) {
-      this.isLoading = true;
-      console.clear();
-      this.current_view = item;
-      console.log("records:");
-      console.log(item);
-      console.log("view item insp id :" + item.id_inspection_record);
-      this.id_inspection_record = item.id_inspection_record;
-      this.data1.insp_campaign = item.campaign_desc;
-      this.data1.insp_date = moment(item.inspection_date).format(
-        "MMM DD, YYYY"
-      );
-      this.data1.name_api_653 = item.name_api_653;
-      this.data1.name_inspection_engineer = item.name_inspection_engineer;
-      this.data1.name_ndt_examiner = item.name_ndt_examiner;
-      this.data1.cert_no = item.cert_no;
-
-      this.FETCH_MARKUP_ANNULAR(this.current_view);
-      this.FETCH_MARKUP_BOTTOM(this.current_view);
-      this.FETCH_MARKUP_COIL(this.current_view);
-      this.FETCH_MARKUP_CRITICAL_ZONE(this.current_view);
-      this.FETCH_MARKUP_PIPING(this.current_view);
-      this.FETCH_MARKUP_ROOF(this.current_view);
-      this.FETCH_MARKUP_ROOFNZ(this.current_view);
-      this.FETCH_MARKUP_SUMP(this.current_view);
-      this.FETCH_MARKUP_SHELL(this.current_view);
-      this.FETCH_MARKUP_SHELLNZ(this.current_view);
-      this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
-      this.FETCH_IMAGE();
-      this.FETCH_CHECKLIST_ILAST_EX();
-      this.FETCH_CHECKLIST_GENERIC();
-      this.FETCH_TANK_INFO();
-      this.FETCH_SHELL_POINT();
-      this.FETCH_SHELL_API();
-      this.FETCH_TANK_COURSE();
-      this.FETCH_BOTTOM_THK();
-      this.FETCH_PLUMBNESS();
-      this.FETCH_CRITICAL_THK();
-      this.FETCH_ROOF_THK();
-      this.FETCH_ROOFNZ_THK();
-      this.FETCH_SHELL_COURSE();
-      this.FETCH_SHELL_THK();
-      this.FETCH_ANNULAR_THK();
-      this.FETCH_SHELLNZ_THK();
-      this.FETCH_COIL_THK();
-      this.FETCH_MFLANNULAR_THK();
-      this.FETCH_MFLBOTTOM_THK();
-      this.FETCH_SUMP_THK();
-      this.FETCH_PROJECTION_PLATE_THK();
-      this.FETCH_PIPING_THK();
-      this.FETCH_GRAPH_IMG();
-      this.FETCH_EVAL_MRT();
-      this.FETCH_EVAL_BUCKLING();
-      this.FETCH_EVAL_DEVIATION();
-      this.FETCH_EVAL_ROUNDNESS();
-      this.FETCH_EVAL_GROUNDING();
-      this.FETCH_EVAL_GROUNDING_DETAIL();
-      this.FETCH_REPAIR_RECORD();
-      this.FETCH_ACCPT(); //FETCH_ACCPT need to be last api, loading screen flag is in here
     },
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
