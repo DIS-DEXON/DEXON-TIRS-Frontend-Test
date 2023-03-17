@@ -212,11 +212,11 @@ export default {
           key: "info",
           closable: false
         },
-        {
-          label: "Additional Information",
-          key: "additional",
-          closable: false
-        },
+        // {
+        //   label: "Additional Information",
+        //   key: "additional",
+        //   closable: false
+        // },
         {
           label: "Drawing and P&ID",
           key: "drawing",
