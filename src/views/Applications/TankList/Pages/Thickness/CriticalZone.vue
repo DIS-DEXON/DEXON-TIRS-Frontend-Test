@@ -252,7 +252,7 @@
 
           <DxColumn data-field="tp_name" caption="TP Name" sort-order="asc" :width="100" />
 
-          <DxColumn data-field="tp_desc" caption="TP Desc" :width="150" />
+          <DxColumn data-field="tp_desc" caption="TP Desc" :width="200" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
