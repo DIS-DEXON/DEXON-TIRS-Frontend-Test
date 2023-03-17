@@ -2,7 +2,7 @@
   <div class="pm-page">
     <div class="pm-toolbar">
       <toolbar
-        pageName="Roof Shade"
+        pageName="Roof Shape"
         @refreshInfo="FETCH_LIST()"
         :isNewBtn="false"
         newBtnLabel="New"
@@ -26,13 +26,8 @@
           @row-removed="DELETE_ROOF"
           @exporting="EXPORT_DATA"
         >
-          <DxEditing
-            :allow-updating="true"
-            :allow-deleting="true"
-            :allow-adding="true"
-            mode="row"
-          />
-          <DxColumn data-field="code" caption="Roof Shade">
+          <DxEditing :allow-updating="true" :allow-deleting="true" :allow-adding="true" mode="row" />
+          <DxColumn data-field="code" caption="Roof Shape">
             <DxRequiredRule />
           </DxColumn>
 
@@ -53,11 +48,7 @@
       </div>
     </div>
 
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template> 
 
@@ -76,7 +67,7 @@ import {
   DxColumn,
   DxExport,
   DxEditing,
-  DxRequiredRule,
+  DxRequiredRule
 } from "devextreme-vue/data-grid";
 
 //Structures
@@ -99,12 +90,12 @@ export default {
     DxExport,
     DxEditing,
     DxRequiredRule,
-    contentLoading,
+    contentLoading
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Master Data Manager",
-      icon: "/img/icon_menu/master_data/table.png",
+      icon: "/img/icon_menu/master_data/table.png"
     });
     if (this.$store.state.status.server == true) this.FETCH_LIST();
   },
@@ -115,7 +106,7 @@ export default {
       isEdit: false,
       isLoading: false,
       errorMessage: "",
-      editInfo: "",
+      editInfo: ""
     };
   },
   computed: {
@@ -138,9 +129,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -158,16 +149,16 @@ export default {
         method: "get",
         url: "/MdRoofShape",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.statusList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -182,16 +173,16 @@ export default {
         method: "post",
         url: "/MdRoofShape",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 201) {
             this.FETCH_LIST();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -204,16 +195,16 @@ export default {
         method: "put",
         url: "/MdRoofShape/" + e.data.id,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 204) {
             this.FETCH_LIST();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -226,23 +217,23 @@ export default {
         method: "delete",
         url: "/MdRoofShape/" + e.data.id,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 204) {
             this.FETCH_LIST();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
         })
         .finally(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 

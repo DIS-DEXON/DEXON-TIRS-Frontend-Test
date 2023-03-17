@@ -130,7 +130,7 @@ export default new Vuex.Store({
       },
       {
         id: 100,
-        name: "Roof Shade",
+        name: "Roof Shape",
         icon: "/img/icon_sidebar/executive_management/summary.png",
         icon_menu: '/img/icon_menu/executive_management/summary.png',
         link: "/md/roof-shade",
