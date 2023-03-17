@@ -985,7 +985,7 @@ export default {
       })
         .then(res => {
           const blob = res.data;
-          this.downLoadFileExcel(blob, "testtttttttt");
+          this.downLoadFileExcel(blob, "RoofNozzle_TEMPLATE");
         })
         .catch(error => {
           console.log(error);
