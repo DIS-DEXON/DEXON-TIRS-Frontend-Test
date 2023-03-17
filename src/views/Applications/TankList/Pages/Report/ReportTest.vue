@@ -116,15 +116,15 @@ export default {
           closable: false
         },
         {
-          label: "ILAST External",
+          label: "ILAST",
           key: "tab2",
           closable: false
         },
-        {
-          label: "ILAST Internal",
-          key: "tab3",
-          closable: false
-        }
+        // {
+        //   label: "ILAST Internal",
+        //   key: "tab3",
+        //   closable: false
+        // }
       ],
       data1: {
         new_page: {
