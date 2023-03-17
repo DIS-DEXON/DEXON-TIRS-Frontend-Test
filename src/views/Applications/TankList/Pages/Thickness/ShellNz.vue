@@ -253,9 +253,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" :width="90" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="100" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" :width="130" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="200" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -314,7 +314,7 @@
             mode="row"
           />
 
-          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="120">
+          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="150">
             <DxLookup
               :data-source="inspRecordList"
               :display-expr="SET_FORMAT_DATE"
@@ -322,7 +322,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="90" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
