@@ -208,11 +208,20 @@
             <label>TP</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
-              <label for="tp-upload-btn">
-                <i class="las la-file-import"></i>Import Excel
-              </label>
-            </v-ons-toolbar-button>
+            <div class="dx-table-style">
+              <div class="table-toolbar-set">
+                <div class="download-btn">
+                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="FETCH_FILE_ANNULAR()">
+                    <label for="tp-download-tp-btn">Download</label>
+                  </v-ons-toolbar-button>
+                </div>
+                <v-ons-toolbar-button>
+                  <label for="tp-upload-btn">
+                    <i class="las la-file-import"></i>Import Excel
+                  </label>
+                </v-ons-toolbar-button>
+              </div>
+            </div>
           </div>
         </div>
         <input
@@ -953,6 +962,38 @@ export default {
     CML_FLAGER() {
       this.cml_flag = true;
       this.px = "width: calc(100% - 82px)";
+    },
+    FETCH_FILE_ANNULAR() {
+      console.log("in");
+      var id_tag = parseInt(this.$route.params.id_tag);
+      axios({
+        method: "get",
+        url: "annular-thickness/download-annular-thk?id_tag" + id_tag,
+        responseType: "blob",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          const blob = res.data;
+          this.downLoadFileExcel(blob, "Annular_TEMPLATE");
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    downLoadFileExcel(data, filename) {
+      console.log(data);
+      const link = document.createElement("a");
+      //const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      //console.log(blob);
+      link.setAttribute("href", window.URL.createObjectURL(new Blob([data])));
+      link.setAttribute("download", filename + ".xlsx");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 };
@@ -984,5 +1025,12 @@ export default {
 
 .data-grid-style {
   height: 100%;
+}
+#toolbarBTN {
+  margin-right: 10px;
+  padding-left: 10px;
+}
+.download-btn {
+  margin-right: 5px;
 }
 </style>

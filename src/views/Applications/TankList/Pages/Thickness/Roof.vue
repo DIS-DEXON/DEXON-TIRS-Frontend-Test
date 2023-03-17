@@ -203,7 +203,7 @@
             <div class="dx-table-style">
               <div class="table-toolbar-set">
                 <div class="download-btn">
-                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="DOWNLOAD_TP()">
+                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="FETCH_FILE_ROOF()">
                     <label for="tp-download-tp-btn">Download</label>
                   </v-ons-toolbar-button>
                 </div>
@@ -992,7 +992,7 @@ export default {
       this.cml_flag = true;
       this.px = "width: calc(100% - 82px)";
     },
-    DOWNLOAD_TP() {
+    FETCH_FILE_ROOF() {
       console.log("in");
       var id_tag = parseInt(this.$route.params.id_tag);
       axios({
