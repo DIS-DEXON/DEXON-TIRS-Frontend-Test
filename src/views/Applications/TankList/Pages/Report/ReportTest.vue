@@ -103,6 +103,7 @@ export default {
       imgpath: [],
       repairList: [],
       drawingList: [],
+      attachmentsList: [],
       current_view: {},
       buffer: "",
       status: "",
@@ -248,7 +249,8 @@ export default {
         shell_settlement_2: "",
         shell_roundness: "",
         bottom_settlement: {},
-        repair: [{}]
+        repair: [{}],
+        attachments: []
       }
     };
   },
@@ -320,6 +322,7 @@ export default {
       this.FETCH_EVAL_GROUNDING_DETAIL();
       this.FETCH_EVAL_BOTTOM_SETTLEMENT();
       this.FETCH_REPAIR_RECORD();
+      this.FETCH_ATTACHMENTS();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last to Fetch, loading screen flag is in here
     },
     async getTemplate() {
@@ -1986,6 +1989,32 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_ATTACHMENTS() {
+      axios({
+        method: "get",
+        url:
+          "other-attachment/get-other-attachment-by-ir-id?id_inspection_record=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("FETCH attachments :");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.attachmentsList = res.data;
+            this.getImgAttachment();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_ACCPT() {
       //console.log("==> FETCH: Acceptance Determination");
       //this.isLoading = true;
@@ -2047,6 +2076,7 @@ export default {
           //console.log(res.data);
           if (res.status == 200 && res.data) {
             this.imgpath = res.data;
+            this.getImageData();
           }
         })
         .catch(error => {
@@ -2056,7 +2086,6 @@ export default {
           //this.isLoading = false;
           // console.log("image:");
           // console.log(this.imgpath);
-          this.getImageData();
         });
     },
     alertTimeOUT() {
@@ -2427,6 +2456,36 @@ export default {
           height: 200
         };
         this.data1.overview_pic = imageObject;
+      }
+    },
+    async getImgAttachment() {
+      const o = this.attachmentsList;
+      for (let j = 0; j < o.length; j++) {
+        const response = await axios.get(
+          encodeURI(this.baseURL + o[j].file_path),
+          {
+            responseType: "arraybuffer"
+          }
+        );
+        if (response.status === 200) {
+          const imageData = response.data;
+          const mimeType = response.headers["content-type"];
+          const imageBlob = new Blob([imageData], { type: mimeType });
+          const imageObject = {
+            _type: "image",
+            source: imageBlob,
+            format: mimeType,
+            width: 600,
+            height: 600
+          };
+          this.data1.attachments.push({
+            img: imageObject,
+            note: o[j].note
+          });
+        } else {
+          console.error("Request failed with status code:", response.status);
+          break;
+        }
       }
     }
   }

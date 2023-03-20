@@ -147,8 +147,9 @@ import {
 // import { DxList } from "devextreme-vue/list";
 
 //FileUpload
-import { DxFileUploader } from "devextreme-vue/file-uploader";
+
 //import { DxButton } from 'devextreme-vue/button';
+import { DxFileUploader } from "devextreme-vue/file-uploader";
 import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
@@ -204,8 +205,7 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
-      is_changed_dwg: 0,
-      dataDwgTemp: "",
+      dataIMGTemp: "",
       fileNameInputOptions: { placeholder: "Enter text here ..." }
     };
   },
@@ -297,7 +297,6 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.is_changed_dwg = 0;
         });
     },
     DELETE_DWG(e) {
@@ -360,7 +359,6 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.is_changed_dwg = 0;
         });
     },
     ON_DWG_CHANGE(e) {
@@ -372,22 +370,20 @@ export default {
         this.imgHolder = reader.result;
       };
       this.file = e.value[0];
-      this.is_changed_dwg = 1;
     },
     EDITING_START_DWG(e) {
       console.warn("EDIT");
       console.log(e);
-      this.imgHolder = e.data.path_dwg;
       this.file = [];
       this.isInitEdit = 0;
       this.file_path = e.data.file_path;
-      this.dataDwgTemp = e;
+      this.dataIMGTemp = e;
     },
     SAVE(e) {
       console.log("save:");
       console.log(e);
       if (e.changes.length == 0) {
-        this.UPDATE_DWG(this.dataDwgTemp);
+        this.UPDATE_DWG(this.dataIMGTemp);
       }
     },
     INIT_NEW_ROW_DWG() {
