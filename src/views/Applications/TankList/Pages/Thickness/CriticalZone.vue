@@ -559,6 +559,7 @@ export default {
       file: [],
       isInitEdit: 0,
       dataIMGTemp: "",
+      fileNameInputOptions: { placeholder: "Enter description ..." },
       px: "width: calc(100% - 41px)",
       cml_flag: false,
       tp_flag: false,
@@ -1141,7 +1142,7 @@ export default {
       axios({
         method: "get",
         url:
-          "additional-remark/get-additional-remark-by-ir-id?id_inspection_record=" +
+          "additional-remark/get-additional-remark-by-ir-id-type?id_inspection_record=" +
           id_insp +
           "&type=criticalZone_thk",
         headers: {

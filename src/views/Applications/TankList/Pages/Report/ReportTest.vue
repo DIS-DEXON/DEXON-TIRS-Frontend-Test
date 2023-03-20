@@ -104,6 +104,7 @@ export default {
       repairList: [],
       drawingList: [],
       attachmentsList: [],
+      additionalList: [],
       current_view: {},
       buffer: "",
       status: "",
@@ -250,7 +251,18 @@ export default {
         shell_roundness: "",
         bottom_settlement: {},
         repair: [{}],
-        attachments: []
+        attachments: [],
+        addi_roof: [],
+        addi_roofnz: [],
+        addi_shell: [],
+        addi_shellnz: [],
+        addi_coil: [],
+        addi_piping: [],
+        addi_bottom: [],
+        addi_annular: [],
+        addi_critical: [],
+        addi_projection: [],
+        addi_sump: []
       }
     };
   },
@@ -323,6 +335,7 @@ export default {
       this.FETCH_EVAL_BOTTOM_SETTLEMENT();
       this.FETCH_REPAIR_RECORD();
       this.FETCH_ATTACHMENTS();
+      this.FETCH_ADDITIONAL_ATTACHMENTS();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last to Fetch, loading screen flag is in here
     },
     async getTemplate() {
@@ -2015,6 +2028,32 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_ADDITIONAL_ATTACHMENTS() {
+      axios({
+        method: "get",
+        url:
+          "additional-remark/get-additional-remark-by-ir-id?id_inspection_record=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("FETCH additional attachments :");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.additionalList = res.data;
+            this.getImgAdditional();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_ACCPT() {
       //console.log("==> FETCH: Acceptance Determination");
       //this.isLoading = true;
@@ -2485,6 +2524,224 @@ export default {
         } else {
           console.error("Request failed with status code:", response.status);
           break;
+        }
+      }
+    },
+    async getImgAdditional() {
+      const o = this.additionalList;
+      // console.log(o)
+      if (o.length != 0) {
+        //console.warn("graph image");
+        for (let j = 0; j < o.length; j++) {
+          if (o[j].remark_type == "roof_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 300
+            };
+            this.data1.addi_roof.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "roofnz_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 300
+            };
+            this.data1.addi_roofnz.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "shell_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 300
+            };
+            this.data1.addi_shell.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "shellnz_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_shellnz.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "coil_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_coil.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "piping_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_piping.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "bottom_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_bottom.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "annular_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_annular.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "critical_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_critical.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "projection_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_projection.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
+          if (o[j].remark_type == "sump_thk") {
+            const response = await fetch(
+              encodeURI(this.baseURL + o[j].file_path)
+            );
+            const imageData = await response.arrayBuffer();
+            const mimeType = response.headers.get("content-type");
+            const imageBlob = new Blob([imageData], { type: mimeType });
+            const imageObject = {
+              _type: "image",
+              source: imageBlob,
+              format: mimeType,
+              width: 600,
+              height: 400
+            };
+            this.data1.addi_sump.push({
+              img: imageObject,
+              note: o[j].remark_desc
+            });
+          }
         }
       }
     }

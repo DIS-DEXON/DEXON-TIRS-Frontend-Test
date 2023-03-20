@@ -665,6 +665,7 @@ export default {
       file: [],
       isInitEdit: 0,
       dataIMGTemp: "",
+      fileNameInputOptions: { placeholder: "Enter description ..." },
       isLoading: false,
       id_cml: 0,
       id_tp: 0,
@@ -1254,7 +1255,7 @@ export default {
       axios({
         method: "get",
         url:
-          "additional-remark/get-additional-remark-by-ir-id?id_inspection_record=" +
+          "additional-remark/get-additional-remark-by-ir-id-type?id_inspection_record=" +
           id_insp +
           "&type=shellnz_thk",
         headers: {

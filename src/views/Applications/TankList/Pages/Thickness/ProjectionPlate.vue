@@ -480,6 +480,7 @@ export default {
       file: [],
       isInitEdit: 0,
       dataIMGTemp: "",
+      fileNameInputOptions: { placeholder: "Enter description ..." },
       tp_flag: false,
       dataList: {
         tp: [],
@@ -887,7 +888,7 @@ export default {
       axios({
         method: "get",
         url:
-          "additional-remark/get-additional-remark-by-ir-id?id_inspection_record=" +
+          "additional-remark/get-additional-remark-by-ir-id-type?id_inspection_record=" +
           id_insp +
           "&type=sump_thk",
         headers: {
@@ -912,7 +913,7 @@ export default {
       let user = JSON.parse(localStorage.getItem("user"));
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append("id_tag", this.$route.params.id_tag);
-      formData.append("remark_type", "sump_thk");
+      formData.append("remark_type", "projection_thk");
       formData.append("remark_desc", e.data.remark_desc);
       formData.append("file", this.file);
       formData.append("created_by", user.id_account);
