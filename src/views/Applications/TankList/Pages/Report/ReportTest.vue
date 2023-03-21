@@ -57,8 +57,8 @@
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createILASTInter()">Create docx</button>
       </div>
-      <PageLoading v-if="isLoading == true" text="Please wait. . ." />
     </div>
+    <PageLoading v-if="isLoading == true" text="Please wait. . ." />
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template>

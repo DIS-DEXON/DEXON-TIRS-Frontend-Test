@@ -102,7 +102,8 @@
           <!-- <DxExport :enabled="true" /> -->
         </DxDataGrid>
       </div>
-      <div class="table-wrapper">
+      <PageLoading v-if="isLoading == true" text="Loading. . ." />
+      <div class="table-wrapper" v-if="this.dataMRT!=null">
         <div class="report-sheet">
           <div class="report-container">
             <div class="sheet-body">
@@ -220,6 +221,20 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="list-page"
+        style="margin-top:20px"
+        v-if="this.dataMRT == null && this.id_inspection_record != ''"
+      >
+        <div class="center-box-wrapper">
+          <v-ons-toolbar-button v-on:click="CREATE_MRT()">
+            <i class="las la-plus"></i>
+            <span>Create New MRT Result</span>
+          </v-ons-toolbar-button>
+        </div>
+      </div>
+
       <div class="app-instruction" style="margin-top:20px">
         <appInstruction
           title="Instruction"
@@ -246,18 +261,7 @@
         </appInstruction>
       </div>
     </div>
-    <div class="list-page" v-if="this.id_inspection_record == ''">
-      <div class="center-box-wrapper">
-        <div class="page-content-message-wrapper">
-          <i class="las la-search"></i>
-          <span>
-            Select inspection record
-            <br />to view information
-          </span>
-        </div>
-      </div>
-    </div>
-    <PageLoading v-if="isLoading == true" text="Loading. . ." />
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
 </template> 
 
@@ -269,6 +273,7 @@ import moment from "moment";
 //Components
 import "devextreme/dist/css/dx.light.css";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import PageLoading from "@/components/app-structures/app-loading.vue";
 
@@ -302,6 +307,7 @@ export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
+    SelectInspRecord,
     PageLoading,
     appInstruction,
     DxDataGrid,
@@ -380,8 +386,10 @@ export default {
       e.cancel = true;
     },
     VIEW_ITEM(item) {
+      this.dataMRT = null;
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
+      console.warn(this.id_inspection_record);
       this.FETCH_MFL(this.current_view);
       this.FETCH_MRT();
     },
@@ -408,7 +416,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
+          this.isLoading = false;
         });
     },
     CREATE_MFL(e) {
@@ -510,6 +518,7 @@ export default {
       return moment(d).format("LL");
     },
     FETCH_MRT() {
+      this.isLoading = true;
       axios({
         method: "post",
         url: "mrt/get-mrt",
@@ -526,6 +535,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataMRT = res.data[0];
+            this.mrt_status = 200;
           }
         })
         .catch(error => {
@@ -602,7 +612,6 @@ export default {
 .page-container-hide {
   grid-template-columns: 41px calc(100% - 41px);
 }
-
 .list-page {
   position: relative;
   overflow-y: auto;
