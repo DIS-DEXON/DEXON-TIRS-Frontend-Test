@@ -167,11 +167,11 @@ const routes = [
             alias: 'Eva Roundness',
             component: () => import('../views/Applications/TankList/Pages/Evaluation/Roundness.vue'),
           },
-          {
-            path: 'evaluation/mrt',
-            alias: 'Eva MRT',
-            component: () => import('../views/Applications/TankList/Pages/Evaluation/MRT.vue'),
-          },
+          // {
+          //   path: 'evaluation/mrt',
+          //   alias: 'Eva MRT',
+          //   component: () => import('../views/Applications/TankList/Pages/Evaluation/MRT.vue'),
+          // },
           {
             path: 'evaluation/bottom-settlement',
             alias: 'Eva Bottom Settlement',

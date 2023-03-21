@@ -13,8 +13,8 @@ export default {
   name: "InstructionDialog",
   props: {
     title: String,
-    desc: String,
-  },
+    desc: String
+  }
 };
 </script>
 

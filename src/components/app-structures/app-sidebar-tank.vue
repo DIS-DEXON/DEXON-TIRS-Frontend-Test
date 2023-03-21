@@ -392,11 +392,11 @@ export default {
             code: "Grounding Connection",
             path: "ground-connection"
           },
-          {
-            id: 7,
-            code: "MRT",
-            path: "mrt"
-          },
+          // {
+          //   id: 7,
+          //   code: "MRT",
+          //   path: "mrt"
+          // },
           {
             id: 8,
             code: "Bottom Settlement",
