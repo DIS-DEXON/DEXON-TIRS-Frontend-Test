@@ -458,105 +458,107 @@
               <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
             </v-ons-list-header>
           </v-ons-list>
-          <DxDataGrid
-            id="data-grid-style"
-            key-expr="id"
-            :data-source="additionalRemarkList"
-            :element-attr="dataGridAttributes"
-            :hover-state-enabled="true"
-            :allow-column-reordering="true"
-            :show-borders="true"
-            :show-row-lines="true"
-            :row-alternation-enabled="false"
-            @row-inserted="CREATE_ADDITIONAL_REMARK"
-            @row-updated="UPDATE_ADDITIONAL_REMARK"
-            @row-removed="DELETE_ADDITIONAL_REMARK"
-            @editing-start="EDITING_START_ADDITIONAL_REMARK"
-            @init-new-row="INIT_NEW_ROW_ADDITIONAL_REMARK"
-            @saved="SAVE"
-          >
-            <DxEditing
-              :allow-updating="true"
-              :allow-deleting="true"
-              :allow-adding="true"
-              :use-icons="true"
-              mode="form"
+          <div class="table-wrapper">
+            <DxDataGrid
+              id="data-grid-style"
+              key-expr="id"
+              :data-source="additionalRemarkList"
+              :element-attr="dataGridAttributes"
+              :hover-state-enabled="true"
+              :allow-column-reordering="true"
+              :show-borders="true"
+              :show-row-lines="true"
+              :row-alternation-enabled="false"
+              @row-inserted="CREATE_ADDITIONAL_REMARK"
+              @row-updated="UPDATE_ADDITIONAL_REMARK"
+              @row-removed="DELETE_ADDITIONAL_REMARK"
+              @editing-start="EDITING_START_ADDITIONAL_REMARK"
+              @init-new-row="INIT_NEW_ROW_ADDITIONAL_REMARK"
+              @saved="SAVE"
             >
-              <DxForm label-location="top">
-                <DxItem :col-count="2" :col-span="2" item-type="group">
-                  <DxItem data-field="file_path" :col-span="2" />
-                  <DxItem data-field="remark_desc" :col-span="2" />
-                </DxItem>
-              </DxForm>
-            </DxEditing>
+              <DxEditing
+                :allow-updating="true"
+                :allow-deleting="true"
+                :allow-adding="true"
+                :use-icons="true"
+                mode="form"
+              >
+                <DxForm label-location="top">
+                  <DxItem :col-count="2" :col-span="2" item-type="group">
+                    <DxItem data-field="file_path" :col-span="2" />
+                    <DxItem data-field="remark_desc" :col-span="2" />
+                  </DxItem>
+                </DxForm>
+              </DxEditing>
 
-            <DxColumn
-              data-field="file_path"
-              caption="Attachment"
-              cell-template="attch_img"
-              edit-cell-template="attch_img-editor"
-              :width="400"
-            />
+              <DxColumn
+                data-field="file_path"
+                caption="Attachment"
+                cell-template="attch_img"
+                edit-cell-template="attch_img-editor"
+                :width="400"
+              />
 
-            <DxColumn
-              data-field="remark_desc"
-              caption="Description"
-              :editor-options="fileNameInputOptions"
-            />
+              <DxColumn
+                data-field="remark_desc"
+                caption="Description"
+                :editor-options="fileNameInputOptions"
+              />
 
-            <template #attch_img="{ data }">
-              <div style="position: relative">
-                <a :href="baseURL + data.value" download="dwg" target="_blank">
-                  <img :src="baseURL + data.value" width="300" height="200" />
-                  <br />
-                </a>
-              </div>
-            </template>
+              <template #attch_img="{ data }">
+                <div style="position: relative">
+                  <a :href="baseURL + data.value" download="dwg" target="_blank">
+                    <img :src="baseURL + data.value" width="300" height="200" />
+                    <br />
+                  </a>
+                </div>
+              </template>
 
-            <template #attch_img-editor="{ data }">
-              <div>
-                <img
-                  :src="baseURL + data.value"
-                  width="300"
-                  height="200"
-                  v-if="imgHolder != '' && isInitEdit == 0"
-                />
-                <img
-                  :src="imgHolder"
-                  width="300"
-                  height="200"
-                  v-if="imgHolder != '' && isInitEdit == 1"
-                />
-                <img
-                  src="http://tmt-solution.com/public/image-empty.png"
-                  width="300"
-                  height="200"
-                  v-if="imgHolder == ''"
-                />
+              <template #attch_img-editor="{ data }">
+                <div>
+                  <img
+                    :src="baseURL + data.value"
+                    width="300"
+                    height="200"
+                    v-if="imgHolder != '' && isInitEdit == 0"
+                  />
+                  <img
+                    :src="imgHolder"
+                    width="300"
+                    height="200"
+                    v-if="imgHolder != '' && isInitEdit == 1"
+                  />
+                  <img
+                    src="http://tmt-solution.com/public/image-empty.png"
+                    width="300"
+                    height="200"
+                    v-if="imgHolder == ''"
+                  />
 
-                <DxFileUploader
-                  select-button-text="Select photo"
-                  label-text
-                  accept="image/*"
-                  upload-mode="useForm"
-                  @value-changed="ON_ATTACHMENT_CHANGE"
-                />
-              </div>
-            </template>
+                  <DxFileUploader
+                    select-button-text="Select photo"
+                    label-text
+                    accept="image/*"
+                    upload-mode="useForm"
+                    @value-changed="ON_ATTACHMENT_CHANGE"
+                  />
+                </div>
+              </template>
 
-            <!-- Configuration goes here -->
-            <!-- <DxFilterRow :visible="true" /> -->
-            <DxSearchPanel :visible="false" />
-            <DxPaging :page-size="10" :page-index="0" />
-            <DxPager
-              :show-page-size-selector="true"
-              :allowed-page-sizes="[5, 10, 20]"
-              :show-navigation-buttons="true"
-              :show-info="true"
-              info-text="Page {0} of {1} ({2} items)"
-            />
-            <DxExport :enabled="false" />
-          </DxDataGrid>
+              <!-- Configuration goes here -->
+              <!-- <DxFilterRow :visible="true" /> -->
+              <DxSearchPanel :visible="false" />
+              <DxPaging :page-size="10" :page-index="0" />
+              <DxPager
+                :show-page-size-selector="true"
+                :allowed-page-sizes="[5, 10, 20]"
+                :show-navigation-buttons="true"
+                :show-info="true"
+                info-text="Page {0} of {1} ({2} items)"
+              />
+              <DxExport :enabled="false" />
+            </DxDataGrid>
+          </div>
         </div>
         <SelectInspRecord v-if="this.id_inspection_record == ''" />
       </div>
