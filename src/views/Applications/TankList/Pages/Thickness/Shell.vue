@@ -180,7 +180,6 @@
           id="cml-upload-btn"
           ref="cml_upload_file"
           @change="UPLOAD_CML()"
-          :disabled="IMPORT_CML"
         />
         <DxDataGrid
           id="data-table-cml"

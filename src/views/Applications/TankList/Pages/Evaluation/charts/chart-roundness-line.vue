@@ -1,23 +1,29 @@
 <template>
   <div class="chart-item">
-    <highcharts :options="chartOptions" v-if="this.chartData" :key="dataList"></highcharts>
+    <highcharts :options="chartOptionsPolar" v-if="this.chartData" :key="dataList"></highcharts>
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template>
 
 <script>
 // import moment from "moment";
 // import axios from "/axios.js";
+import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import { Chart } from "highcharts-vue";
 import Highcharts from "highcharts";
+import More from "highcharts/highcharts-more";
+import accessibility from "highcharts/modules/accessibility";
 import exportingInit from "highcharts/modules/exporting";
-//import stockInit from "highcharts/modules/stock";
 import offlineExporting from "highcharts/modules/offline-exporting";
 // stockInit(Highcharts);
 exportingInit(Highcharts);
 offlineExporting(Highcharts);
+More(Highcharts);
+accessibility(Highcharts);
 
 export default {
   name: "chart-roundness-line",
+  contentLoading,
   highcharts: Chart,
   props: {
     roundnessData: Object
@@ -25,8 +31,98 @@ export default {
   created() {},
   data() {
     return {
+      isLoading: false,
       dataList: null,
       chartData: {},
+      chartOptionsPolar: {
+        chart: {
+          polar: true
+        },
+
+        title: {
+          text: "Roundness Evaluation Graph"
+        },
+
+        // subtitle: {
+        //   text: "Also known as Radar Chart"
+        // },
+
+        pane: {
+          startAngle: 0,
+          endAngle: 360
+        },
+
+        xAxis: {
+          tickInterval: 25.7,
+          min: 0,
+          max: 360,
+          labels: {
+            format: "{value}°"
+          }
+        },
+
+        yAxis: {
+          min: 0
+        },
+
+        plotOptions: {
+          series: {
+            pointStart: 0,
+            pointInterval: 25.7
+          },
+          column: {
+            pointPadding: 0,
+            groupPadding: 0
+          }
+        },
+
+        series: [
+          {
+            type: "line",
+            name: "Measured Value",
+            data: [
+              20138,
+              20155,
+              20140,
+              20141,
+              20161,
+              20142,
+              20138,
+              20138,
+              20141,
+              20129,
+              20143,
+              20151,
+              20143,
+              20151,
+              20128
+            ],
+            pointPlacement: "between"
+          },
+          {
+            type: "line",
+            name: "Nominal Value  ",
+            data: [
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145,
+              20145
+            ],
+            pointPlacement: "between"
+          }
+        ]
+      },
       chartOptions: {
         chart: {
           type: "spline"

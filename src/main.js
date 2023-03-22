@@ -20,7 +20,6 @@ import SignaturePad from 'signature_pad'
 //highchart
 import Highchart from "highcharts/highcharts";
 import HighchartsVue from "highcharts-vue";
-import stockInit from "highcharts/modules/stock";
 //import exportingInit from "highcharts/modules/exporting";
 //import offlineExporting from "highcharts/modules/offline-exporting";
 
@@ -28,7 +27,6 @@ import stockInit from "highcharts/modules/stock";
 import VueWysiwyg from '@mycure/vue-wysiwyg';
 Vue.use(VueWysiwyg);
 
-stockInit(Highchart);
 Highchart.setOptions({
   lang: {
     thousandsSep: ','

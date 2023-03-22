@@ -90,6 +90,31 @@
           </DxDataGrid>
         </div>
       </div>
+      <div class="app-instruction" style="padding-top: 20px; padding-left: 20px">
+        <appInstruction style="margin-top: 20px" title="Instruction" desc="Plumbness Evaluation">
+          <label class="desc">
+            The measurements were made 4 directions around the circumference of the tank for tank diameter 1-12 m. and 8 directions for tank diameter > 12 m.
+            <div class="img-box" style="margin-top:15px">
+              <img src="/img/plumbness desc.png" />
+            </div>
+          </label>
+          <label class="desc">Acceptance criteria per API 653:</label>
+          <ol>
+            <li>1. For FR and EFR, the maximum of out-of-verticality at the tank shell should not exceed 1/100th of the tank height.</li>
+            <li>
+              2. For IFR, the maximum of out-of-verticality at the tank shell should not exceed 1/200th of the tank height.
+              Acceptable where St &lt; S
+              Not acceptable where St > S
+            </li>
+            <li>The spacing settlement and quantity of measurement points</li>
+          </ol>
+          <label class="desc">
+            Acceptable where St &lt; S
+            Not acceptable where St > S
+          </label>
+          <label class="desc">Not acceptable where St > S</label>
+        </appInstruction>
+      </div>
       <!-- <div class="app-instruction">
             <appInstruction
             title="Instruction"
@@ -141,6 +166,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
+import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 // import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
@@ -167,6 +193,7 @@ export default {
   components: {
     //VueTabsChrome,
     //DxList,
+    appInstruction,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,

@@ -166,7 +166,20 @@
               <img src="/img/tank-shell-max-space-settlement.png" />
             </div>
           </appInstruction>
-          <appInstruction style="margin-top: 20px" title="Datum Point Location"></appInstruction>
+          <appInstruction style="margin-top: 20px" title="Datum Point Location">
+            <label class="desc">
+              Settlement surveys are in general not carried out on small diameter tanks because,
+              due to less weight of the product, the tanks are less susceptible to developing issues with settlement.
+              Several internationally used specifications specify to carry out settlement surveys only for tanks with a diameter bigger than 9.75 m.
+              If API 653 acceptance criteria are calculated for small diameter tanks the acceptance range will be very tight due to the small arc length between measurement points.
+            </label>
+
+            <label class="desc" style="margin-top:15px">
+              The acceptance criteria as per API 653 for this tank was found to be unacceptable.
+              The results were also compared to the European tank inspection standard EEMUA 159.
+              When the settlement is compared to the European standard the result is found to be within acceptance.
+            </label>
+          </appInstruction>
         </div>
       </div>
       <div v-if="tabCurrent == 'cal'" class="tab2-grid">
@@ -459,7 +472,9 @@
           </div>
           <!-- Chart-->
 
-          <div style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px; width: calc(100% - 20px);">
+          <div
+            style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px; width: calc(100% - 20px);"
+          >
             <div class="upload-graph">
               <chartShellSettlement1
                 :current_view="this.current_view"
@@ -475,14 +490,22 @@
                 @value-changed="VALUE_CHANGE"
                 v-if="chart_1==0"
               />
-              <div v-if="chart_1!=0" style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;">
+              <div
+                v-if="chart_1!=0"
+                style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;"
+              >
                 <img
                   :src="baseURL + chart_img_1"
                   width="100%"
                   height="200"
                   style="margin-top: 5px;"
                 />
-                <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART(1)"><i class="las la-trash"></i></button>
+                <button
+                  style="position:absolute; top: 5px; right: 5px;"
+                  v-on:click="DELETE_CHART(1)"
+                >
+                  <i class="las la-trash"></i>
+                </button>
               </div>
             </div>
             <div class="upload-graph">
@@ -503,14 +526,22 @@
                 @value-changed="VALUE_CHANGE2"
                 v-if="chart_2==0"
               />
-              <div v-if="chart_2!=0" style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;">
+              <div
+                v-if="chart_2!=0"
+                style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;"
+              >
                 <img
                   :src="baseURL + chart_img_2"
                   width="100%"
                   height="200"
                   style="margin-top: 5px;"
                 />
-                <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART(2)"><i class="las la-trash"></i></button>
+                <button
+                  style="position:absolute; top: 5px; right: 5px;"
+                  v-on:click="DELETE_CHART(2)"
+                >
+                  <i class="las la-trash"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -1230,7 +1261,7 @@ export default {
       chart_1: 0,
       chart_2: 0,
       chart_img_1: "",
-      chart_img_2: "",
+      chart_img_2: ""
     };
   },
   computed: {
@@ -1276,18 +1307,15 @@ export default {
   },
   watch: {
     tabCurrent() {
-      if (this.tabCurrent == "data"){
+      if (this.tabCurrent == "data") {
         this.VIEW_ITEM(this.current_view);
-      } 
-      else if (this.tabCurrent == "cal") {
+      } else if (this.tabCurrent == "cal") {
         this.FETCH_CALC();
         this.FETCH_CHART_1();
         this.FETCH_CHART_2();
-      } 
-      else if (this.tabCurrent == "ad") {
+      } else if (this.tabCurrent == "ad") {
         this.FETCH_ACCPT();
-      }
-      else {
+      } else {
         console.log("tab select error");
       }
     },
@@ -1556,10 +1584,13 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "chart-image-file/get-chart-image-file-by-ir-id-type?id=" + id + "&type=shell_settlement_1",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id-type?id=" +
+          id +
+          "&type=shell_settlement_1",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
+        }
       })
         .then(res => {
           console.log("==> RES: Chart 1");
@@ -1582,10 +1613,13 @@ export default {
       this.isLoading = true;
       axios({
         method: "get",
-        url: "chart-image-file/get-chart-image-file-by-ir-id-type?id=" + id + "&type=shell_settlement_2",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id-type?id=" +
+          id +
+          "&type=shell_settlement_2",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
+        }
       })
         .then(res => {
           console.log("==> RES: Chart 2");
@@ -1663,9 +1697,9 @@ export default {
       this.$ons.notification.confirm("Confirm delete?").then(res => {
         if (res == 1) {
           var id = 0;
-          if(i == 1) {
+          if (i == 1) {
             id = this.chart_1;
-          }else {
+          } else {
             id = this.chart_2;
           }
           console.log(id);
@@ -1675,19 +1709,19 @@ export default {
             headers: {
               Authorization:
                 "Bearer " + JSON.parse(localStorage.getItem("token"))
-            },
+            }
           })
             .then(res => {
               console.log(res);
 
               if (res.status == 200) {
-                if(i == 1) {
+                if (i == 1) {
                   this.chart_1 = 0;
                   //this.FETCH_CHART_1();
-                }else {
+                } else {
                   //this.FETCH_CHART_2();
                   this.chart_2 = 0;
-                }    
+                }
               }
             })
             .catch(error => {
@@ -1696,8 +1730,7 @@ export default {
                 error.code + " " + error.response.status + " " + error.message
               );
             })
-            .finally(() => {
-            });
+            .finally(() => {});
         }
       });
     }

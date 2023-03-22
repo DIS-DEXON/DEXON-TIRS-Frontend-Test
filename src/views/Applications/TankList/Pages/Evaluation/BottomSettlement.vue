@@ -838,7 +838,7 @@ export default {
 }
 
 .table-wrapper {
-  height: 100%;
+  height: auto;
 }
 
 .instruction-table {
