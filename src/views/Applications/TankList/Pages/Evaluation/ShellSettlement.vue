@@ -2021,7 +2021,7 @@ export default {
 }
 
 .table-wrapper {
-  height: 100%;
+  height: auto;
 }
 
 .app-content-loading {

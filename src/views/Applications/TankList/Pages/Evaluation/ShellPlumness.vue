@@ -90,7 +90,7 @@
           </DxDataGrid>
         </div>
       </div>
-      <div class="app-instruction" style="padding-top: 20px; padding-left: 20px">
+      <div class="app-instruction" style="padding-top: 20px">
         <appInstruction style="margin-top: 20px" title="Instruction" desc="Plumbness Evaluation">
           <label class="desc">
             The measurements were made 4 directions around the circumference of the tank for tank diameter 1-12 m. and 8 directions for tank diameter > 12 m.
