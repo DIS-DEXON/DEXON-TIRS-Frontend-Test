@@ -14,6 +14,67 @@
         </v-ons-list-header>
       </v-ons-list>
       <div class="content">
+        <div class="table-wrapper" style="margin-bottom:10px">
+          <DxDataGrid
+            id="circum-grid"
+            :ref="gridRefName"
+            key-expr="id_circum"
+            :data-source="circumList"
+            :element-attr="dataGridAttributes"
+            :selection="{ mode: 'single' }"
+            :hover-state-enabled="true"
+            :allow-column-reordering="true"
+            :show-borders="true"
+            :show-row-lines="true"
+            :row-alternation-enabled="false"
+            :word-wrap-enabled="true"
+            @row-inserted="CREATE_CIRCUM"
+            @row-updated="UPDATE_CIRCUM"
+            @row-removed="DELETE_CIRCUM"
+            @selection-changed="SELECTED_CIRCUM"
+          >
+            <DxFilterRow :visible="true" />
+            <DxHeaderFilter :visible="false" />
+
+            <DxEditing
+              :allow-updating="true"
+              :allow-deleting="true"
+              :allow-adding="true"
+              :use-icons="true"
+              mode="row"
+            />
+            <!-- <DxToolbar>
+              <DxItem location="before" template="table-header" />
+            </DxToolbar>-->
+            <DxColumn data-field="circum_no" caption="Circumference No." />
+
+            <DxColumn
+              data-field="distance_above_bottom"
+              caption="Distance Above Bottom (m)"
+              format="#,##0.00"
+            />
+
+            <DxColumn type="buttons">
+              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+              <DxButton name="edit" hint="Edit" icon="edit" />
+              <DxButton name="delete" hint="Delete" icon="trash" />
+            </DxColumn>
+
+            <!-- Configuration goes here -->
+            <!-- <DxFilterRow :visible="true" /> -->
+            <DxScrolling mode="standard" />
+            <DxSearchPanel :visible="false" />
+            <DxPaging :page-size="10" :page-index="0" />
+            <DxPager
+              :show-page-size-selector="true"
+              :allowed-page-sizes="[5, 10, 20]"
+              :show-navigation-buttons="true"
+              :show-info="true"
+              info-text="Page {0} of {1} ({2} items)"
+            />
+            <!-- <DxExport :enabled="true" /> -->
+          </DxDataGrid>
+        </div>
         <div class="table-wrapper">
           <DxDataGrid
             id="roundness-grid"
@@ -36,18 +97,22 @@
 
             <DxEditing
               :allow-updating="true"
-              :allow-deleting="true"
-              :allow-adding="IS_VISIBLE_ADD()"
+              :allow-deleting="false"
+              :allow-adding="false"
               :use-icons="true"
               mode="row"
             />
-
-            <DxColumn data-field="point_no" caption="Point No." />
+            <DxToolbar>
+              <DxItem location="before" template="table-header" />
+              <DxItem location="after" template="table-header-button-set" />
+            </DxToolbar>
+            <DxColumn data-field="point_no" caption="Point No." :allow-editing="false" />
 
             <DxColumn
-              data-field="distance_above_bottom"
-              caption="Distance Above Bottom (m)"
+              data-field="angle_degree"
+              caption="Angle"
               format="#,##0.00"
+              :allow-editing="false"
             />
 
             <DxColumn
@@ -77,6 +142,34 @@
               <DxButton name="edit" hint="Edit" icon="edit" />
               <DxButton name="delete" hint="Delete" icon="trash" />
             </DxColumn>
+
+            <template #table-header>
+              <div class="dx-table-style">
+                <div class="table-header-label"></div>
+              </div>
+            </template>
+            <template #table-header-button-set>
+              <div class="dx-table-style">
+                <div class="table-toolbar-set">
+                  <v-ons-toolbar-button
+                    class="table-toolbar-btn"
+                    v-on:click="DELETE_POINT()"
+                    v-if="roundnessList.length > 0"
+                  >
+                    <i class="las la-trash"></i>
+                    <span>Delete All Points</span>
+                  </v-ons-toolbar-button>
+                  <v-ons-toolbar-button
+                    class="table-toolbar-btn"
+                    v-on:click="OPEN_ADD()"
+                    v-if="isCircumSelected==true && roundnessList.length == 0 && circumList.length!=0"
+                  >
+                    <i class="las la-plus"></i>
+                    <span>Create New Points</span>
+                  </v-ons-toolbar-button>
+                </div>
+              </div>
+            </template>
 
             <!-- Configuration goes here -->
             <!-- <DxFilterRow :visible="true" /> -->
@@ -148,7 +241,8 @@
         </appInstruction>
       </div>
     </div>
-    <SelectInspRecord v-if="this.id_inspection_record == ''" />
+
+    <popupAdd v-if="isAdd == true" @closePopup="CLOSE_ADD()" :info="this.id_circum" />
   </div>
 </template>
 
@@ -163,8 +257,11 @@ import "devextreme/dist/css/dx.light.css";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
-import SelectInspRecord from "@/components/select-insp-record.vue";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
+import popupAdd from "@/views/Applications/TankList/Pages/Evaluation/Roundness-add.vue";
+//import popupSelect from "@/views/Applications/TankList/Pages/Evaluation/Roundness-select.vue";
+//import DxSelectBox from "devextreme-vue/select-box";
+
 //DataGrid
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
@@ -179,7 +276,9 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow
+  DxFilterRow,
+  DxToolbar,
+  DxItem
 } from "devextreme-vue/data-grid";
 
 //List
@@ -195,6 +294,8 @@ export default {
   components: {
     //VueTabsChrome,
     //DxList,
+    //DxSelectBox,
+    popupAdd,
     DxDataGrid,
     DxFileUploader,
     DxSearchPanel,
@@ -209,7 +310,8 @@ export default {
     appInstruction,
     chart,
     InspectionRecordPanel,
-    SelectInspRecord
+    DxToolbar,
+    DxItem
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -223,8 +325,11 @@ export default {
   },
   data() {
     return {
-      roundnessList: {},
-      roundnessListDetail: {},
+      gridRefName: "grid",
+      id_circum: 0,
+      isCircumSelected: false,
+      circumList: [],
+      roundnessList: [],
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -233,7 +338,9 @@ export default {
       dataGridAttributes: {
         class: "data-grid-style"
       },
-      pagePanelHiding: false
+      pagePanelHiding: false,
+      isAdd: false,
+      isEdit: false
     };
   },
   computed: {
@@ -262,19 +369,135 @@ export default {
       e.cancel = true;
     },
     VIEW_ITEM(item) {
+      console.clear();
+      //const id_tag = this.$route.params.id_tag;
+      this.isCircumSelected = false;
+      this.roundnessList = [];
+      this.circumList = [];
+      // const dataGrid = this.$refs[this.gridRefName].instance;
+      // dataGrid.clearSelection();
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
+      this.FETCH_CIRCUM(item);
+    },
+    FETCH_CIRCUM(item) {
+      axios({
+        method: "get",
+        url:
+          "roundness/get-roundness-circum-insp-id?id_insp_record=" +
+          item.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          console.log("get circum list:");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.circumList = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    CREATE_CIRCUM(e) {
+      //console.log(e);
+      const distance_above_bottom = e.data.distance_above_bottom;
       const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "roundness/get-roundness",
+        url: "roundness/add-roundness-circum",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record
+          circum_no: e.data.circum_no,
+          distance_above_bottom: distance_above_bottom,
+          id_inspection_record: this.id_inspection_record,
+          id_tag: id_tag
         }
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    UPDATE_CIRCUM(e) {
+      //console.log(e.data);
+      axios({
+        method: "put",
+        url: "roundness/edit-roundness-circum",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: e.data
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.VIEW_ITEM(this.current_view);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    DELETE_CIRCUM(e) {
+      //console.log(e.data);
+      axios({
+        method: "delete",
+        url: "roundness/delete-roundness-circum?id=" + e.id,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: null
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            console.log(res.data);
+            this.FETCH_CIRCUM(this.current_view);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    SELECTED_CIRCUM(e) {
+      //console.log(e);
+      this.id_circum = e.selectedRowKeys[0];
+      this.isCircumSelected = true;
+      this.FETCH_ROUNDNESS();
+    },
+    FETCH_ROUNDNESS() {
+      axios({
+        method: "get",
+        url: "roundness/get-roundness-by-circum?id_circum=" + this.id_circum,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
       })
         .then(res => {
           console.log("get roundness list:");
@@ -287,15 +510,8 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          //this.isLoading = false;
         });
-    },
-    IS_VISIBLE_ADD() {
-      if (this.id_inspection_record == 0) {
-        return false;
-      } else {
-        return true;
-      }
     },
     CREATE_ROUNDNESS(e) {
       this.isLoading = true;
@@ -355,17 +571,17 @@ export default {
       console.log(e.data);
       axios({
         method: "delete",
-        url: "roundness/delete-roundness",
+        url: "roundness/delete-roundness?id_circum=" + e.data.id_circum,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data
+        data: null
       })
         .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
+            this.FETCH_ROUNDNESS(this.id_circum);
           }
         })
         .catch(error => {
@@ -427,6 +643,48 @@ export default {
       this.file = e.value[0];
       this.file_name = e.value[0].name;
       this.UPLOAD_CHART("shell_roundness");
+    },
+    OPEN_ADD() {
+      this.isAdd = true;
+    },
+    CLOSE_ADD() {
+      this.FETCH_ROUNDNESS(this.id_circum);
+      this.isAdd = false;
+    },
+    DELETE_POINT() {
+      this.$ons.notification.confirm("Are you sure?").then(res => {
+        if (res == 1) {
+          axios({
+            method: "delete",
+            url: "roundness/delete-roundness?id_circum=" + this.id_circum,
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
+            },
+            data: null
+          })
+            .then(res => {
+              console.log(res);
+              if (res.status == 200 && res.data) {
+                console.log(res.data);
+                this.FETCH_ROUNDNESS(this.id_circum);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
+        }
+      });
+    },
+    OPEN_EDIT() {
+      this.isEdit = true;
+    },
+    CLOSE_EDIT() {
+      this.VIEW_ITEM(this.current_view);
+      this.isEdit = false;
     }
   }
 };
@@ -442,7 +700,20 @@ export default {
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
 }
+// .page-container {
+//   width: 100%;
+//   height: 100%;
+//   overflow-y: auto;
+//   .page-section {
+//     padding: 20px;
+//     height: fit-content;
+//     width: auto;
+//   }
 
+//   .overflow-x {
+//     height: calc(100% - 88px);
+//   }
+// }
 .page-container-hide {
   grid-template-columns: 41px calc(100% - 41px);
 }
