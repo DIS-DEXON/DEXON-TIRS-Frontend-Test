@@ -923,7 +923,7 @@ export default {
               .then(res => {
                 // console.log(res.data[0]);
                 if (res.status == 200) {
-                  this.$ons.notification.alert("Tank Edit successful");
+                  //this.$ons.notification.alert("Tank Edit successful");
                   this.$emit("closePopup");
                   this.$router.go();
                 }

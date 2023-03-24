@@ -395,7 +395,7 @@ export default {
       })
         .then(res => {
           if (res.status == 200 && res.data) {
-            console.log("get data graph:");
+            console.log("FETCH GRAPH:");
             this.dataList_graph = res.data;
             console.log(this.dataList_graph);
           }

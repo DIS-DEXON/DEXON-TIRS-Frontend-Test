@@ -144,10 +144,10 @@ export default {
         xAxis: {
           tickInterval: 0,
           min: 0,
-          max: 360,
-          labels: {
-            format: "{value}°"
-          }
+          max: 360
+          // labels: {
+          //   format: "{value}°"
+          // }
         },
 
         yAxis: {
@@ -302,8 +302,6 @@ export default {
     if (this.roundnessData && this.roundnessData.length > 0) {
       this.dataList = this.roundnessData;
       this.id_inspection_record = this.roundnessData[0].id_inspection_record;
-      console.log("Data for graph");
-      console.log(this.dataList);
       this.FETCH_CIRCUM();
 
       // if (this.dataList.length > 0) {

@@ -196,7 +196,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" :style="px">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>TP</label>
           </div>
@@ -282,7 +282,7 @@
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
-        <div class="table-header-toolbar" :style="px_thk">
+        <div class="table-header-toolbar" style="width: calc(100% - 82px)">
           <div class="left">
             <label>Thickness</label>
           </div>

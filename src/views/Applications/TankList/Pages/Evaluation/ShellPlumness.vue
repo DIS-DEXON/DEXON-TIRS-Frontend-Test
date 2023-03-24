@@ -95,7 +95,7 @@
           <label class="desc">
             The measurements were made 4 directions around the circumference of the tank for tank diameter 1-12 m. and 8 directions for tank diameter > 12 m.
             <div class="img-box" style="margin-top:15px">
-              <img src="/img/plumbness desc.png" />
+              <img src="/img/MicrosoftTeams-image-plumbness.png" />
             </div>
           </label>
           <label class="desc">Acceptance criteria per API 653:</label>
