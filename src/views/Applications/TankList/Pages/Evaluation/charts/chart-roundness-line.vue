@@ -1,13 +1,13 @@
 <template>
   <div class="chart-item">
-    <highcharts :options="chartOptionsPolar" v-if="this.chartData" :key="dataList"></highcharts>
+    <highcharts :options="chartOptions" v-if="this.chartData" :key="dataList"></highcharts>
     <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
   </div>
 </template>
 
 <script>
 // import moment from "moment";
-// import axios from "/axios.js";
+import axios from "/axios.js";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 import { Chart } from "highcharts-vue";
 import Highcharts from "highcharts";
@@ -26,11 +26,15 @@ export default {
   contentLoading,
   highcharts: Chart,
   props: {
-    roundnessData: Object
+    roundnessData: Array
   },
   created() {},
   data() {
     return {
+      id_inspection_record: "",
+      circumList: [],
+      id_circumList: [],
+      dataSeries: null,
       isLoading: false,
       dataList: null,
       chartData: {},
@@ -69,10 +73,6 @@ export default {
           series: {
             pointStart: 0,
             pointInterval: 25.7
-          },
-          column: {
-            pointPadding: 0,
-            groupPadding: 0
           }
         },
 
@@ -124,6 +124,46 @@ export default {
         ]
       },
       chartOptions: {
+        chart: {
+          polar: true
+        },
+
+        title: {
+          text: "Roundness Evaluation Graph"
+        },
+
+        // subtitle: {
+        //   text: "Also known as Radar Chart"
+        // },
+
+        pane: {
+          startAngle: 0,
+          endAngle: 360
+        },
+
+        xAxis: {
+          tickInterval: 0,
+          min: 0,
+          max: 360,
+          labels: {
+            format: "{value}°"
+          }
+        },
+
+        yAxis: {
+          min: 0
+        },
+
+        plotOptions: {
+          series: {
+            pointStart: 0,
+            pointInterval: 0
+          }
+        },
+
+        series: []
+      },
+      chartOptions_old: {
         chart: {
           type: "spline"
         },
@@ -261,21 +301,95 @@ export default {
   mounted() {
     if (this.roundnessData && this.roundnessData.length > 0) {
       this.dataList = this.roundnessData;
-      console.log("Have data");
+      this.id_inspection_record = this.roundnessData[0].id_inspection_record;
+      console.log("Data for graph");
       console.log(this.dataList);
+      this.FETCH_CIRCUM();
 
-      if (this.dataList.length > 0) {
-        for (var i = 0; i < this.dataList.length; i++) {
-          this.chartOptions.series[0].data.push(this.dataList[i].measure_value);
-          this.chartOptions.series[1].data.push(this.dataList[i].rad_max);
-          this.chartOptions.series[2].data.push(this.dataList[i].rad_nom);
-          this.chartOptions.series[3].data.push(this.dataList[i].rad_min);
-          this.chartOptions.xAxis.categories.push(this.dataList[i].point_no);
-        }
-      }
+      // if (this.dataList.length > 0) {
+      //   this.chartOptions.xAxis.series.tickInterval = this.dataList[1].angle_degree;
+      //   this.chartOptions.plotOptions.pointInterval = this.dataList[1].angle_degree;
+      //   for (let i = 0; i < this.dataList.length; i++) {
+      //     this.chartOptions.series[i].data.push(this.dataList[i].measure_value);
+      //     //this.chartOptions.series[i]
+      //   }
+      // }
     }
   },
-  methods: {},
+  methods: {
+    FETCH_CIRCUM() {
+      axios({
+        method: "get",
+        url:
+          "roundness/get-roundness-circum-insp-id?id_insp_record=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          //console.log("Get how many series");
+          //console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.circumList = res.data;
+            this.CREATE_SERIES();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_DATAGRAPH() {
+      axios({
+        method: "get",
+        url:
+          "roundness/get-roundness-by-insp-for-graph?id_insp=" +
+          this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          //console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.datagraph = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          for (let i = 0; i < this.id_circumList.length; i++) {
+            this.chartOptions.series[i].data = this.datagraph[i].data;
+          }
+          //this.isLoading = false;
+        });
+    },
+    CREATE_SERIES() {
+      this.chartOptions.xAxis.tickInterval = this.dataList[1].angle_degree;
+      this.chartOptions.plotOptions.series.pointInterval = this.dataList[1].angle_degree;
+      const series_count = this.circumList.length;
+
+      for (let i = 0; i < series_count; i++) {
+        this.id_circumList.push(this.circumList[i].id_circum);
+        this.chartOptions.series.push({
+          type: "line",
+          name: "Circumference No." + (i + 1),
+          pointPlacement: "between",
+          data: []
+        });
+      }
+      this.FETCH_DATAGRAPH();
+      console.log("series");
+      console.log(this.chartOptions);
+      // console.log(this.id_circumList);
+    }
+  },
   computed: {}
 };
 </script>

@@ -187,7 +187,7 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper">
-          <chart :roundnessData="roundnessList" :key="roundnessList" />
+          <chart :roundnessData="dataList_graph" :key="dataList_graph" />
         </div>
       </div>
       <div class="upload-graph">
@@ -330,6 +330,7 @@ export default {
       isCircumSelected: false,
       circumList: [],
       roundnessList: [],
+      dataList_graph: null,
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -379,6 +380,32 @@ export default {
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       this.FETCH_CIRCUM(item);
+      this.FETCH_GRAPH(item);
+    },
+    FETCH_GRAPH(item) {
+      axios({
+        method: "get",
+        url:
+          "roundness/get-roundness-by-insp?id_insp=" +
+          item.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {}
+      })
+        .then(res => {
+          if (res.status == 200 && res.data) {
+            console.log("get data graph:");
+            this.dataList_graph = res.data;
+            console.log(this.dataList_graph);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
     },
     FETCH_CIRCUM(item) {
       axios({
@@ -461,10 +488,10 @@ export default {
         });
     },
     DELETE_CIRCUM(e) {
-      //console.log(e.data);
+      console.log(e.data);
       axios({
         method: "delete",
-        url: "roundness/delete-roundness-circum?id=" + e.id,
+        url: "roundness/delete-roundness-circum?id=" + e.id_circum,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -557,7 +584,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
+            this.FETCH_ROUNDNESS();
           }
         })
         .catch(error => {

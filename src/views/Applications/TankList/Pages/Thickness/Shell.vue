@@ -122,6 +122,9 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @row-inserted="CREATE_SHELL_COURSE"
+          @row-updated="UPDATE_SHELL_COURSE"
+          @row-removed="DELETE_SHELL_COURSE"
           @selection-changed="VIEW_CML"
           @row-click="SHELL_FLAGER"
         >
@@ -677,6 +680,91 @@ export default {
     }
   },
   methods: {
+    CREATE_SHELL_COURSE(e) {
+      const id_tag = this.$route.params.id_tag;
+      axios({
+        method: "post",
+        url: "tank-course/add-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: id_tag,
+          course_no: e.data.course_no,
+          t_nom_plate_mm: e.data.t_nom_plate_mm,
+          height_of_course_m: e.data.height_of_course_m,
+          id_material: e.data.id_material
+        }
+      })
+        .then(res => {
+          console.log("==> CREATE SHELL COURSE");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.dataList.shellcourse = res.data;
+            this.FETCH_SHELL_COURSE();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    UPDATE_SHELL_COURSE(e) {
+      //const id_tag = this.$route.params.id_tag;
+      axios({
+        method: "put",
+        url: "tank-course/edit-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tank_course: e.data.id_tank_course,
+          id_tag: e.data.id_tag,
+          course_no: e.data.course_no,
+          t_nom_plate_mm: e.data.t_nom_plate_mm,
+          height_of_course_m: e.data.height_of_course_m,
+          id_material: e.data.id_material
+        }
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status == 200 && res.data) {
+            this.FETCH_SHELL_COURSE();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    DELETE_SHELL_COURSE(e) {
+      axios({
+        method: "delete",
+        url: "tank-course/delete-tank-course",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tank_course: e.key
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.FETCH_SHELL_COURSE();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_SHELL_COURSE() {
       this.isLoading = true;
       var id = this.$route.params.id_tag;
