@@ -19,7 +19,7 @@
       </router-link>
       <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/other-attachment'">
         <v-ons-toolbar-button class="item">
-          <img src="/img/icon_sidebar/tank/inspection-record.png" />
+          <img src="/img/icon_sidebar/tank/attachment.png" />
           <span>Other Attachment</span>
         </v-ons-toolbar-button>
       </router-link>
