@@ -14,66 +14,74 @@
         </v-ons-list-header>
       </v-ons-list>
       <div class="content">
-        <div class="table-wrapper" style="margin-bottom:10px">
-          <DxDataGrid
-            id="circum-grid"
-            :ref="gridRefName"
-            key-expr="id_circum"
-            :data-source="circumList"
-            :element-attr="dataGridAttributes"
-            :selection="{ mode: 'single' }"
-            :hover-state-enabled="true"
-            :allow-column-reordering="true"
-            :show-borders="true"
-            :show-row-lines="true"
-            :row-alternation-enabled="false"
-            :word-wrap-enabled="true"
-            @row-inserted="CREATE_CIRCUM"
-            @row-updated="UPDATE_CIRCUM"
-            @row-removed="DELETE_CIRCUM"
-            @selection-changed="SELECTED_CIRCUM"
-          >
-            <DxFilterRow :visible="true" />
-            <DxHeaderFilter :visible="false" />
+        <div class="table-wrapper">
+          <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+            <div class="left">
+              <label>Circumference</label>
+            </div>
+            <div class="right"></div>
+          </div>
+          <div>
+            <DxDataGrid
+              id="circum-grid"
+              :ref="gridRefName"
+              key-expr="id_circum"
+              :data-source="circumList"
+              :element-attr="dataGridAttributes"
+              :selection="{ mode: 'single' }"
+              :hover-state-enabled="true"
+              :allow-column-reordering="true"
+              :show-borders="true"
+              :show-row-lines="true"
+              :row-alternation-enabled="false"
+              :word-wrap-enabled="true"
+              @row-inserted="CREATE_CIRCUM"
+              @row-updated="UPDATE_CIRCUM"
+              @row-removed="DELETE_CIRCUM"
+              @selection-changed="SELECTED_CIRCUM"
+            >
+              <DxFilterRow :visible="true" />
+              <DxHeaderFilter :visible="false" />
 
-            <DxEditing
-              :allow-updating="true"
-              :allow-deleting="true"
-              :allow-adding="true"
-              :use-icons="true"
-              mode="row"
-            />
-            <!-- <DxToolbar>
+              <DxEditing
+                :allow-updating="true"
+                :allow-deleting="true"
+                :allow-adding="true"
+                :use-icons="true"
+                mode="row"
+              />
+              <!-- <DxToolbar>
               <DxItem location="before" template="table-header" />
-            </DxToolbar>-->
-            <DxColumn data-field="circum_no" caption="Circumference No." />
+              </DxToolbar>-->
+              <DxColumn data-field="circum_no" caption="Circumference No." />
 
-            <DxColumn
-              data-field="distance_above_bottom"
-              caption="Distance Above Bottom (m)"
-              format="#,##0.00"
-            />
+              <DxColumn
+                data-field="distance_above_bottom"
+                caption="Distance Above Bottom (m)"
+                format="#,##0.00"
+              />
 
-            <DxColumn type="buttons">
-              <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
-              <DxButton name="edit" hint="Edit" icon="edit" />
-              <DxButton name="delete" hint="Delete" icon="trash" />
-            </DxColumn>
+              <DxColumn type="buttons">
+                <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
+                <DxButton name="edit" hint="Edit" icon="edit" />
+                <DxButton name="delete" hint="Delete" icon="trash" />
+              </DxColumn>
 
-            <!-- Configuration goes here -->
-            <!-- <DxFilterRow :visible="true" /> -->
-            <DxScrolling mode="standard" />
-            <DxSearchPanel :visible="false" />
-            <DxPaging :page-size="10" :page-index="0" />
-            <DxPager
-              :show-page-size-selector="true"
-              :allowed-page-sizes="[5, 10, 20]"
-              :show-navigation-buttons="true"
-              :show-info="true"
-              info-text="Page {0} of {1} ({2} items)"
-            />
-            <!-- <DxExport :enabled="true" /> -->
-          </DxDataGrid>
+              <!-- Configuration goes here -->
+              <!-- <DxFilterRow :visible="true" /> -->
+              <DxScrolling mode="standard" />
+              <DxSearchPanel :visible="false" />
+              <DxPaging :page-size="10" :page-index="0" />
+              <DxPager
+                :show-page-size-selector="true"
+                :allowed-page-sizes="[5, 10, 20]"
+                :show-navigation-buttons="true"
+                :show-info="true"
+                info-text="Page {0} of {1} ({2} items)"
+              />
+              <!-- <DxExport :enabled="true" /> -->
+            </DxDataGrid>
+          </div>
         </div>
         <div class="table-wrapper">
           <DxDataGrid
@@ -110,7 +118,7 @@
 
             <DxColumn
               data-field="angle_degree"
-              caption="Angle"
+              caption="Angle (degree)"
               format="#,##0.00"
               :allow-editing="false"
             />
@@ -145,7 +153,9 @@
 
             <template #table-header>
               <div class="dx-table-style">
-                <div class="table-header-label"></div>
+                <div class="table-header-label">
+                  <label>Point</label>
+                </div>
               </div>
             </template>
             <template #table-header-button-set>
@@ -186,7 +196,7 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
-        <div class="chart-wrapper">
+        <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :roundnessData="dataList_graph" :key="dataList_graph" />
         </div>
       </div>
@@ -491,7 +501,7 @@ export default {
       console.log(e.data);
       axios({
         method: "delete",
-        url: "roundness/delete-roundness-circum?id=" + e.id_circum,
+        url: "roundness/delete-roundness-circum?id=" + e.data.id_circum,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -726,23 +736,12 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  // padding: 20px;
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
+  // grid-auto-rows: 27px auto;
 }
-// .page-container {
-//   width: 100%;
-//   height: 100%;
-//   overflow-y: auto;
-//   .page-section {
-//     padding: 20px;
-//     height: fit-content;
-//     width: auto;
-//   }
 
-//   .overflow-x {
-//     height: calc(100% - 88px);
-//   }
-// }
 .page-container-hide {
   grid-template-columns: 41px calc(100% - 41px);
 }
@@ -754,24 +753,26 @@ export default {
     margin: -20px -20px 20px -20px;
   }
   .content {
-    // width: calc(100% - 20px);
-    display: block;
-    // grid-template-columns: 600px calc(100% - 600px);
-    // grid-gap: 20px;
+    width: calc(100% - 20px);
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: auto 400px;
+    grid-gap: 20px;
   }
-}
 
-.dx-list-item-content::before {
-  content: none;
+  @media (max-width: 1219px) {
+    .content {
+      display: inline;
+    }
+    .table-wrapper {
+      height: auto;
+    }
+  }
 }
 
 .data-grid-style {
   height: 100%;
   border-radius: 6px;
-}
-
-.app-instruction {
-  padding-top: 20px;
 }
 
 .table-wrapper {
@@ -781,5 +782,9 @@ export default {
 .instruction-table {
   // width: 100%;
   margin-top: 10px;
+  text-align: center;
+}
+.chart-wrapper {
+  height: auto;
 }
 </style>
