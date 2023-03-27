@@ -102,11 +102,20 @@
             <label>CML</label>
           </div>
           <div class="right">
-            <v-ons-toolbar-button>
-              <label for="cml-upload-btn">
-                <i class="las la-file-import"></i>Import Excel
-              </label>
-            </v-ons-toolbar-button>
+            <div class="dx-table-style">
+              <div class="table-toolbar-set">
+                <div class="download-btn">
+                  <v-ons-toolbar-button id="toolbarBTN" v-on:click="FETCH_FILE_CML()">
+                    <label>Download</label>
+                  </v-ons-toolbar-button>
+                </div>
+                <v-ons-toolbar-button>
+                  <label for="cml-upload-btn">
+                    <i class="las la-file-import"></i>Import Excel
+                  </label>
+                </v-ons-toolbar-button>
+              </div>
+            </div>
           </div>
         </div>
         <input
@@ -1112,7 +1121,27 @@ export default {
       })
         .then(res => {
           const blob = res.data;
-          this.downLoadFileExcel(blob, "CriticalZone_TEMPLATE");
+          this.downLoadFileExcel(blob, "Critical_TP_TEMPLATE");
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {});
+    },
+    FETCH_FILE_CML() {
+      //console.log("in");
+      var id_tag = parseInt(this.$route.params.id_tag);
+      axios({
+        method: "get",
+        url: "critical-thickness/download-critical-cml?id_tag=" + id_tag,
+        responseType: "blob",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          const blob = res.data;
+          this.downLoadFileExcel(blob, "Critical_CML_TEMPLATE");
         })
         .catch(error => {
           console.log(error);
