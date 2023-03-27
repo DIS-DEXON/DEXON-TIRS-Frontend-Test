@@ -134,7 +134,7 @@
           <DxEditing
             :allow-updating="true"
             :allow-deleting="true"
-            :allow-adding="true"
+            :allow-adding="false"
             :use-icons="true"
             mode="row"
           />

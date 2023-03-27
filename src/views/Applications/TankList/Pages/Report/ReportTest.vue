@@ -57,6 +57,7 @@
       <div v-if="tabCurrent == 'tab3'">
         <button type="button" v-on:click="createILASTInter()">Create docx</button>
       </div>
+      <PageLoading v-if="isLoadingFetch == true" text="Please wait. . ." />
     </div>
     <PageLoading v-if="isLoading == true" text="Please wait. . ." />
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
@@ -99,6 +100,7 @@ export default {
     return {
       theTemplate: null,
       isLoading: false,
+      isLoadingFetch: false,
       isHovering: false,
       imgpath: [],
       repairList: [],
@@ -227,6 +229,7 @@ export default {
         bottom_thk: [],
         critical_thk: [],
         checklist: [],
+        checklistin: [],
         checklist_generic: [],
         plumbness: [],
         roof_thk: [],
@@ -276,7 +279,7 @@ export default {
   },
   methods: {
     VIEW_ITEM(item) {
-      this.isLoading = true;
+      this.isLoadingFetch = true;
       console.clear();
       this.current_view = item;
       console.log("records:");
@@ -291,7 +294,14 @@ export default {
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
       this.data1.name_ndt_examiner = item.name_ndt_examiner;
       this.data1.cert_no = item.cert_no;
-
+      if (item.id_campaign == 1) {
+        //console.warn("external id=1");
+        this.FETCH_CHECKLIST_ILAST_EX();
+      }
+      if (item.id_campaign == 2) {
+        //console.warn("Full id=2");
+        this.FETCH_CHECKLIST_ILAST_IN();
+      }
       this.FETCH_MARKUP_ANNULAR(this.current_view);
       this.FETCH_MARKUP_BOTTOM(this.current_view);
       this.FETCH_MARKUP_COIL(this.current_view);
@@ -304,7 +314,8 @@ export default {
       this.FETCH_MARKUP_SHELLNZ(this.current_view);
       this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
       this.FETCH_IMAGE();
-      this.FETCH_CHECKLIST_ILAST_EX();
+      console.warn(item.id_campaign);
+
       this.FETCH_CHECKLIST_GENERIC();
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
@@ -1051,6 +1062,33 @@ export default {
           //this.isLoading = false;
         });
     },
+    FETCH_CHECKLIST_ILAST_IN() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "chk-ilast-in/get-chkilastin-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("checklist ilast in:");
+          //console.log(res);
+          if (res.status == 200 && res.data) {
+            //console.log(res.data);
+            this.data1.checklist = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
     FETCH_TANK_INFO() {
       const id_tag = this.$route.params.id_tag;
       //console.log("id_insp:" + id_insp_record);
@@ -1338,18 +1376,15 @@ export default {
         });
     },
     FETCH_EVAL_ROUNDNESS() {
-      const id_tag = this.$route.params.id_tag;
+      //const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
       axios({
-        method: "post",
-        url: "roundness/get-roundness",
+        method: "get",
+        url: "roundness/get-roundness-by-insp?id_insp=" + id_insp,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_tag: id_tag,
-          id_inspection_record: id_insp
-        }
+        data: null
       })
         .then(res => {
           console.log("EVAL ROUNDNESS :");
@@ -2082,7 +2117,7 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.isLoadingFetch = false;
         });
     },
     SHOW_HIDE_PANEL() {
@@ -2455,7 +2490,7 @@ export default {
               source: imageBlob,
               format: mimeType,
               width: 600,
-              height: 300
+              height: 400
             };
             this.data1.shell_roundness = imageObject;
           }

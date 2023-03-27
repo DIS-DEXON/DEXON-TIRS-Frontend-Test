@@ -515,6 +515,7 @@ export default {
       //console.log(e);
       this.id_circum = e.selectedRowKeys[0];
       this.isCircumSelected = true;
+      this.FETCH_GRAPH(this.current_view);
       this.FETCH_ROUNDNESS();
     },
     FETCH_ROUNDNESS() {
@@ -585,6 +586,7 @@ export default {
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.FETCH_ROUNDNESS();
+            this.FETCH_GRAPH(this.current_view);
           }
         })
         .catch(error => {
