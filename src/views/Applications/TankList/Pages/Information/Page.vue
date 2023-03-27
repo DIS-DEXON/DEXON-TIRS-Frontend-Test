@@ -344,7 +344,7 @@ export default {
           value: this.infoTank.sg_of_product
         },
         {
-          desc: "In-service Age of Tank",
+          desc: "In-service Age of Tank (year)",
           value: this.infoTank.inservice_age_of_tank_yrs
         }
       ];

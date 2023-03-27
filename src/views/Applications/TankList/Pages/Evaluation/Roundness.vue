@@ -753,7 +753,7 @@ export default {
   }
   .content {
     // width: calc(100% - 20px);
-    display: inline;
+    display: block;
     // grid-template-columns: 600px calc(100% - 600px);
     // grid-gap: 20px;
   }
