@@ -199,59 +199,71 @@
         <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :roundnessData="dataList_graph" :key="dataList_graph" />
         </div>
-      </div>
-      <div class="upload-graph">
-        <DxFileUploader
-          select-button-text="Select File"
-          label-text="or Drop an image here"
-          upload-mode="useForm"
-          :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
-          ready-to-upload-message="UPLOAD SUCCESSFULLY"
-          @value-changed="VALUE_CHANGE"
-        />
-      </div>
-      <div class="app-instruction">
-        <appInstruction
-          title="Instruction"
-          desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
-        >
-          <table class="instruction-table">
-            <tr>
-              <th>Tank Diameter m (ft)</th>
-              <th>
-                Radius Tolerance mm (in)
-                <br />(≤ 0.3048 m)
-              </th>
-              <th>
-                Radius Tolerance mm (in)
-                <br />(> 0.3048 m)
-              </th>
-            </tr>
-            <tr>
-              <td>&lt; 12 (40)</td>
-              <td>±13 (&#189;)</td>
-              <td>±39 (3&#189;)</td>
-            </tr>
-            <tr>
-              <td>from 12 (40) to &lt; 45 (150)</td>
-              <td>±19 (¾)</td>
-              <td>±57 (3¾)</td>
-            </tr>
-            <tr>
-              <td>from 45 (150) to &lt; 75 (250)</td>
-              <td>±25 (1)</td>
-              <td>±75 (3)</td>
-            </tr>
-            <tr>
-              <td>≥ 75 (250)</td>
-              <td>±32 (1¼)</td>
-              <td>±96 (3¼)</td>
-            </tr>
-          </table>
-        </appInstruction>
+        <div class="upload-graph" style="margin-top:-25px">
+          <DxFileUploader
+            select-button-text="Select File"
+            label-text="or Drop an image here"
+            upload-mode="useForm"
+            :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+            accept="image/*"
+            ready-to-upload-message="UPLOAD SUCCESSFULLY"
+            @value-changed="VALUE_CHANGE"
+            v-if="chart_id==0"
+          />
+          <div
+            class="chart-img"
+            v-if="chart_id!=0"
+            style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;"
+          >
+            <img :src="baseURL + chart_img_1" width="100%" height="200" style="margin-top: 5px;" />
+            <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART()">
+              <i class="las la-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="app-instruction" style="grid-column: span 2;">
+          <appInstruction
+            title="Instruction"
+            desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
+          >
+            <table class="instruction-table">
+              <tr>
+                <th>Tank Diameter m (ft)</th>
+                <th>
+                  Radius Tolerance mm (in)
+                  <br />(≤ 0.3048 m)
+                </th>
+                <th>
+                  Radius Tolerance mm (in)
+                  <br />(> 0.3048 m)
+                </th>
+              </tr>
+              <tr>
+                <td>&lt; 12 (40)</td>
+                <td>±13 (&#189;)</td>
+                <td>±39 (3&#189;)</td>
+              </tr>
+              <tr>
+                <td>from 12 (40) to &lt; 45 (150)</td>
+                <td>±19 (¾)</td>
+                <td>±57 (3¾)</td>
+              </tr>
+              <tr>
+                <td>from 45 (150) to &lt; 75 (250)</td>
+                <td>±25 (1)</td>
+                <td>±75 (3)</td>
+              </tr>
+              <tr>
+                <td>≥ 75 (250)</td>
+                <td>±32 (1¼)</td>
+                <td>±96 (3¼)</td>
+              </tr>
+            </table>
+          </appInstruction>
+        </div>
       </div>
     </div>
-
+    <SelectInspRecord v-if="this.id_inspection_record == ''" />
     <popupAdd v-if="isAdd == true" @closePopup="CLOSE_ADD()" :info="this.id_circum" />
   </div>
 </template>
@@ -267,6 +279,7 @@ import "devextreme/dist/css/dx.light.css";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
+import SelectInspRecord from "@/components/select-insp-record.vue";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
 import popupAdd from "@/views/Applications/TankList/Pages/Evaluation/Roundness-add.vue";
 //import popupSelect from "@/views/Applications/TankList/Pages/Evaluation/Roundness-select.vue";
@@ -321,7 +334,8 @@ export default {
     chart,
     InspectionRecordPanel,
     DxToolbar,
-    DxItem
+    DxItem,
+    SelectInspRecord
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
@@ -351,7 +365,9 @@ export default {
       },
       pagePanelHiding: false,
       isAdd: false,
-      isEdit: false
+      isEdit: false,
+      chart_id: 0,
+      chart_img_1: ""
     };
   },
   computed: {
@@ -391,6 +407,7 @@ export default {
       this.current_view = item;
       this.FETCH_CIRCUM(item);
       this.FETCH_GRAPH(item);
+      this.FETCH_CHART();
     },
     FETCH_GRAPH(item) {
       axios({
@@ -636,6 +653,35 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
+    FETCH_CHART() {
+      console.log("==> FETCH: Chart");
+      var id = this.current_view.id_inspection_record;
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id-type?id=" +
+          id +
+          "&type=roundness",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          console.log("==> RES: Chart 1");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.chart_id = res.data[0].id_chart;
+            this.chart_img_1 = res.data[0].file_path;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     UPLOAD_CHART(type) {
       var formData = new FormData();
       formData.append(
@@ -660,6 +706,7 @@ export default {
             //console.log("in");
             //console.log(res.data);
             //this.$ons.notification.alert("UPLOAD COMPLETED");
+            this.FETCH_CHART();
             console.log("UPLOAD COMPLETED");
           }
         })
@@ -673,6 +720,36 @@ export default {
           this.isLoading = false;
         });
     },
+    DELETE_CHART() {
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
+        if (res == 1) {
+          const id = this.chart_id;
+          console.log(id);
+          axios({
+            method: "delete",
+            url: "/chart-image-file/delete-chart-image-file?id=" + id,
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
+            }
+          })
+            .then(res => {
+              console.log(res);
+              if (res.status == 200) {
+                this.chart_id = 0;
+                //this.FETCH_CHART_1();
+              }
+            })
+            .catch(error => {
+              this.isLoading = false;
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        }
+      });
+    },
     VALUE_CHANGE(e) {
       //console.log("fileReader e data:");
       //console.log(e);
@@ -681,7 +758,7 @@ export default {
       reader.onload = () => {};
       this.file = e.value[0];
       this.file_name = e.value[0].name;
-      this.UPLOAD_CHART("shell_roundness");
+      this.UPLOAD_CHART("roundness");
     },
     OPEN_ADD() {
       this.isAdd = true;

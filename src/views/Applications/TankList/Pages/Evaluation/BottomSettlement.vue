@@ -145,15 +145,31 @@
         <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :floorGradientData="bottomSetGraph" :key="bottomSetGraph" />
         </div>
-        <div class="upload-graph">
-          <DxFileUploader
-            select-button-text="Select File"
-            label-text="or Drop an image here"
-            upload-mode="useForm"
-            :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
-            ready-to-upload-message="UPLOAD SUCCESSFULLY"
-            @value-changed="VALUE_CHANGE"
-          />
+        <div
+          style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px; width: calc(100% - 20px);"
+        >
+          <div class="upload-graph">
+            <DxFileUploader
+              select-button-text="Select File"
+              label-text="or Drop an image here"
+              upload-mode="useForm"
+              :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+              accept="image/*"
+              ready-to-upload-message="UPLOAD SUCCESSFULLY"
+              @value-changed="VALUE_CHANGE"
+              v-if="chart_id==0"
+            />
+            <div
+              class="chart-img"
+              v-if="chart_id!=0"
+              style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;"
+            >
+              <img :src="baseURL + chart_img_1" width="100%" height="200" style="margin-top: 5px;" />
+              <button style="position:absolute; top: 5px; right: 5px;" v-on:click="DELETE_CHART()">
+                <i class="las la-trash"></i>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="table-wrapper" style="grid-column: span 2; margin-top: 30px;">
           <DxDataGrid
@@ -352,7 +368,9 @@ export default {
         class: "data-grid-style"
       },
       pagePanelHiding: false,
-      id_line: 0
+      id_line: 0,
+      chart_id: 0,
+      chart_img_1: ""
     };
   },
   computed: {
@@ -436,6 +454,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+      this.FETCH_CHART();
     },
     CREATE_LINE(e) {
       this.isLoading = true;
@@ -740,6 +759,35 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
+    FETCH_CHART() {
+      console.log("==> FETCH: Chart");
+      var id = this.current_view.id_inspection_record;
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id-type?id=" +
+          id +
+          "&type=bottom_settlement",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          console.log("==> RES: Chart 1");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.chart_id = res.data[0].id_chart;
+            this.chart_img_1 = res.data[0].file_path;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     UPLOAD_CHART(type) {
       var formData = new FormData();
       formData.append(
@@ -764,6 +812,7 @@ export default {
             //console.log("in");
             //console.log(res.data);
             //this.$ons.notification.alert("UPLOAD COMPLETED");
+            this.FETCH_CHART();
             console.log("UPLOAD COMPLETED");
           }
         })
@@ -776,6 +825,36 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    DELETE_CHART() {
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
+        if (res == 1) {
+          const id = this.chart_id;
+          console.log(id);
+          axios({
+            method: "delete",
+            url: "/chart-image-file/delete-chart-image-file?id=" + id,
+            headers: {
+              Authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
+            }
+          })
+            .then(res => {
+              console.log(res);
+              if (res.status == 200) {
+                this.chart_id = 0;
+                //this.FETCH_CHART_1();
+              }
+            })
+            .catch(error => {
+              this.isLoading = false;
+              this.$ons.notification.alert(
+                error.code + " " + error.response.status + " " + error.message
+              );
+            })
+            .finally(() => {});
+        }
+      });
     },
     VALUE_CHANGE(e) {
       //console.log("fileReader e data:");

@@ -486,6 +486,7 @@
                 label-text="or Drop an image here"
                 upload-mode="useForm"
                 :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+                accept="image/*"
                 ready-to-upload-message="UPLOAD SUCCESSFULLY"
                 @value-changed="VALUE_CHANGE"
                 v-if="chart_1==0"
@@ -523,6 +524,7 @@
                 upload-mode="useForm"
                 ready-to-upload-message="UPLOAD SUCCESSFULLY"
                 :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+                accept="image/*"
                 @value-changed="VALUE_CHANGE2"
                 v-if="chart_2==0"
               />
@@ -1693,7 +1695,7 @@ export default {
       this.UPLOAD_CHART("shell_settlement_2");
     },
     DELETE_CHART(i) {
-      console.log(i);
+      //console.warn(i);
       this.$ons.notification.confirm("Confirm delete?").then(res => {
         if (res == 1) {
           var id = 0;
@@ -1702,7 +1704,7 @@ export default {
           } else {
             id = this.chart_2;
           }
-          console.log(id);
+          //console.warn(id);
           axios({
             method: "delete",
             url: "/chart-image-file/delete-chart-image-file?id=" + id,
