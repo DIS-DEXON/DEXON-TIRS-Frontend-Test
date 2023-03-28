@@ -288,7 +288,7 @@ export default {
           value: this.infoTank.tank_internal_pressure
         },
         {
-          desc: "Design Pressure Shell (psig)",
+          desc: "Design Pressure Shell (mmAq)",
           value: this.infoTank.design_pressure_shell_psi
         },
         {
@@ -296,7 +296,7 @@ export default {
           value: this.infoTank.roof_type
         },
         {
-          desc: "Operating Pressure Shell (psig)",
+          desc: "Operating Pressure Shell (mmAq)",
           value: this.infoTank.ope_pressure_shell_psi
         },
         {

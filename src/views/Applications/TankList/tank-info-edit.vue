@@ -90,7 +90,7 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">In-service Date:</p>
+              <p class="label">First In-service Date:</p>
               <label class="star-label">
                 <i class="las la-asterisk"></i>
               </label>
@@ -104,16 +104,16 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Year of In-service (year):</p>
+              <p class="label">Previous Inspection Date:</p>
               <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>-->
+              </label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.inservice_age_of_tank_yrs"
-              placeholder="Year of In-service (year)"
-              disabled
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.inservice_date"
+              placeholder="In-service Date"
             />
           </div>
         </div>
@@ -166,7 +166,7 @@
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
               <label class="star-label">
-                <i class="las la-asterisk"></i>
+                <!-- <i class="las la-asterisk"></i> -->
               </label>
             </div>
             <input
@@ -187,7 +187,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
@@ -340,13 +340,13 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Design Pressure Shell (psig):</p>
+              <p class="label">Design Pressure Shell (mmAq):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.design_pressure_shell_psi"
-              placeholder="Design Pressure Shell (psig)"
+              placeholder="Design Pressure Shell (mmAq)"
             />
           </div>
           <div class="input-set">
@@ -900,10 +900,10 @@ export default {
         this.formData.installation_date &&
         this.formData.inservice_date &&
         this.formData.mat_type &&
-        this.formData.tank_capacity_litre &&
         this.formData.tank_height_m &&
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
+        this.formData.joint_efficiency &&
         this.formData.insulation !== "" &&
         this.formData.sg_of_product
       ) {

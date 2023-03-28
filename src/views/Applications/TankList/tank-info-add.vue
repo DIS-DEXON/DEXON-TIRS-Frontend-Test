@@ -90,7 +90,7 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">In-service Date:</p>
+              <p class="label">First In-service Date:</p>
               <label class="star-label">
                 <i class="las la-asterisk"></i>
               </label>
@@ -102,19 +102,20 @@
               placeholder="In-service Date"
             />
           </div>
-          <!-- <div class="input-set">
+          <div class="input-set">
             <div class="label-box">
-              <p class="label">Year of In-service (year):</p>
-              <label class="star-label">
+              <p class="label">Previous Inspection Date:</p>
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label> -->
             </div>
-            <input
-              type="text"
-              v-model="formData.inservice_age_of_tank_yrs"
-              placeholder="Year of In-service (year)"
+            <DxDateBox
+              :value="formSelect.now"
+              type="date"
+              v-model="formData.inservice_date"
+              placeholder="In-service Date"
             />
-          </div>-->
+          </div>
 
           <hr style="grid-column: span 3" />
           <label class="section-text">Tank Specification</label>
@@ -163,9 +164,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label> -->
             </div>
             <input
               type="text"
@@ -175,7 +176,7 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Tank Height (m):</p>
+              <p class="label">Tank Height <span>(m)</span>:</p>
               <label class="star-label">
                 <i class="las la-asterisk"></i>
               </label>
@@ -185,7 +186,7 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <label class="star-label"><i class="las la-asterisk"></i></label>
             </div>
             <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
@@ -338,24 +339,24 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Design Pressure Shell (psig):</p>
+              <p class="label">Design Pressure Shell (mmAq):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.design_pressure_shell_psi"
-              placeholder="Design Pressure Shell (psig)"
+              placeholder="Design Pressure Shell (mmAq)"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Operating Pressure Shell (psig):</p>
+              <p class="label">Operating Pressure Shell (mmAq):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.ope_pressure_shell_psi"
-              placeholder="Operating Pressure Shell (psig)"
+              placeholder="Operating Pressure Shell (mmAq)"
             />
           </div>
           <div class="input-set">
@@ -495,10 +496,10 @@ export default {
         this.formData.installation_date &&
         this.formData.inservice_date &&
         this.formData.mat_type &&
-        this.formData.tank_capacity_litre &&
         this.formData.tank_height_m &&
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
+        this.formData.joint_efficiency &&
         this.formData.insulation !== "" &&
         this.formData.sg_of_product
       ) {
@@ -753,4 +754,13 @@ hr {
     height: calc(100% - 51px);
   }
 }
+// span{
+//   font-weight: bold;
+//   color: red;
+// }
+// .required::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+//   color: red;
+//   opacity: 0.75;
+// }
+
 </style>

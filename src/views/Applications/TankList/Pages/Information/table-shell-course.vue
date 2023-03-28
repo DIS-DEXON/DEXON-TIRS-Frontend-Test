@@ -49,14 +49,14 @@
       <DxColumn
         data-field="height_of_course_m"
         caption="Height of course (m)"
-        format="#,##0.00"
+        format="#,###0.000"
         header-cell-template="headerHofC"
         :width="80"
       />
       <DxColumn
         data-field="height_accumulate_course_m"
         caption="Accumulate Height (m)"
-        format="#,##0.00"
+        format="#,###0.000"
         header-cell-template="headerAccuH"
         :allow-editing="false"
         :width="80"
@@ -96,7 +96,7 @@
       <DxColumn
         data-field="height_of_course_hydro_m"
         caption="Height Hydro (m)"
-        format="#,##0.00"
+        format="#,###0.000"
         header-cell-template="headerHhydro"
         :allow-editing="false"
         :width="70"
@@ -104,7 +104,7 @@
       <DxColumn
         data-field="height_of_course_prod_m"
         caption="Height Prod (m)"
-        format="#,##0.00"
+        format="#,###0.000"
         header-cell-template="headerHprod"
         :allow-editing="false"
         :width="70"
