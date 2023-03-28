@@ -344,7 +344,7 @@
             </div>
             <input
               type="text"
-              v-model="formData.design_pressure_shell_psi"
+              v-model="formData.design_pressure_shell"
               placeholder="Design Pressure Shell"
             />
           </div>
@@ -355,7 +355,7 @@
             </div>
             <input
               type="text"
-              v-model="formData.ope_pressure_shell_psi"
+              v-model="formData.ope_pressure_shell"
               placeholder="Operating Pressure Shell"
             />
           </div>
@@ -366,7 +366,7 @@
             </div>
             <input
               type="text"
-              v-model="formData.design_pressure_coil_psi"
+              v-model="formData.design_pressure_coil"
               placeholder="Design Pressure Coil"
             />
           </div>
@@ -377,7 +377,7 @@
             </div>
             <input
               type="text"
-              v-model="formData.ope_pressure_coil_psi"
+              v-model="formData.ope_pressure_coil"
               placeholder="Operating Pressure Coil"
             />
           </div>
@@ -488,6 +488,9 @@ export default {
       ).format("L");
       this.formData.inservice_date = moment(
         this.formData.inservice_date
+      ).format("L");
+      this.formData.last_inspection_date = moment(
+        this.formData.last_inspection_date
       ).format("L");
       console.log(this.formData);
       if (

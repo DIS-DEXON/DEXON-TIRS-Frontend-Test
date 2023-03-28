@@ -289,7 +289,7 @@ export default {
         },
         {
           desc: "Design Pressure Shell",
-          value: this.infoTank.design_pressure_shell_psi
+          value: this.infoTank.design_pressure_shell
         },
         {
           desc: "Roof Type",
@@ -297,7 +297,7 @@ export default {
         },
         {
           desc: "Operating Pressure Shell",
-          value: this.infoTank.ope_pressure_shell_psi
+          value: this.infoTank.ope_pressure_shell
         },
         {
           desc: "Roof Shape",
@@ -305,7 +305,7 @@ export default {
         },
         {
           desc: "Design Pressure Coil",
-          value: this.infoTank.design_pressure_coil_psi
+          value: this.infoTank.design_pressure_coil
         },
         {
           desc: "Bottom",
@@ -313,7 +313,7 @@ export default {
         },
         {
           desc: "Operating Pressure Coil",
-          value: this.infoTank.ope_pressure_coil_psi
+          value: this.infoTank.ope_pressure_coil
         },
         {
           desc: "Insulation ",

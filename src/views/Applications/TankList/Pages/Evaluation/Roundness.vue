@@ -199,7 +199,7 @@
         <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :roundnessData="dataList_graph" :key="dataList_graph" />
         </div>
-        <div class="upload-graph" style="margin-top:-25px">
+        <div class="upload-graph" style="margin-top:0px">
           <DxFileUploader
             select-button-text="Select File"
             label-text="or Drop an image here"
