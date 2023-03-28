@@ -288,7 +288,7 @@ export default {
           value: this.infoTank.tank_internal_pressure
         },
         {
-          desc: "Design Pressure Shell (mmAq)",
+          desc: "Design Pressure Shell",
           value: this.infoTank.design_pressure_shell_psi
         },
         {
@@ -296,7 +296,7 @@ export default {
           value: this.infoTank.roof_type
         },
         {
-          desc: "Operating Pressure Shell (mmAq)",
+          desc: "Operating Pressure Shell",
           value: this.infoTank.ope_pressure_shell_psi
         },
         {
@@ -304,7 +304,7 @@ export default {
           value: this.infoTank.roof_shape
         },
         {
-          desc: "Design Pressure Coil (psig)",
+          desc: "Design Pressure Coil",
           value: this.infoTank.design_pressure_coil_psi
         },
         {
@@ -312,7 +312,7 @@ export default {
           value: this.infoTank.bottom_type
         },
         {
-          desc: "Operating Pressure Coil (psig)",
+          desc: "Operating Pressure Coil",
           value: this.infoTank.ope_pressure_coil_psi
         },
         {
@@ -328,7 +328,7 @@ export default {
           value: this.infoTank.insulation_thk_mm
         },
         {
-          desc: "In-service Date ",
+          desc: "First In-service Date ",
           value: moment(this.infoTank.inservice_date).format("LL")
         },
         {

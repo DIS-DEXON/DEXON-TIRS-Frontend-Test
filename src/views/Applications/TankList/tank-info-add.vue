@@ -112,8 +112,8 @@
             <DxDateBox
               :value="formSelect.now"
               type="date"
-              v-model="formData.inservice_date"
-              placeholder="In-service Date"
+              v-model="formData.last_inspection_date"
+              placeholder="Previous Inspection Date"
             />
           </div>
 
@@ -339,46 +339,46 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Design Pressure Shell (mmAq):</p>
+              <p class="label">Design Pressure Shell:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.design_pressure_shell_psi"
-              placeholder="Design Pressure Shell (mmAq)"
+              placeholder="Design Pressure Shell"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Operating Pressure Shell (mmAq):</p>
+              <p class="label">Operating Pressure Shell:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.ope_pressure_shell_psi"
-              placeholder="Operating Pressure Shell (mmAq)"
+              placeholder="Operating Pressure Shell"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Design Pressure Coil (psig):</p>
+              <p class="label">Design Pressure Coil:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.design_pressure_coil_psi"
-              placeholder="Design Pressure Coil (psig)"
+              placeholder="Design Pressure Coil"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Operating Pressure Coil (psig):</p>
+              <p class="label">Operating Pressure Coil:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
               type="text"
               v-model="formData.ope_pressure_coil_psi"
-              placeholder="Operating Pressure Coil (psig)"
+              placeholder="Operating Pressure Coil"
             />
           </div>
           <div class="input-set" style="grid-column: span 3">

@@ -400,7 +400,7 @@ export default {
   border-radius: 6px;
   overflow: hidden;
   padding-top: 20px;
-  margin-top: 46px;
+  margin-top: 0px;
   .highcharts-container {
     height: 100% !important;
     margin: auto 0;
