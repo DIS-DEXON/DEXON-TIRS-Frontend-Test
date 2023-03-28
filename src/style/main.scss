@@ -843,7 +843,23 @@ hr {
                 }
             }
 
-            .form-item-value,
+            .form-item-value{
+                background-color: #fff;
+                border: 0.5px solid #000;
+                border-width: 0.5px 0.5px 0.5px 0;
+                grid-column: span 2;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                label {
+                    font-size: 12px;
+                    font-family: inherit;
+                    font-weight: 400;
+                    text-transform: none;
+                    color: #000;
+                }
+            }
             .form-item-textarea,
             .form-item-input {
                 background-color: #fff;
