@@ -337,7 +337,8 @@ export default {
         },
         {
           desc: "Previous Inspection Date",
-          value: moment(this.infoTank.last_inspection_date).format("LL")
+          value:this.infoTank.last_inspection_date ? moment(this.infoTank.last_inspection_date).format("LL") : null
+          //value: moment(this.infoTank.last_inspection_date).format("LL")
         },
         {
           desc: "Specific Gravity",
