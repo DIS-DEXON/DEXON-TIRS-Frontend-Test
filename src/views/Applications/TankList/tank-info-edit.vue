@@ -165,9 +165,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label">
-                <!-- <i class="las la-asterisk"></i> -->
-              </label>
+              <!-- <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label> -->
             </div>
             <input
               type="text"
