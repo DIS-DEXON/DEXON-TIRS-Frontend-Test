@@ -2791,7 +2791,9 @@ export default {
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
 }
-
+.page-container-hide {
+  grid-template-columns: 41px calc(100% - 51px);
+}
 .list-page {
   position: relative;
   overflow-y: auto;
