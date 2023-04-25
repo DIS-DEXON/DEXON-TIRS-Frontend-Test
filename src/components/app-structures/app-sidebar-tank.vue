@@ -287,6 +287,10 @@ export default {
           {
             id: 3,
             checklist_code: "ILAST Internal"
+          },
+          {
+            id: 4,
+            checklist_code: "By Law"
           }
         ],
         thickness: [
