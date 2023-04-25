@@ -35,6 +35,9 @@
         <div v-if="this.checklistList_existance.by_law_i == true">
           <checklistByLawI :checklistInfo="this.chk_bylaw_i" />
         </div>
+        <div v-if="this.checklistList_existance.by_law_ii == true">
+          <checklistByLawII :checklistInfo="this.chk_bylaw_ii" />
+        </div>
         <div
           class="center-box-wrapper"
           v-if="
@@ -42,7 +45,8 @@
             this.checklistList_existance.general == false &&
             this.checklistList_existance.ilast_ext == false &&
             this.checklistList_existance.ilast_int == false &&
-            this.checklistList_existance.by_law_i == false
+            this.checklistList_existance.by_law_i == false &&
+            this.checklistList_existance.by_law_ii == false
           "
         >
           <v-ons-toolbar-button v-on:click="CREATE_CHECKLIST()">
@@ -65,7 +69,8 @@
             this.checklistList.generic.length > 0 ||
             this.checklistList.ilast_ext.length > 0 ||
             this.checklistList.ilast_int.length > 0 ||
-            this.chk_bylaw_i.length > 0
+            this.chk_bylaw_i.length > 0 ||
+            this.chk_bylaw_ii.length > 0
           "
         >
           <div class="btn-panel">
@@ -96,6 +101,7 @@ import checklistGeneric from "@/views/Applications/TankList/Pages/Checklist/form
 import checklistIlastExt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-ext.vue";
 import checklistIlastInt from "@/views/Applications/TankList/Pages/Checklist/form-ilast-int.vue";
 import checklistByLawI from "@/views/Applications/TankList/Pages/Checklist/form-by-law-i.vue";
+import checklistByLawII from "@/views/Applications/TankList/Pages/Checklist/form-by-law-ii.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 
@@ -110,7 +116,8 @@ export default {
     Loading,
     InspectionRecordPanel,
     SelectInspRecord,
-    checklistByLawI
+    checklistByLawI,
+    checklistByLawII
   },
   data() {
     return {
@@ -120,22 +127,22 @@ export default {
       checklistList: {
         generic: [],
         ilast_ext: [],
-        ilast_int: [],
-        by_law_i: [],
-        by_law_ii: []
+        ilast_int: []
       },
       checklistList_existance: {
         general: false,
         ilast_ext: false,
         ilast_int: false,
-        by_law_i: false
+        by_law_i: false,
+        by_law_ii: false
       },
       inspRecordList: {},
       isLoading: false,
       campaignList: {},
       pagePanelHiding: false,
       current_view: {},
-      chk_bylaw_i: []
+      chk_bylaw_i: [],
+      chk_bylaw_ii: []
     };
   },
   computed: {
@@ -144,7 +151,8 @@ export default {
       if (current_page == 1) return "Generic Form";
       else if (current_page == 2) return "ILAST External Form";
       else if (current_page == 3) return "ILAST Internal Form";
-      else if (current_page == 4) return "By Law Form";
+      else if (current_page == 4) return "By Law I Form";
+      else if (current_page == 5) return "By Law II Form";
       else return "";
     }
   },
@@ -180,7 +188,8 @@ export default {
       console.log(item);
       this.CLEAR_CURRENT_VIEW();
       this.id_inspection_record = item.id_inspection_record;
-
+      this.checklistList_existance.by_law_i = false;
+      this.checklistList_existance.by_law_ii = false;
       if (this.id_checklist == 1) {
         this.CHECK_EXIST_RESULT_GENERIC(item.id_inspection_record);
       } else if (this.id_checklist == 2) {
@@ -189,9 +198,8 @@ export default {
         this.CHECK_EXIST_RESULT_ILAST_INT(item.id_inspection_record);
       } else if (this.id_checklist == 4) {
         this.CHECK_EXIST_RESULT_BY_LAW(item.id_inspection_record);
-        // console.log("BY LAW");
-        // this.checklistList_existance.by_law_i = true;
-        // this.FETCH_CHECKLIST_BY_LAW(this.id_inspection_record);
+      } else if (this.id_checklist == 5) {
+        this.CHECK_EXIST_RESULT_BY_LAW_2(item.id_inspection_record);
       } else console.log("view checklist failed");
     },
 
@@ -291,6 +299,31 @@ export default {
             if (res.status == 200) {
               console.log(res.data);
               console.log("NEW CHECKLIST SHEET CREATED (By Law )");
+              this.VIEW_ITEM(this.current_view);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      } else if (form == 5) {
+        this.isLoading = true;
+        axios({
+          method: "post",
+          url: "chk-by-law/add-all-chkbylaw-2",
+          headers: {
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+          },
+          data: {
+            id_insp_record: this.id_inspection_record
+          }
+        })
+          .then(res => {
+            if (res.status == 200) {
+              console.log(res.data);
+              console.log("NEW CHECKLIST SHEET CREATED (By Law II)");
               this.VIEW_ITEM(this.current_view);
             }
           })
@@ -408,6 +441,32 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (By Law)");
+                    this.CLEAR_CURRENT_VIEW();
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+                .finally(() => {
+                  this.isLoading = false;
+                });
+            } else if (form == 5) {
+              this.isLoading = true;
+              axios({
+                method: "delete",
+                url: "chk-by-law/delete-chkbylaw-2-by-insp-id",
+                headers: {
+                  Authorization:
+                    "Bearer " + JSON.parse(localStorage.getItem("token"))
+                },
+                data: {
+                  id_insp_record: this.id_inspection_record
+                }
+              })
+                .then(res => {
+                  if (res.status == 200) {
+                    console.log(res.data);
+                    console.log("CHECKLIST SHEET DELETED (By Law II)");
                     this.CLEAR_CURRENT_VIEW();
                   }
                 })
@@ -597,9 +656,10 @@ export default {
         });
     },
 
-    //By Law
+    //By Law I
     CHECK_EXIST_RESULT_BY_LAW(id_inspection_record) {
       console.log("CHECK RESULT EXIST (by law i): " + id_inspection_record);
+      console.warn(this.checklistList_existance);
       this.isLoading = true;
       axios({
         method: "post",
@@ -644,8 +704,64 @@ export default {
           //console.log(res);
           if (res.status == 200 && res.data) {
             this.chk_bylaw_i = res.data;
-            console.log(this.checklistList);
-            console.log(this.checklistList_existance.by_law_i);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+
+    //By Law II
+    CHECK_EXIST_RESULT_BY_LAW_2(id_inspection_record) {
+      console.log("CHECK RESULT EXIST (by law ii): " + id_inspection_record);
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-by-law/check-chkbylaw-2",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_inspection_record
+        }
+      })
+        .then(res => {
+          if (res.data == true) {
+            this.checklistList_existance.by_law_ii = true;
+            this.FETCH_CHECKLIST_BY_LAW_2(id_inspection_record);
+          } else {
+            this.checklistList_existance.by_law_i = false;
+            console.log("CHECK RESULT EXIST(By Law ii): FALSE");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_CHECKLIST_BY_LAW_2(id_inspection_record) {
+      this.isLoading = true;
+      axios({
+        method: "post",
+        url: "chk-by-law/get-chkbylaw-2-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_inspection_record
+        }
+      })
+        .then(res => {
+          console.log("FETCH_CHECKLIST_BY_LAW II:");
+          //console.log(res);
+          if (res.status == 200 && res.data) {
+            this.chk_bylaw_ii = res.data;
+            console.log(this.chk_bylaw_ii);
           }
         })
         .catch(error => {

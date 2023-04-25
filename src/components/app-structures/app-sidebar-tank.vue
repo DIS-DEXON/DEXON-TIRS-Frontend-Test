@@ -290,7 +290,11 @@ export default {
           },
           {
             id: 4,
-            checklist_code: "By Law"
+            checklist_code: "By Law I"
+          },
+          {
+            id: 5,
+            checklist_code: "By Law II"
           }
         ],
         thickness: [

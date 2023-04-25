@@ -12,7 +12,7 @@
         <div class="section-label header-label">
           <label>No.</label>
         </div>
-        <div class="section-label header-label" style="grid-column: span 1">
+        <div class="section-label header-label">
           <label>Description</label>
         </div>
         <!-- <div class="section-label rating-label" style="grid-column: span 3">
