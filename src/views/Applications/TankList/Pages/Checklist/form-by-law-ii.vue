@@ -163,9 +163,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 40% 60px 80px 60px 60px auto !important;
+  grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
   .topic-label {
-    grid-template-columns: 40px 40% 60px 80px 60px 60px auto !important;
+    grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
   }
   .rating-option {
     height: auto;
@@ -182,7 +182,7 @@ export default {
   }
 
   .topic-item {
-    grid-template-columns: 40px 40% 60px 80px 60px 60px auto !important;
+    grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
   }
 }
 .chk-radio {
