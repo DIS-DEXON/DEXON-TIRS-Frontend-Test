@@ -50,7 +50,7 @@
             <div class="form-item-value">
               <label>{{ item3.topic }}</label>
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 :id="item3.id"
                 type="radio"
@@ -62,7 +62,7 @@
                 "
               />
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 id="2"
                 type="radio"
@@ -78,7 +78,7 @@
                 "
               />
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 id="3"
                 type="radio"
@@ -94,7 +94,7 @@
                 "
               />
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 id="4"
                 type="radio"
@@ -110,7 +110,7 @@
                 "
               />
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 id="5"
                 type="radio"
@@ -126,7 +126,7 @@
                 "
               />
             </div>
-            <div class="form-item-value">
+            <div class="form-item-value chk-radio">
               <input
                 id="6"
                 type="radio"
@@ -287,5 +287,8 @@ export default {
   .topic-item {
     grid-template-columns: 40px 40% 40px 40px 40px 40px 40px 40px auto !important;
   }
+}
+.chk-radio {
+  justify-content: center !important;
 }
 </style>

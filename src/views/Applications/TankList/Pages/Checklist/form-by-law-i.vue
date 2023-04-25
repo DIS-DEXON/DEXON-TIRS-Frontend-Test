@@ -41,7 +41,7 @@
           <div class="form-item-value">
             <label>{{ item3.header_content }}</label>
           </div>
-          <div class="form-item-value">
+          <div class="form-item-value chk-radio">
             <input
               type="radio"
               value="Pass"
@@ -52,7 +52,7 @@
                 "
             />
           </div>
-          <div class="form-item-value">
+          <div class="form-item-value chk-radio">
             <input
               type="radio"
               value="NotPass"
@@ -155,5 +155,8 @@ export default {
   .topic-item {
     grid-template-columns: 40px 60% 40px 40px auto !important;
   }
+}
+.chk-radio {
+  justify-content: center !important;
 }
 </style>
