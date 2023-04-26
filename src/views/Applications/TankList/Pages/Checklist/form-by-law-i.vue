@@ -91,6 +91,7 @@ export default {
   props: {
     checklistInfo: Array
   },
+
   data() {
     return {
       formData: {
@@ -100,6 +101,7 @@ export default {
       }
     };
   },
+  created() {},
   methods: {
     UPDATE_RESULT(item, new_result_desc, comment) {
       console.log("==> RESULT UPDATE START");

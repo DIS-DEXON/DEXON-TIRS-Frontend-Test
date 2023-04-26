@@ -659,7 +659,7 @@ export default {
     //By Law I
     CHECK_EXIST_RESULT_BY_LAW(id_inspection_record) {
       console.log("CHECK RESULT EXIST (by law i): " + id_inspection_record);
-      console.warn(this.checklistList_existance);
+
       this.isLoading = true;
       axios({
         method: "post",

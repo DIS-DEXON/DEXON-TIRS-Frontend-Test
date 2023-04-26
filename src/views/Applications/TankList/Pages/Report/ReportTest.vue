@@ -55,7 +55,20 @@
         </div>
       </div>
       <div v-if="tabCurrent == 'tab3'">
-        <button type="button" v-on:click="createILASTInter()">Create docx</button>
+        <div class="dx-table-style">
+          <div class="table-toolbar-set">
+            <v-ons-toolbar-button
+              class="table-toolbar-btn"
+              id="ilast"
+              @mouseover="isHovering=true"
+              @mouseleave="isHovering=false"
+              v-on:click="createByLaw()"
+            >
+              <i class="las" :class="{'la-file-alt' : !isHovering, 'la-download' : isHovering}"></i>
+              <span>EXTERNAL BY LAW REPORT</span>
+            </v-ons-toolbar-button>
+          </div>
+        </div>
       </div>
       <PageLoading v-if="isLoadingFetch == true" text="Please wait. . ." />
     </div>
@@ -123,12 +136,12 @@ export default {
           label: "ILAST",
           key: "tab2",
           closable: false
+        },
+        {
+          label: "External By Law",
+          key: "tab3",
+          closable: false
         }
-        // {
-        //   label: "ILAST Internal",
-        //   key: "tab3",
-        //   closable: false
-        // }
       ],
       data1: {
         new_page: {
@@ -231,6 +244,8 @@ export default {
         checklist: [],
         checklistin: [],
         checklist_generic: [],
+        checklist_by_law_i: [],
+        checklist_by_law_ii: [],
         plumbness: [],
         roof_thk: [],
         roofnz_thk: [],
@@ -314,9 +329,10 @@ export default {
       this.FETCH_MARKUP_SHELLNZ(this.current_view);
       this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
       this.FETCH_IMAGE();
-      console.warn(item.id_campaign);
+      //console.warn(item.id_campaign);
 
       this.FETCH_CHECKLIST_GENERIC();
+      this.FETCH_CHECKLIST_BY_LAW();
       this.FETCH_TANK_INFO();
       this.FETCH_SHELL_POINT();
       this.FETCH_SHELL_API();
@@ -353,6 +369,14 @@ export default {
       if (this.theTemplate) return this.theTemplate;
       const request = await fetch(
         "/report_template/Inspection Report Template.docx"
+      );
+      //console.log(request);
+      this.theTemplate = await request.blob();
+    },
+    async getTemplateByLaw() {
+      if (this.theTemplate) return this.theTemplate;
+      const request = await fetch(
+        "/report_template/EXTERNAL TANK INSPECTION REPORT.docx"
       );
       //console.log(request);
       this.theTemplate = await request.blob();
@@ -397,6 +421,49 @@ export default {
         // 4. save output
         this.status = "Done!";
         this.saveFile("ILAST_REPORT.docx", docx);
+        console.log("4");
+        this.isLoading = false;
+        //this.$ons.notification.alert("Completed!");
+        clearTimeout(myTimeout); // cancel timeout popup
+        this.theTemplate = null;
+      } catch (e) {
+        // error handling
+        this.status = "Error: " + e.message;
+        console.error(e);
+      }
+    },
+    async createByLaw() {
+      console.log("CREATED DOCX: ");
+      const myTimeout = setTimeout(this.alertTimeOUT, 20000); //after 20 second loading screen will be false and alert POPUP
+      this.data1.picture_log.shift();
+      console.warn(this.data1);
+      this.isLoading = true;
+      try {
+        this.status = "";
+
+        // 1. read template file
+        this.status = "Getting the template...";
+        const templateFile = await this.getTemplateByLaw();
+        console.log(templateFile);
+        console.log("1");
+
+        // 2. read json data
+        this.status = "Parsing data...";
+        // const jsonData = this.data1;
+        // const data = JSON.parse(jsonData);
+        const data = this.data1;
+        console.log("2");
+
+        // 3. process the template
+        this.status = "Creating document...";
+        const handler = new TemplateHandler();
+        console.log("3.1");
+        let docx = await handler.process(this.theTemplate, data);
+        console.log("3.2:" + docx);
+
+        // 4. save output
+        this.status = "Done!";
+        this.saveFile("EXTERNAL BY LAW REPORT.docx", docx);
         console.log("4");
         this.isLoading = false;
         //this.$ons.notification.alert("Completed!");
@@ -1080,6 +1147,62 @@ export default {
           if (res.status == 200 && res.data) {
             //console.log(res.data);
             this.data1.checklist = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+    },
+    FETCH_CHECKLIST_BY_LAW() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "post",
+        url: "chk-by-law/get-chkbylaw-1-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("checklist by law I:");
+          //console.log(res);
+          if (res.status == 200 && res.data) {
+            //console.log(res.data);
+            this.data1.checklist_by_law_i = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          //this.isLoading = false;
+        });
+      axios({
+        method: "post",
+        url: "chk-by-law/get-chkbylaw-2-by-insp-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_insp_record: id_insp
+        }
+      })
+        .then(res => {
+          console.log("checklist by law II:");
+          //console.log(res);
+          if (res.status == 200 && res.data) {
+            //console.log(res.data);
+            this.data1.checklist_by_law_ii = res.data;
+            this.data1.checklist_by_law_ii.forEach(item => {
+              item.sub_header.forEach(subItem => {
+                subItem.no = `${item.no}.${subItem.no}`;
+              });
+            });
           }
         })
         .catch(error => {
