@@ -12,13 +12,19 @@
         <!-- <div class="section-label label-align-center">
           <label></label>
         </div>-->
-        <div class="section-label header-label" style="grid-column: span 2; grid-row: span 2;">
+        <div
+          class="section-label header-label"
+          style="grid-column: span 2; grid-row: span 2; padding-left:50px"
+        >
           <label>Anomalies</label>
         </div>
         <div class="section-label rating-label" style="grid-column: span 4">
-          <label style="width: 100%; text-align: center">Status</label>
+          <label style="width: 100%; text-align: center; font-weight:700; font-size:13px">Status</label>
         </div>
-        <div class="section-label comment-label" style="grid-row: span 2;">
+        <div
+          class="section-label comment-label"
+          style="grid-row: span 2; font-weight:700; font-size:12px; display:flex: align-items:center;"
+        >
           <label>Comments:</label>
         </div>
         <div class="section-label rating-option">

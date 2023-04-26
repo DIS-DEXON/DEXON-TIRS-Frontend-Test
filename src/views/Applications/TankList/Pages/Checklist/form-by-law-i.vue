@@ -21,12 +21,12 @@
 
         <div class="section-label rating-option">
           <label>
-            <i class="las la-check"></i>
+            <i class="fa-solid fa-check" style="font-size: 20px;"></i>
           </label>
         </div>
         <div class="section-label rating-option">
           <label>
-            <i class="las la-times"></i>
+            <i class="fa-solid fa-x" style="font-size: 18px;"></i>
           </label>
         </div>
         <div class="section-label comment-label">
@@ -89,6 +89,7 @@
 <script>
 //API
 import axios from "/axios.js";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 export default {
   name: "checklist-by-law",
