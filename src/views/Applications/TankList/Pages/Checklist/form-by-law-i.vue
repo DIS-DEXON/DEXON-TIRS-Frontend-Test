@@ -20,10 +20,14 @@
         </div>-->
 
         <div class="section-label rating-option">
-          <label>PASS</label>
+          <label>
+            <i class="las la-check"></i>
+          </label>
         </div>
         <div class="section-label rating-option">
-          <label>NOT-PASS</label>
+          <label>
+            <i class="las la-times"></i>
+          </label>
         </div>
         <div class="section-label comment-label">
           <label>Comments:</label>

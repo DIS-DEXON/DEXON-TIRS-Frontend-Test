@@ -9,14 +9,20 @@
         <div class="docno"></div>
       </div>
       <div class="sheet-body">
-        <div class="section-label label-align-center">
+        <!-- <div class="section-label label-align-center">
           <label></label>
-        </div>
-        <div class="section-label header-label" style="grid-column: span 1">
+        </div>-->
+        <div class="section-label header-label" style="grid-column: span 2; grid-row: span 2;">
           <label>Anomalies</label>
         </div>
+        <div class="section-label rating-label" style="grid-column: span 4">
+          <label style="width: 100%; text-align: center">Status</label>
+        </div>
+        <div class="section-label comment-label" style="grid-row: span 2;">
+          <label>Comments:</label>
+        </div>
         <div class="section-label rating-option">
-          <label>Severe</label>
+          <label style>Severe</label>
         </div>
         <div class="section-label rating-option">
           <label>Moderate</label>
@@ -27,9 +33,20 @@
         <div class="section-label rating-option">
           <label>Normal</label>
         </div>
-        <div class="section-label comment-label">
-          <label>Comments:</label>
+
+        <!-- <div class="section-label rating-option">
+          <label>Severe</label>
         </div>
+        <div class="section-label rating-option">
+          <label>Moderate</label>
+        </div>
+        <div class="section-label rating-option">
+          <label>Slight</label>
+        </div>
+        <div class="section-label rating-option">
+          <label>Normal</label>
+        </div>-->
+
         <div v-for="item in checklistInfo" :key="item.id" style="grid-column: span 7">
           <div class="topic-label">
             <div class="section-label subheader-label" style="grid-column:span 1">
@@ -163,26 +180,40 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
+  grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
   .topic-label {
-    grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
+    grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
   }
   .rating-option {
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    height: 80px;
 
     label {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform-origin: 0 50%;
+      transform: rotate(270deg);
       font-size: 12px !important;
       font-weight: 700 !important;
-      position: unset;
-      transform: unset;
     }
   }
+  // .rating-option {
+  //   height: auto;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+
+  //   label {
+  //     font-size: 12px !important;
+  //     font-weight: 700 !important;
+  //     position: unset;
+  //     transform: unset;
+  //   }
+  // }
 
   .topic-item {
-    grid-template-columns: 40px 40% 70px 70px 70px 70px auto !important;
+    grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
   }
 }
 .chk-radio {
