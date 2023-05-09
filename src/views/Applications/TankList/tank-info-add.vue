@@ -107,7 +107,7 @@
               <p class="label">Previous Inspection Date:</p>
               <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label> -->
+              </label>-->
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -164,9 +164,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <!-- <label class="star-label">
+              <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label> -->
+              </label>
             </div>
             <input
               type="text"
@@ -176,7 +176,10 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Tank Height <span>(m)</span>:</p>
+              <p class="label">
+                Tank Height
+                <span>(m)</span>:
+              </p>
               <label class="star-label">
                 <i class="las la-asterisk"></i>
               </label>
@@ -186,7 +189,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
@@ -489,9 +494,7 @@ export default {
       this.formData.inservice_date = moment(
         this.formData.inservice_date
       ).format("L");
-      this.formData.last_inspection_date = moment(
-        this.formData.last_inspection_date
-      ).format("L");
+
       console.log(this.formData);
       if (
         this.formData.tag_no &&
@@ -503,13 +506,17 @@ export default {
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
         this.formData.joint_efficiency &&
+        this.formData.tank_capacity_litre &&
         this.formData.insulation !== "" &&
         this.formData.sg_of_product
       ) {
         this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
+            this.formData.tank_capacity_litre = this.formData
+              .tank_capacity_litre
+              ? this.formData.tank_capacity_litre
+              : 0;
             const data = this.formData;
-
             axios({
               method: "post",
               url: "/tank-info/add-tank-info",
@@ -521,7 +528,7 @@ export default {
             })
               .then(res => {
                 // console.log(res.data[0]);
-                if (res.status == 200) {
+                if (res.status == 201) {
                   this.$ons.notification.alert("Tank Add successful");
                   this.$emit("closePopup");
                   const id_tag = res.data[0].id_tag;
@@ -765,5 +772,4 @@ hr {
 //   color: red;
 //   opacity: 0.75;
 // }
-
 </style>

@@ -107,7 +107,7 @@
               <p class="label">Previous Inspection Date:</p>
               <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label> -->
+              </label>-->
             </div>
             <DxDateBox
               :value="formSelect.now"
@@ -165,9 +165,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <!-- <label class="star-label">
+              <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label> -->
+              </label>
             </div>
             <input
               type="text"
@@ -187,7 +187,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
-              <label class="star-label"><i class="las la-asterisk"></i></label>
+              <label class="star-label">
+                <i class="las la-asterisk"></i>
+              </label>
             </div>
             <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
@@ -755,7 +757,7 @@
 
 <script>
 import axios from "/axios.js";
-import moment from "moment";
+//import moment from "moment";
 import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
 import clone from "just-clone";
@@ -851,51 +853,6 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(
-        this.formData.installation_date
-      ).format("L");
-      this.formData.last_inspection_date = moment(
-        this.formData.last_inspection_date
-      ).format("L");
-      this.formData.inservice_date = moment(
-        this.formData.inservice_date
-      ).format("L");
-      if (this.formData.fei_last_inspected) {
-        this.formData.fei_last_inspected = moment(
-          this.formData.fei_last_inspected
-        ).format("L");
-      }
-      if (this.formData.fei_last_coated) {
-        this.formData.fei_last_coated = moment(
-          this.formData.fei_last_coated
-        ).format("L");
-      }
-      if (this.formData.fei_last_cleaned) {
-        this.formData.fei_last_cleaned = moment(
-          this.formData.fei_last_cleaned
-        ).format("L");
-      }
-      if (this.formData.fei_recommended_next) {
-        this.formData.fei_recommended_next = moment(
-          this.formData.fei_recommended_next
-        ).format("L");
-      }
-      if (this.formData.fii_last_inspected) {
-        this.formData.fii_last_inspected = moment(
-          this.formData.fii_last_inspected
-        ).format("L");
-      }
-      if (this.formData.fii_last_coated) {
-        this.formData.fii_last_coated = moment(
-          this.formData.fii_last_coated
-        ).format("L");
-      }
-      if (this.formData.fii_last_cleaned) {
-        this.formData.fii_last_cleaned = moment(
-          this.formData.fii_last_cleaned
-        ).format("L");
-      }
-
       console.log(this.formData);
       if (
         this.formData.tag_no &&
@@ -907,6 +864,7 @@ export default {
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
         this.formData.joint_efficiency &&
+        this.formData.tank_capacity_litre &&
         this.formData.insulation !== "" &&
         this.formData.sg_of_product
       ) {
@@ -925,7 +883,7 @@ export default {
             })
               .then(res => {
                 // console.log(res.data[0]);
-                if (res.status == 200) {
+                if (res.status == 204) {
                   //this.$ons.notification.alert("Tank Edit successful");
                   this.$emit("closePopup");
                   this.$router.go();
