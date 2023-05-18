@@ -214,6 +214,7 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
+          @init-new-row="initNewRowCML"
           @row-inserted="CREATE_CML"
           @row-updated="UPDATE_CML"
           @row-removed="DELETE_CML"
@@ -658,6 +659,7 @@ export default {
       this.FETCH_INSP_RECORD();
       this.FETCH_COIL();
       this.FETCH_LAST_INSP_THK();
+      this.FETCH_TANK_INFO();
     }
   },
   data() {
@@ -668,6 +670,7 @@ export default {
       coil_flag: false,
       cml_flag: false,
       tp_flag: false,
+      infoTank: {},
       dataList: {
         coil: [],
         cml: [],
@@ -745,6 +748,30 @@ export default {
     }
   },
   methods: {
+    FETCH_TANK_INFO() {
+      axios({
+        method: "post",
+        url: "tank-info/tank-info-by-id",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+        data: {
+          id_tag: this.$route.params.id_tag
+        }
+      })
+        .then(res => {
+          if (res.status == 200 && res.data) {
+            this.infoTank = res.data[0];
+            console.warn(this.infoTank.inservice_date);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     FETCH_COIL() {
       this.isLoading = true;
       var id = this.$route.params.id_tag;
@@ -1628,6 +1655,9 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+    initNewRowCML(e) {
+      e.data.inservice_date = this.infoTank.inservice_date;
     }
   }
 };
