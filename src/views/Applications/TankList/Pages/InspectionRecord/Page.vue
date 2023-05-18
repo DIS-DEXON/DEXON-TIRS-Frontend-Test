@@ -12,7 +12,6 @@
         :show-row-lines="true"
         :row-alternation-enabled="false"
         :column-hiding-enabled="true"
-        @exporting="EXPORT_DATA"
         :word-wrap-enabled="true"
         @row-inserted="CREATE_RECORD"
         @row-updated="UPDATE_RECORD"
@@ -39,13 +38,13 @@
             </DxItem>
           </DxForm>
         </DxEditing>
-      
+
         <!-- <DxColumn
         data-field="created_time"
         :width="0"
         caption=""
         sort-order="asc"
-      /> -->
+        />-->
         <DxColumn
           data-field="inspection_date"
           caption="Inspection date"
@@ -55,7 +54,7 @@
           :width="140"
           :editor-options="inspDateInputOptions"
         >
-        <DxRequiredRule />
+          <DxRequiredRule />
         </DxColumn>
 
         <DxColumn
@@ -64,12 +63,12 @@
           :width="140"
           :editor-options="projectNoInputOptions"
         >
-        <DxRequiredRule />
+          <DxRequiredRule />
         </DxColumn>
 
-        <DxColumn 
-          data-field="report_no" 
-          caption="Report number" 
+        <DxColumn
+          data-field="report_no"
+          caption="Report number"
           :width="140"
           :editor-options="reportNoInputOptions"
         />
@@ -82,43 +81,39 @@
           />
           <DxRequiredRule />
         </DxColumn>
-        
-        <DxColumn 
-          data-field="name_api_653" 
-          caption="Name of API 653" 
-          :width="200" 
+
+        <DxColumn
+          data-field="name_api_653"
+          caption="Name of API 653"
+          :width="200"
           :editor-options="nameInputOptions"
         />
 
-        <DxColumn 
-          data-field="cert_no" 
-          caption="API 653 cert no" 
-          :width="200" 
+        <DxColumn
+          data-field="cert_no"
+          caption="API 653 cert no"
+          :width="200"
           :editor-options="certInputOptions"
         />
 
-        <DxColumn 
-          data-field="name_inspection_engineer" 
-          caption="Name of inspection engineer" 
-          :width="200" 
+        <DxColumn
+          data-field="name_inspection_engineer"
+          caption="Name of inspection engineer"
+          :width="200"
           :editor-options="nameInputOptions"
         />
 
-        <DxColumn 
-          data-field="name_ndt_examiner" 
-          caption="Name of NDT examiner" 
-          :width="200" 
+        <DxColumn
+          data-field="name_ndt_examiner"
+          caption="Name of NDT examiner"
+          :width="200"
           :editor-options="nameInputOptions"
         />
 
-
-        <DxColumn 
-          data-field="remark" 
-          caption="Remark" 
-        >
+        <DxColumn data-field="remark" caption="Remark">
           <!-- <DxFormItem
             :col-span="2"
-          /> -->
+          />-->
         </DxColumn>
         <!-- Configuration goes here -->
         <!-- <DxFilterRow :visible="true" /> -->
@@ -132,7 +127,7 @@
           :show-info="true"
           info-text="Page {0} of {1} ({2} items)"
         />
-        <DxExport :enabled="true" />
+        <DxExport :enabled="true" :fileName="'Inspection Record'" />
       </DxDataGrid>
     </div>
   </div>
@@ -165,7 +160,7 @@ import {
   DxLookup,
   DxRequiredRule,
   //DxFormItem,
-  DxForm,
+  DxForm
 } from "devextreme-vue/data-grid";
 
 //Structures
@@ -185,17 +180,17 @@ export default {
     DxItem,
     DxEditing,
     DxLookup,
-    DxRequiredRule,
+    DxRequiredRule
     //DxFormItem,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Inspection Record",
-      subpageInnerName: null,
+      subpageInnerName: null
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_CAMPAIGN();
@@ -207,13 +202,13 @@ export default {
       inspRecordList: {},
       campaigeList: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
-      inspDateInputOptions: { placeholder: 'Select date' },
-      projectNoInputOptions: { placeholder: 'Enter project no' },
-      reportNoInputOptions: { placeholder: 'Enter report no' },
-      nameInputOptions: { placeholder: 'Enter name' },
-      certInputOptions: { placeholder: 'Enter cert no' },
+      inspDateInputOptions: { placeholder: "Select date" },
+      projectNoInputOptions: { placeholder: "Enter project no" },
+      reportNoInputOptions: { placeholder: "Enter report no" },
+      nameInputOptions: { placeholder: "Enter name" },
+      certInputOptions: { placeholder: "Enter cert no" }
     };
   },
   computed: {},
@@ -223,9 +218,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -241,20 +236,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -266,17 +261,17 @@ export default {
         method: "get",
         url: "insp-record/campaign-list",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("campaign:");
           console.log(res);
           if (res.status == 200 && res.data) {
             this.campaigeList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -292,17 +287,17 @@ export default {
         method: "post",
         url: "/insp-record/add-insp-record",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("create success");
             this.FETCH_INSP_RECORD();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -316,17 +311,17 @@ export default {
         method: "put",
         url: "/insp-record/edit-insp-record",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("update success");
             this.FETCH_INSP_RECORD();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -338,24 +333,24 @@ export default {
         method: "delete",
         url: "/insp-record/delete-insp-record",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("delete success");
             this.FETCH_TANK_COURSE();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
         })
         .finally(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 

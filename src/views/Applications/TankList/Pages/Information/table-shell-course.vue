@@ -11,7 +11,6 @@
       :show-borders="true"
       :show-row-lines="true"
       :row-alternation-enabled="false"
-      @exporting="EXPORT_DATA"
       :word-wrap-enabled="true"
       @row-inserted="CREATE_COURSE"
       @row-updated="UPDATE_COURSE"
@@ -27,18 +26,9 @@
       <!-- <DxToolbar>
         <DxItem location="before" template="table-header" />
         <DxItem location="after" template="table-header-button-set" />
-      </DxToolbar> -->
-      <DxColumn
-        data-field="created_time"
-        :width="0"
-        caption=""
-      />
-      <DxColumn
-        data-field="course_no" 
-        caption="Course No" 
-        sort-order="asc"
-        :width="80"
-      />
+      </DxToolbar>-->
+      <DxColumn data-field="created_time" :width="0" caption />
+      <DxColumn data-field="course_no" caption="Course No" sort-order="asc" :width="80" />
       <DxColumn
         data-field="t_nom_plate_mm"
         caption="Nominal Shell Thk (mm)"
@@ -62,11 +52,7 @@
         :width="80"
       />
       <DxColumn data-field="id_material" caption="Tank Material">
-        <DxLookup
-          :data-source="matList"
-          value-expr="id_material"
-          display-expr="mat_spec"
-        />
+        <DxLookup :data-source="matList" value-expr="id_material" display-expr="mat_spec" />
       </DxColumn>
       <DxColumn
         data-field="mat_type"
@@ -127,31 +113,60 @@
       />
       <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
       <template #headerTnom>
-        <div>Nominal shell thk<BR />(mm)</div>
+        <div>
+          Nominal shell thk
+          <BR />(mm)
+        </div>
       </template>
       <template #headerHofC>
-        <div>Height of course<BR />(m)</div>
+        <div>
+          Height of course
+          <BR />(m)
+        </div>
       </template>
       <template #headerAccuH>
-        <div>Accumulate height<BR />(m)</div>
+        <div>
+          Accumulate height
+          <BR />(m)
+        </div>
       </template>
       <template #headerY>
-        <div>Y<BR />(lbf/in<sup>2</sup>)</div>
+        <div>
+          Y
+          <BR />(lbf/in
+          <sup>2</sup>)
+        </div>
       </template>
       <template #headerT>
-        <div>T<BR />(lbf/in<sup>2</sup>)</div>
+        <div>
+          T
+          <BR />(lbf/in
+          <sup>2</sup>)
+        </div>
       </template>
       <template #headerHhydro>
-        <div>Height hydro<BR />(m)</div>
+        <div>
+          Height hydro
+          <BR />(m)
+        </div>
       </template>
       <template #headerHprod>
-        <div>Height prod<BR />(m)</div>
+        <div>
+          Height prod
+          <BR />(m)
+        </div>
       </template>
       <template #headerTrHydro>
-        <div>tmin hydro<BR />(mm)</div>
+        <div>
+          tmin hydro
+          <BR />(mm)
+        </div>
       </template>
       <template #headerTrProd>
-        <div>tmin prod<BR />(mm)</div>
+        <div>
+          tmin prod
+          <BR />(mm)
+        </div>
       </template>
       <!-- <template #cell-button-set="{ data }">
         <div class="table-btn-group">
@@ -162,7 +177,7 @@
             <i class="las la-trash red"></i>
           </div>
         </div>
-      </template> -->
+      </template>-->
       <template #table-header>
         <div>
           <div class="page-section-label">Shell Course</div>
@@ -175,7 +190,7 @@
             <span>Add New Tank Course</span>
           </v-ons-toolbar-button>
         </div>
-      </template> -->
+      </template>-->
       <!-- Configuration goes here -->
       <!-- <DxFilterRow :visible="true" /> -->
       <DxScrolling mode="standard" />
@@ -188,7 +203,7 @@
         :show-info="true"
         info-text="Page {0} of {1} ({2} items)"
       />
-      <DxExport :enabled="true" />
+      <DxExport :enabled="true" :fileName="'tank course'" />
     </DxDataGrid>
   </div>
 </template> 
@@ -202,9 +217,6 @@ import axios from "/axios.js";
 
 //DataGrid
 import "devextreme/dist/css/dx.light.css";
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -216,7 +228,7 @@ import {
   //DxToolbar,
   //DxItem,
   DxEditing,
-  DxLookup,
+  DxLookup
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -232,7 +244,7 @@ export default {
     //DxToolbar,
     //DxItem,
     DxEditing,
-    DxLookup,
+    DxLookup
   },
   created() {
     if (this.$store.state.status.server == true) {
@@ -245,28 +257,12 @@ export default {
       courseList: {},
       matList: {},
       dataGridAttributes: {
-        class: "data-grid-style",
-      },
+        class: "data-grid-style"
+      }
     };
   },
   computed: {},
   methods: {
-    EXPORT_DATA(e) {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet("Projects");
-      exportDataGrid({
-        worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
-          saveAs(
-            new Blob([buffer], { type: "application/octet-stream" }),
-            "Projects.xlsx"
-          );
-        });
-      });
-      e.cancel = true;
-    },
     FETCH_TANK_COURSE() {
       this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
@@ -275,20 +271,20 @@ export default {
         method: "post",
         url: "tank-course/tank-course-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log("tank course:");
           // console.log(res);
           if (res.status == 200 && res.data) {
             this.courseList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -300,17 +296,17 @@ export default {
         method: "get",
         url: "MdTankMaterial",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log("material:");
           // console.log(res);
           if (res.status == 200 && res.data) {
             this.matList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -325,17 +321,17 @@ export default {
         method: "post",
         url: "/tank-course/add-tank-course",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("create success");
             this.FETCH_TANK_COURSE();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -347,17 +343,17 @@ export default {
         method: "put",
         url: "/tank-course/edit-tank-course",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("update success");
             this.FETCH_TANK_COURSE();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
@@ -369,24 +365,24 @@ export default {
         method: "delete",
         url: "/tank-course/delete-tank-course",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("delete success");
             this.FETCH_TANK_COURSE();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$ons.notification.alert(
             error.code + " " + error.response.status + " " + error.message
           );
         })
         .finally(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -20,14 +20,13 @@
         </div>-->
 
         <div class="section-label rating-option">
-          <label>
-            <i class="fa-solid fa-check" style="font-size: 20px;"></i>
-          </label>
+          <label>ผ่าน</label>
         </div>
         <div class="section-label rating-option">
-          <label>
-            <i class="fa-solid fa-x" style="font-size: 18px;"></i>
-          </label>
+          <label>ไม่ผ่าน</label>
+        </div>
+        <div class="section-label rating-option">
+          <label>NA</label>
         </div>
         <div class="section-label comment-label">
           <label>Comments:</label>
@@ -37,7 +36,7 @@
           class="topic-item"
           v-for="item3 in checklistInfo"
           :key="item3.id"
-          style="grid-column:span 5"
+          style="grid-column:span 6"
         >
           <div class="form-item-value label-align-center">
             <label>{{ item3.no }}</label>
@@ -64,6 +63,17 @@
               v-model="item3.result[0].result_desc"
               v-on:click="
                   UPDATE_RESULT(item3.result[0], 'NotPass', item3.result[0].comments)
+                "
+            />
+          </div>
+          <div class="form-item-value chk-radio">
+            <input
+              type="radio"
+              value="NA"
+              :name="item3.id"
+              v-model="item3.result[0].result_desc"
+              v-on:click="
+                  UPDATE_RESULT(item3.result[0], 'NA', item3.result[0].comments)
                 "
             />
           </div>
@@ -141,7 +151,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 60% 40px 40px auto !important;
+  grid-template-columns: 40px 60% 40px 40px 40px auto !important;
   .topic-label {
     grid-template-columns: 40px auto;
   }
@@ -160,7 +170,7 @@ export default {
   }
 
   .topic-item {
-    grid-template-columns: 40px 60% 40px 40px auto !important;
+    grid-template-columns: 40px 60% 40px 40px 40px auto !important;
   }
 }
 .chk-radio {

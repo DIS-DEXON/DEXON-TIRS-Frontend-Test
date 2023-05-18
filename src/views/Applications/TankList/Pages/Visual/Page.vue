@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <DxDataGrid
         id="data-grid-style"
@@ -28,7 +23,6 @@
         :show-borders="true"
         :show-row-lines="true"
         :row-alternation-enabled="false"
-        @exporting="EXPORT_DATA"
         @row-inserted="CREATE_DWG"
         @row-updated="UPDATE_DWG"
         @row-removed="DELETE_DWG"
@@ -43,21 +37,12 @@
           :allow-adding="IS_VISIBLE_ADD()"
           mode="form"
         >
-          <DxForm label-location="top"
-          >
+          <DxForm label-location="top">
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="file_path_1" :col-span="1" />
               <DxItem data-field="file_path_2" :col-span="1" />
-              <DxItem
-                data-field="finding"
-                editor-type="dxTextArea"
-                :col-span="2"
-              />
-              <DxItem
-                data-field="recommendation"
-                editor-type="dxTextArea"
-                :col-span="2"
-              />
+              <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
+              <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
             </DxItem>
           </DxForm>
         </DxEditing>
@@ -93,24 +78,25 @@
           :width="0"
         />
 
-        <DxColumn
-          caption="Picture Log"
-          cell-template="picture-log-template"
-        />
+        <DxColumn caption="Picture Log" cell-template="picture-log-template" />
 
         <template #picture-log-template="{ data }">
-          
           <div>
             <div style="display: flex;">
               <div>
-                <div class="header-custom-field">Overview</div> 
+                <div class="header-custom-field">Overview</div>
                 <a
                   :href="baseURL + data.data.file_path_1"
                   download="dwg"
                   target="_blank"
                   v-if="data.data.file_path_1 != ''"
                 >
-                  <img :src="baseURL + data.data.file_path_1" width="300" height="200" style="border: 1px solid #140a4b;" />
+                  <img
+                    :src="baseURL + data.data.file_path_1"
+                    width="300"
+                    height="200"
+                    style="border: 1px solid #140a4b;"
+                  />
                 </a>
 
                 <img
@@ -121,14 +107,19 @@
                 />
               </div>
               <div style="margin-left: 10px;">
-                <div class="header-custom-field">Close-up view</div> 
+                <div class="header-custom-field">Close-up view</div>
                 <a
                   :href="baseURL + data.data.file_path_2"
                   download="dwg"
                   target="_blank"
                   v-if="data.data.file_path_2 != ''"
                 >
-                  <img :src="baseURL + data.data.file_path_2" width="300" height="200" style="border: 1px solid #140a4b;" />
+                  <img
+                    :src="baseURL + data.data.file_path_2"
+                    width="300"
+                    height="200"
+                    style="border: 1px solid #140a4b;"
+                  />
                 </a>
 
                 <img
@@ -147,21 +138,22 @@
               </div>
               <div style="margin-top: 5px;">
                 <div class="header-custom-field">Recommendation</div>
-                <DxTextArea :height="80" :width="610" :read-only="true" :value="data.data.recommendation" />
+                <DxTextArea
+                  :height="80"
+                  :width="610"
+                  :read-only="true"
+                  :value="data.data.recommendation"
+                />
               </div>
-            </div>  
+            </div>
           </div>
         </template>
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
-            <a
-              :href="baseURL + data.value"
-              download="dwg"
-              target="_blank"
-              v-if="data.value != ''"
-            >
-              <img :src="baseURL + data.value" width="300" height="200" /><br />
+            <a :href="baseURL + data.value" download="dwg" target="_blank" v-if="data.value != ''">
+              <img :src="baseURL + data.value" width="300" height="200" />
+              <br />
             </a>
 
             <img
@@ -181,12 +173,7 @@
               height="200"
               v-if="imgDwg1 != '' && isInitEdit_1 == 0"
             />
-            <img
-              :src="imgDwg1"
-              width="300"
-              height="200"
-              v-if="imgDwg1 != '' && isInitEdit_1 == 1"
-            />
+            <img :src="imgDwg1" width="300" height="200" v-if="imgDwg1 != '' && isInitEdit_1 == 1" />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="300"
@@ -196,7 +183,7 @@
             <div style="position:relative;">
               <DxFileUploader
                 select-button-text="Select photo"
-                label-text=""
+                label-text
                 accept="image/*"
                 upload-mode="useForm"
                 @value-changed="ON_DWG_CHANGE_1"
@@ -223,12 +210,7 @@
               v-if="imgDwg2 != '' && isInitEdit_2 == 0"
             />
 
-            <img
-              :src="imgDwg2"
-              width="300"
-              height="200"
-              v-if="imgDwg2 != '' && isInitEdit_2 == 1"
-            />
+            <img :src="imgDwg2" width="300" height="200" v-if="imgDwg2 != '' && isInitEdit_2 == 1" />
 
             <img
               src="http://tmt-solution.com/public/image-empty.png"
@@ -240,7 +222,7 @@
             <div style="position:relative; height:50px;">
               <DxFileUploader
                 select-button-text="Select photo"
-                label-text=""
+                label-text
                 accept="image/*"
                 upload-mode="useForm"
                 @value-changed="ON_DWG_CHANGE_2"
@@ -277,7 +259,7 @@
           :show-info="true"
           info-text="Page {0} of {1} ({2} items)"
         />
-        <DxExport :enabled="true" />
+        <DxExport :enabled="false" />
       </DxDataGrid>
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
@@ -297,9 +279,6 @@ import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspectio
 import SelectInspRecord from "@/components/select-insp-record.vue";
 
 //DataGrid
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -310,7 +289,7 @@ import {
   DxExport,
   DxEditing,
   // DxPopup,
-  DxForm,
+  DxForm
 } from "devextreme-vue/data-grid";
 
 //List
@@ -344,17 +323,16 @@ export default {
     DxItem,
     DxTextArea,
     // DxPopup,
-    DxButton,
-
+    DxButton
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Picture Log",
-      subpageInnerName: null,
+      subpageInnerName: null
     });
   },
   data() {
@@ -379,15 +357,15 @@ export default {
       current_view: {},
       inspection_date: "",
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       popUpWidth: 0,
       pictureLog: "",
       pagePanelHiding: false,
-      findingInputOptions: { placeholder: 'Enter finding ...' },
-      recInputOptions: { placeholder: 'Enter recommendation ...' },
+      findingInputOptions: { placeholder: "Enter finding ..." },
+      recInputOptions: { placeholder: "Enter recommendation ..." },
       is_changed_dwg_1: 0,
-      is_changed_dwg_2: 0,
+      is_changed_dwg_2: 0
     };
   },
   computed: {
@@ -396,25 +374,9 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
-    EXPORT_DATA(e) {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet("Projects");
-      exportDataGrid({
-        worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
-          saveAs(
-            new Blob([buffer], { type: "application/octet-stream" }),
-            "Projects.xlsx"
-          );
-        });
-      });
-      e.cancel = true;
-    },
     VIEW_ITEM(item) {
       console.log("parent triggered: ");
       console.log(item);
@@ -426,20 +388,20 @@ export default {
         method: "post",
         url: "visual-report/layout-visual-report-by-insp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -472,11 +434,11 @@ export default {
         url: "visual-report/add-visual-record",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: formData,
+        data: formData
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 201 && res.data) {
             console.log("in");
@@ -484,7 +446,7 @@ export default {
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -528,11 +490,11 @@ export default {
         url: "visual-report/edit-visual-record",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: formData,
+        data: formData
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 201 && res.data) {
             console.log("in");
@@ -542,7 +504,7 @@ export default {
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -557,13 +519,13 @@ export default {
         method: "delete",
         url: "visual-report/delete-visual-report",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_visual: e.key,
-        },
+          id_visual: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -571,7 +533,7 @@ export default {
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -677,8 +639,8 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
-  },
+    }
+  }
 };
 </script>
 

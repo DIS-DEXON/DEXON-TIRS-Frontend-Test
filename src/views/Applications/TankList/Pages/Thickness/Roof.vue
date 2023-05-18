@@ -361,6 +361,7 @@
             :enabled="true"
             :fileName="this.$store.state.currentPageInnerName+'_Thickness'"
           />
+          <DxSelection mode="single" />
         </DxDataGrid>
       </div>
     </div>

@@ -23,7 +23,6 @@
         :show-borders="true"
         :show-row-lines="true"
         :row-alternation-enabled="false"
-        @exporting="EXPORT_DATA"
         @row-inserted="CREATE_DWG"
         @row-updated="UPDATE_DWG"
         @row-removed="DELETE_DWG"
@@ -108,7 +107,7 @@
           :show-info="true"
           info-text="Page {0} of {1} ({2} items)"
         />
-        <DxExport :enabled="true" />
+        <DxExport :enabled="false" :fileName="'Other Attachment'" />
       </DxDataGrid>
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
@@ -127,9 +126,6 @@ import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspectio
 import SelectInspRecord from "@/components/select-insp-record.vue";
 
 //DataGrid
-import { Workbook } from "exceljs";
-import saveAs from "file-saver";
-import { exportDataGrid } from "devextreme/excel_exporter";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -218,22 +214,6 @@ export default {
     }
   },
   methods: {
-    EXPORT_DATA(e) {
-      const workbook = new Workbook();
-      const worksheet = workbook.addWorksheet("Projects");
-      exportDataGrid({
-        worksheet: worksheet,
-        component: e.component
-      }).then(function() {
-        workbook.xlsx.writeBuffer().then(function(buffer) {
-          saveAs(
-            new Blob([buffer], { type: "application/octet-stream" }),
-            "Projects.xlsx"
-          );
-        });
-      });
-      e.cancel = true;
-    },
     FETCH_ATTACHMENTS() {
       axios({
         method: "get",
