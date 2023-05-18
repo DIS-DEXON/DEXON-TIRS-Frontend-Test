@@ -5,10 +5,7 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record">
       <v-ons-list>
         <v-ons-list-header>
@@ -66,7 +63,8 @@
         <template #dwg-img="{ data }">
           <div style="position: relative">
             <a :href="baseURL + data.value" download="dwg" target="_blank">
-              <img :src="baseURL + data.value" width="300" height="200" /><br />
+              <img :src="baseURL + data.value" width="300" height="200" />
+              <br />
             </a>
             <!-- <a
               :href="baseURL + data.value"
@@ -74,7 +72,7 @@
               target="_blank"
               class="btn-view-dwg"
               >VIEW</a
-            > -->
+            >-->
           </div>
         </template>
 
@@ -86,12 +84,7 @@
               height="200"
               v-if="imgDwg != '' && isInitEdit == 0"
             />
-            <img
-              :src="imgDwg"
-              width="300"
-              height="200"
-              v-if="imgDwg != '' && isInitEdit == 1"
-            />
+            <img :src="imgDwg" width="300" height="200" v-if="imgDwg != '' && isInitEdit == 1" />
             <img
               src="http://tmt-solution.com/public/image-empty.png"
               width="300"
@@ -101,7 +94,7 @@
 
             <DxFileUploader
               select-button-text="Select photo"
-              label-text=""
+              label-text
               accept="image/*"
               upload-mode="useForm"
               @value-changed="ON_DWG_CHANGE"
@@ -121,7 +114,7 @@
           :show-info="true"
           info-text="Page {0} of {1} ({2} items)"
         />
-        <DxExport :enabled="true" />
+        <DxExport :enabled="false" />
       </DxDataGrid>
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
@@ -153,7 +146,7 @@ import {
   DxExport,
   DxEditing,
   //DxPopup,
-  DxForm,
+  DxForm
 } from "devextreme-vue/data-grid";
 
 //List
@@ -187,16 +180,16 @@ export default {
     //DxButton,
     // innerPageName,
     InspectionRecordPanel,
-    SelectInspRecord,
+    SelectInspRecord
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
       name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Marked-Up Drawing",
-      subpageInnerName: this.currentPage,
+      subpageInnerName: this.currentPage
     });
   },
   data() {
@@ -213,13 +206,13 @@ export default {
       id_component: 0,
       id_inspection_record: 0,
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
       pagePanelHiding: false,
       current_view: {},
       is_changed_dwg: 0,
       dataDwgTemp: "",
-      fileNameInputOptions: { placeholder: 'Enter file name ...' },
+      fileNameInputOptions: { placeholder: "Enter file name ..." }
     };
   },
   computed: {
@@ -243,7 +236,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -251,9 +244,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -271,21 +264,21 @@ export default {
         method: "post",
         url: "layout-drawing/layout-drawing-by-comp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_component: this.id_component,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("insp record:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.drawingList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -306,11 +299,11 @@ export default {
         url: "layout-drawing/add-layout-drawing",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: formData,
+        data: formData
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 201 && res.data) {
             console.log(res.data);
@@ -319,7 +312,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -343,11 +336,11 @@ export default {
         url: "layout-drawing/edit-layout-drawing",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: formData,
+        data: formData
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 201 && res.data) {
             console.log(res.data);
@@ -356,7 +349,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -370,13 +363,13 @@ export default {
         method: "delete",
         url: "layout-drawing/delete-layout-drawing",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id: e.key,
-        },
+          id: e.key
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
@@ -385,7 +378,7 @@ export default {
             this.VIEW_ITEM(item);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -417,11 +410,11 @@ export default {
       this.isInitEdit = 1;
     },
     SAVE(e) {
-      console.log('save:');
+      console.log("save:");
       console.log(e);
-      if(e.changes.length == 0) {
+      if (e.changes.length == 0) {
         this.UPDATE_DWG(this.dataDwgTemp);
-      } 
+      }
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
@@ -435,7 +428,7 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
+    }
   },
   watch: {
     $route() {
@@ -445,10 +438,10 @@ export default {
       this.drawingList = null;
       this.$store.commit("UPDATE_CURRENT_PAGENAME", {
         subpageName: "Marked-Up Drawing",
-        subpageInnerName: this.currentPage,
+        subpageInnerName: this.currentPage
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -481,5 +474,4 @@ export default {
     margin: -20px -20px 20px -20px;
   }
 }
-
 </style>
