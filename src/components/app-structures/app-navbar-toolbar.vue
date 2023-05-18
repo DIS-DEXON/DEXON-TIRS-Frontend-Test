@@ -18,8 +18,7 @@
           font-size: 12px;
           color: red;
         "
-        >id_tag: {{ infoTank.id_tag }}</span
-      >
+      >id_tag: {{ infoTank.id_tag }}</span>
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
       <div class="sub-page-box" v-if="pageSubInnerName">
@@ -30,32 +29,32 @@
       </div>
       <div class="toolbar-info mobile-none" v-if="infoTank">
         <div class="info-item">
-          <label class="desc">Tag No: </label>
+          <label class="desc">Tag No:</label>
           <label class="value">{{ infoTank.tag_no }}</label>
         </div>
         <div class="info-item">
-          <label class="desc">Tank No: </label>
+          <label class="desc">Tank No:</label>
           <label class="value">{{ infoTank.tank_no }}</label>
         </div>
         <div class="info-item">
-          <label class="desc">Product: </label>
+          <label class="desc">Product:</label>
           <label class="value">{{ infoTank.product_code }}</label>
         </div>
 
         <div class="info-item">
           <label class="desc">Site Name:</label>
-          <label class="value"> {{ infoTank.site_name }}</label>
+          <label class="value">{{ infoTank.site_name }}</label>
         </div>
         <div class="info-item">
-          <label class="desc">Site Description: </label>
+          <label class="desc">Site Description:</label>
           <label class="value">{{ infoTank.site_desc }}</label>
         </div>
         <!-- <div class="info-item">
           <label class="desc">Client:</label>
           <label class="value"> {{ infoTank.company_name }}</label>
-        </div> -->
+        </div>-->
         <div class="info-item">
-          <label class="desc">In-service Date : </label>
+          <label class="desc">First In-service Date :</label>
           <label class="value">{{ tank_inservice_date }}</label>
         </div>
       </div>
@@ -69,17 +68,9 @@
           placeholder="search tag no."
           v-on:keyup.enter="GET_SEARCH()"
         />
-        <i
-          class="las la-times clear"
-          v-if="searchKeyword != ''"
-          v-on:click="CLEAR_SEARCH()"
-        ></i>
+        <i class="las la-times clear" v-if="searchKeyword != ''" v-on:click="CLEAR_SEARCH()"></i>
       </div>
-      <v-ons-toolbar-button
-        v-if="isSave"
-        class="highlight-btn"
-        v-on:click="$emit('isSaveBtn')"
-      >
+      <v-ons-toolbar-button v-if="isSave" class="highlight-btn" v-on:click="$emit('isSaveBtn')">
         <i class="las la-save"></i>
         <span>Save</span>
       </v-ons-toolbar-button>
@@ -104,10 +95,7 @@
         <span>Print</span>
       </v-ons-toolbar-button>
 
-      <v-ons-toolbar-button
-        v-if="isDownload"
-        v-on:click="$emit('isDownloadBtn')"
-      >
+      <v-ons-toolbar-button v-if="isDownload" v-on:click="$emit('isDownloadBtn')">
         <i class="las la-download"></i>
         <span>Download</span>
       </v-ons-toolbar-button>
@@ -132,28 +120,18 @@
         :direction="popoverDirection"
         :cover-target="coverTarget"
       >
-        <v-ons-toolbar-button
-          class="popover-button"
-          v-on:click="EDIT_TANK_INFO()"
-        >
+        <v-ons-toolbar-button class="popover-button" v-on:click="EDIT_TANK_INFO()">
           <span>Edit Tank Info</span>
           <i class="las la-edit"></i>
         </v-ons-toolbar-button>
 
-        <v-ons-toolbar-button
-          class="popover-button"
-          v-on:click="DELETE_TANK_INFO()"
-        >
+        <v-ons-toolbar-button class="popover-button" v-on:click="DELETE_TANK_INFO()">
           <span style="color: red">Delete Tank Info</span>
           <i class="las la-trash" style="color: red"></i>
         </v-ons-toolbar-button>
       </v-ons-popover>
     </div>
-    <popupEdit
-      :editInfo="infoTank"
-      v-if="isEditPopup == true"
-      @closePopup="TOGGLE_POPUP()"
-    />
+    <popupEdit :editInfo="infoTank" v-if="isEditPopup == true" @closePopup="TOGGLE_POPUP()" />
   </div>
 </template>
 
@@ -165,7 +143,7 @@ import axios from "/axios.js";
 export default {
   name: "app-toolbar",
   components: {
-    popupEdit,
+    popupEdit
   },
   props: {
     pageName: String,
@@ -184,7 +162,7 @@ export default {
     isMoreBtn: Boolean,
     infoTank: Object,
     newBtnLabel: String,
-    isSearchBox: Boolean,
+    isSearchBox: Boolean
   },
   data() {
     return {
@@ -195,7 +173,7 @@ export default {
       popoverVisible: false,
       popoverTarget: null,
       popoverDirection: "up",
-      coverTarget: false,
+      coverTarget: false
     };
   },
   methods: {
@@ -238,27 +216,27 @@ export default {
       const id_tag = this.$route.params.id_tag;
       const id_client = this.$route.params.id_company;
       const user = JSON.parse(localStorage.getItem("user"));
-      this.$ons.notification.confirm("Confirm delete?").then((res) => {
+      this.$ons.notification.confirm("Confirm delete?").then(res => {
         if (res == 1) {
           axios({
             method: "put",
             url: "/tank-info/delete-tank-info",
             headers: {
               Authorization:
-                "Bearer " + JSON.parse(localStorage.getItem("token")),
+                "Bearer " + JSON.parse(localStorage.getItem("token"))
             },
             data: {
               id_tag: id_tag,
-              updated_by: user.id_user,
-            },
+              updated_by: user.id_user
+            }
           })
-            .then((res) => {
+            .then(res => {
               if (res.status == 200) {
                 this.$ons.notification.alert("Project delete successful");
                 this.$router.push("/tank/client/" + id_client);
               }
             })
-            .catch((error) => {
+            .catch(error => {
               this.$ons.notification.alert(
                 error.code + " " + error.response.status + " " + error.message
               );
@@ -266,15 +244,15 @@ export default {
             .finally(() => {});
         }
       });
-    },
+    }
   },
   computed: {
     tank_inservice_date() {
       if (this.infoTank.inservice_date) {
         return moment(this.infoTank.inservice_date).format("LL");
       } else return "N/A";
-    },
-  },
+    }
+  }
 };
 </script>
 

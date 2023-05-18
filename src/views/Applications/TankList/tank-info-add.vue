@@ -164,9 +164,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <input
               type="text"
@@ -308,9 +308,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation:</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -420,7 +420,7 @@
 
 <script>
 import axios from "/axios.js";
-import moment from "moment";
+//import moment from "moment";
 import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
 // import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
@@ -438,7 +438,8 @@ export default {
   data() {
     return {
       formData: {
-        id_client: this.$route.params.id_company
+        id_client: this.$route.params.id_company,
+        insulation: "Not Insulated"
       },
       formSelect: {
         tank_status: [],
@@ -488,13 +489,8 @@ export default {
   methods: {
     SAVE() {
       console.log("PACKAGE: ");
-      this.formData.installation_date = moment(
-        this.formData.installation_date
-      ).format("L");
-      this.formData.inservice_date = moment(
-        this.formData.inservice_date
-      ).format("L");
 
+      this.formData.is_active = true;
       console.log(this.formData);
       if (
         this.formData.tag_no &&
@@ -506,16 +502,10 @@ export default {
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
         this.formData.joint_efficiency &&
-        this.formData.tank_capacity_litre &&
-        this.formData.insulation !== "" &&
-        this.formData.sg_of_product
+        this.formData.sg_of_product !== ""
       ) {
         this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
-            this.formData.tank_capacity_litre = this.formData
-              .tank_capacity_litre
-              ? this.formData.tank_capacity_litre
-              : 0;
             const data = this.formData;
             axios({
               method: "post",
@@ -528,10 +518,10 @@ export default {
             })
               .then(res => {
                 // console.log(res.data[0]);
-                if (res.status == 201) {
+                if (res.status == 201 || res.status == 200) {
                   this.$ons.notification.alert("Tank Add successful");
                   this.$emit("closePopup");
-                  const id_tag = res.data[0].id_tag;
+                  const id_tag = res.data.id_tag;
                   const id_client = this.formData.id_client;
                   if (id_tag) {
                     this.$router.push(

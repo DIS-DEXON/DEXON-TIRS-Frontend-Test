@@ -165,9 +165,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Capacity (Litre):</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <input
               type="text"
@@ -306,9 +306,9 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Insulation:</p>
-              <label class="star-label">
+              <!-- <label class="star-label">
                 <i class="las la-asterisk"></i>
-              </label>
+              </label>-->
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -864,9 +864,7 @@ export default {
         this.formData.max_liquid_level_m &&
         this.formData.diameter_m &&
         this.formData.joint_efficiency &&
-        this.formData.tank_capacity_litre &&
-        this.formData.insulation !== "" &&
-        this.formData.sg_of_product
+        this.formData.sg_of_product !== ""
       ) {
         this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
@@ -883,7 +881,7 @@ export default {
             })
               .then(res => {
                 // console.log(res.data[0]);
-                if (res.status == 204) {
+                if (res.status == 204 || res.status == 200) {
                   //this.$ons.notification.alert("Tank Edit successful");
                   this.$emit("closePopup");
                   this.$router.go();
