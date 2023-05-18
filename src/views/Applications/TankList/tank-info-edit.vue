@@ -1087,7 +1087,7 @@ export default {
         return;
       }
 
-      const productIds = this.formSelect.product.map(item => item.ID);
+      const productIds = this.formSelect.product.map(item => item.id);
       const incrementedId = Math.max.apply(null, productIds) + 1;
       const newItem = {
         code: data.text,
@@ -1109,13 +1109,12 @@ export default {
         return;
       }
 
-      const productIds = this.formSelect.product.map(item => item.ID);
-      const incrementedId = Math.max.apply(null, productIds) + 1;
+      const siteIds = this.formSelect.site.map(item => item.id);
+      const incrementedId = Math.max.apply(null, siteIds) + 1;
       const newItem = {
         site_name: data.text,
         id: incrementedId
       };
-      //data.customItem = this.formSelect.product.push(newItem);
       data.customItem = productsDataSource
         .store()
         .insert(newItem)
