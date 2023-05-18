@@ -847,4 +847,7 @@ export default {
   border: 1px solid #000000;
   border-width: 0 0 1px 0px;
 }
+#page-container-view {
+  padding-top: 20px;
+}
 </style>
