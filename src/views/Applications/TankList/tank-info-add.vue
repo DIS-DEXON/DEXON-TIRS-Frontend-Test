@@ -33,10 +33,12 @@
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
-              v-model="formData.id_site"
+              v-model="formData.site_name"
               :data-source="formSelect.site"
               display-expr="site_name"
-              value-expr="id"
+              value-expr="site_name"
+              :accept-custom-value="true"
+              @customItemCreating="customItemCreating_site($event)"
             />
           </div>
 
@@ -54,10 +56,12 @@
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
-              v-model="formData.id_product"
+              v-model="formData.product_name"
               :data-source="formSelect.product"
               display-expr="code"
-              value-expr="id"
+              value-expr="code"
+              :accept-custom-value="true"
+              @customItemCreating="customItemCreating($event)"
             />
           </div>
 
@@ -425,7 +429,15 @@ import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
 // import { DxLookup, DxDropDownOptions } from "devextreme-vue/lookup";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
+import DataSource from "devextreme/data/data_source";
 
+const productsDataSource = new DataSource({
+  store: {
+    data: [],
+    type: "array",
+    key: "id"
+  }
+});
 export default {
   name: "popup-add-tank",
   components: {
@@ -437,6 +449,7 @@ export default {
   },
   data() {
     return {
+      productsDataSource,
       formData: {
         id_client: this.$route.params.id_company,
         insulation: "Not Insulated"
@@ -711,6 +724,50 @@ export default {
           this.formSelect.site = res.data;
         }
       });
+    },
+    customItemCreating(data) {
+      if (!data.text) {
+        data.customItem = null;
+        return;
+      }
+
+      const productIds = this.formSelect.product.map(item => item.ID);
+      const incrementedId = Math.max.apply(null, productIds) + 1;
+      const newItem = {
+        code: data.text,
+        id: incrementedId
+      };
+      //data.customItem = this.formSelect.product.push(newItem);
+      data.customItem = productsDataSource
+        .store()
+        .insert(newItem)
+        .then(() => productsDataSource.load())
+        .then(() => newItem)
+        .catch(error => {
+          throw error;
+        });
+    },
+    customItemCreating_site(data) {
+      if (!data.text) {
+        data.customItem = null;
+        return;
+      }
+
+      const productIds = this.formSelect.product.map(item => item.ID);
+      const incrementedId = Math.max.apply(null, productIds) + 1;
+      const newItem = {
+        site_name: data.text,
+        id: incrementedId
+      };
+      //data.customItem = this.formSelect.product.push(newItem);
+      data.customItem = productsDataSource
+        .store()
+        .insert(newItem)
+        .then(() => productsDataSource.load())
+        .then(() => newItem)
+        .catch(error => {
+          throw error;
+        });
     }
   }
 };

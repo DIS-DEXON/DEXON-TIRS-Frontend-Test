@@ -38,7 +38,7 @@
         </div>
         <div class="info-item">
           <label class="desc">Product:</label>
-          <label class="value">{{ infoTank.product_code }}</label>
+          <label class="value">{{ infoTank.product_name }}</label>
         </div>
 
         <div class="info-item">

@@ -333,11 +333,13 @@ export default {
         },
         {
           desc: "Product",
-          value: this.infoTank.product_code
+          value: this.infoTank.product_name
         },
         {
           desc: "Previous Inspection Date",
-          value:this.infoTank.last_inspection_date ? moment(this.infoTank.last_inspection_date).format("LL") : null
+          value: this.infoTank.last_inspection_date
+            ? moment(this.infoTank.last_inspection_date).format("LL")
+            : null
           //value: moment(this.infoTank.last_inspection_date).format("LL")
         },
         {
