@@ -92,7 +92,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="true" />
+          <DxExport :enabled="true" :fileName="this.$store.state.currentPageInnerName+'_calc'" />
         </DxDataGrid>
       </div>
     </div>
@@ -200,7 +200,7 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="true" />
+          <DxExport :enabled="true" :fileName="this.$store.state.currentPageInnerName+'_TP'" />
         </DxDataGrid>
       </div>
       <div class="table-wrapper">
@@ -265,7 +265,10 @@
             :show-info="true"
             info-text="Page {0} of {1} ({2} items)"
           />
-          <DxExport :enabled="true" />
+          <DxExport
+            :enabled="true"
+            :fileName="this.$store.state.currentPageInnerName+'_Thickness'"
+          />
         </DxDataGrid>
       </div>
     </div>
