@@ -404,10 +404,18 @@
           <DxHeaderFilter :visible="true" />
           <!-- <DxColumn data-field="plate_no" caption="Plate No." />
           <DxColumn data-field="tp_name" caption="TP No." />-->
-          <DxColumn data-field="id_inspection_record" caption="Inspection date" :width="150">
+          <DxColumn
+            data-field="id_inspection_record"
+            caption="Inspection date"
+            data-type="date"
+            format="dd MMM yyyy"
+            sort-order="desc"
+            :width="150"
+            :calculate-display-value="SET_FORMAT_DATE"
+          >
             <DxLookup
               :data-source="inspRecordList"
-              :display-expr="SET_FORMAT_DATE"
+              display-expr="inspection_date"
               value-expr="id_inspection_record"
             />
           </DxColumn>
@@ -858,6 +866,7 @@ export default {
         });
     },
     FETCH_INSP_RECORD() {
+      this.isLoading = true;
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -871,9 +880,17 @@ export default {
       })
         .then(res => {
           console.log("insp record:");
-          console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.inspRecordList = res.data;
+            const formattedDate = res.data.map(item => {
+              const date = new Date(item.inspection_date);
+              const formattedDate = moment(date).format("DD MMM yyyy");
+              return {
+                ...item,
+                inspection_date: formattedDate
+              };
+            });
+            this.inspRecordList = formattedDate;
+            console.log(this.inspRecordList);
           }
         })
         .catch(error => {
