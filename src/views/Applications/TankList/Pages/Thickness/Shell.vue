@@ -141,7 +141,7 @@
           <DxColumn data-field="course_no" caption="Shell Course" :width="80" />
           <DxColumn data-field="height_of_course_m" caption="Height (m)" :width="80" />
           <DxColumn data-field="t_nom_plate_mm" caption="tnom (mm)" :width="80" />
-          <DxColumn data-field="tmin_prod_mm" caption="tretire (mm)" :width="80" />
+          <DxColumn data-field="tmin_prod_mm" caption="tmin prod (mm)" :width="80" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -322,7 +322,7 @@
           />
 
           <DxColumn data-field="tp_name" caption="TP No." :width="100" />
-          <DxColumn data-field="tp_desc" caption="Plate Desc." :width="200" />
+          <DxColumn data-field="tp_desc" caption="TP Desc." :width="200" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->

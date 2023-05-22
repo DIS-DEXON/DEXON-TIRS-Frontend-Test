@@ -1909,9 +1909,14 @@ export default {
               padding: 0;
             }
             .form-item-value {
+              max-width: inherit;
+              border-right: 0.5px solid #000;
+              height: 50px;
               padding: 0;
               input {
+                border: unset;
                 padding: 0;
+                max-width: 100%;
               }
             }
           }
@@ -1986,6 +1991,7 @@ export default {
                 text-align: center;
                 // margin-right: 20px;
                 border-radius: 4px;
+                max-width: 120px;
               }
               label {
                 margin: 0 auto;
