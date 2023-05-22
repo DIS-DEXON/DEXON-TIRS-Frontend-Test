@@ -58,7 +58,7 @@
               <DxColumn
                 data-field="distance_above_bottom"
                 caption="Distance Above Bottom (m)"
-                format="#,##0.00"
+                format="#,###0.000"
               />
 
               <DxColumn type="buttons">
