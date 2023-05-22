@@ -40,7 +40,7 @@
           <label>Normal</label>
         </div>
         <div class="section-label rating-option">
-          <label>NA</label>
+          <label>N/A</label>
         </div>
 
         <!-- <div class="section-label rating-option">

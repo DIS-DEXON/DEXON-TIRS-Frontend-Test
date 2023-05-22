@@ -26,7 +26,7 @@
           <label>ไม่ผ่าน</label>
         </div>
         <div class="section-label rating-option">
-          <label>NA</label>
+          <label>N/A</label>
         </div>
         <div class="section-label comment-label">
           <label>Comments:</label>
