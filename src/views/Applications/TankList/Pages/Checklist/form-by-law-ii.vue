@@ -18,7 +18,7 @@
         >
           <label>Anomalies</label>
         </div>
-        <div class="section-label rating-label" style="grid-column: span 4">
+        <div class="section-label rating-label" style="grid-column: span 5">
           <label style="width: 100%; text-align: center; font-weight:700; font-size:13px">Status</label>
         </div>
         <div
@@ -39,6 +39,9 @@
         <div class="section-label rating-option">
           <label>Normal</label>
         </div>
+        <div class="section-label rating-option">
+          <label>NA</label>
+        </div>
 
         <!-- <div class="section-label rating-option">
           <label>Severe</label>
@@ -53,12 +56,12 @@
           <label>Normal</label>
         </div>-->
 
-        <div v-for="item in checklistInfo" :key="item.id" style="grid-column: span 7">
+        <div v-for="item in checklistInfo" :key="item.id" style="grid-column: span 8">
           <div class="topic-label">
             <div class="section-label subheader-label" style="grid-column:span 1">
               <label>{{ }}</label>
             </div>
-            <div class="section-label subheader-label" style="grid-column:span 6">
+            <div class="section-label subheader-label" style="grid-column:span 7">
               <label>{{ item.header_content }}</label>
             </div>
           </div>
@@ -110,6 +113,17 @@
                 v-model="item2.result[0].result_desc"
                 v-on:click="
                   UPDATE_RESULT(item2.result[0], 'Normal', item2.result[0].comments)
+                "
+              />
+            </div>
+            <div class="form-item-value chk-radio">
+              <input
+                type="radio"
+                value="NA"
+                :name="item2.id"
+                v-model="item2.result[0].result_desc"
+                v-on:click="
+                  UPDATE_RESULT(item2.result[0], 'NA', item2.result[0].comments)
                 "
               />
             </div>
@@ -186,9 +200,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
+  grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
   .topic-label {
-    grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
+    grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
   }
   .rating-option {
     position: relative;
@@ -219,7 +233,7 @@ export default {
   // }
 
   .topic-item {
-    grid-template-columns: 40px 50% 40px 40px 40px 40px auto !important;
+    grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
   }
 }
 .chk-radio {

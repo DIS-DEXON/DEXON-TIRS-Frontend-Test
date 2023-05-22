@@ -349,6 +349,13 @@ export default {
         {
           desc: "In-service Age of Tank (year)",
           value: this.infoTank.inservice_age_of_tank_yrs
+        },
+        {
+          desc: "Corrosion Allowance (mm)",
+          value: this.infoTank.corrosion_allowance
+        },
+        {
+          desc: ""
         }
       ];
       return info;
@@ -780,7 +787,7 @@ export default {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: calc(100% - 500px) 500px;
-  grid-template-rows: 273px 273px;
+  grid-template-rows: 300px 300px;
 }
 
 @media (max-width: 1400px) {
@@ -788,7 +795,7 @@ export default {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: 50% 50%;
-    grid-template-rows: 273px 273px;
+    grid-template-rows: 300px 300px;
   }
   .report-sheet-info {
     grid-column: span 2;

@@ -388,6 +388,17 @@
               placeholder="Operating Pressure Coil"
             />
           </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Corrosion Allowance (mm):</p>
+              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+            </div>
+            <input
+              type="text"
+              v-model="formData.corrosion_allowance"
+              placeholder="Corrosion Allowance (mm)"
+            />
+          </div>
           <div class="input-set" style="grid-column: span 3">
             <div class="label-box">
               <p class="label">Foundation:</p>
