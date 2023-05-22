@@ -1027,7 +1027,7 @@
                         height: auto;
                         padding-left: 30px;"
                     >
-                      <label>
+                      <label id="fixed-font">
                         The maximum out of plane deflection, where the greatest
                         deviation of the bottom from the optimum cosine curve
                         occurs over the shortest interval between measurements,
@@ -1038,7 +1038,7 @@
                   </div>
                   <div class="form-item">
                     <div class="form-item-label" style="grid-column: span 2">
-                      <label style="text-align: center">Valid</label>
+                      <label id="fixed-font" style="text-align: center">Valid</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -1074,7 +1074,7 @@
 
                   <div class="form-item">
                     <div class="form-item-label" style="grid-column: span 2">
-                      <label style="text-align: center">Invalid</label>
+                      <label id="fixed-font" style="text-align: center">Invalid</label>
                     </div>
                   </div>
                   <div class="form-item">
@@ -1935,7 +1935,97 @@ export default {
     // margin-bottom: 20px;
   }
 }
+@media (max-width: 1600px) {
+  .tab3-grid {
+    .content {
+      .report-sheet {
+        .report-container {
+          .header {
+            .title {
+              grid-column: span 4;
+            }
+          }
+          .sheet-body {
+            grid-template-columns: 35% 35% 30%;
+            border: 0.5px solid #000;
 
+            .content-wrapper {
+              border: 0.5px solid #000;
+              padding: 20px;
+            }
+
+            .form-item {
+              display: grid;
+              grid-template-columns: auto 120px;
+              .form-item-label {
+                height: 50px;
+                background-color: #fff;
+                border: 0;
+                #fixed-font {
+                  font-size: 12px;
+                }
+                label {
+                  user-select: text;
+                  cursor: text;
+                  font-weight: 500;
+                  width: 100%;
+                  text-align: left;
+                  font-size: 10px;
+
+                  b {
+                    user-select: text;
+                    cursor: text;
+                    font-size: 14px;
+                  }
+                }
+              }
+              .form-item-value {
+                grid-column: span 1;
+                background-color: #fff;
+                border: 0;
+
+                input {
+                  font-weight: 700;
+                  border: 1px solid #000;
+                  background-color: rgba(255, 255, 0, 0.117);
+                  height: 36px;
+                  text-align: center;
+                  // margin-right: 20px;
+                  border-radius: 4px;
+                  max-width: 120px;
+                }
+
+                label {
+                  margin: 0 auto;
+                  font-weight: 600;
+                }
+              }
+
+              .form-item-unit {
+                border: 0;
+
+                label {
+                  user-select: text;
+                  cursor: text;
+                  line-height: 36px;
+                  width: -webkit-fill-available;
+                  text-align: center;
+                  font-weight: 700;
+                  border: 1px solid #000;
+                  background-color: #fff;
+                  height: 36px;
+                  text-align: center;
+                  // margin-right: 20px;
+                  border-radius: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 .tab3-grid {
   .content {
     // width: calc(100% - 20px);
@@ -1993,6 +2083,7 @@ export default {
                 border-radius: 4px;
                 max-width: 120px;
               }
+
               label {
                 margin: 0 auto;
                 font-weight: 600;
