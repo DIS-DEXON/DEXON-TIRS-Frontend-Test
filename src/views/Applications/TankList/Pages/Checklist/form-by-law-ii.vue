@@ -130,7 +130,7 @@
             <div class="form-item-value" style="grid-column:span 1">
               <textarea
                 placeholder="comment..."
-                style="min-height: auto; padding: 0"
+                style="min-height: auto; padding: 0;width:100%"
                 v-model="item2.result[0].comments"
                 @focusout="
                   UPDATE_RESULT(

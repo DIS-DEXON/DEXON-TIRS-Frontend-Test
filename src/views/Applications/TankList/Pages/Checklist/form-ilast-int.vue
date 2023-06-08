@@ -87,7 +87,7 @@
             <div class="form-item-value">
               <textarea
                 placeholder="comment..."
-                style="min-height: auto; padding: 0"
+                style="min-height: auto; padding: 0;width:100%"
                 v-model="item3.result[0].comments"
                 @focusout="
                   UPDATE_RESULT(
