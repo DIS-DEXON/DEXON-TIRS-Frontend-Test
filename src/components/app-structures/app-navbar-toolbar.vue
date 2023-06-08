@@ -388,7 +388,9 @@ export default {
     display: block;
     width: fit-content;
     padding-right: 40px;
-
+    @media (max-width: 1200px) {
+      padding-right: 25px;
+    }
     .desc,
     .value {
       display: -webkit-box;
@@ -449,6 +451,9 @@ export default {
     transform: translateY(-50%);
     cursor: pointer;
     padding: 10px;
+  }
+  @media (max-width: 1550px) {
+    display: none;
   }
 }
 

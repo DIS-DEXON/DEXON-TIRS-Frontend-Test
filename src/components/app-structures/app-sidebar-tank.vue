@@ -416,6 +416,7 @@ export default {
     };
   },
   computed: {},
+  watch: {},
   methods: {
     SHOW_POPOVER(event, direction, coverTarget = false, target) {
       this.popoverTarget = event;
