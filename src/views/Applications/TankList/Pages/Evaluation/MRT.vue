@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record && this.dataMRT">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <div class="report-sheet">
         <div class="report-container">
@@ -84,10 +79,7 @@
                 <label>Age of Tank</label>
               </div>
               <div class="form-item-value">
-                <input
-                  v-model="dataMRT.bt_age_of_tank"
-                  @focusout="UPDATE_MRT()"
-                />
+                <input v-model="dataMRT.bt_age_of_tank" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -131,10 +123,7 @@
                 <label>Recommendation</label>
               </div>
               <div class="form-item-textarea">
-                <textarea
-                  v-model="dataMRT.bt_recommedation"
-                  @focusout="UPDATE_MRT()"
-                />
+                <textarea v-model="dataMRT.bt_recommedation" @focusout="UPDATE_MRT()" />
               </div>
             </div>
           </div>
@@ -202,10 +191,7 @@
                 <label>Age of Tank</label>
               </div>
               <div class="form-item-value">
-                <input
-                  v-model="dataMRT.an_age_of_tank"
-                  @focusout="UPDATE_MRT()"
-                />
+                <input v-model="dataMRT.an_age_of_tank" @focusout="UPDATE_MRT()" />
               </div>
               <div class="form-item-unit">
                 <label>years</label>
@@ -249,10 +235,7 @@
                 <label>Recommendation</label>
               </div>
               <div class="form-item-textarea">
-                <textarea
-                  v-model="dataMRT.an_recommedation"
-                  @focusout="UPDATE_MRT()"
-                />
+                <textarea v-model="dataMRT.an_recommedation" @focusout="UPDATE_MRT()" />
               </div>
             </div>
           </div>
@@ -284,10 +267,7 @@
         </appInstruction>
       </div>
     </div>
-    <div
-      class="list-page"
-      v-if="this.dataMRT == null && this.id_inspection_record != ''"
-    >
+    <div class="list-page" v-if="this.dataMRT == null && this.id_inspection_record != ''">
       <div class="center-box-wrapper">
         <v-ons-toolbar-button v-on:click="CREATE_MRT()">
           <i class="las la-plus"></i>
@@ -326,16 +306,12 @@ export default {
     // DxList,
     appInstruction,
     InspectionRecordPanel,
-    SelectInspRecord,
+    SelectInspRecord
   },
   created() {
-    this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
-    });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "MRT",
+      subpageInnerName: "MRT"
     });
   },
   data() {
@@ -346,7 +322,7 @@ export default {
       isLoading: false,
       id_inspection_record: "",
       current_view: {},
-      pagePanelHiding: false,
+      pagePanelHiding: false
     };
   },
   computed: {
@@ -355,7 +331,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     FETCH_INSP_RECORD() {
@@ -365,20 +341,20 @@ export default {
         method: "post",
         url: "insp-record/insp-record-by-tank-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log("insp record:");
           // console.log(res.data);
           if (res.status == 200 && res.data) {
             this.inspRecordList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -392,21 +368,21 @@ export default {
         method: "post",
         url: "mrt/get-mrt",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_inspection_record: item.id_inspection_record,
-          id_tag: this.$route.params.id_tag,
-        },
+          id_tag: this.$route.params.id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("MRT result:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.dataMRT = res.data[0];
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -418,21 +394,21 @@ export default {
         method: "post",
         url: "mrt/add-mrt",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_inspection_record: this.id_inspection_record,
-          id_tag: this.$route.params.id_tag,
-        },
+          id_tag: this.$route.params.id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200 && res.data) {
             console.log("MRT Created");
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -444,18 +420,18 @@ export default {
         method: "put",
         url: "mrt/edit-mrt",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.dataMRT,
+        data: this.dataMRT
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200 && res.data) {
             console.log("MRT Updated");
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -467,8 +443,8 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
-  },
+    }
+  }
 };
 </script>
 

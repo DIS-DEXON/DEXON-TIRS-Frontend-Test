@@ -21,10 +21,7 @@
           <label>Tank List</label>
         </div>
         <div class="right table-toolbar-set">
-          <v-ons-toolbar-button
-            class="table-toolbar-btn"
-            v-on:click="TOGGLE_POPUP()"
-          >
+          <v-ons-toolbar-button class="table-toolbar-btn" v-on:click="TOGGLE_POPUP()">
             <i class="las la-plus"></i>
             <span>Add New Tank</span>
           </v-ons-toolbar-button>
@@ -38,10 +35,13 @@
           v-model="search_key"
           placeholder="Search Tag No."
           class="query"
-        /><span class="icon"><i class="la la-search"></i></span
-        ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
-          ><i class="la la-close"></i
-        ></span>
+        />
+        <span class="icon">
+          <i class="la la-search"></i>
+        </span>
+        <span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()">
+          <i class="la la-close"></i>
+        </span>
       </div>
       <div class="tank-list-list">
         <div class="table-header">
@@ -125,11 +125,7 @@
         </div>
       </div>
     </div>
-    <contentLoading
-      text="Loading, please wait..."
-      v-if="isLoading == true"
-      color="#fc9b21"
-    />
+    <contentLoading text="Loading, please wait..." v-if="isLoading == true" color="#fc9b21" />
     <popupAdd v-if="isAdd == true" @closePopup="TOGGLE_POPUP()" />
   </div>
 </template> 
@@ -150,12 +146,12 @@ export default {
     toolbar,
     contentLoading,
     popupAdd,
-    clientInfoSidebar,
+    clientInfoSidebar
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      name: "Tank Inspection Reporting System",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     this.$store.commit("CLEAR_CURRENT_CLIENT");
     this.$store.commit("CLEAR_CURRENT_PAGENAME");
@@ -174,9 +170,9 @@ export default {
       tankList: [],
       tankListFiltered: [],
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
-      search_key: null,
+      search_key: null
     };
   },
   computed: {},
@@ -184,7 +180,7 @@ export default {
     // whenever search_key change, this function will run
     search_key() {
       this.SEARCH_GET(this.search_key);
-    },
+    }
   },
   methods: {
     VIEW_INFO(item) {
@@ -205,19 +201,19 @@ export default {
         method: "post",
         url: "/tank-info/tank-info-by-client",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_client: id_company,
-        },
+          id_client: id_company
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log(res);
           if (res.status == 200 && res.data) {
             this.tankList = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -232,20 +228,20 @@ export default {
         method: "get",
         url: "/MdClientCompany/" + id_company,
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log(res);
           if (res.status == 200 && res.data) {
             this.infoClient = res.data;
             this.$store.commit("UPDATE_CURRENT_CLIENT", {
               name: this.infoClient.company_name,
-              logo: this.infoClient.logo,
+              logo: this.infoClient.logo
             });
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -259,13 +255,13 @@ export default {
       let tankListFiltered = this.tankList;
 
       if (searchValue != "" && searchValue) {
-        tankListFiltered = tankListFiltered.filter((item) => {
+        tankListFiltered = tankListFiltered.filter(item => {
           return item.tag_no.toUpperCase().includes(searchValue.toUpperCase());
         });
       }
       this.tankListFiltered = tankListFiltered;
-    },
-  },
+    }
+  }
 };
 </script>
 

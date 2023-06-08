@@ -325,10 +325,6 @@ export default {
     DxLookup
   },
   created() {
-    this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png"
-    });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Thickness Messurement",
       subpageInnerName: "MFL - Annular"

@@ -203,7 +203,7 @@ export default {
     };
   },
   created() {
-    console.warn(this.checklistInfo);
+    // console.warn(this.checklistInfo);
   },
   methods: {
     UPDATE_RESULT(item, new_result_desc, comment) {

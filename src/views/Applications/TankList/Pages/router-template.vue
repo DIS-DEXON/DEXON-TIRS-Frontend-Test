@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="pm-page"
-    :class="[sidebarHiding == true ? 'pm-page-none-sidbar' : 'pm-page']"
-  >
+  <div class="pm-page" :class="[sidebarHiding == true ? 'pm-page-none-sidbar' : 'pm-page']">
     <toolbar
       :pageSubName="this.$store.state.currentPageName"
       :pageSubInnerName="this.$store.state.currentPageInnerName"
@@ -32,12 +29,12 @@ export default {
   name: "router-template-detail",
   components: {
     toolbar,
-    sidebar,
+    sidebar
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
+      name: "Tank Inspection Reporting System",
+      icon: "/img/icon_menu/tank/tank.png"
     });
     if (this.$store.state.status.server == true) {
       this.FETCH_TANK_INFO();
@@ -46,7 +43,7 @@ export default {
   data() {
     return {
       infoTank: {},
-      sidebarHiding: false,
+      sidebarHiding: false
     };
   },
   computed: {},
@@ -59,23 +56,23 @@ export default {
         method: "post",
         url: "/tank-info/tank-info-by-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_tag: id_tag,
-        },
+          id_tag: id_tag
+        }
       })
-        .then((res) => {
+        .then(res => {
           // console.log(res);
           if (res.status == 200 && res.data) {
             this.infoTank = res.data[0];
             this.$store.commit("UPDATE_CURRENT_CLIENT", {
               name: this.infoTank.company_name,
-              logo: this.infoTank.logo,
+              logo: this.infoTank.logo
             });
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -84,8 +81,8 @@ export default {
     },
     RESIZE_GRID_LAYOUT() {
       this.sidebarHiding = !this.sidebarHiding;
-    },
-  },
+    }
+  }
 };
 </script>
 

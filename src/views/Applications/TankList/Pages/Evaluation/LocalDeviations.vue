@@ -5,18 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          <b>
-            {{ DATE_FORMAT(current_view.inspection_date) }}</b
-          ></v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
+        </v-ons-list-header>
       </v-ons-list>
       <DxDataGrid
         id="local-deviation-grid"
@@ -55,11 +50,7 @@
 
         <DxColumn data-field="plate_2" caption="And plate" />
 
-        <DxColumn
-          data-field="deviation_mm"
-          caption="Deviation (mm)"
-          format="#,##0.00"
-        />
+        <DxColumn data-field="deviation_mm" caption="Deviation (mm)" format="#,##0.00" />
 
         <DxColumn
           data-field="tolerance"
@@ -68,11 +59,7 @@
           :allow-editing="false"
         />
 
-        <DxColumn
-          data-field="result"
-          caption="Inspection result"
-          :allow-editing="false"
-        />
+        <DxColumn data-field="result" caption="Inspection result" :allow-editing="false" />
 
         <DxColumn type="buttons">
           <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -98,7 +85,8 @@
         <appInstruction
           title="Instruction"
           desc="Radii measured at 1 ft (0.3048 m) above the shell-to-bottom weld and Radius tolerances measured higher than one foot [>1 ft (0.3048m)] above the shell-to-bottom weld shall not exceed the tolerances show in Table."
-          ><ol>
+        >
+          <ol>
             <li>
               Deviations (peaking) at vertical weld joints shall not exceed 13
               mm (1/2 in.). Peaking at vertical weld joints shall be determined
@@ -150,7 +138,7 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxLookup,
+  DxLookup
 } from "devextreme-vue/data-grid";
 
 //List
@@ -180,16 +168,12 @@ export default {
     DxLookup,
     appInstruction,
     InspectionRecordPanel,
-    SelectInspRecord,
+    SelectInspRecord
   },
   created() {
-    this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
-    });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Local Deviations",
+      subpageInnerName: "Local Deviations"
     });
   },
   data() {
@@ -202,9 +186,9 @@ export default {
       id_inspection_record: 0,
       current_view: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
-      pagePanelHiding: false,
+      pagePanelHiding: false
     };
   },
   computed: {
@@ -213,7 +197,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -221,9 +205,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -240,21 +224,21 @@ export default {
         method: "post",
         url: "local-deviation/get-local-deviation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
           id_tag: id_tag,
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("local:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.localDeviation = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -272,18 +256,18 @@ export default {
         method: "post",
         url: "local-deviation/add-local-deviation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -296,18 +280,18 @@ export default {
         method: "put",
         url: "local-deviation/edit-local-deviation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -320,18 +304,18 @@ export default {
         method: "delete",
         url: "local-deviation/delete-local-deviation",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -350,8 +334,8 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
-  },
+    }
+  }
 };
 </script>
 

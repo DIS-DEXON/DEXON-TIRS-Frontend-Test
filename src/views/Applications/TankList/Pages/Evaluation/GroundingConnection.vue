@@ -5,16 +5,13 @@
       pagePanelHiding == false ? 'page-container' : 'page-container-hide',
     ]"
   >
-    <InspectionRecordPanel
-      @showHidePanel="SHOW_HIDE_PANEL"
-      @viewItem="VIEW_ITEM"
-    />
+    <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div class="list-page" v-if="this.id_inspection_record != ''">
       <v-ons-list>
-        <v-ons-list-header
-          >Inspection Details of
-          {{ DATE_FORMAT(current_view.inspection_date) }}</v-ons-list-header
-        >
+        <v-ons-list-header>
+          Inspection Details of
+          {{ DATE_FORMAT(current_view.inspection_date) }}
+        </v-ons-list-header>
       </v-ons-list>
       <div class="report-sheet">
         <div class="report-container">
@@ -46,11 +43,7 @@
                 mode="row"
               />
 
-              <DxColumn
-                data-field="ground_no"
-                caption="Grounding connection no"
-                :width="180"
-              />
+              <DxColumn data-field="ground_no" caption="Grounding connection no" :width="180" />
 
               <DxColumn
                 data-field="measured"
@@ -91,11 +84,7 @@
                 <label>Total Resistance (ohms)</label>
               </div>
               <div class="form-item-value">
-                <input
-                  v-model="groundConnectDetail.total"
-                  @focusout="UPDATE_GC()"
-                  readonly
-                />
+                <input v-model="groundConnectDetail.total" @focusout="UPDATE_GC()" readonly />
               </div>
             </div>
             <div class="form-item">
@@ -103,10 +92,7 @@
                 <label>Acceptance Criteria (ohms)</label>
               </div>
               <div class="form-item-value">
-                <input
-                  @focusout="UPDATE_GC()"
-                  v-model="groundConnectDetail.acceptance_criteria"
-                />
+                <input @focusout="UPDATE_GC()" v-model="groundConnectDetail.acceptance_criteria" />
               </div>
             </div>
 
@@ -115,11 +101,7 @@
                 <label>Result</label>
               </div>
               <div class="form-item-value">
-                <input
-                  @focusout="UPDATE_GC()"
-                  v-model="groundConnectDetail.result"
-                  readonly
-                />
+                <input @focusout="UPDATE_GC()" v-model="groundConnectDetail.result" readonly />
               </div>
             </div>
             <div class="form-item" style="grid-template-rows: 101px">
@@ -139,9 +121,7 @@
       <div class="app-instruction">
         <appInstruction title="Instruction" desc="The acceptance criteria">
           <ol>
-            <li>
-              The distance between grounding connection is between 6 to 30 m.
-            </li>
+            <li>The distance between grounding connection is between 6 to 30 m.</li>
             <li>
               Total resistance from tank to earth not more than 25 ohms (API
               575) or 10 ohms (Thai regulation) or Customer.
@@ -180,7 +160,7 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow,
+  DxFilterRow
 } from "devextreme-vue/data-grid";
 
 //List
@@ -209,16 +189,12 @@ export default {
     DxFilterRow,
     appInstruction,
     InspectionRecordPanel,
-    SelectInspRecord,
+    SelectInspRecord
   },
   created() {
-    this.$store.commit("UPDATE_CURRENT_INAPP", {
-      name: "Tank Management",
-      icon: "/img/icon_menu/tank/tank.png",
-    });
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
-      subpageInnerName: "Grounding Connection",
+      subpageInnerName: "Grounding Connection"
     });
   },
   data() {
@@ -231,9 +207,9 @@ export default {
       id_inspection_record: 0,
       current_view: {},
       dataGridAttributes: {
-        class: "data-grid-style",
+        class: "data-grid-style"
       },
-      pagePanelHiding: false,
+      pagePanelHiding: false
     };
   },
   computed: {
@@ -242,7 +218,7 @@ export default {
       if (mode == "dev") return this.$store.state.modeURL.dev;
       else if (mode == "prod") return this.$store.state.modeURL.prod;
       else return console.log("develpment mode set up incorrect.");
-    },
+    }
   },
   methods: {
     EXPORT_DATA(e) {
@@ -250,9 +226,9 @@ export default {
       const worksheet = workbook.addWorksheet("Projects");
       exportDataGrid({
         worksheet: worksheet,
-        component: e.component,
-      }).then(function () {
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        component: e.component
+      }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
           saveAs(
             new Blob([buffer], { type: "application/octet-stream" }),
             "Projects.xlsx"
@@ -270,20 +246,20 @@ export default {
         method: "post",
         url: "grounding-connection/grounding-connection-by-insp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("ground:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.groundConnect = res.data;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -294,20 +270,20 @@ export default {
         method: "post",
         url: "grounding-connection/grounding-connection-detail-by-insp-id",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_inspection_record: item.id_inspection_record,
-        },
+          id_inspection_record: item.id_inspection_record
+        }
       })
-        .then((res) => {
+        .then(res => {
           console.log("ground detail:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.groundConnectDetail = res.data[0];
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -325,18 +301,18 @@ export default {
         method: "post",
         url: "grounding-connection/add-grounding-connection",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -349,18 +325,18 @@ export default {
         method: "put",
         url: "grounding-connection/edit-grounding-connection",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -373,18 +349,18 @@ export default {
         method: "delete",
         url: "grounding-connection/delete-grounding-connection",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: e.data,
+        data: e.data
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           if (res.status == 200 && res.data) {
             console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -403,18 +379,18 @@ export default {
         method: "put",
         url: "grounding-connection/edit-grounding-connection-detail",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: this.groundConnectDetail,
+        data: this.groundConnectDetail
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200 && res.data) {
             console.log("GC Updated");
             console.log(res.data);
             // this.VIEW_ITEM(this.current_view);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -426,8 +402,8 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    },
-  },
+    }
+  }
 };
 </script>
 
