@@ -17,6 +17,7 @@
         <div v-if="this.checklistList_existance.general == true">
           <checklistGeneric
             :checklistInfo="this.checklistList.generic"
+            :record="this.current_view"
             v-if="this.checklistList.generic.length > 0"
           />
         </div>

@@ -225,6 +225,7 @@
                 label-text
                 accept="image/*"
                 upload-mode="useForm"
+                :showFileList="false"
                 @value-changed="ON_DWG_CHANGE_2"
                 style="position:absolute;"
               />
