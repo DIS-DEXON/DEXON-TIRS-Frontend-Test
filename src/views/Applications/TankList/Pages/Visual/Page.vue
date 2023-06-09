@@ -35,6 +35,7 @@
           :allow-updating="true"
           :allow-deleting="true"
           :allow-adding="IS_VISIBLE_ADD()"
+          :use-icons="true"
           mode="form"
         >
           <DxForm label-location="top">

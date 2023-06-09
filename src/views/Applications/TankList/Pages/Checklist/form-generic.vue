@@ -276,10 +276,8 @@ export default {
         })
         .finally(() => {});
     },
-    TOGGLE_POPUP(e) {
-      console.log(e);
+    TOGGLE_POPUP() {
       this.isPopupOpen = !this.isPopupOpen;
-      console.log(this.isPopupOpen);
     }
   }
 };

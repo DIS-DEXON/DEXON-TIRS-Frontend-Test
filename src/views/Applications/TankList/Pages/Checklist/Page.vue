@@ -24,20 +24,22 @@
         <div v-if="this.checklistList_existance.ilast_ext == true">
           <checklistIlastExt
             :checklistInfo="this.checklistList.ilast_ext"
+            :record="this.current_view"
             v-if="this.checklistList.ilast_ext.length > 0"
           />
         </div>
         <div v-if="this.checklistList_existance.ilast_int == true">
           <checklistIlastInt
             :checklistInfo="this.checklistList.ilast_int"
+            :record="this.current_view"
             v-if="this.checklistList.ilast_int.length > 0"
           />
         </div>
         <div v-if="this.checklistList_existance.by_law_i == true">
-          <checklistByLawI :checklistInfo="this.chk_bylaw_i" />
+          <checklistByLawI :checklistInfo="this.chk_bylaw_i" :record="this.current_view" />
         </div>
         <div v-if="this.checklistList_existance.by_law_ii == true">
-          <checklistByLawII :checklistInfo="this.chk_bylaw_ii" />
+          <checklistByLawII :checklistInfo="this.chk_bylaw_ii" :record="this.current_view" />
         </div>
         <div
           class="center-box-wrapper"
@@ -78,9 +80,9 @@
             <v-ons-toolbar-button class="btn" v-on:click="DELETE_CHECKLIST()">
               <i class="las la-trash"></i>
             </v-ons-toolbar-button>
-            <v-ons-toolbar-button class="btn">
+            <!-- <v-ons-toolbar-button class="btn">
               <i class="las la-download"></i>
-            </v-ons-toolbar-button>
+            </v-ons-toolbar-button>-->
           </div>
         </div>
       </div>

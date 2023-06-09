@@ -140,25 +140,40 @@
                   )
                 "
               />
+              <div class="item-wrapper">
+                <v-ons-toolbar-button
+                  class="item"
+                  style="padding:0;width:20px"
+                  @click="TOGGLE_POPUP"
+                >
+                  <img src="/img/icon_sidebar/tank/checklist_visual.png" />
+                </v-ons-toolbar-button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <picturelog v-if="this.isPopupOpen" :insp_record="record" @close-popup="TOGGLE_POPUP" />
   </div>
 </template>
 
 <script>
 //API
 import axios from "/axios.js";
-
+import picturelog from "@/views/Applications/TankList/Pages/Checklist/picturelog.vue";
 export default {
   name: "checklist-by-law-ii",
+  components: {
+    picturelog
+  },
   props: {
-    checklistInfo: Array
+    checklistInfo: Array,
+    record: Object
   },
   data() {
     return {
+      isPopupOpen: false,
       formData: {
         id: null,
         result_desc: null,
@@ -192,6 +207,9 @@ export default {
           );
         })
         .finally(() => {});
+    },
+    TOGGLE_POPUP() {
+      this.isPopupOpen = !this.isPopupOpen;
     }
   }
 };
@@ -237,6 +255,20 @@ export default {
   }
 }
 .chk-radio {
+  justify-content: center !important;
+}
+.form-item-value {
+  display: grid !important;
+  grid-template-columns: 85% 15% !important;
+}
+img {
+  width: 18px;
+  max-height: 18px;
+  object-fit: contain;
+}
+.item-wrapper {
+  display: flex !important;
+  margin-left: 10px;
   justify-content: center !important;
 }
 </style>
