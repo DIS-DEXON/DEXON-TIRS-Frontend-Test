@@ -1,8 +1,9 @@
 <template>
   <div class="popup-wrapper">
+    <!-- v-closable="{handler:'hide'}" -->
     <div class="popup-card">
       <div class="popup-header" style="justify-content: space-between;padding-right:20px">
-        <label>Picture Log</label>
+        <label></label>
         <v-ons-toolbar-button @click="CANCEL">
           <i class="fa-solid fa-x" style="font-size:22px"></i>
         </v-ons-toolbar-button>
@@ -24,18 +25,12 @@
               :row-alternation-enabled="false"
               @row-inserted="CREATE_DWG"
               @row-updated="UPDATE_DWG"
-              @row-removed="DELETE_DWG"
               @editing-start="EDITING_START_DWG"
               @init-new-row="INIT_NEW_ROW_DWG"
               @row-removing="REMOVING"
               @saved="SAVE"
             >
-              <DxEditing
-                :allow-updating="true"
-                :allow-deleting="true"
-                :allow-adding="true"
-                mode="form"
-              >
+              <DxEditing :allow-updating="true" :allow-adding="true" :use-icons="true" mode="form">
                 <DxForm label-location="top">
                   <DxItem :col-count="2" :col-span="2" item-type="group">
                     <DxItem data-field="file_path_1" :col-span="1" />
@@ -134,7 +129,7 @@
                     <div>
                       <div class="header-custom-field">Finding</div>
                       <DxTextArea
-                        :height="80"
+                        height="100%"
                         :width="610"
                         :read-only="true"
                         :value="data.data.finding"
@@ -143,7 +138,7 @@
                     <div style="margin-top: 5px;">
                       <div class="header-custom-field">Recommendation</div>
                       <DxTextArea
-                        :height="80"
+                        height="100%"
                         :width="610"
                         :read-only="true"
                         :value="data.data.recommendation"
@@ -205,7 +200,7 @@
                       style="position:absolute;"
                     />
 
-                    <DxButton
+                    <DxButtons
                       :width="120"
                       text="Delete"
                       type="normal"
@@ -250,7 +245,7 @@
                       style="position:absolute;"
                     />
 
-                    <DxButton
+                    <DxButtons
                       :width="120"
                       text="Delete"
                       type="normal"
@@ -267,7 +262,11 @@
                   <DxTextArea :height="200" :read-only="true" :value="data.value" />
                 </div>
               </template>
-
+              <DxColumn type="buttons">
+                <DxButton name="edit" hint="Edit" icon="edit" />
+                <DxButton name="delete" hint="Delete" icon="trash" @click="DEL_ONCLICK" />
+                <DxButton name="info" hint="Delete" icon="trash" :on-click="DEL_ONCLICK" />
+              </DxColumn>
               <!-- Configuration goes here -->
               <!-- <DxFilterRow :visible="true" /> -->
               <DxScrolling mode="standard" />
@@ -303,7 +302,42 @@
 </template>
 
   <script>
+// import Vue from "vue";
+// let handleOutsideClick;
+// Vue.directive("closable", {
+//   bind(el, binding, vnode) {
+//     // Here's the click/touchstart handler
+//     // (it is registered below)
+//     handleOutsideClick = e => {
+//       e.stopPropagation();
+//       // Get the handler method name and the exclude array
+//       // from the object used in v-closable
+
+//       const { handler } = binding.value;
+
+//       if (!el.contains(e.target)) {
+//         // If the clicked element is outside the dialog
+//         // then call the outside-click handler
+//         // from the same component this directive is used in
+//         vnode.context[handler](e);
+//       }
+//     };
+//     // Register click/touchstart event listeners on the whole page
+//     setTimeout(() => {
+//       document.addEventListener("click", handleOutsideClick);
+//       document.addEventListener("touchstart", handleOutsideClick);
+//     }, 1000);
+//   },
+//   unbind() {
+//     // If the element that has v-closable is removed, then
+//     // unbind click/touchstart listeners from the whole page
+//     document.removeEventListener("click", handleOutsideClick);
+//     document.removeEventListener("touchstart", handleOutsideClick);
+//   }
+// });
+
 //FileUpload
+// import Vue from "vue";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
 import { DxItem } from "devextreme-vue/form";
@@ -312,7 +346,7 @@ import contentLoading from "@/components/app-structures/app-content-loading.vue"
 import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import DxTextArea from "devextreme-vue/text-area";
-import DxButton from "devextreme-vue/button";
+import DxButtons from "devextreme-vue/button";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -323,13 +357,36 @@ import {
   DxExport,
   DxEditing,
   // DxPopup,
-  DxForm
+  DxForm,
+  DxButton
 } from "devextreme-vue/data-grid";
 
 export default {
+  // directives: {
+  //   "click-outside": {
+  //     bind(el, binding, vnode) {
+  //       handleOutsideClick = e => {
+  //         e.stopPropagation();
+  //         const { handler } = binding.value;
+
+  //         if (!el.contains(e.target)) {
+  //           vnode.context[handler]();
+  //         }
+  //       };
+  //       document.addEventListener("click", handleOutsideClick);
+  //       document.addEventListener("touchstart", handleOutsideClick);
+  //     },
+  //     unbind() {
+  //       document.removeEventListener("click", handleOutsideClick);
+  //       document.removeEventListener("touchstart", handleOutsideClick);
+  //     }
+  //   }
+  // },
+
   name: "pictureLog",
   components: {
     contentLoading,
+    DxButtons,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -338,21 +395,35 @@ export default {
     DxColumn,
     DxExport,
     DxEditing,
-    // DxPopup,
     DxForm,
     DxTextArea,
     DxButton,
     DxFileUploader,
+    // DxPopup,
     DxItem
   },
   props: {
     insp_record: Object
   },
   created() {
-    this.FETCH_PICTURELOG();
+    this.VIEW_ITEM();
+    this.opened = true;
+    console.log("popup pictureLog created");
   },
+  // mounted() {
+  //   setTimeout(() => {
+  //     document.addEventListener("click", this.CLICK_OUTSIDE);
+  //     document.addEventListener("touchstart", this.CLICK_OUTSIDE);
+  //   }, 1000);
+  // },
+  // beforeDestroy() {
+  //   document.removeEventListener("click", this.CLICK_OUTSIDE);
+  //   document.removeEventListener("touchstart", this.CLICK_OUTSIDE);
+  // },
+
   data() {
     return {
+      opened: false,
       dataList: [],
       isLoading: false,
       imgDwg1: "",
@@ -391,7 +462,43 @@ export default {
     }
   },
   methods: {
-    FETCH_PICTURELOG() {
+    hide() {
+      if (this.opened) {
+        console.log("inhide");
+        this.$emit("close-popup");
+      }
+    },
+    handle(event) {
+      console.log("clicked out side");
+      const popupWrapper = this.$el.querySelector(".popup-wrapper");
+      const popupCard = this.$el.querySelector(".popup-card");
+      // Check if the click event target is outside the popup container
+      if (
+        !popupCard.contains(event.target) &&
+        popupWrapper.contains(event.target)
+      ) {
+        this.$emit("close-popup");
+      }
+    },
+    CLICK_OUTSIDE(e) {
+      // const popupWrapper = this.$el.querySelector(".popup-wrapper");
+      const popupCard = this.$el.querySelector(".popup-card");
+      // const dxTable = this.$el.querySelector(".dx-overlay-wrapper");
+      console.log(this.dxElement);
+      // console.log(popupCard);
+      console.warn(e.target);
+      if (!popupCard.contains(e.target)) {
+        return this.$emit("close-popup");
+      }
+
+      // if (
+      //   !popupCard.contains(event.target) &&
+      //   popupWrapper.contains(event.target)
+      // ) {
+      //   console.log("clicked out side");
+      // }
+    },
+    VIEW_ITEM() {
       const item = this.insp_record;
       axios({
         method: "post",
@@ -424,16 +531,16 @@ export default {
       formData.append("id_inspection_record", this.id_inspection_record);
       formData.append(
         "inspection_date",
-        moment(this.inspection_date).format("L")
+        this.current_view.inspection_date ?? ""
       );
-      formData.append("finding", e.data.finding);
-      formData.append("recommendation", e.data.recommendation);
+      formData.append("finding", e.data.finding ?? "");
+      formData.append("recommendation", e.data.recommendation ?? "");
       formData.append("file_1", this.file1);
       formData.append("file_2", this.file2);
       formData.append("file_path_1", "");
       formData.append("file_path_2", "");
-      formData.append("created_by", user.id_account);
-      formData.append("updated_by", user.id_account);
+      formData.append("created_by", user.id_account ?? 0);
+      formData.append("updated_by", user.id_account ?? 0);
 
       axios({
         method: "post",
@@ -445,10 +552,7 @@ export default {
         data: formData
       })
         .then(res => {
-          console.log(res);
           if (res.status == 201 && res.data) {
-            console.log("in");
-            console.log(res.data);
             this.VIEW_ITEM(this.current_view);
           }
         })
@@ -462,38 +566,29 @@ export default {
         });
     },
     UPDATE_DWG(e) {
-      console.log("UPDATE_DWG");
-      console.log(e);
-      console.log("is_changed_dwg_1: " + this.is_changed_dwg_1);
-      console.log("is_changed_dwg_2: " + this.is_changed_dwg_2);
-      console.log("file1:");
-      console.log(this.file1);
-      console.log("file_path: " + this.file_path_1_tmp);
-      console.log("file2:");
-      console.log(this.file2);
-      console.log("file_path: " + this.file_path_2_tmp);
       const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
-      formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append(
+        "id_inspection_record",
+        this.insp_record.id_inspection_record
+      );
       formData.append(
         "inspection_date",
-        moment(this.inspection_date).format("L")
+        moment(this.insp_record.inspection_date).format("L") ?? ""
       );
-      formData.append("finding", e.data.finding);
-      formData.append("recommendation", e.data.recommendation);
+      formData.append("finding", e.data.finding ?? "");
+      formData.append("recommendation", e.data.recommendation ?? "");
       formData.append("file_1", this.file1);
       formData.append("file_2", this.file2);
-      formData.append("file_path_1", this.file_path_1_tmp);
-      formData.append("file_path_2", this.file_path_2_tmp);
+      formData.append("file_path_1", this.file_path_1_tmp ?? "");
+      formData.append("file_path_2", this.file_path_2_tmp ?? "");
       formData.append("created_by", e.data.created_by);
       formData.append("updated_by", user.id_account);
-      formData.append("is_changed_dwg_1", this.is_changed_dwg_1);
-      formData.append("is_changed_dwg_2", this.is_changed_dwg_2);
       axios({
         method: "put",
-        url: "visual-report/edit-visual-record",
+        url: "visual-report/" + e.data.id_visual,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
@@ -501,10 +596,7 @@ export default {
         data: formData
       })
         .then(res => {
-          console.log(res);
-          if (res.status == 201 && res.data) {
-            console.log("in");
-            console.log(res.data);
+          if (res.status == 204) {
             this.file_path_1 = "";
             this.file_path_2 = "";
             this.VIEW_ITEM(this.current_view);
@@ -515,8 +607,6 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.is_changed_dwg_1 = 0;
-          this.is_changed_dwg_2 = 0;
         });
     },
     DELETE_DWG(e) {
@@ -528,7 +618,7 @@ export default {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
         data: {
-          id_visual: e.key
+          id_visual: e.row.key
         }
       })
         .then(res => {
@@ -537,12 +627,14 @@ export default {
             console.log(res.data);
             // this.VIEW_DWG(this.id_inspection_record, this.inspection_date);
             this.VIEW_ITEM(this.current_view);
+            this.opened = true;
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
+          this.opened = true;
           this.isLoading = false;
         });
     },
@@ -598,10 +690,20 @@ export default {
       this.isAdd = 1;
       this.popUpWidth = this.CHECK_SCREEN("w");
     },
-    REMOVING(e) {
-      console.log("REMOVING");
-      console.log(e);
+    REMOVING() {
       this.isRemove = 1;
+    },
+    DEL_ONCLICK(e) {
+      this.opened = false;
+      this.$ons.notification
+        .confirm("Are you sure you want to delete this record?")
+        .then(res => {
+          if (res == 1) {
+            this.DELETE_DWG(e);
+          } else {
+            this.opened = true;
+          }
+        });
     },
     IS_VISIBLE_ADD() {
       if (this.id_inspection_record == 0) {
@@ -626,10 +728,12 @@ export default {
     DEL_PIC(seq) {
       if (seq == 1) {
         this.imgDwg1 = "";
+        this.file_path_1_tmp = "";
         this.is_changed_dwg_1 = 1;
         //this.file_path_1 = this.file_path_1_tmp;
       } else if (seq == 2) {
         this.imgDwg2 = "";
+        this.file_path_2_tmp = "";
         this.is_changed_dwg_2 = 1;
         //this.file_path_2 = this.file_path_2_tmp;
       }

@@ -1,21 +1,18 @@
 <template>
   <div id="page-home" class="page-body">
     <div id="user-panel">
-      <div
-        class="page-container"
-        style="padding-top: 40px; padding-bottom: 80px"
-      >
+      <div class="page-container" style="padding-top: 40px; padding-bottom: 80px">
         <div class="wrapper">
           <div class="left-col">
             <div class="detail">
               <div class="name">
-                <h2>Tank Inspection Management System</h2>
+                <h2>Tank Inspection Reporting System</h2>
                 <h2>{{ user.lastname }}</h2>
               </div>
               <!-- <div class="desc">
                 <label>{{ user.role }}, {{ user.department }}</label>
                 <label>DITT-{{ user.employee_no }}</label>
-              </div> -->
+              </div>-->
             </div>
           </div>
           <div class="right-col">
@@ -36,17 +33,20 @@
             v-model="search_key"
             placeholder="Search Client"
             class="query"
-          /><span class="icon"><i class="la la-search"></i></span
-          ><span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()"
-            ><i class="la la-close"></i
-          ></span>
+          />
+          <span class="icon">
+            <i class="la la-search"></i>
+          </span>
+          <span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()">
+            <i class="la la-close"></i>
+          </span>
         </div>
       </div>
       <div class="bg-filter"></div>
     </div>
 
     <div class="page-container">
-      <div
+      <!-- <div
         class="section-label"
         v-if="!this.search_key && this.clientListRecent.length > 0"
       >
@@ -60,14 +60,11 @@
         >
           <span>Clear Recent</span>
         </v-ons-toolbar-button>
-      </div>
-      <div
-        class="client-list-recent"
-        v-if="!this.search_key && this.clientListRecent.length > 0"
-      >
+      </div>-->
+      <div class="client-list-recent" v-if="!this.search_key && this.clientList.length > 0">
         <v-ons-card
           class="client-card"
-          v-for="item in clientListRecent"
+          v-for="item in clientList"
           :key="item.id"
           v-on:click="VIEW_INFO(item)"
         >
@@ -77,12 +74,10 @@
           <div class="title">{{ item.company_name }}</div>
         </v-ons-card>
       </div>
-      <div class="section-label">
-        <h2 class="page-section-label" style="padding-top: 40px">
-          {{ client_list_section_label }}
-        </h2>
-      </div>
-      <div class="client-list-list" v-if="!this.search_key">
+      <!-- <div class="section-label">
+        <h2 class="page-section-label" style="padding-top: 40px">{{ client_list_section_label }}</h2>
+      </div>-->
+      <!-- <div class="client-list-list" v-if="!this.search_key">
         <div
           class="item"
           v-for="item in clientListPaged"
@@ -100,8 +95,8 @@
             <i class="las la-search"></i>
           </div>
         </div>
-      </div>
-      <div class="client-list-list" v-if="this.search_key">
+      </div>-->
+      <!-- <div class="client-list-list" v-if="this.search_key">
         <div
           class="item"
           v-for="item in clientListFiltered"
@@ -118,8 +113,8 @@
             <i class="las la-search"></i>
           </div>
         </div>
-      </div>
-      <v-ons-toolbar-button
+      </div>-->
+      <!-- <v-ons-toolbar-button
         style="margin-right: 8px; width: 200px; margin: 0 auto"
         v-on:click="SHOW_MORE_CLIENT()"
         v-if="
@@ -128,8 +123,9 @@
         "
       >
         <span>Show More</span>
-      </v-ons-toolbar-button>
+      </v-ons-toolbar-button>-->
     </div>
+
     <div
       class="page-container"
       v-if="
@@ -140,27 +136,16 @@
         <h2 class="page-section-label">Master Data & Management</h2>
       </div>
       <div class="app-drawer-wrapper">
-        <div
-          class="app-item-wrapper"
-          v-for="item in appsList.managementApps"
-          :key="item.id"
-        >
-          <div
-            class="app-item"
-            v-on:click="OPEN_APP(item)"
-            v-if="item.isActive == true"
-          >
+        <div class="app-item-wrapper" v-for="item in appsList.managementApps" :key="item.id">
+          <div class="app-item" v-on:click="OPEN_APP(item)" v-if="item.isActive == true">
             <img :src="item.icon_menu" />
             <label>{{ item.name }}</label>
           </div>
         </div>
       </div>
     </div>
-    <AppLoading
-      :icon="openingApp.icon_menu"
-      :name="openingApp.name"
-      v-if="isOpening == true"
-    />
+
+    <AppLoading :icon="openingApp.icon_menu" :name="openingApp.name" v-if="isOpening == true" />
     <PageLoading v-if="isLoading == true" text="Loading" />
   </div>
 </template>
@@ -179,7 +164,7 @@ export default {
   name: "HomeView",
   components: {
     AppLoading,
-    PageLoading,
+    PageLoading
   },
   data() {
     return {
@@ -193,14 +178,14 @@ export default {
       clientListPaged: [],
       clientListFiltered: [],
       clientListRecent: [],
-      search_key: "",
+      search_key: ""
     };
   },
   watch: {
     // whenever search_key change, this function will run
     search_key() {
       this.SEARCH_GET(this.search_key);
-    },
+    }
   },
   created() {
     this.$emit(`update:layout`, ViewLayout);
@@ -222,17 +207,17 @@ export default {
         method: "get",
         url: "/MdClientCompany",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-        },
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
       })
-        .then((res) => {
+        .then(res => {
           if (res.status == 200) {
             console.log("==> LIENT LIST: FETCHED");
             this.clientList = res.data;
             this.clientListPaged = this.clientList.slice(0, 5);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => {
@@ -261,7 +246,7 @@ export default {
       let clientListFiltered = this.clientList;
 
       if (searchValue != "" && searchValue) {
-        clientListFiltered = clientListFiltered.filter((item) => {
+        clientListFiltered = clientListFiltered.filter(item => {
           return item.company_name
             .toUpperCase()
             .includes(searchValue.toUpperCase());
@@ -292,7 +277,7 @@ export default {
 
       var exist;
 
-      var a = list.filter((list) => list.id_company == item.id_company);
+      var a = list.filter(list => list.id_company == item.id_company);
       if (a.length > 0) exist = 1;
       else exist = 0;
 
@@ -312,7 +297,7 @@ export default {
       }
     },
     CLEAR_RECENT() {
-      this.$ons.notification.confirm("Confirm Clear?").then((res) => {
+      this.$ons.notification.confirm("Confirm Clear?").then(res => {
         if (res == 1) {
           localStorage.removeItem("recent_client");
           this.CHECK_RECENT_EXIST();
@@ -321,7 +306,7 @@ export default {
     },
     SHOW_MORE_CLIENT() {
       this.clientListPaged = this.clientList;
-    },
+    }
   },
   computed: {
     baseURL() {
@@ -339,8 +324,8 @@ export default {
       else if (this.search_key && this.clientListFiltered.length > 0)
         return "Search Result";
       else return "All Clients";
-    },
-  },
+    }
+  }
 };
 </script>
 

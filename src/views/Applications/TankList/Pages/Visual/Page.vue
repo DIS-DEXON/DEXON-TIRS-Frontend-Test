@@ -187,6 +187,7 @@
                 label-text
                 accept="image/*"
                 upload-mode="useForm"
+                :showFileList="false"
                 @value-changed="ON_DWG_CHANGE_1"
                 style="position:absolute;"
               />
@@ -455,15 +456,6 @@ export default {
     },
     UPDATE_DWG(e) {
       console.log("UPDATE_DWG");
-      console.log(e);
-      console.log("is_changed_dwg_1: " + this.is_changed_dwg_1);
-      console.log("is_changed_dwg_2: " + this.is_changed_dwg_2);
-      console.log("file1:");
-      console.log(this.file1);
-      console.log("file_path: " + this.file_path_1_tmp);
-      console.log("file2:");
-      console.log(this.file2);
-      console.log("file_path: " + this.file_path_2_tmp);
       const user = JSON.parse(localStorage.getItem("user"));
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
@@ -473,19 +465,17 @@ export default {
         "inspection_date",
         moment(this.inspection_date).format("L")
       );
-      formData.append("finding", e.data.finding);
-      formData.append("recommendation", e.data.recommendation);
+      formData.append("finding", e.data.finding ?? "");
+      formData.append("recommendation", e.data.recommendation ?? "");
       formData.append("file_1", this.file1);
       formData.append("file_2", this.file2);
-      formData.append("file_path_1", this.file_path_1_tmp);
-      formData.append("file_path_2", this.file_path_2_tmp);
+      formData.append("file_path_1", this.file_path_1_tmp ?? "");
+      formData.append("file_path_2", this.file_path_2_tmp ?? "");
       formData.append("created_by", e.data.created_by);
       formData.append("updated_by", user.id_account);
-      formData.append("is_changed_dwg_1", this.is_changed_dwg_1);
-      formData.append("is_changed_dwg_2", this.is_changed_dwg_2);
       axios({
         method: "put",
-        url: "visual-report/edit-visual-record",
+        url: "visual-report/" + e.data.id_visual,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
@@ -493,10 +483,7 @@ export default {
         data: formData
       })
         .then(res => {
-          console.log(res);
-          if (res.status == 201 && res.data) {
-            console.log("in");
-            console.log(res.data);
+          if (res.status == 204) {
             this.file_path_1 = "";
             this.file_path_2 = "";
             this.VIEW_ITEM(this.current_view);
@@ -507,8 +494,6 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.is_changed_dwg_1 = 0;
-          this.is_changed_dwg_2 = 0;
         });
     },
     DELETE_DWG(e) {
@@ -618,10 +603,12 @@ export default {
     DEL_PIC(seq) {
       if (seq == 1) {
         this.imgDwg1 = "";
+        this.file_path_1_tmp = "";
         this.is_changed_dwg_1 = 1;
         //this.file_path_1 = this.file_path_1_tmp;
       } else if (seq == 2) {
         this.imgDwg2 = "";
+        this.file_path_2_tmp = "";
         this.is_changed_dwg_2 = 1;
         //this.file_path_2 = this.file_path_2_tmp;
       }
