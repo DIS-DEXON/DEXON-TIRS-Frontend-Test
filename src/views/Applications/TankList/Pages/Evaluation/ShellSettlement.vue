@@ -695,8 +695,8 @@
                         </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.deflection_ft">-</label>
-                        <label v-if="acceptanceDetermination.deflection_ft">
+                        <label style="padding:4px" v-if="!acceptanceDetermination.deflection_ft">-</label>
+                        <label style="padding:4px" v-if="acceptanceDetermination.deflection_ft">
                           {{
                           acceptanceDetermination.deflection_ft.toFixed(2)
                           }}
@@ -711,8 +711,8 @@
                         </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.deflection_mm">-</label>
-                        <label v-if="acceptanceDetermination.deflection_mm">
+                        <label style="padding:4px" v-if="!acceptanceDetermination.deflection_mm">-</label>
+                        <label style="padding:4px" v-if="acceptanceDetermination.deflection_mm">
                           {{
                           acceptanceDetermination.deflection_mm.toFixed(2)
                           }}
@@ -844,8 +844,8 @@
                         </label>
                       </div>
                       <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.s_max_in">-</label>
-                        <label v-if="acceptanceDetermination.s_max_in">
+                        <label style="padding:4px" v-if="!acceptanceDetermination.s_max_in">-</label>
+                        <label style="padding:4px" v-if="acceptanceDetermination.s_max_in">
                           {{
                           acceptanceDetermination.s_max_in
                           }}
@@ -859,16 +859,16 @@
                           </b>
                         </label>
                       </div>
-                      <div class="form-item-unit" style="width: 130px">
-                        <label v-if="!acceptanceDetermination.s_max_mm">-</label>
-                        <label v-if="acceptanceDetermination.s_max_mm">
+                      <div class="form-item-unit" style="width: 130px;">
+                        <label style="padding:4px" v-if="!acceptanceDetermination.s_max_mm">-</label>
+                        <label style="padding:4px" v-if="acceptanceDetermination.s_max_mm">
                           {{
                           acceptanceDetermination.s_max_mm
                           }}
                         </label>
                       </div>
                       <div class="form-item-label">
-                        <label style="display:flex; align-items:center">
+                        <label id="__fix-font" style="display:flex; align-items:center">
                           <b>mm</b>
                         </label>
                       </div>
@@ -970,7 +970,7 @@
                         </label>
                       </div>
                       <div class="form-item-label" style>
-                        <label style="display:flex; align-items:center">mm</label>
+                        <label style="display:flex; align-items:center;width:100%">mm</label>
                       </div>
                     </div>
                     <div class="form-item" style="grid-template-columns: auto 120px 50px">
@@ -1027,7 +1027,10 @@
                         height: auto;
                         padding-left: 30px;"
                     >
-                      <label id="fixed-font">
+                      <label
+                        id="fixed-font"
+                        style="display:flex; justify-content:center; align-items:center"
+                      >
                         The maximum out of plane deflection, where the greatest
                         deviation of the bottom from the optimum cosine curve
                         occurs over the shortest interval between measurements,
@@ -1038,7 +1041,10 @@
                   </div>
                   <div class="form-item" style="display:flex">
                     <div class="form-item-label" style="grid-column: span 2; width:100%">
-                      <label id="fixed-font" style="text-align: center">Valid</label>
+                      <label
+                        id="fixed-font"
+                        style="text-align: center;display:flex;justify-content:center;align-items:center"
+                      >Valid</label>
                     </div>
                   </div>
                   <div class="form-item" style="display:flex; width:100%">
@@ -1074,7 +1080,10 @@
 
                   <div class="form-item" style="display:flex">
                     <div class="form-item-label" style="grid-column: span 2; width:100%">
-                      <label id="fixed-font" style="text-align: center">Invalid</label>
+                      <label
+                        id="fixed-font"
+                        style="text-align: center;display:flex; justify-content:center;align-items:center"
+                      >Invalid</label>
                     </div>
                   </div>
                   <div class="form-item" style="display:flex">
