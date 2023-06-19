@@ -719,7 +719,7 @@
                         </label>
                       </div>
                       <div class="form-item-label">
-                        <label>
+                        <label style="display:flex; align-items:center">
                           <b>mm</b>
                         </label>
                       </div>
@@ -868,7 +868,7 @@
                         </label>
                       </div>
                       <div class="form-item-label">
-                        <label>
+                        <label style="display:flex; align-items:center">
                           <b>mm</b>
                         </label>
                       </div>
@@ -1036,13 +1036,13 @@
                       </label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-label" style="grid-column: span 2">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-label" style="grid-column: span 2; width:100%">
                       <label id="fixed-font" style="text-align: center">Valid</label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex; width:100%">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.s_value">-</label>
                       <label v-if="acceptanceDetermination.s_value">
                         {{
@@ -1051,8 +1051,8 @@
                       </label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.st_value">-</label>
                       <label v-if="acceptanceDetermination.st_value">
                         {{
@@ -1061,8 +1061,8 @@
                       </label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.insp_result">-</label>
                       <label v-if="acceptanceDetermination.insp_result">
                         {{
@@ -1072,13 +1072,13 @@
                     </div>
                   </div>
 
-                  <div class="form-item">
-                    <div class="form-item-label" style="grid-column: span 2">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-label" style="grid-column: span 2; width:100%">
                       <label id="fixed-font" style="text-align: center">Invalid</label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.s_max_mm">-</label>
                       <label v-if="acceptanceDetermination.s_max_mm">
                         {{
@@ -1087,8 +1087,8 @@
                       </label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.st_value">-</label>
                       <label v-if="acceptanceDetermination.st_value">
                         {{
@@ -1097,8 +1097,8 @@
                       </label>
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-item-unit" style="grid-column: span 2; width: auto">
+                  <div class="form-item" style="display:flex">
+                    <div class="form-item-unit" style="grid-column: span 2; width: 100%">
                       <label v-if="!acceptanceDetermination.insp_result_invalid">-</label>
                       <label v-if="acceptanceDetermination.insp_result_invalid">
                         {{
@@ -1963,7 +1963,7 @@ export default {
                   font-size: 12px;
                 }
                 label {
-                  @media (max-width: 1180px) {
+                  @media (max-width: 1500px) {
                     font-size: 8px;
                   }
                   // display: block;
