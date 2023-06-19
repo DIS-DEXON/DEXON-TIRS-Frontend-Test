@@ -878,7 +878,7 @@
                     <div class="formula-container">
                       <img src="/img/formula/out-of-plane-settlement.svg" />
                     </div>
-                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                    <div class="form-item" style="grid-template-columns: auto 120px">
                       <div class="form-item-label">
                         <label style="text-align: right">
                           U
@@ -894,7 +894,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                    <div class="form-item" style="grid-template-columns: auto 120px">
                       <div class="form-item-label">
                         <label style="text-align: right">
                           U
@@ -910,7 +910,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                    <div class="form-item" style="grid-template-columns: auto 120px">
                       <div class="form-item-label">
                         <label style="text-align: right">
                           U
@@ -926,7 +926,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                    <div class="form-item" style="grid-template-columns: auto 120px">
                       <div class="form-item-label">
                         <label style="text-align: right">S&nbsp;&nbsp;&nbsp;&nbsp;=</label>
                       </div>
@@ -939,7 +939,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="form-item" style="grid-template-columns: auto 120px 50px">
+                    <div class="form-item" style="grid-template-columns: auto 120px">
                       <div class="form-item-label">
                         <label style="text-align: right">
                           R
@@ -969,13 +969,13 @@
                           }}
                         </label>
                       </div>
-                      <div class="form-item-label">
-                        <label>mm</label>
+                      <div class="form-item-label" style>
+                        <label style="display:flex; align-items:center">mm</label>
                       </div>
                     </div>
                     <div class="form-item" style="grid-template-columns: auto 120px 50px">
                       <div class="form-item-label">
-                        <label style="text-align: right">at</label>
+                        <label style="justify-content:end;display:flex;align-items:center">at</label>
                       </div>
                       <div class="form-item-unit">
                         <label v-if="!acceptanceDetermination.direction_degrees_cw_pi">-</label>
@@ -988,7 +988,7 @@
                         </label>
                       </div>
                       <div class="form-item-label">
-                        <label>degrees</label>
+                        <label style="display:flex; align-items:center;">degrees</label>
                       </div>
                     </div>
                   </div>
@@ -1946,6 +1946,7 @@ export default {
             border: 0.5px solid #000;
 
             .content-wrapper {
+              // display: flex;
               border: 0.5px solid #000;
               padding: 20px;
             }
@@ -1954,13 +1955,19 @@ export default {
               display: grid;
               grid-template-columns: auto 120px;
               .form-item-label {
-                height: 50px;
+                height: 100%;
+                min-height: 50px;
                 background-color: #fff;
                 border: 0;
                 #fixed-font {
                   font-size: 12px;
                 }
                 label {
+                  @media (max-width: 1180px) {
+                    font-size: 8px;
+                  }
+                  // display: block;
+                  height: 100%;
                   user-select: text;
                   cursor: text;
                   font-weight: 500;

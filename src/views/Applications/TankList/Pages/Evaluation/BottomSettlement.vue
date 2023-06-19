@@ -81,7 +81,7 @@
           </DxDataGrid>
         </div>
         <div class="table-wrapper">
-          <div class="table-header-toolbar" style="width: calc(100% - 82px)">
+          <div class="table-header-toolbar" style="width: calc(100% - 82px);">
             <div class="left">
               <label>Point</label>
             </div>
