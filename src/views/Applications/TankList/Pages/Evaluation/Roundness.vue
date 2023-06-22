@@ -83,7 +83,7 @@
             </DxDataGrid>
           </div>
         </div>
-        <div class="table-wrapper">
+        <div class="table-wrapper" id="point-table">
           <DxDataGrid
             id="roundness-grid"
             key-expr="id_eval"
@@ -859,5 +859,13 @@ export default {
 }
 .chart-wrapper {
   height: auto;
+  @media (max-width: 1219px) {
+    margin-top: 20px;
+  }
+}
+#point-table {
+  @media (max-width: 1219px) {
+    margin-top: 20px;
+  }
 }
 </style>

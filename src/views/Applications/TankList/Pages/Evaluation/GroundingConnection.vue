@@ -92,7 +92,11 @@
                 <label>Acceptance Criteria (ohms)</label>
               </div>
               <div class="form-item-value">
-                <input @focusout="UPDATE_GC()" v-model="groundConnectDetail.acceptance_criteria" />
+                <input
+                  @focusout="UPDATE_GC()"
+                  @keyup.enter="UPDATE_GC()"
+                  v-model="groundConnectDetail.acceptance_criteria"
+                />
               </div>
             </div>
 
@@ -387,7 +391,7 @@ export default {
           if (res.status == 200 && res.data) {
             console.log("GC Updated");
             console.log(res.data);
-            // this.VIEW_ITEM(this.current_view);
+            this.VIEW_ITEM(this.current_view);
           }
         })
         .catch(error => {

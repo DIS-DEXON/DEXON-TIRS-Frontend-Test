@@ -95,23 +95,16 @@
           <label class="desc">
             The measurements were made 4 directions around the circumference of the tank for tank diameter 1-12 m. and 8 directions for tank diameter > 12 m.
             <div class="img-box" style="margin-top:15px">
-              <img src="/img/MicrosoftTeams-image-plumbness.png" />
+              <img src="/img/new-image-plumbness.png" />
             </div>
           </label>
           <label class="desc">Acceptance criteria per API 653:</label>
           <ol>
-            <li>1. For FR and EFR, the maximum of out-of-verticality at the tank shell should not exceed 1/100th of the tank height.</li>
-            <li>
-              2. For IFR, the maximum of out-of-verticality at the tank shell should not exceed 1/200th of the tank height.
-              Acceptable where St &lt; S
-              Not acceptable where St > S
-            </li>
+            <li>For FR and EFR, the maximum of out-of-verticality at the tank shell should not exceed 1/100th of the tank height.</li>
+            <li>For IFR, the maximum of out-of-verticality at the tank shell should not exceed 1/200th of the tank height.</li>
             <li>The spacing settlement and quantity of measurement points</li>
           </ol>
-          <label class="desc">
-            Acceptable where St &lt; S
-            Not acceptable where St > S
-          </label>
+          <label class="desc">Acceptable where St &lt;= S</label>
           <label class="desc">Not acceptable where St > S</label>
         </appInstruction>
       </div>
