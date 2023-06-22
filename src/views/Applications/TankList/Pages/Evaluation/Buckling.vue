@@ -16,7 +16,7 @@
       <div class="content">
         <div class="table-wrapper">
           <DxDataGrid
-            id="roundness-grid"
+            id="data-table-cml"
             key-expr="id_eval"
             :data-source="bucklingList"
             :element-attr="dataGridAttributes"
