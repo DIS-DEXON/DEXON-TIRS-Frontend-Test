@@ -12,7 +12,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="view-grid"
+          id="data-table-cml"
           key-expr="id_tp"
           :data-source="dataList.last_insp_thk"
           :element-attr="dataGridAttributes"
@@ -120,7 +120,7 @@
           <div class="right"></div>
         </div>
         <DxDataGrid
-          id="coil-grid"
+          id="data-table-cml"
           key-expr="id_coil"
           :data-source="dataList.coil"
           :element-attr="dataGridAttributes"

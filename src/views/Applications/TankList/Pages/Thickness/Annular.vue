@@ -12,7 +12,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="view-grid"
+          id="data-table-cml"
           key-expr="id_thk"
           :element-attr="dataGridAttributes"
           :data-source="dataList.view"
@@ -131,7 +131,7 @@
           @change="UPLOAD_CML()"
         />
         <DxDataGrid
-          id="cml-grid"
+          id="data-table-cml"
           key-expr="id_cml"
           :element-attr="dataGridAttributes"
           :data-source="dataList.cml"

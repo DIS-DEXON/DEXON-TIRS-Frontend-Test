@@ -12,7 +12,7 @@
       </div>
       <div class="table-wrapper">
         <DxDataGrid
-          id="view-grid"
+          id="data-table-cml"
           key-expr="id_thk"
           :element-attr="dataGridAttributes"
           :data-source="dataList.view"
@@ -128,7 +128,7 @@
           @change="UPLOAD_CML()"
         />
         <DxDataGrid
-          id="cml-grid"
+          id="data-table-cml"
           key-expr="id_cml"
           :element-attr="dataGridAttributes"
           :data-source="dataList.cml"
@@ -158,7 +158,13 @@
             mode="row"
           />
 
-          <DxColumn data-field="roof_row" caption="Roof row" sort-order="asc" :width="120" />
+          <DxColumn
+            data-field="roof_row"
+            caption="Roof row"
+            sort-order="asc"
+            :width="120"
+            alignment
+          />
 
           <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" :width="120" />
 
@@ -234,7 +240,7 @@
           @change="UPLOAD_TP()"
         />
         <DxDataGrid
-          id="tp-grid"
+          id="data-table-cml"
           key-expr="id_tp"
           :element-attr="dataGridAttributes"
           :data-source="dataList.tp"

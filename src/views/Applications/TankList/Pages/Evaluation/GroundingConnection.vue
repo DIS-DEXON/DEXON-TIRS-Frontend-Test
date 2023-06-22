@@ -50,6 +50,7 @@
                 caption="The measured resistance to ground (ohms)"
                 format="#,##0.00"
                 :width="180"
+                alignment="left"
               />
 
               <DxColumn data-field="note" caption="Note" />
@@ -75,9 +76,9 @@
               <!-- <DxExport :enabled="true" /> -->
             </DxDataGrid>
           </div>
-          <div class="sheet-body">
+          <div class="sheet-body" id="grounding-sheet">
             <div class="section-label">
-              <label>Grouding Connection Detail</label>
+              <label>Grounding Connection Detail</label>
             </div>
             <div class="form-item">
               <div class="form-item-label">
@@ -87,7 +88,7 @@
                 <input v-model="groundConnectDetail.total" @focusout="UPDATE_GC()" readonly />
               </div>
             </div>
-            <div class="form-item">
+            <div class="form-item" id="accept-row">
               <div class="form-item-label">
                 <label>Acceptance Criteria (ohms)</label>
               </div>
@@ -97,6 +98,37 @@
                   @keyup.enter="UPDATE_GC()"
                   v-model="groundConnectDetail.acceptance_criteria"
                 />
+                <!-- <DxSelectBox
+                  style="width: 147px;"
+                  v-model="groundConnectDetail.acceptance_criteria"
+                  :data-source="formSelect.acceptance_criteria"
+                  display-expr="code"
+                  value-expr="code"
+                  :accept-custom-value="true"
+                  @customItemCreating="customItemCreating($event)"
+                />-->
+                <!-- <select
+                  name="languages"
+                  id="lang"
+                  style="width:147px; height:22px;text-align:center"
+                >
+                  <option value="0">select criteria</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                </select>-->
+
+                <!-- <input
+                  v-model="groundConnectDetail.acceptance_criteria"
+                  type="number"
+                  list="criteria"
+                  @focusout="UPDATE_GC()"
+                  @keyup.enter="UPDATE_GC()"
+                  style="text-align: center;"
+                />
+                <datalist id="criteria">
+                  <option>10</option>
+                  <option>25</option>
+                </datalist>-->
               </div>
             </div>
 
@@ -154,6 +186,7 @@ import SelectInspRecord from "@/components/select-insp-record.vue";
 import { Workbook } from "exceljs";
 import saveAs from "file-saver";
 import { exportDataGrid } from "devextreme/excel_exporter";
+// import DxSelectBox from "devextreme-vue/select-box";
 import {
   DxDataGrid,
   DxSearchPanel,
@@ -166,20 +199,22 @@ import {
   DxHeaderFilter,
   DxFilterRow
 } from "devextreme-vue/data-grid";
+import DataSource from "devextreme/data/data_source";
 
-//List
-// import { DxList } from "devextreme-vue/list";
-
-//FileUpload
-//import { DxFileUploader } from "devextreme-vue/file-uploader";
-//import { DxButton } from 'devextreme-vue/button';
-//import { DxItem } from "devextreme-vue/form";
+const productsDataSource = new DataSource({
+  store: {
+    data: [],
+    type: "array",
+    key: "id"
+  }
+});
 
 export default {
   name: "ViewProjectList",
   components: {
     //VueTabsChrome,
     // DxList,
+    // DxSelectBox,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
@@ -205,6 +240,18 @@ export default {
     return {
       groundConnect: {},
       groundConnectDetail: {},
+      formSelect: {
+        acceptance_criteria: [
+          {
+            id: 1,
+            code: 10
+          },
+          {
+            id: 2,
+            code: 25
+          }
+        ]
+      },
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -401,6 +448,30 @@ export default {
           this.isLoading = false;
         });
     },
+    customItemCreating(data) {
+      if (!data.text) {
+        data.customItem = null;
+        return;
+      }
+      console.warn(data);
+      const accept_criteria = this.formSelect.acceptance_criteria.map(
+        item => item.id
+      );
+      const incrementedId = Math.max.apply(null, accept_criteria) + 1;
+      const newItem = {
+        code: data.text,
+        id: incrementedId
+      };
+      //data.customItem = this.formSelect.product.push(newItem);
+      data.customItem = productsDataSource
+        .store()
+        .insert(newItem)
+        .then(() => productsDataSource.load())
+        .then(() => newItem)
+        .catch(error => {
+          throw error;
+        });
+    },
     SHOW_HIDE_PANEL() {
       this.pagePanelHiding = !this.pagePanelHiding;
     },
@@ -473,7 +544,7 @@ export default {
       .form-item {
         display: grid;
         grid-template-columns: 180px calc(100% - 180px);
-        grid-template-rows: 35px;
+        grid-template-rows: minmax(35px, auto);
         .form-item-label {
         }
         .form-item-value {
@@ -509,5 +580,20 @@ export default {
       }
     }
   }
+}
+.dx-texteditor-input {
+  text-align: center;
+  padding: 0 !important;
+}
+.dx-selectbox {
+  .dx-selectbox-container {
+    .dx-texteditor-container {
+      border: 1px solid rgb(107, 107, 107) !important;
+    }
+  }
+}
+
+#accept-row {
+  height: 100%;
 }
 </style>

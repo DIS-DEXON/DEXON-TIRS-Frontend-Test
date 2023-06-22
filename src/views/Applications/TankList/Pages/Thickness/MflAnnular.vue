@@ -15,7 +15,7 @@
       </v-ons-list>
       <div>
         <DxDataGrid
-          id="mfl-grid"
+          id="data-table-cml"
           key-expr="id_thk"
           :data-source="mflAnnular"
           :element-attr="dataGridAttributes"
