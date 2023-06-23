@@ -19,6 +19,7 @@
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
+          :column-hiding-enabled="true"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -657,17 +658,20 @@ export default {
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false
+          closable: false,
+          dragable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false
+          closable: false,
+          dragable: false
         },
         {
           label: "Additional Attachment",
           key: "A3",
-          closable: false
+          closable: false,
+          dragable: false
         }
       ]
     };

@@ -18,6 +18,7 @@
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
+          :column-hiding-enabled="true"
           :allow-column-reordering="true"
           :show-borders="true"
           :show-row-lines="true"
@@ -36,46 +37,44 @@
             </div>
           </template>-->
 
-          <DxColumn data-field="coil_no" caption="Coil No." sort-order="asc" />
+          <DxColumn data-field="coil_no" caption="Coil No." sort-order="asc" :width="80"/>
 
-          <DxColumn data-field="cml_name" caption="CML name" sort-order="asc" />
+          <DxColumn data-field="cml_name" caption="CML name" sort-order="asc" :width="80"/>
 
-          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" />
+          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" :width="80"/>
 
           <DxColumn
             data-field="inservice_date"
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :width="80" />
 
           <DxColumn
             data-field="first_insp_date"
             caption="First date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
-          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
+          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" :width="80"/>
 
           <DxColumn
             data-field="previous_insp_date"
             caption="Previous date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
           <DxColumn
             data-field="previous_t_actual"
             caption="Previous thickness (mm)"
             format="#,##0.00"
+            :width="80"
           />
 
           <DxColumn
@@ -83,18 +82,17 @@
             caption="Last date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
           />
 
-          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" :width="80" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -705,17 +703,20 @@ export default {
         {
           label: "Calculation Result",
           key: "A1",
-          closable: false
+          closable: false,
+          dragable: false
         },
         {
           label: "Messurement Result",
           key: "A2",
-          closable: false
+          closable: false,
+          dragable: false
         },
         {
           label: "Additional Attachment",
           key: "A3",
-          closable: false
+          closable: false,
+          dragable: false
         }
       ]
     };

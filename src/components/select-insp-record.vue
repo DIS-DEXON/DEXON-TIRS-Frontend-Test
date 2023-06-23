@@ -24,7 +24,7 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  background-color: #ccc;
+  background-color: #eee;
   .center-box {
     position: absolute;
     top: 50%;

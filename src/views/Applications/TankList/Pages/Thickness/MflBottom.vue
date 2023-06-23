@@ -22,6 +22,7 @@
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
+          :column-hiding-enabled="true"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -41,43 +42,45 @@
             mode="row"
           />
 
-          <DxColumn data-field="plate_no" caption="Plate no" />
+          <DxColumn data-field="plate_no" caption="Plate no" :width="75" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" :width="75" />
 
-          <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" />
+          <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" :width="75" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" />
+          <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" :width="75" />
 
           <DxColumn
             data-field="lowest_remaining_thk_top"
             caption="Remaining thk top side (mm)"
             :allow-editing="false"
+            :width="75"
           />
 
           <DxColumn
             data-field="lowest_remaining_thk_bottom"
             caption="Remaining thk bottom side (mm)"
             :allow-editing="false"
+            :width="75"
           />
 
-          <DxColumn data-field="defect_x" caption="X (mm)" />
+          <DxColumn data-field="defect_x" caption="X (mm)" :width="75" />
 
-          <DxColumn data-field="defect_y" caption="Y (mm)" />
+          <DxColumn data-field="defect_y" caption="Y (mm)" :width="75" />
 
           <DxColumn data-field="type_of_repair" caption="Type of repair">
             <DxLookup :data-source="typeOfRepair" display-expr="code" value-expr="code" />
           </DxColumn>
 
-          <DxColumn data-field="repair_width" caption="Width (mm)" />
+          <DxColumn data-field="repair_width" caption="Width (mm)" :width="75" />
 
-          <DxColumn data-field="repair_length" caption="Length (mm)" />
+          <DxColumn data-field="repair_length" caption="Length (mm)" :width="75" />
 
-          <DxColumn data-field="repair_thick" caption="Thick (mm)" />
+          <DxColumn data-field="repair_thick" caption="Thick (mm)" :width="75" />
 
-          <DxColumn data-field="repair_radius" caption="Radius (mm)" />
+          <DxColumn data-field="repair_radius" caption="Radius (mm)" :width="75" />
 
-          <DxColumn data-field="repair_status" caption="Repair status">
+          <DxColumn data-field="repair_status" caption="Repair status" :width="75" >
             <DxLookup :data-source="repairStatus" display-expr="code" value-expr="code" />
           </DxColumn>
 
@@ -647,8 +650,6 @@ export default {
         display: grid;
         grid-template-columns: 150px calc(100% - 250px) 100px;
         grid-template-rows: 35px;
-        .form-item-label {
-        }
         .form-item-value {
           grid-column: span 1;
           border-right: 0;
