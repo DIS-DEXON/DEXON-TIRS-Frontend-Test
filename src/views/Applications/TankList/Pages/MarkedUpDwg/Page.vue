@@ -57,8 +57,12 @@
         <DxColumn
           data-field="file_name"
           caption="File Name"
-          :editor-options="fileNameInputOptions"
+          edit-cell-template="dwg-file-name"
         />
+
+        <template #dwg-file-name="{ }">
+          <DxTextBox :placeholder="fileNameInputOptions.placeholder" v-model="fileNameInputOptions.value" />
+        </template>
 
         <template #dwg-img="{ data }">
           <div style="position: relative">
@@ -146,8 +150,9 @@ import {
   DxExport,
   DxEditing,
   //DxPopup,
-  DxForm
+  DxForm,
 } from "devextreme-vue/data-grid";
+import { DxTextBox }  from "devextreme-vue/text-box";
 
 //List
 // import { DxList } from "devextreme-vue/list";
@@ -176,6 +181,7 @@ export default {
     DxFileUploader,
     DxForm,
     DxItem,
+    DxTextBox,
     //DxPopup,
     //DxButton,
     // innerPageName,
@@ -212,7 +218,7 @@ export default {
       current_view: {},
       is_changed_dwg: 0,
       dataDwgTemp: "",
-      fileNameInputOptions: { placeholder: "Enter file name ..." }
+      fileNameInputOptions: { placeholder: "Enter file name ...", value: ""}
     };
   },
   computed: {
@@ -287,11 +293,13 @@ export default {
     },
     CREATE_DWG(e) {
       console.log(e);
+      console.log(this.fileNameInputOptions.value);
       var formData = new FormData();
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_component", this.id_component);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append("file_name", e.data.file_name);
+      formData.append("file_name", this.fileNameInputOptions.value);
+      // formData.append("file_name", e.data.file_name);
       formData.append("file", this.file);
 
       axios({
@@ -318,6 +326,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
           this.is_changed_dwg = 0;
+          this.fileNameInputOptions.value = ""
         });
     },
     UPDATE_DWG(e) {
@@ -327,7 +336,8 @@ export default {
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_component", this.id_component);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append("file_name", e.data.file_name);
+      formData.append("file_name", this.fileNameInputOptions.value);
+      // formData.append("file_name", e.data.file_name);
       formData.append("file", this.file);
       formData.append("file_path", this.file_path);
       formData.append("is_changed_dwg", this.is_changed_dwg);
@@ -355,6 +365,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
           this.is_changed_dwg = 0;
+          this.fileNameInputOptions.value = ""
         });
     },
     DELETE_DWG(e) {
@@ -395,16 +406,18 @@ export default {
       };
       this.file = e.value[0];
       this.is_changed_dwg = 1;
+      this.fileNameInputOptions.value = e.value[0].name
     },
     EDITING_START_DWG(e) {
-      console.log(e);
       this.imgDwg = e.data.path_dwg;
       this.file = [];
       this.isInitEdit = 0;
       this.file_path = e.data.file_path;
+      this.fileNameInputOptions.value = e.data.file_name;
       this.dataDwgTemp = e;
     },
     INIT_NEW_ROW_DWG() {
+      this.fileNameInputOptions.value = "";
       this.imgDwg = "";
       this.file = [];
       this.isInitEdit = 1;
@@ -428,7 +441,7 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
-    }
+    },
   },
   watch: {
     $route() {
