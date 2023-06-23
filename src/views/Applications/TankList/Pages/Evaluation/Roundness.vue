@@ -230,33 +230,33 @@
               <tr>
                 <th>Tank Diameter m (ft)</th>
                 <th>
-                  Radius Tolerance mm (in)
+                  Radius Tolerance
                   <br />(≤ 0.3048 m)
                 </th>
                 <th>
-                  Radius Tolerance mm (in)
+                  Radius Tolerance
                   <br />(> 0.3048 m)
                 </th>
               </tr>
               <tr>
                 <td>&lt; 12 (40)</td>
-                <td>±13 (&#189;)</td>
-                <td>±39 (3&#189;)</td>
+                <td>±13 mm (0.5 in.)</td>
+                <td>±39 mm (1.5 in.)</td>
               </tr>
               <tr>
                 <td>from 12 (40) to &lt; 45 (150)</td>
-                <td>±19 (¾)</td>
-                <td>±57 (3¾)</td>
+                <td>±19 mm (0.75 in.)</td>
+                <td>±57 mm (3.75 in.)</td>
               </tr>
               <tr>
                 <td>from 45 (150) to &lt; 75 (250)</td>
-                <td>±25 (1)</td>
-                <td>±75 (3)</td>
+                <td>±25 mm (1 in.)</td>
+                <td>±75 mm (3 in.)</td>
               </tr>
               <tr>
                 <td>≥ 75 (250)</td>
-                <td>±32 (1¼)</td>
-                <td>±96 (3¼)</td>
+                <td>±32 mm (1.25 in.)</td>
+                <td>±96 mm (3.25 in.)</td>
               </tr>
             </table>
           </appInstruction>

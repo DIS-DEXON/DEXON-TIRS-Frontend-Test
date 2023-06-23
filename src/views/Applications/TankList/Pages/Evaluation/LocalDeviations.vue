@@ -94,8 +94,8 @@
               board shall be made to the nominal radius of the tank.
             </li>
             <li>
-              Deviations (banding) at horizontal weld joints shall not exceed 13
-              mm (1/2 in.). Banding at horizontal weld joints shall be
+              Deviations (banding) at horizontal weld joints shall not exceed 25
+              mm (1 in.). Banding at horizontal weld joints shall be
               determined using a straight edge vertical sweep board 900 mm (36
               in.) long.
             </li>
