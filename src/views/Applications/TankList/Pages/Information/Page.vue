@@ -210,7 +210,8 @@ export default {
         {
           label: "General Information",
           key: "info",
-          closable: false
+          closable: false,
+          dragable: false
         },
         // {
         //   label: "Additional Information",
@@ -220,12 +221,14 @@ export default {
         {
           label: "Drawing and P&ID",
           key: "drawing",
-          closable: false
+          closable: false,
+          dragable: false
         },
         {
           label: "General Document",
           key: "doc",
-          closable: false
+          closable: false,
+          dragable: false
         }
       ],
       previewImg: "",

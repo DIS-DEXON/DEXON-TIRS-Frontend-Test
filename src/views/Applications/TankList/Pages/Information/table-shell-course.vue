@@ -9,6 +9,7 @@
       :hover-state-enabled="true"
       :allow-column-reordering="true"
       :show-borders="true"
+      :column-hiding-enabled="true"
       :show-row-lines="true"
       :row-alternation-enabled="false"
       :word-wrap-enabled="true"

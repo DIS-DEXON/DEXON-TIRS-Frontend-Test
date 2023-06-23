@@ -362,7 +362,7 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (generic)");
-                    this.CLEAR_CURRENT_VIEW();
+                    // this.CLEAR_CURRENT_VIEW();
                   }
                 })
                 .catch(error => {
@@ -370,6 +370,7 @@ export default {
                 })
                 .finally(() => {
                   this.isLoading = false;
+                  this.CLEAR_CURRENT_VIEW();
                 });
             } else if (form == 2) {
               this.isLoading = true;
@@ -388,7 +389,7 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (ilast ext)");
-                    this.CLEAR_CURRENT_VIEW();
+                    // this.CLEAR_CURRENT_VIEW();
                   }
                 })
                 .catch(error => {
@@ -396,6 +397,7 @@ export default {
                 })
                 .finally(() => {
                   this.isLoading = false;
+                  this.CLEAR_CURRENT_VIEW();
                 });
             } else if (form == 3) {
               this.isLoading = true;
@@ -414,7 +416,7 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (ilast int)");
-                    this.CLEAR_CURRENT_VIEW();
+                    // this.CLEAR_CURRENT_VIEW();
                   }
                 })
                 .catch(error => {
@@ -422,6 +424,7 @@ export default {
                 })
                 .finally(() => {
                   this.isLoading = false;
+                  this.CLEAR_CURRENT_VIEW();
                 });
             } else if (form == 4) {
               this.isLoading = true;
@@ -440,7 +443,7 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (By Law)");
-                    this.CLEAR_CURRENT_VIEW();
+                    // this.CLEAR_CURRENT_VIEW();
                   }
                 })
                 .catch(error => {
@@ -448,6 +451,7 @@ export default {
                 })
                 .finally(() => {
                   this.isLoading = false;
+                  this.CLEAR_CURRENT_VIEW();
                 });
             } else if (form == 5) {
               this.isLoading = true;
@@ -466,7 +470,7 @@ export default {
                   if (res.status == 200) {
                     console.log(res.data);
                     console.log("CHECKLIST SHEET DELETED (By Law II)");
-                    this.CLEAR_CURRENT_VIEW();
+                    // this.CLEAR_CURRENT_VIEW();
                   }
                 })
                 .catch(error => {
@@ -474,6 +478,7 @@ export default {
                 })
                 .finally(() => {
                   this.isLoading = false;
+                  this.CLEAR_CURRENT_VIEW();
                 });
             } else {
               console.log("err: wrong form parameter");
@@ -780,7 +785,9 @@ export default {
       this.checklistList_existance = {
         general: false,
         ilast_ext: false,
-        ilast_int: false
+        ilast_int: false,
+        by_law_i: false,
+        by_law_ii: false
       };
     },
     SCROLL_TOP(container_id) {
