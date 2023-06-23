@@ -40,7 +40,9 @@
         <v-ons-toolbar-button
           class="item"
           v-on:click="SHOW_POPOVER($event, 'right', true, 'drawing')"
+          style="position: relative;"
         >
+          <div style="position: absolute; height: 100%; width: 100%;"></div>
           <img src="/img/icon_sidebar/tank/drawing.png" />
 
           <span>Marked-up Drawing</span>
@@ -56,7 +58,9 @@
         <v-ons-toolbar-button
           class="item"
           v-on:click="SHOW_POPOVER($event, 'right', true, 'checklist')"
+          style="position: relative;"
         >
+          <div style="position: absolute; height: 100%; width: 100%;"></div>
           <img src="/img/icon_sidebar/tank/checklist.png" />
           <span>Checklist</span>
           <i class="las la-angle-right right-arrow"></i>
@@ -71,7 +75,9 @@
         <v-ons-toolbar-button
           class="item"
           v-on:click="SHOW_POPOVER($event, 'right', true, 'thickness')"
+          style="position: relative;"
         >
+          <div style="position: absolute; height: 100%; width: 100%;"></div>
           <img src="/img/icon_sidebar/tank/thickness.png" />
           <span>Thickness</span>
           <i class="las la-angle-right right-arrow"></i>
@@ -86,7 +92,9 @@
         <v-ons-toolbar-button
           class="item"
           v-on:click="SHOW_POPOVER($event, 'right', true, 'evaluation')"
+          style="position: relative;"
         >
+          <div style="position: absolute; height: 100%; width: 100%;"></div>
           <img src="/img/icon_sidebar/tank/evaluation.png" />
           <span>Evaluation</span>
           <i class="las la-angle-right right-arrow"></i>
@@ -419,6 +427,7 @@ export default {
   watch: {},
   methods: {
     SHOW_POPOVER(event, direction, coverTarget = false, target) {
+      console.log(event)
       this.popoverTarget = event;
       this.popoverDirection = direction;
       this.coverTarget = coverTarget;
