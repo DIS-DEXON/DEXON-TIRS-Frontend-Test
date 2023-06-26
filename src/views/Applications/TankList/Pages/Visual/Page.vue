@@ -52,14 +52,14 @@
           data-field="file_path_1"
           caption="Overview"
           cell-template="dwg-img"
-          edit-cell-template="dwg-img-editor1"
+          edit-cell-template="dwg-img-drag-drop-1"
           :width="0"
         />
         <DxColumn
           data-field="file_path_2"
           caption="Close-up view"
           cell-template="dwg-img"
-          edit-cell-template="dwg-img-editor2"
+          edit-cell-template="dwg-img-drag-drop-2"
           :width="0"
         />
 
@@ -80,6 +80,94 @@
         />
 
         <DxColumn caption="Picture Log" cell-template="picture-log-template" />
+
+        <template #dwg-img-drag-drop-1="{}">
+          <div class="widget-container flex-box">
+            <!-- <span>Profile Picture</span> -->
+            <div
+              id="dropzone-external"
+              class="flex-box"
+              :class="[isDropZoneActive
+        ? 'dx-theme-accent-as-border-color dropzone-active'
+        : 'dx-theme-border-color']"
+            >
+              <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
+              <div id="dropzone-text" class="flex-box" v-if="textVisible">
+                <span>Drag & Drop the desired file</span>
+                <span>…or click to browse for a file instead.</span>
+              </div>
+              <DxProgressBar
+                id="upload-progress"
+                :min="0"
+                :max="100"
+                width="30%"
+                :show-status="false"
+                :visible="progressVisible"
+                :value="progressValue"
+              />
+            </div>
+            <DxFileUploader
+              id="file-uploader"
+              dialog-trigger="#dropzone-external"
+              drop-zone="#dropzone-external"
+              :multiple="false"
+              :allowed-file-extensions="allowedFileExtensions"
+              upload-mode="instantly"
+              upload-url="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+              :visible="false"
+              @drop-zone-enter="onDropZoneEnter"
+              @drop-zone-leave="onDropZoneLeave"
+              @uploaded="onUploaded"
+              @value-changed="ON_DWG_CHANGE_1"
+              @progress="onProgress"
+              @upload-started="onUploadStarted"
+            />
+          </div>
+        </template>
+
+        <template #dwg-img-drag-drop-2="{}">
+          <div class="widget-container flex-box">
+            <!-- <span>Profile Picture</span> -->
+            <div
+              id="dropzone-external-2"
+              class="flex-box"
+              :class="[isDropZoneActive_2
+        ? 'dx-theme-accent-as-border-color dropzone-active'
+        : 'dx-theme-border-color']"
+            >
+              <img id="dropzone-image" :src="imageSource_2" v-if="imageSource_2" alt />
+              <div id="dropzone-text" class="flex-box" v-if="textVisible_2">
+                <span>Drag & Drop the desired file</span>
+                <span>…or click to browse for a file instead.</span>
+              </div>
+              <DxProgressBar
+                id="upload-progress"
+                :min="0"
+                :max="100"
+                width="30%"
+                :show-status="false"
+                :visible="progressVisible_2"
+                :value="progressValue_2"
+              />
+            </div>
+            <DxFileUploader
+              id="file-uploader"
+              dialog-trigger="#dropzone-external-2"
+              drop-zone="#dropzone-external-2"
+              :multiple="false"
+              :allowed-file-extensions="allowedFileExtensions"
+              upload-mode="instantly"
+              upload-url="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+              :visible="false"
+              @drop-zone-enter="onDropZoneEnter"
+              @drop-zone-leave="onDropZoneLeave"
+              @uploaded="onUploaded2"
+              @progress="onProgress_2"
+              @upload-started="onUploadStarted_2"
+              @value-changed="ON_DWG_CHANGE_2"
+            />
+          </div>
+        </template>
 
         <template #picture-log-template="{ data }">
           <div>
@@ -280,6 +368,7 @@ import DxTextArea from "devextreme-vue/text-area";
 import DxButton from "devextreme-vue/button";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
+import { DxProgressBar } from "devextreme-vue/progress-bar";
 
 //DataGrid
 import {
@@ -309,6 +398,7 @@ const imgRef = "img";
 export default {
   name: "ViewProjectList",
   components: {
+    DxProgressBar,
     InspectionRecordPanel,
     SelectInspRecord,
     //VueTabsChrome,
@@ -336,6 +426,20 @@ export default {
   },
   data() {
     return {
+      //devextreme
+      isDropZoneActive: false,
+      imageSource: "",
+      textVisible: true,
+      progressVisible: false,
+      progressValue: 0,
+      allowedFileExtensions: [".jpg", ".jpeg", ".gif", ".png"],
+
+      isDropZoneActive_2: false,
+      imageSource_2: "",
+      textVisible_2: true,
+      progressVisible_2: false,
+      progressValue_2: 0,
+
       drawingList: [],
       isLoading: false,
       fileUploaderRef,
@@ -563,9 +667,13 @@ export default {
       this.isRemove = 0;
       this.popUpWidth = this.CHECK_SCREEN("w");
     },
-    INIT_NEW_ROW_DWG(e) {
+    INIT_NEW_ROW_DWG() {
       console.log("INIT_NEW_ROW_DWG");
-      console.log(e);
+      // console.log(e);
+      this.imageSource = "";
+      this.imageSource_2 = "";
+      this.textVisible = true;
+      this.textVisible_2 = true;
       this.imgDwg1 = "";
       this.imgDwg2 = "";
       this.file1 = [];
@@ -574,6 +682,12 @@ export default {
       this.isInitEdit_2 = 1;
       this.isAdd = 1;
       this.popUpWidth = this.CHECK_SCREEN("w");
+
+      (this.isDropZoneActive = false),
+        (this.imageSource = ""),
+        (this.textVisible = true),
+        (this.progressVisible = false);
+      this.progressValue = 0;
     },
     REMOVING(e) {
       console.log("REMOVING");
@@ -624,6 +738,60 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+
+    //devextreme
+    onDropZoneEnter(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = true;
+      } else if (e.dropZoneElement.id === "dropzone-external-2") {
+        this.isDropZoneActive_2 = true;
+      }
+    },
+    onDropZoneLeave(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = false;
+      } else if (e.dropZoneElement.id === "dropzone-external-2") {
+        this.isDropZoneActive_2 = false;
+      }
+    },
+    onUploaded(e) {
+      const { file } = e;
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.isDropZoneActive = false;
+        this.imageSource = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
+      this.textVisible = false;
+      this.progressVisible = false;
+      this.progressValue = 0;
+    },
+    onUploaded2(e) {
+      const { file } = e;
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.isDropZoneActive_2 = false;
+        this.imageSource_2 = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
+      this.textVisible_2 = false;
+      this.progressVisible_2 = false;
+      this.progressValue_2 = 0;
+    },
+    onProgress(e) {
+      this.progressValue = (e.bytesLoaded / e.bytesTotal) * 100;
+    },
+    onProgress_2(e) {
+      this.progressValue_2 = (e.bytesLoaded / e.bytesTotal) * 100;
+    },
+    onUploadStarted() {
+      this.imageSource = "";
+      this.progressVisible = true;
+    },
+    onUploadStarted_2() {
+      this.imageSource_2 = "";
+      this.progressVisible_2 = true;
     }
   }
 };
@@ -664,5 +832,56 @@ export default {
 .header-custom-field {
   font-weight: 600;
   font-size: 14px;
+}
+
+//devextreme style
+#dropzone-external,
+#dropzone-external-2 {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(183, 183, 183, 0.1);
+  border-width: 2px;
+  border-style: dashed;
+  padding: 10px;
+}
+
+#dropzone-external > * {
+  pointer-events: none;
+}
+#dropzone-external-2 > * {
+  pointer-events: none;
+}
+
+#dropzone-external.dropzone-active,
+#dropzone-external-2.dropzone-active {
+  border-style: solid;
+}
+
+.widget-container > span {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+#dropzone-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#dropzone-text > span {
+  font-weight: 100;
+  opacity: 0.5;
+}
+
+#upload-progress {
+  display: flex;
+  margin-top: 10px;
+}
+
+.flex-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
