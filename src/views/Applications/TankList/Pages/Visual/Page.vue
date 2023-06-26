@@ -515,6 +515,8 @@ export default {
       this.id_inspection_record = item.id_inspection_record;
       this.inspection_date = item.inspection_date;
       this.current_view = item;
+      this.imageSource = "";
+      this.imageSource_2 = "";
       axios({
         method: "post",
         url: "visual-report/layout-visual-report-by-insp-id",
