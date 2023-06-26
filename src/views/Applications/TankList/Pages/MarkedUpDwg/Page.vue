@@ -105,7 +105,7 @@
           </div>
         </template>
 
-        <template #dwg-img-drag-drop="{}">
+        <template #dwg-img-drag-drop="{data}">
           <div class="widget-container flex-box">
             <!-- <span>Profile Picture</span> -->
             <div
@@ -116,6 +116,12 @@
         : 'dx-theme-border-color']"
             >
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
+              <img
+                id="dropzone-image"
+                :src="baseURL + data.value"
+                v-if="imgDwg != '' && isInitEdit == 0"
+                alt
+              />
               <div id="dropzone-text" class="flex-box" v-if="textVisible">
                 <span>Drag & Drop the desired file</span>
                 <span>…or click to browse for a file instead.</span>
@@ -318,6 +324,7 @@ export default {
       this.id_component = this.$route.params.id_component;
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
+      this.imageSource = "";
       axios({
         method: "post",
         url: "layout-drawing/layout-drawing-by-comp-id",
@@ -467,6 +474,7 @@ export default {
       this.file_path = e.data.file_path;
       this.fileNameInputOptions.value = e.data.file_name;
       this.dataDwgTemp = e;
+      this.textVisible = false;
     },
     INIT_NEW_ROW_DWG() {
       this.fileNameInputOptions.value = "";
@@ -575,8 +583,8 @@ export default {
 
 //devextreme style
 #dropzone-external {
-  width: 350px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
   background-color: rgba(183, 183, 183, 0.1);
   border-width: 2px;
   border-style: dashed;

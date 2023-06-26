@@ -81,7 +81,7 @@
 
         <DxColumn caption="Picture Log" cell-template="picture-log-template" />
 
-        <template #dwg-img-drag-drop-1="{}">
+        <template #dwg-img-drag-drop-1="{data}">
           <div class="widget-container flex-box">
             <!-- <span>Profile Picture</span> -->
             <div
@@ -91,6 +91,12 @@
         ? 'dx-theme-accent-as-border-color dropzone-active'
         : 'dx-theme-border-color']"
             >
+              <img
+                :src="baseURL + data.value"
+                width="300"
+                height="300"
+                v-if="imgDwg1 != '' && isInitEdit_1 == 0"
+              />
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
               <div id="dropzone-text" class="flex-box" v-if="textVisible">
                 <span>Drag & Drop the desired file</span>
@@ -122,10 +128,18 @@
               @progress="onProgress"
               @upload-started="onUploadStarted"
             />
+            <DxButton
+              :width="120"
+              text="Delete"
+              type="normal"
+              styling-mode="contained"
+              @click="DEL_PIC(1)"
+              style="position:relative; left:90px; top:10px;"
+            />
           </div>
         </template>
 
-        <template #dwg-img-drag-drop-2="{}">
+        <template #dwg-img-drag-drop-2="{data}">
           <div class="widget-container flex-box">
             <!-- <span>Profile Picture</span> -->
             <div
@@ -135,6 +149,12 @@
         ? 'dx-theme-accent-as-border-color dropzone-active'
         : 'dx-theme-border-color']"
             >
+              <img
+                :src="baseURL + data.value"
+                width="300"
+                height="300"
+                v-if="imgDwg2 != '' && isInitEdit_2 == 0"
+              />
               <img id="dropzone-image" :src="imageSource_2" v-if="imageSource_2" alt />
               <div id="dropzone-text" class="flex-box" v-if="textVisible_2">
                 <span>Drag & Drop the desired file</span>
@@ -165,6 +185,14 @@
               @progress="onProgress_2"
               @upload-started="onUploadStarted_2"
               @value-changed="ON_DWG_CHANGE_2"
+            />
+            <DxButton
+              :width="120"
+              text="Delete"
+              type="normal"
+              styling-mode="contained"
+              @click="DEL_PIC(2)"
+              style="position:relative; left:90px; top:10px;"
             />
           </div>
         </template>
@@ -665,6 +693,16 @@ export default {
       this.isInitEdit_2 = 0;
       this.isAdd = 0;
       this.isRemove = 0;
+      if (e.data.file_path_1 != "") {
+        this.textVisible = false;
+      } else {
+        this.textVisible = true;
+      }
+      if (e.data.file_path_2 != "") {
+        this.textVisible_2 = false;
+      } else {
+        this.textVisible_2 = true;
+      }
       this.popUpWidth = this.CHECK_SCREEN("w");
     },
     INIT_NEW_ROW_DWG() {
