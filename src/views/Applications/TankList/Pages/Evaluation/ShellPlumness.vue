@@ -50,7 +50,7 @@
 
             <DxColumn
               data-field="deviation"
-              caption="Deviation (mm)"
+              caption="Deviation [St](mm)"
               format="#,##0.00"
               :allow-editing="false"
             />
@@ -59,7 +59,7 @@
 
             <DxColumn
               data-field="s_value"
-              caption="S (mm)"
+              caption="Plumbness Tolerance [S](mm)"
               format="#,##0.00"
               :allow-editing="false"
             />
