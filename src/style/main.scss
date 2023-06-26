@@ -714,6 +714,17 @@ hr {
   }
 }
 
+.dx-popup-wrapper > .dx-overlay-content {
+  border: 0px solid #fff;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 8px rgba(0,0,0,.175);
+  box-shadow: 0 4px 8px rgba(0,0,0,.175);
+  border-radius: 8px;
+}
+
+.dx-popup-wrapper .dx-state-focused.dx-overlay-content {
+  border: 0px solid #fff;
+}
 // .dx-header-row>td>.dx-datagrid-text-content {
 //     writing-mode: tb-rl !important;
 //     transform: rotate(-180deg) !important;
