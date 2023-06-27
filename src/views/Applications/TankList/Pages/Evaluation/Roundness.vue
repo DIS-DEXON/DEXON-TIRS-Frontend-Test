@@ -197,7 +197,32 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper" style="grid-column: span 2;">
-          <chart :roundnessData="dataList_graph" :key="dataList_graph" />
+          <DxPolarChart
+            id="chart"
+            title="Roundness Graph"
+            :data-source="chart_data.Data"
+          >
+            <DxCommonSeriesSettings
+              type="line"
+            />
+            <DxSeries
+              v-for="v in chart_data.Key"
+              :key="v"
+              :value-field="v"
+              :name="v"
+            />
+            <DxArgumentAxis
+              :start-angle="0"
+              :tick-interval="45"
+            />
+            <DxValueAxis 
+              :minValueMargin="10"
+              :maxValueMargin="1"
+            />
+            <DxExport :enabled="true"/>
+            <DxTooltip :enabled="true"/>
+          </DxPolarChart>
+          <!-- <chart :roundnessData="dataList_graph" :key="dataList_graph" /> -->
         </div>
         <div class="upload-graph" style="margin-top:0px">
           <DxFileUploader
@@ -277,7 +302,7 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 // import innerPageName from "@/components/app-structures/app-inner-pagename.vue";
 import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
-import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
+// import chart from "@/views/Applications/TankList/Pages/Evaluation/charts/chart-roundness-line.vue";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 import { DxFileUploader } from "devextreme-vue/file-uploader";
@@ -301,8 +326,18 @@ import {
   DxHeaderFilter,
   DxFilterRow,
   DxToolbar,
-  DxItem
+  DxItem,
 } from "devextreme-vue/data-grid";
+
+import {
+  DxPolarChart,
+  DxSeries,
+  DxExport,
+  DxArgumentAxis,
+  DxTooltip,
+  DxCommonSeriesSettings,
+  DxValueAxis
+} from 'devextreme-vue/polar-chart'
 
 //List
 // import { DxList } from "devextreme-vue/list";
@@ -331,11 +366,19 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     appInstruction,
-    chart,
+    // chart,
     InspectionRecordPanel,
     DxToolbar,
     DxItem,
-    SelectInspRecord
+    SelectInspRecord,
+    // CHART
+    DxPolarChart,
+    DxSeries,
+    DxExport,
+    DxArgumentAxis,
+    DxTooltip,
+    DxCommonSeriesSettings,
+    DxValueAxis
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
@@ -363,7 +406,8 @@ export default {
       isAdd: false,
       isEdit: false,
       chart_id: 0,
-      chart_img_1: ""
+      chart_img_1: "",
+      chart_data: null
     };
   },
   computed: {
@@ -409,8 +453,7 @@ export default {
       axios({
         method: "get",
         url:
-          "roundness/get-roundness-by-insp?id_insp=" +
-          item.id_inspection_record,
+          `roundness/get-roundness-view-insp-id?id_insp_record=${item.id_inspection_record}`,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -418,9 +461,9 @@ export default {
       })
         .then(res => {
           if (res.status == 200 && res.data) {
-            console.log("FETCH GRAPH:");
-            this.dataList_graph = res.data;
-            console.log(this.dataList_graph);
+            console.log("FETCH GRAPH: ");
+            this.chart_data = res.data;
+            console.log(this.chart_data['Data'])
           }
         })
         .catch(error => {
