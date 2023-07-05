@@ -60,7 +60,12 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" :width="80" />
+          <DxColumn
+            data-field="first_t_actual"
+            caption="First thickness (mm)"
+            format="#,##0.00"
+            :width="80"
+          />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -83,7 +88,12 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" :width="80" />
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
+            format="#,##0.00"
+            :width="80"
+          />
 
           <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :width="80" />
 
@@ -91,7 +101,7 @@
 
           <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" :width="80" />
 
-          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" :width="80"/>
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" :width="80" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -385,7 +395,7 @@
           <div class="right"></div>
         </div>
         <DxDataGrid
-          id="thk-grid"
+          id="data-table-thk"
           key-expr="id_thk"
           :data-source="dataList.thk"
           :element-attr="dataGridAttributes"
@@ -423,7 +433,6 @@
           <DxColumn
             data-field="id_inspection_record"
             caption="Inspection date"
-            data-type="date"
             format="dd MMM yyyy"
             sort-order="desc"
             :width="150"

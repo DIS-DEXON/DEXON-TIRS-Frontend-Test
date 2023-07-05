@@ -40,24 +40,18 @@
           mode="row"
         />
 
-        <DxColumn data-field="no" caption="No." />
+        <DxColumn data-field="item_no" caption="No." />
 
         <DxColumn data-field="deviation_type" caption="Deviation type">
           <DxLookup :data-source="deviationType" />
         </DxColumn>
 
-        <DxColumn data-field="plate_1" caption="Between plate" />
+        <DxColumn data-field="joint_no" caption="Joint No." />
 
-        <DxColumn data-field="plate_2" caption="And plate" />
-
-        <DxColumn data-field="deviation_mm" caption="Deviation (mm)" format="#,##0.00" />
-
-        <DxColumn
-          data-field="tolerance"
-          caption="Radius tolerance (mm)"
-          format="#,##0.00"
-          :allow-editing="false"
-        />
+        <DxColumn data-field="location_1" caption="Location 1" />
+        <DxColumn data-field="location_2" caption="Location 2" />
+        <DxColumn data-field="location_3" caption="Location 3" />
+        <DxColumn data-field="tolerance" caption="Tolerance (mm)" :allow-editing="false" />
 
         <DxColumn data-field="result" caption="Inspection result" :allow-editing="false" />
 

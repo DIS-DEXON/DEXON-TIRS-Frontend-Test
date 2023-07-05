@@ -17,7 +17,7 @@
         <div class="report-container">
           <div class="sheet-body" style="border: 0; margin-bottom: 15px;">
             <DxDataGrid
-              id="ground-connect-grid"
+              id="data-table-ground"
               key-expr="id_eval"
               :data-source="groundConnect"
               :element-attr="dataGridAttributes"
@@ -44,6 +44,13 @@
               />
 
               <DxColumn data-field="ground_no" caption="Grounding connection no" :width="180" />
+              <DxColumn data-field="criteria" caption="Criteria (ohms)" :width="180">
+                <DxLookup
+                  :data-source="formSelect.acceptance_criteria"
+                  valueExpr="code"
+                  displayExpr="code"
+                />
+              </DxColumn>
 
               <DxColumn
                 data-field="measured"
@@ -52,6 +59,7 @@
                 :width="180"
                 alignment="left"
               />
+              <DxColumn data-field="result" caption="Result" :width="180" :allow-editing="false" />
 
               <DxColumn data-field="note" caption="Note" />
 
@@ -80,7 +88,7 @@
             <div class="section-label">
               <label>Grounding Connection Detail</label>
             </div>
-            <div class="form-item">
+            <div class="form-item" v-if="false">
               <div class="form-item-label">
                 <label>Total Resistance (ohms)</label>
               </div>
@@ -88,7 +96,7 @@
                 <input v-model="groundConnectDetail.total" @focusout="UPDATE_GC()" readonly />
               </div>
             </div>
-            <div class="form-item" id="accept-row">
+            <div class="form-item" id="accept-row" v-if="false">
               <div class="form-item-label">
                 <label>Acceptance Criteria (ohms)</label>
               </div>
@@ -98,41 +106,10 @@
                   @keyup.enter="UPDATE_GC()"
                   v-model="groundConnectDetail.acceptance_criteria"
                 />
-                <!-- <DxSelectBox
-                  style="width: 147px;"
-                  v-model="groundConnectDetail.acceptance_criteria"
-                  :data-source="formSelect.acceptance_criteria"
-                  display-expr="code"
-                  value-expr="code"
-                  :accept-custom-value="true"
-                  @customItemCreating="customItemCreating($event)"
-                />-->
-                <!-- <select
-                  name="languages"
-                  id="lang"
-                  style="width:147px; height:22px;text-align:center"
-                >
-                  <option value="0">select criteria</option>
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                </select>-->
-
-                <!-- <input
-                  v-model="groundConnectDetail.acceptance_criteria"
-                  type="number"
-                  list="criteria"
-                  @focusout="UPDATE_GC()"
-                  @keyup.enter="UPDATE_GC()"
-                  style="text-align: center;"
-                />
-                <datalist id="criteria">
-                  <option>10</option>
-                  <option>25</option>
-                </datalist>-->
               </div>
             </div>
 
-            <div class="form-item">
+            <div class="form-item" v-if="false">
               <div class="form-item-label">
                 <label>Result</label>
               </div>
@@ -197,7 +174,8 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow
+  DxFilterRow,
+  DxLookup
 } from "devextreme-vue/data-grid";
 import DataSource from "devextreme/data/data_source";
 
@@ -226,6 +204,7 @@ export default {
     // innerPageName,
     DxHeaderFilter,
     DxFilterRow,
+    DxLookup,
     appInstruction,
     InspectionRecordPanel,
     SelectInspRecord

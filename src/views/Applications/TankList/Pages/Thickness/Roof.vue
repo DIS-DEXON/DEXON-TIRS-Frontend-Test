@@ -52,7 +52,12 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" :width="80" />
+          <DxColumn
+            data-field="first_t_actual"
+            caption="First thickness (mm)"
+            format="#,##0.00"
+            :width="80"
+          />
 
           <DxColumn
             data-field="previous_insp_date"
@@ -75,7 +80,12 @@
             format="dd MMM yyyy"
           />
 
-          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" :width="80" />
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
+            format="#,##0.00"
+            :width="80"
+          />
 
           <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :width="80" />
 
@@ -306,7 +316,7 @@
           <div class="right"></div>
         </div>
         <DxDataGrid
-          id="thk-grid"
+          id="data-table-thk"
           key-expr="id_thk"
           :element-attr="dataGridAttributes"
           :data-source="dataList.thk"
@@ -320,6 +330,7 @@
           @row-inserted="CREATE_THK"
           @row-updated="UPDATE_THK"
           @row-removed="DELETE_THK"
+          @editing-start="start_edit"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -335,7 +346,6 @@
           <DxColumn
             data-field="id_inspection_record"
             caption="Inspection date"
-            data-type="date"
             format="dd MMM yyyy"
             sort-order="desc"
             :width="150"
@@ -981,8 +991,8 @@ export default {
       var date = this.inspRecordList.filter(function(v) {
         return v.id_inspection_record == e.data.id_inspection_record;
       });
+      console.log(date);
       e.data.inspection_date = date[0].inspection_date;
-      console.log(e.data);
 
       axios({
         method: "post",
@@ -1071,8 +1081,8 @@ export default {
       this.FETCH_THK();
     },
     SET_FORMAT_DATE(e) {
-      console.log(e);
-      return moment(e.inspection_date).format("DD MMM yyyy");
+      // console.log(e);
+      return moment(e.inspection_date).format("DD MMM yyyy") ?? "";
     },
     cloneIconClick(e) {
       const cmls = [...this.dataList.cml];
@@ -1421,6 +1431,9 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+    start_edit(e) {
+      console.warn(e);
     }
   }
 };

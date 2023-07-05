@@ -384,7 +384,6 @@
           <DxColumn
             data-field="id_inspection_record"
             caption="Inspection date"
-            data-type="date"
             format="dd MMM yyyy"
             sort-order="desc"
             :width="150"

@@ -299,7 +299,7 @@
           <div class="right"></div>
         </div>
         <DxDataGrid
-          id="thk-grid"
+          id="data-table-thk"
           key-expr="id_thk"
           :element-attr="dataGridAttributes"
           :data-source="dataList.thk"
@@ -328,7 +328,6 @@
           <DxColumn
             data-field="id_inspection_record"
             caption="Inspection date"
-            data-type="date"
             format="dd MMM yyyy"
             sort-order="desc"
             :width="150"
