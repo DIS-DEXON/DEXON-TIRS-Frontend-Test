@@ -27,8 +27,7 @@
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
-
-          <DxColumn data-field="shellnz_no" caption="Nozzle no." sort-order="asc" />
+          <DxColumn data-field="shellnz_no" caption="Nozzle no." />
 
           <DxColumn data-field="tp_name" caption="TP name" />
 
@@ -45,18 +44,20 @@
 
           <DxColumn
             data-field="first_insp_date"
-            caption="First date"
+            caption="First Inspection date"
             data-type="date"
             format="dd MMM yyyy"
+            :min-width="100"
           />
 
           <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
-            caption="Previous date"
+            caption="Previous Inspection date"
             data-type="date"
             format="dd MMM yyyy"
+            :min-width="100"
           />
 
           <DxColumn
@@ -67,9 +68,10 @@
 
           <DxColumn
             data-field="inspection_date"
-            caption="Last date"
+            caption="Last Inspection date"
             data-type="date"
             format="dd MMM yyyy"
+            :min-width="100"
           />
 
           <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />

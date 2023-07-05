@@ -39,7 +39,7 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
+            :min-width="100"
           />
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
@@ -48,20 +48,20 @@
 
           <DxColumn
             data-field="first_insp_date"
-            caption="First date"
+            caption="First Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
+            :min-width="100"
           />
 
           <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
 
           <DxColumn
             data-field="previous_insp_date"
-            caption="Previous date"
+            caption="Previous Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
+            :min-width="100"
           />
 
           <DxColumn
@@ -72,10 +72,10 @@
 
           <DxColumn
             data-field="inspection_date"
-            caption="Last date"
+            caption="Last Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="120"
+            :min-width="100"
           />
 
           <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
