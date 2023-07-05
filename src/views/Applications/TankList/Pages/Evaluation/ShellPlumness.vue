@@ -64,7 +64,7 @@
               :allow-editing="false"
             />
 
-            <DxColumn data-field="st" caption="St (mm)" format="#,##0.00" :allow-editing="false" />
+            <!-- <DxColumn data-field="st" caption="St (mm)" format="#,##0.00" :allow-editing="false" /> -->
 
             <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
 
