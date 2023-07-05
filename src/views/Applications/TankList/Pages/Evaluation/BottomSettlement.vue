@@ -80,7 +80,7 @@
             <!-- <DxExport :enabled="true" /> -->
           </DxDataGrid>
         </div>
-        <div class="table-wrapper">
+        <div class="table-wrapper" id="point-table-wrapper">
           <div class="table-header-toolbar" style="width: calc(100% - 82px);">
             <div class="left">
               <label>Point</label>
@@ -145,9 +145,7 @@
         <div class="chart-wrapper" style="grid-column: span 2;">
           <chart :floorGradientData="bottomSetGraph" :key="bottomSetGraph" />
         </div>
-        <div
-          style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px; width: calc(100% - 20px);"
-        >
+        <div style="display: flex; width: calc(100% - 20px);">
           <div class="upload-graph">
             <DxFileUploader
               select-button-text="Select File"
@@ -903,6 +901,9 @@ export default {
     }
     .table-wrapper {
       height: auto;
+    }
+    #point-table-wrapper {
+      margin-top: 15px;
     }
   }
 }

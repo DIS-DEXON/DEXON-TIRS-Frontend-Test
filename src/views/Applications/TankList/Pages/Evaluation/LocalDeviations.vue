@@ -85,6 +85,9 @@
             <li>Deviations (banding) at horizontal weld joints shall not exceed 25 mm (1 in.). Banding at horizontal weld joints shall be determined using a straight edge vertical sweep board 900 mm (36 in.) long.</li>
             <li>DFlat spots measured in the vertical plane shall not exceed 1/200 of the total height.</li>
           </ol>
+          <div class="img-box" style="margin-top:15px; max-width:60%">
+            <img src="/img/local-deviations.png" style="width:100%" />
+          </div>
         </appInstruction>
       </div>
     </div>
