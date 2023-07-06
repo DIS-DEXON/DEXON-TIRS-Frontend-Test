@@ -549,10 +549,7 @@ export default {
       formData.append("id_visual", 0);
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append(
-        "inspection_date",
-        moment(this.inspection_date).format("L")
-      );
+      formData.append("inspection_date", this.inspection_date ?? "");
       formData.append("finding", e.data.finding);
       formData.append("recommendation", e.data.recommendation);
       formData.append("file_1", this.file1);
@@ -595,10 +592,7 @@ export default {
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
-      formData.append(
-        "inspection_date",
-        moment(this.inspection_date).format("L")
-      );
+      formData.append("inspection_date", this.inspection_date ?? "");
       formData.append("finding", e.data.finding ?? "");
       formData.append("recommendation", e.data.recommendation ?? "");
       formData.append("file_1", this.file1);
