@@ -343,7 +343,7 @@ import { DxFileUploader } from "devextreme-vue/file-uploader";
 import { DxItem } from "devextreme-vue/form";
 import axios from "/axios.js";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
-import moment from "moment";
+// import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import DxTextArea from "devextreme-vue/text-area";
 import DxButtons from "devextreme-vue/button";
@@ -403,12 +403,15 @@ export default {
     DxItem
   },
   props: {
-    insp_record: Object
+    insp_record: Object,
+    id_result: Number,
+    chk_type: String
   },
   created() {
     this.VIEW_ITEM();
     this.opened = true;
     console.log("popup pictureLog created");
+    console.log(this.id_result);
   },
   // mounted() {
   //   setTimeout(() => {
@@ -499,16 +502,18 @@ export default {
       // }
     },
     VIEW_ITEM() {
-      const item = this.insp_record;
+      // const item = this.insp_record;
       axios({
-        method: "post",
-        url: "visual-report/layout-visual-report-by-insp-id",
+        method: "get",
+        url:
+          "visual-report/visual_by_chk?id_chk=" +
+          this.id_result +
+          "&chk_type=" +
+          this.chk_type,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_inspection_record: item.id_inspection_record
-        }
+        data: {}
       })
         .then(res => {
           if (res.status == 200 && res.data) {
@@ -529,6 +534,8 @@ export default {
       formData.append("id_visual", 0);
       formData.append("id_tag", this.$route.params.id_tag);
       formData.append("id_inspection_record", this.id_inspection_record);
+      formData.append("id_chk", this.id_result);
+      formData.append("chk_type", this.chk_type);
       formData.append(
         "inspection_date",
         this.current_view.inspection_date ?? ""
@@ -570,13 +577,15 @@ export default {
       var formData = new FormData();
       formData.append("id_visual", e.data.id_visual);
       formData.append("id_tag", this.$route.params.id_tag);
+      formData.append("id_chk", e.data.id_chk);
+      formData.append("chk_type", e.data.chk_type);
       formData.append(
         "id_inspection_record",
         this.insp_record.id_inspection_record
       );
       formData.append(
         "inspection_date",
-        moment(this.insp_record.inspection_date).format("L") ?? ""
+        this.insp_record.inspection_date ?? ""
       );
       formData.append("finding", e.data.finding ?? "");
       formData.append("recommendation", e.data.recommendation ?? "");

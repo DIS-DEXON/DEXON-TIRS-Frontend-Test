@@ -101,7 +101,7 @@
                 <v-ons-toolbar-button
                   class="item"
                   style="padding:0;width:20px"
-                  @click="TOGGLE_POPUP"
+                  @click="TOGGLE_POPUP(item3)"
                 >
                   <img src="/img/icon_sidebar/tank/checklist_visual.png" />
                 </v-ons-toolbar-button>
@@ -111,7 +111,13 @@
         </div>
       </div>
     </div>
-    <picturelog v-if="this.isPopupOpen" :insp_record="record" @close-popup="TOGGLE_POPUP" />
+    <picturelog
+      v-if="this.isPopupOpen"
+      :id_result="this.id_result"
+      chk_type="ilast_int"
+      :insp_record="record"
+      @close-popup="TOGGLE_POPUP"
+    />
   </div>
 </template>
 
@@ -130,6 +136,7 @@ export default {
   },
   data() {
     return {
+      id_result: 0,
       isPopupOpen: false,
       formData: {
         id: null,
@@ -165,7 +172,8 @@ export default {
         })
         .finally(() => {});
     },
-    TOGGLE_POPUP() {
+    TOGGLE_POPUP(i) {
+      this.id_result = i !== undefined ? i.result[0].id : 0;
       this.isPopupOpen = !this.isPopupOpen;
     }
   }
