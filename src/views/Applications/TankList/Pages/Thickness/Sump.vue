@@ -19,7 +19,7 @@
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
-          :column-hiding-enabled="true"
+          :column-hiding-enabled="false"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -36,46 +36,52 @@
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
 
-          <DxColumn data-field="sump_no" caption="Sump No." />
+          <DxColumn data-field="sump_no" caption="Sump No." :min-width="80" />
 
-          <DxColumn data-field="cml_name" caption="CML name" />
+          <DxColumn data-field="cml_name" caption="CML name" :min-width="80" />
 
-          <DxColumn data-field="tp_name" caption="TP name" />
+          <DxColumn data-field="tp_name" caption="TP name" :min-width="80" />
 
           <DxColumn
             data-field="inservice_date"
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :min-width="120"
+            :min-width="100"
           />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :min-width="80" />
 
-          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" />
+          <DxColumn data-field="t_req" caption="treq (mm)" format="#,##0.00" :min-width="80" />
 
           <DxColumn
             data-field="first_insp_date"
             caption="First Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :min-width="120"
+            :min-width="100"
           />
 
-          <DxColumn data-field="first_t_actual" caption="First thickness (mm)" format="#,##0.00" />
+          <DxColumn
+            data-field="first_t_actual"
+            caption="First thickness (mm)"
+            format="#,##0.00"
+            :min-width="100"
+          />
 
           <DxColumn
             data-field="previous_insp_date"
             caption="Previous Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :min-width="120"
+            :min-width="100"
           />
 
           <DxColumn
             data-field="previous_t_actual"
             caption="Previous thickness (mm)"
             format="#,##0.00"
+            :min-width="100"
           />
 
           <DxColumn
@@ -83,18 +89,23 @@
             caption="Last Inspection date"
             data-type="date"
             format="dd MMM yyyy"
-            :min-width="120"
+            :min-width="100"
           />
 
-          <DxColumn data-field="t_actual" caption="Last thickness (mm)" format="#,##0.00" />
+          <DxColumn
+            data-field="t_actual"
+            caption="Last thickness (mm)"
+            format="#,##0.00"
+            :min-width="100"
+          />
 
-          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :min-width="90" />
 
-          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" :min-width="90" />
 
-          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" />
+          <DxColumn data-field="scr" caption="SCR (mm/yr)" format="#,##0.00" :min-width="90" />
 
-          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" />
+          <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" :min-width="80" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->

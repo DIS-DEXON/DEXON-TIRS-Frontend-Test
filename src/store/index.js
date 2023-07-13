@@ -1,27 +1,27 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import axios from "/axios.js";
-import router from '/src/router'
+import router from "/src/router";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    mode: 'dev', //dev, prod
+    mode: "dev", //dev, prod
     modeURL: {
-      dev: 'https://localhost:5001/',
-      prod: 'https://ai.dexon-technology.com:444/'
+      dev: "https://localhost:5001/",
+      prod: "https://ai.dexon-technology.com:444/",
     },
     urlApi: {
-      dev: 'https://localhost:5001/api',
-      prod: 'https://ai.dexon-technology.com:444/api',
+      dev: "https://localhost:5001/api",
+      prod: "https://ai.dexon-technology.com:444/api",
     },
-    user: '',
-    appIcon: '/app-icon.png',
-    currentInApp: '',
-    currentPageName: '',
-    currentPageInnerName: '',
-    currentClient: '',
+    user: "",
+    appIcon: "/app-icon.png",
+    currentInApp: "",
+    currentPageName: "",
+    currentPageInnerName: "",
+    currentClient: "",
     status: {
       fullscreenAlert: false,
       server: true,
@@ -33,7 +33,7 @@ export default new Vuex.Store({
           id: 103,
           name: "Master Data Manager",
           icon: "/img/icon_sidebar/master_data/table.png",
-          icon_menu: '/img/icon_menu/master_data/table.png',
+          icon_menu: "/img/icon_menu/master_data/table.png",
           link: "/md/applicable-status",
           isActive: true,
         },
@@ -41,7 +41,7 @@ export default new Vuex.Store({
           id: 105,
           name: "Client Company Manager",
           icon: "/img/icon_sidebar/client/client.png",
-          icon_menu: '/img/icon_menu/client/client.png',
+          icon_menu: "/img/icon_menu/client/client.png",
           link: "/client-company-manager",
           isActive: true,
         },
@@ -60,7 +60,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Applicable Status",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/applicable-status",
         isActive: true,
       },
@@ -68,7 +68,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Bottom Type",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/bottom-type",
         isActive: true,
       },
@@ -76,7 +76,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Construction Code",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/construction-code",
         isActive: true,
       },
@@ -84,7 +84,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Dexon Department",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/dexon-department",
         isActive: true,
       },
@@ -92,7 +92,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Dexon Position",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/dexon-position",
         isActive: true,
       },
@@ -100,7 +100,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Foundation",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/foundation",
         isActive: true,
       },
@@ -108,7 +108,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Inspection Code",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/inspection-code",
         isActive: true,
       },
@@ -116,7 +116,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Prefix",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/prefix",
         isActive: true,
       },
@@ -124,7 +124,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Product",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/product",
         isActive: true,
       },
@@ -132,7 +132,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Roof Shape",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/roof-shade",
         isActive: true,
       },
@@ -140,7 +140,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Roof Type",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/roof-type",
         isActive: true,
       },
@@ -148,7 +148,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Tank Integrity Status",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/tank-integrity-status",
         isActive: true,
       },
@@ -156,7 +156,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Tank Internal Pressure",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/tank-internal-pressure",
         isActive: true,
       },
@@ -164,7 +164,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Tank Status",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/tank-status",
         isActive: true,
       },
@@ -172,7 +172,7 @@ export default new Vuex.Store({
         id: 100,
         name: "Tank Material",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/tank-material",
         isActive: true,
       },
@@ -180,38 +180,37 @@ export default new Vuex.Store({
         id: 100,
         name: "Insulation",
         icon: "/img/icon_sidebar/executive_management/summary.png",
-        icon_menu: '/img/icon_menu/executive_management/summary.png',
+        icon_menu: "/img/icon_menu/executive_management/summary.png",
         link: "/md/insulation",
         isActive: true,
       },
     ],
-    sidebarList: {
-    },
+    sidebarList: {},
     inAppMessage: {
-      noData: "<div class='no-data-box' style='display: flex;justify-content: center;align-items: center;flex-direction: column;color: #a6a6a6;height: 200px;'><div><i class='las la-folder-open' style='margin-right:10px;font-size:20px;'></i><span>No Data</span></div></div>",
+      noData:
+        "<div class='no-data-box' style='display: flex;justify-content: center;align-items: center;flex-direction: column;color: #a6a6a6;height: 200px;'><div><i class='las la-folder-open' style='margin-right:10px;font-size:20px;'></i><span>No Data</span></div></div>",
     },
     currentViewClient: null,
   },
-  getters: {
-  },
+  getters: {},
   mutations: {
     UPDATE_CURRENT_INAPP: (state, payload) => {
       if (payload) state.currentInApp = payload;
-      else console.log('error: no payload');
+      else console.log("error: no payload");
     },
     UPDATE_CURRENT_CLIENT: (state, payload) => {
       if (payload) state.currentClient = payload;
-      else console.log('error: no payload');
+      else console.log("error: no payload");
     },
     CLEAR_CURRENT_INAPP: (state) => {
-      state.currentInApp = '';
+      state.currentInApp = "";
     },
     CLEAR_CURRENT_CLIENT: (state) => {
-      state.currentClient = '';
+      state.currentClient = "";
     },
 
     SIGN_IN: (state, payload) => {
-      state.user = payload
+      state.user = payload;
     },
     SIGN_OUT: (state) => {
       state.user = "";
@@ -229,24 +228,21 @@ export default new Vuex.Store({
       })
         .then((res) => {
           if (res.status == 200) {
-
             state.status.token = true;
             state.status.server = true;
-            console.log("==> CONNECTION OK || TOKEN IS VALID <==")
+            console.log("==> CONNECTION OK || TOKEN IS VALID <==");
           }
-
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           if (error.response.status == 0) {
-            console.log('SERVER FAILED')
+            console.log("SERVER FAILED");
             state.status.server = false;
             state.status.fullscreenAlert = true;
             // alert('Cannot connect to server. Click "OK" to retry.')
             // router.go();
-          }
-          else if (error.response.status == 401) {
-            console.log('TOKEN FAILED')
+          } else if (error.response.status == 401) {
+            console.log("TOKEN FAILED");
             state.status.token = false;
             state.status.fullscreenAlert = true;
             // alert('Session is expired. Please sign in again.')
@@ -255,7 +251,7 @@ export default new Vuex.Store({
             // router.push("/login");
           }
         })
-        .finally(() => { });
+        .finally(() => {});
     },
     FETCH_USER_INFO: (state) => {
       if (JSON.parse(localStorage.getItem("user"))) {
@@ -280,8 +276,7 @@ export default new Vuex.Store({
           .catch((error) => {
             console.log(error);
           })
-          .finally(() => {
-          });
+          .finally(() => {});
       }
     },
     UPDATE_CURRENT_VIEW_CLIENT: (state, payload) => {
@@ -296,12 +291,9 @@ export default new Vuex.Store({
       }
     },
     CLEAR_CURRENT_PAGENAME: (state) => {
-      state.currentPageName = '';
-    }
-
+      state.currentPageName = "";
+    },
   },
-  actions: {
-  },
-  modules: {
-  }
-})
+  actions: {},
+  modules: {},
+});

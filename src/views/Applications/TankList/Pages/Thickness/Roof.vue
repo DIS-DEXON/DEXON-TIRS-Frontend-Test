@@ -19,7 +19,7 @@
           :focused-row-enabled="false"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
-          :column-hiding-enabled="true"
+          :column-hiding-enabled="false"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -39,6 +39,7 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
+            :min-width="100"
           />
 
           <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :min-width="80" />
@@ -57,7 +58,7 @@
             data-field="first_t_actual"
             caption="First thickness (mm)"
             format="#,##0.00"
-            :min-width="80"
+            :min-width="90"
           />
 
           <DxColumn
@@ -72,7 +73,7 @@
             data-field="previous_t_actual"
             caption="Previous thickness (mm)"
             format="#,##0.00"
-            :min-width="80"
+            :min-width="90"
           />
 
           <DxColumn
@@ -87,12 +88,12 @@
             data-field="t_actual"
             caption="Last thickness (mm)"
             format="#,##0.00"
-            :min-width="80"
+            :min-width="90"
           />
 
-          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :min-width="80" />
+          <DxColumn data-field="crs" caption="ST_CR (mm/yr)" format="#,##0.00" :min-width="90" />
 
-          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" :min-width="80" />
+          <DxColumn data-field="crl" caption="LT_CR (mm/yr)" format="#,##0.00" :min-width="90" />
 
           <DxColumn data-field="rl" caption="RL (yrs)" format="#,##0.00" :min-width="80" />
 
