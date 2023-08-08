@@ -114,7 +114,7 @@
               mode="row"
             />
 
-            <DxColumn data-field="point_no" caption="Direction From" />
+            <DxColumn data-field="point_no" caption="Survey Points" />
 
             <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00" />
 
@@ -256,7 +256,7 @@
               <tr>
                 <td>1-5</td>
                 <td>4</td>
-                <td>0.75 m</td>
+                <td>0.5 m</td>
               </tr>
               <tr>
                 <td>6-15</td>

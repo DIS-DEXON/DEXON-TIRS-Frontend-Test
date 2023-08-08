@@ -60,7 +60,7 @@
                 data-field="ui_active"
                 caption="UI Active"
                 :allow-editing="false"
-                :width="80"
+                :min-width="80"
               />
 
               <DxColumn
@@ -1891,7 +1891,8 @@ export default {
 }
 
 .tab1-grid {
-  display: flex;
+  display: block;
+  // display: flex;
   // display: grid;
   // grid-gap: 20px;
   // width: 100%;
@@ -2147,7 +2148,7 @@ export default {
   background-color: #ccc;
 }
 
-@media screen and (max-width: 1536px) {
+@media screen and (max-width: 1900px) {
   .tab1-grid {
     display: block;
   }
