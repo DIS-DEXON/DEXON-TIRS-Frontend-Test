@@ -48,7 +48,7 @@
               <label>{{ item3.no }}</label>
             </div>
             <div class="form-item-value">
-              <label>{{ item3.topic }}</label>
+              <label style="grid-column: span 2;">{{ item3.topic }}</label>
             </div>
             <div class="form-item-value chk-radio">
               <input
@@ -163,6 +163,13 @@
                 >
                   <img src="/img/icon_sidebar/tank/checklist_visual.png" />
                 </v-ons-toolbar-button>
+                <v-ons-toolbar-button
+                  class="item"
+                  style="padding:0;width:20px"
+                  @click="TOGGLE_POPUP_NOTE(item3)"
+                >
+                  <i class="fa-solid fa-pen-to-square" style="color:rgb(20,14,64);font-size:14px"></i>
+                </v-ons-toolbar-button>
               </div>
             </div>
           </div>
@@ -193,6 +200,7 @@
       :chk_type="'generic'"
       @close-popup="TOGGLE_POPUP"
     />
+    <note v-if="this.isNoteOpen" :info="this.record" @closePopup="TOGGLE_POPUP_NOTE" />
   </div>
 </template>
 
@@ -200,11 +208,12 @@
 //API
 import axios from "/axios.js";
 import pictureLog from "@/views/Applications/TankList/Pages/Checklist/picturelog.vue";
-
+import note from "@/views/Applications/TankList/Pages/Checklist/note.vue";
 export default {
   name: "checklist-generic",
   components: {
-    pictureLog
+    pictureLog,
+    note
   },
   props: {
     checklistInfo: Array,
@@ -214,6 +223,7 @@ export default {
     return {
       id_result: 0,
       isPopupOpen: false,
+      isNoteOpen: false,
       formData: {
         id: null,
         result_desc: null,
@@ -287,6 +297,10 @@ export default {
       // console.warn(item3);
       this.id_result = i !== undefined ? i.result[0].id : 0;
       this.isPopupOpen = !this.isPopupOpen;
+    },
+    TOGGLE_POPUP_NOTE(item) {
+      this.isNoteOpen = !this.isNoteOpen;
+      console.log(item);
     }
   }
 };
@@ -326,12 +340,14 @@ img {
 }
 .item-wrapper {
   display: flex !important;
+  width: 100%;
   margin-left: 10px;
   justify-content: center !important;
+  align-items: center;
 }
 
 .form-item-value {
   display: grid !important;
-  grid-template-columns: 85% 15% !important;
+  grid-template-columns: 70% auto !important;
 }
 </style>

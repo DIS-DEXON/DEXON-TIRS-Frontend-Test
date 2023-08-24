@@ -1,6 +1,6 @@
 <template>
   <div class="report-sheet checklist-sheet">
-    <div class="report-container">
+    <div class="report-container" style="width:100%">
       <div class="sheet-header">
         <div class="logo">
           <img src="/img/logo.png" />
@@ -70,7 +70,7 @@
               <label>{{ item.no+"."+item2.no }}</label>
             </div>
             <div class="form-item-value" style="grid-column:span 1">
-              <label>{{ item2.subheader_content }}</label>
+              <label style="grid-column:span 2">{{ item2.subheader_content }}</label>
             </div>
             <div class="form-item-value chk-radio" style="grid-column:span 1">
               <input
@@ -127,7 +127,7 @@
                 "
               />
             </div>
-            <div class="form-item-value" style="grid-column:span 1">
+            <div class="form-item-value" style="grid-column:span 1;">
               <textarea
                 placeholder="comment..."
                 style="min-height: auto; padding: 0;width:100%"
@@ -140,13 +140,20 @@
                   )
                 "
               />
-              <div class="item-wrapper">
+              <div class="item-wrapper" style>
                 <v-ons-toolbar-button
                   class="item"
                   style="padding:0;width:20px"
                   @click="TOGGLE_POPUP(item2)"
                 >
                   <img src="/img/icon_sidebar/tank/checklist_visual.png" />
+                </v-ons-toolbar-button>
+                <v-ons-toolbar-button
+                  class="item"
+                  style="padding:0;width:20px"
+                  @click="TOGGLE_POPUP_NOTE(item3)"
+                >
+                  <i class="fa-solid fa-pen-to-square" style="color:rgb(20,14,64);font-size:14px"></i>
                 </v-ons-toolbar-button>
               </div>
             </div>
@@ -161,6 +168,7 @@
       :insp_record="record"
       @close-popup="TOGGLE_POPUP"
     />
+    <note v-if="this.isNoteOpen" :info="this.record" @closePopup="TOGGLE_POPUP_NOTE" />
   </div>
 </template>
 
@@ -168,10 +176,12 @@
 //API
 import axios from "/axios.js";
 import picturelog from "@/views/Applications/TankList/Pages/Checklist/picturelog.vue";
+import note from "@/views/Applications/TankList/Pages/Checklist/note.vue";
 export default {
   name: "checklist-by-law-ii",
   components: {
-    picturelog
+    picturelog,
+    note
   },
   props: {
     checklistInfo: Array,
@@ -181,6 +191,7 @@ export default {
     return {
       id_result: 0,
       isPopupOpen: false,
+      isNoteOpen: false,
       formData: {
         id: null,
         result_desc: null,
@@ -219,6 +230,9 @@ export default {
       console.log(i);
       this.id_result = i !== undefined ? i.result[0].id : 0;
       this.isPopupOpen = !this.isPopupOpen;
+    },
+    TOGGLE_POPUP_NOTE() {
+      this.isNoteOpen = !this.isNoteOpen;
     }
   }
 };
@@ -227,9 +241,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
+  grid-template-columns: 40px 40% 40px 40px 40px 40px 40px auto !important;
   .topic-label {
-    grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
+    grid-template-columns: 40px 40% 40px 40px 40px 40px 40px auto !important;
   }
   .rating-option {
     position: relative;
@@ -260,7 +274,7 @@ export default {
   // }
 
   .topic-item {
-    grid-template-columns: 40px 50% 40px 40px 40px 40px 40px auto !important;
+    grid-template-columns: 40px 40% 40px 40px 40px 40px 40px auto !important;
   }
 }
 .chk-radio {
@@ -268,7 +282,7 @@ export default {
 }
 .form-item-value {
   display: grid !important;
-  grid-template-columns: 85% 15% !important;
+  grid-template-columns: 70% auto !important;
 }
 img {
   width: 18px;
@@ -277,7 +291,9 @@ img {
 }
 .item-wrapper {
   display: flex !important;
+  width: 100%;
   margin-left: 10px;
   justify-content: center !important;
+  align-items: center;
 }
 </style>

@@ -25,7 +25,7 @@
             </v-ons-toolbar-button>
           </div>
         </div>
-        <div class="searchbar-box">
+        <!-- <div class="searchbar-box">
           <input
             type="text"
             name="search"
@@ -40,7 +40,7 @@
           <span class="close" v-if="search_key" v-on:click="SEARCH_CLEAR()">
             <i class="la la-close"></i>
           </span>
-        </div>
+        </div>-->
       </div>
       <div class="bg-filter"></div>
     </div>
