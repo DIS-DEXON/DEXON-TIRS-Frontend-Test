@@ -7,13 +7,13 @@
   >
     <InspectionRecordPanel @showHidePanel="SHOW_HIDE_PANEL" @viewItem="VIEW_ITEM" />
     <div id="page-container-view" class="list-page" v-if="this.id_inspection_record">
-      <v-ons-list>
+      <v-ons-list style="width: 100vw;">
         <v-ons-list-header>
           Inspection Details of
           <b>{{ DATE_FORMAT(current_view.inspection_date) }}</b>
         </v-ons-list-header>
       </v-ons-list>
-      <div v-if="isLoading == false">
+      <div v-if="isLoading == false" style="min-width:800px">
         <div v-if="this.checklistList_existance.general == true">
           <checklistGeneric
             :checklistInfo="this.checklistList.generic"

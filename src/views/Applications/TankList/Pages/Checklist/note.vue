@@ -1,5 +1,5 @@
 <template>
-  <div class="popup-wrapper">
+  <div class="popup-wrapper-note">
     <div class="popup-card">
       <div class="popup-header">
         <label>Note</label>
@@ -121,6 +121,8 @@ export default {
 .signature-pad {
   canvas {
     border: 1px solid #000;
+    width: 100%;
+    height: 400px;
   }
 
   .signature-pad--body {
@@ -158,6 +160,113 @@ export default {
         font-weight: 500;
         color: $web-font-color-blue;
         padding-left: 6px;
+      }
+    }
+  }
+}
+.popup-wrapper-note {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .popup-card {
+    background-color: #fff;
+    // padding: 20px;
+    min-width: 70%;
+    width: fit-content;
+    height: fit-content;
+    max-height: calc(100vh - 140px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+    overflow: hidden;
+
+    .popup-header {
+      // border: 1px solid #303030;
+      // border-width: 0 0 1px 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+      background-color: #fbfbfb;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid #e6e6e6;
+      border-width: 0 0 1px 0;
+      padding-left: 20px;
+
+      label {
+        height: fit-content;
+        font-size: 2em;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: -0.08px;
+        color: $web-font-color-black;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        user-select: text;
+      }
+
+      .toolbar-button {
+        background-color: transparent;
+        padding: 0;
+        height: 34px;
+        border: 0px;
+
+        i {
+          font-size: 20px;
+          color: $web-font-color-black;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 500;
+          color: $web-font-color-black;
+        }
+      }
+
+      .toolbar-button:hover {
+        background-color: #fbfbfb;
+
+        i {
+          color: #fc9b21;
+        }
+      }
+    }
+
+    .popup-content {
+      padding: 20px;
+      width: -webkit-fill-available;
+      max-height: calc(100vh - 300px);
+      min-height: 100%;
+      overflow: auto;
+    }
+
+    .popup-footer {
+      border: 1px solid #e6e6e6;
+      border-width: 1px 0 0 0;
+      background-color: #fbfbfb;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .button-set {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+          width: 160px;
+          margin: 0 10px;
+        }
       }
     }
   }
