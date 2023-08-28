@@ -10,11 +10,11 @@ export default new Vuex.Store({
     mode: "dev", //dev, prod
     modeURL: {
       dev: "https://localhost:5001/",
-      prod: "https://ai.dexon-technology.com:444/",
+      prod: "https://dis02.dexon-technology.com:444/",
     },
     urlApi: {
       dev: "https://localhost:5001/api",
-      prod: "https://ai.dexon-technology.com:444/api",
+      prod: "https://dis02.dexon-technology.com:444/api",
     },
     user: "",
     appIcon: "/app-icon.png",

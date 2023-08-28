@@ -37,6 +37,7 @@
             @row-updated="UPDATE_LINE"
             @row-removed="DELETE_LINE"
             @selection-changed="VIEW_POINT"
+            @init-new-row="(e) => { e.data.direction_from = 'Center'; }"
           >
             <DxFilterRow :visible="true" />
             <DxHeaderFilter :visible="true" />
@@ -51,11 +52,11 @@
 
             <DxColumn data-field="direction_from" caption="Direction From" />
 
-            <DxColumn data-field="direction_to" caption="Direction To" />
+            <DxColumn data-field="direction_to" caption="Direction To (Degree)" />
 
-            <DxColumn data-field="degree_from" caption="Degree From  (x°)" format="#,##0.00" />
+            <!-- <DxColumn data-field="degree_from" caption="Degree From  (x°)" format="#,##0.00" /> -->
 
-            <DxColumn data-field="degree_to" caption="Degree To (x°)" format="#,##0.00" />
+            <!-- <DxColumn data-field="degree_to" caption="Degree To (x°)" format="#,##0.00" /> -->
 
             <DxColumn data-field="remark" caption="Remark" />
 
@@ -199,19 +200,31 @@
 
             <DxColumn data-field="no" caption="No." width="100" />
 
-            <DxColumn data-field="bulge_depression" caption="Bulge or Depression" />
+            <DxColumn data-field="bulge_depression" caption="Bulge or Depression">
+              <DxLookup
+                :data-source="formSelect.bulge_depression"
+                valueExpr="code"
+                displayExpr="code"
+              />
+            </DxColumn>
 
             <DxColumn data-field="bbm_mm" caption="BBM (mm)" format="#,##0.00" width="100" />
 
-            <DxColumn data-field="bbm_inch" caption="BBM (inch)" format="#,##0.00" width="100" />
+            <!-- <DxColumn data-field="bbm_inch" caption="BBM (inch)" format="#,##0.00" width="100" /> -->
 
             <DxColumn data-field="radius_mm" caption="R (mm)" format="#,##0.00" width="100" />
 
-            <DxColumn data-field="radius_ft" caption="R (ft)" format="#,##0.00" width="100" />
+            <!-- <DxColumn data-field="radius_ft" caption="R (ft)" format="#,##0.00" width="100" /> -->
 
-            <DxColumn data-field="bb_inch" caption="BB (inch)" format="#,##0.00" width="100" />
+            <DxColumn
+              data-field="bb_inch"
+              caption="BB (mm)"
+              format="#,##0.00"
+              width="100"
+              :allow-editing="false"
+            />
 
-            <DxColumn data-field="result" caption="Result" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -274,6 +287,18 @@
                 <td>2.0 m</td>
               </tr>
             </table>
+            <div class="_ref" style="margin-top: 10px;">
+              <label class="desc">BBM</label>
+              <label class="desc">&nbsp;: Actual height of bulge or depth of local depression</label>
+              <label class="desc">BB</label>
+              <label
+                class="desc"
+              >&nbsp;: Maximum allowable height of bulge or depth of local depression</label>
+              <label class="desc">R</label>
+              <label
+                class="desc"
+              >&nbsp;: Radius of inscribed circle in depression or bulge Acceptable where BBM &le; BB ,Not acceptable where BBM &gt; BB</label>
+            </div>
           </appInstruction>
         </div>
       </div>
@@ -309,7 +334,8 @@ import {
   DxEditing,
   DxButton,
   DxHeaderFilter,
-  DxFilterRow
+  DxFilterRow,
+  DxLookup
 } from "devextreme-vue/data-grid";
 
 //List
@@ -339,7 +365,8 @@ export default {
     appInstruction,
     InspectionRecordPanel,
     SelectInspRecord,
-    chart
+    chart,
+    DxLookup
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
@@ -353,6 +380,18 @@ export default {
       bottomSetPoint: {},
       bottomSetGraph: {},
       bulgeList: {},
+      formSelect: {
+        bulge_depression: [
+          {
+            id: 1,
+            code: "Bulge"
+          },
+          {
+            id: 2,
+            code: "Depression"
+          }
+        ]
+      },
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -921,5 +960,10 @@ export default {
   // width: 100%;
   margin-top: 10px;
   text-align: center;
+}
+
+._ref {
+  display: grid;
+  grid-template-columns: auto 1fr;
 }
 </style>
