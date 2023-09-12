@@ -50,11 +50,9 @@
           data-field="file_path"
           caption="Image"
           cell-template="repair-img"
-          edit-cell-template="repair-img-editor"
+          edit-cell-template="repair-img-drag-drop"
           :width="320"
-        >
-          <DxRequiredRule />
-        </DxColumn>
+        ></DxColumn>
 
         <DxColumn data-field="part" caption="Part" :editor-options="partInputOptions" :width="0">
           <DxRequiredRule />
@@ -126,6 +124,56 @@
           </div>
         </template>
 
+        <template #repair-img-drag-drop="{data}">
+          <div class="widget-container flex-box">
+            <!-- <span>Profile Picture</span> -->
+            <div
+              id="dropzone-external"
+              class="flex-box"
+              :class="[isDropZoneActive
+        ? 'dx-theme-accent-as-border-color dropzone-active'
+        : 'dx-theme-border-color']"
+            >
+              <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
+              <img
+                id="dropzone-image"
+                :src="baseURL + data.value"
+                v-if="imgRepair != '' && isInitEdit == 0"
+                alt
+              />
+              <div id="dropzone-text" class="flex-box" v-if="textVisible">
+                <span>Drag & Drop the desired file</span>
+                <span>…or click to browse for a file instead.</span>
+              </div>
+              <DxProgressBar
+                id="upload-progress"
+                :min="0"
+                :max="100"
+                width="30%"
+                :show-status="false"
+                :visible="progressVisible"
+                :value="progressValue"
+              />
+            </div>
+            <DxFileUploader
+              id="file-uploader"
+              dialog-trigger="#dropzone-external"
+              drop-zone="#dropzone-external"
+              :multiple="false"
+              :allowed-file-extensions="allowedFileExtensions"
+              upload-mode="instantly"
+              upload-url="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+              :visible="false"
+              @drop-zone-enter="onDropZoneEnter"
+              @drop-zone-leave="onDropZoneLeave"
+              @uploaded="onUploaded"
+              @progress="onProgress"
+              @upload-started="upload_start"
+              @value-changed="ON_REPAIR_CHANGE"
+            />
+          </div>
+        </template>
+
         <template #dxTextArea="{ data }">
           <div>
             <DxTextArea :height="200" :read-only="true" :value="data.value" />
@@ -162,7 +210,7 @@ import "devextreme/dist/css/dx.light.css";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 import DxTextArea from "devextreme-vue/text-area";
-
+import { DxProgressBar } from "devextreme-vue/progress-bar";
 //DataGrid
 import {
   DxDataGrid,
@@ -195,6 +243,7 @@ export default {
     //VueTabsChrome,
     // DxList,
     DxDataGrid,
+    DxProgressBar,
     DxSearchPanel,
     DxPaging,
     DxPager,
@@ -243,7 +292,15 @@ export default {
       is_changed_repair: 0,
       dataRepairTemp: "",
       partInputOptions: { placeholder: "Enter part ..." },
-      recInputOptions: { placeholder: "Enter recommendation ..." }
+      recInputOptions: { placeholder: "Enter recommendation ..." },
+
+      //devextreme drag-drop
+      isDropZoneActive: false,
+      imageSource: "",
+      textVisible: true,
+      progressVisible: false,
+      progressValue: 0,
+      allowedFileExtensions: [".jpg", ".jpeg", ".gif", ".png"]
     };
   },
   computed: {
@@ -431,6 +488,37 @@ export default {
     },
     DATE_FORMAT(d) {
       return moment(d).format("LL");
+    },
+    onDropZoneEnter(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = true;
+      }
+    },
+    onDropZoneLeave(e) {
+      if (e.dropZoneElement.id === "dropzone-external") {
+        this.isDropZoneActive = false;
+      }
+    },
+    onUploaded(e) {
+      console.warn(e);
+      const { file } = e;
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.isDropZoneActive = false;
+        this.imageSource = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
+      this.textVisible = false;
+      this.progressVisible = false;
+      this.progressValue = 0;
+    },
+    onProgress(e) {
+      this.progressValue = (e.bytesLoaded / e.bytesTotal) * 100;
+    },
+    upload_start() {
+      // this.progressVisible = true;
+      this.progressVisible = true;
+      this.imageSource = "";
     }
   },
   watch: {
@@ -483,5 +571,43 @@ export default {
 .header-custom-field {
   font-weight: 600;
   font-size: 14px;
+}
+//devextreme style
+#dropzone-external {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(183, 183, 183, 0.1);
+  border-width: 2px;
+  border-style: dashed;
+  padding: 10px;
+}
+
+#dropzone-external > * {
+  pointer-events: none;
+}
+
+#dropzone-external.dropzone-active {
+  border-style: solid;
+}
+
+.widget-container > span {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+#dropzone-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#dropzone-text > span {
+  font-weight: 100;
+  opacity: 0.5;
+}
+
+#upload-progress {
+  display: flex;
+  margin-top: 10px;
 }
 </style>
