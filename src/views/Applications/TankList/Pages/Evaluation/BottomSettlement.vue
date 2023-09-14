@@ -217,7 +217,7 @@
             <!-- <DxColumn data-field="radius_ft" caption="R (ft)" format="#,##0.00" width="100" /> -->
 
             <DxColumn
-              data-field="bb_inch"
+              data-field="bb_mm"
               caption="BB (mm)"
               format="#,##0.00"
               width="100"

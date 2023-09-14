@@ -197,30 +197,13 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper" style="grid-column: span 2;">
-          <DxPolarChart
-            id="chart"
-            title="Roundness Graph"
-            :data-source="chart_data.Data"
-          >
-            <DxCommonSeriesSettings
-              type="line"
-            />
-            <DxSeries
-              v-for="v in chart_data.Key"
-              :key="v"
-              :value-field="v"
-              :name="v"
-            />
-            <DxArgumentAxis
-              :start-angle="0"
-              :tick-interval="45"
-            />
-            <DxValueAxis 
-              :minValueMargin="10"
-              :maxValueMargin="1"
-            />
-            <DxExport :enabled="true"/>
-            <DxTooltip :enabled="true"/>
+          <DxPolarChart id="chart" title="Roundness Graph" :data-source="chart_data.Data">
+            <DxCommonSeriesSettings type="line" />
+            <DxSeries v-for="v in chart_data.Key" :key="v" :value-field="v" :name="v" />
+            <DxArgumentAxis :start-angle="0" :tick-interval="45" />
+            <DxValueAxis :minValueMargin="10" :maxValueMargin="1" />
+            <DxExport :enabled="true" />
+            <DxTooltip :enabled="true" />
           </DxPolarChart>
           <!-- <chart :roundnessData="dataList_graph" :key="dataList_graph" /> -->
         </div>
@@ -271,7 +254,7 @@
               <tr>
                 <td>from 12 (40) to &lt; 45 (150)</td>
                 <td>±19 mm (0.75 in.)</td>
-                <td>±57 mm (3.75 in.)</td>
+                <td>±57 mm (2.25 in.)</td>
               </tr>
               <tr>
                 <td>from 45 (150) to &lt; 75 (250)</td>
@@ -281,7 +264,7 @@
               <tr>
                 <td>≥ 75 (250)</td>
                 <td>±32 mm (1.25 in.)</td>
-                <td>±96 mm (3.25 in.)</td>
+                <td>±96 mm (3.75 in.)</td>
               </tr>
             </table>
           </appInstruction>
@@ -326,7 +309,7 @@ import {
   DxHeaderFilter,
   DxFilterRow,
   DxToolbar,
-  DxItem,
+  DxItem
 } from "devextreme-vue/data-grid";
 
 import {
@@ -337,7 +320,7 @@ import {
   DxTooltip,
   DxCommonSeriesSettings,
   DxValueAxis
-} from 'devextreme-vue/polar-chart'
+} from "devextreme-vue/polar-chart";
 
 //List
 // import { DxList } from "devextreme-vue/list";
@@ -452,8 +435,7 @@ export default {
     FETCH_GRAPH(item) {
       axios({
         method: "get",
-        url:
-          `roundness/get-roundness-view-insp-id?id_insp_record=${item.id_inspection_record}`,
+        url: `roundness/get-roundness-view-insp-id?id_insp_record=${item.id_inspection_record}`,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -463,7 +445,7 @@ export default {
           if (res.status == 200 && res.data) {
             console.log("FETCH GRAPH: ");
             this.chart_data = res.data;
-            console.log(this.chart_data['Data'])
+            console.log(this.chart_data["Data"]);
           }
         })
         .catch(error => {
