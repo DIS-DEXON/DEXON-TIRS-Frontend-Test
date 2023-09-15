@@ -197,13 +197,14 @@
           </DxDataGrid>
         </div>
         <div class="chart-wrapper" style="grid-column: span 2;">
-          <DxPolarChart id="chart" title="Roundness Graph" :data-source="chart_data.Data">
+          <DxPolarChart id="chart" title="Roundness Graph" :data-source="chart_data.Data" @legend-click="LEGEND_CLICK($event)">
             <DxCommonSeriesSettings type="line" />
-            <DxSeries v-for="v in chart_data.Key" :key="v" :value-field="v" :name="v" />
+            <DxSeries v-for="v, i in chart_data.Key" :color="chart_data.Color[i]" :key="v" :value-field="v" :name="v"/>
             <DxArgumentAxis :start-angle="0" :tick-interval="45" />
-            <DxValueAxis :minValueMargin="10" :maxValueMargin="1" />
+            <DxValueAxis :minValueMargin="10" :maxValueMargin="0.1" />
             <DxExport :enabled="true" />
             <DxTooltip :enabled="true" />
+            <DxLegend :visible="true"/>
           </DxPolarChart>
           <!-- <chart :roundnessData="dataList_graph" :key="dataList_graph" /> -->
         </div>
@@ -319,7 +320,8 @@ import {
   DxArgumentAxis,
   DxTooltip,
   DxCommonSeriesSettings,
-  DxValueAxis
+  DxValueAxis,
+DxLegend
 } from "devextreme-vue/polar-chart";
 
 //List
@@ -361,8 +363,9 @@ export default {
     DxArgumentAxis,
     DxTooltip,
     DxCommonSeriesSettings,
-    DxValueAxis
-  },
+    DxValueAxis,
+    DxLegend
+},
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Evaluation",
@@ -390,7 +393,17 @@ export default {
       isEdit: false,
       chart_id: 0,
       chart_img_1: "",
-      chart_data: null
+      chart_data: null,
+      color_list: [
+        "orangered",
+        "limegreen",
+        "royalblue",
+        "sandybrown",
+        "rebeccapurple",
+        "slategray",
+        "orange",
+        "black",
+      ],
     };
   },
   computed: {
@@ -445,7 +458,10 @@ export default {
           if (res.status == 200 && res.data) {
             console.log("FETCH GRAPH: ");
             this.chart_data = res.data;
-            console.log(this.chart_data["Data"]);
+            console.log("---------------------")
+            this.chart_data.Color = []
+            this.chart_data.Key.map((_, index) => this.chart_data.Color.push(this.color_list[index]))
+            console.log(this.chart_data);
           }
         })
         .catch(error => {
@@ -822,6 +838,11 @@ export default {
     CLOSE_EDIT() {
       this.VIEW_ITEM(this.current_view);
       this.isEdit = false;
+    },
+    LEGEND_CLICK(e) {
+      const target = e.target
+      if (target.isVisible()) target.hide()
+      else target.show()
     }
   }
 };
@@ -883,9 +904,30 @@ export default {
   text-align: center;
 }
 .chart-wrapper {
+  position: relative;
   height: auto;
   @media (max-width: 1219px) {
     margin-top: 20px;
+  }
+  .legend {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    .legend-group {
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 400;
+      width: 4rem;
+    }
   }
 }
 #point-table {
