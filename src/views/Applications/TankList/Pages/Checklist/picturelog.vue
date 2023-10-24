@@ -506,7 +506,7 @@ export default {
       axios({
         method: "get",
         url:
-          "visual-report/visual_by_chk?id_chk=" +
+          "visual-report/get-visual-report-by-chk-id?id_chk=" +
           this.id_result +
           "&chk_type=" +
           this.chk_type,

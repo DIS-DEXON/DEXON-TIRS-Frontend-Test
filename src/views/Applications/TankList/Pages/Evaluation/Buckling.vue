@@ -203,7 +203,7 @@ export default {
       id_inspection_record: "",
       current_view: "",
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-eval-style"
       },
       pagePanelHiding: false
     };

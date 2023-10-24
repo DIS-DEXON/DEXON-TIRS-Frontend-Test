@@ -518,7 +518,7 @@ export default {
       id_tp: 0,
       inspRecordList: {},
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-thk-style"
       },
       editInserviceDate: false,
       editTnom: false,

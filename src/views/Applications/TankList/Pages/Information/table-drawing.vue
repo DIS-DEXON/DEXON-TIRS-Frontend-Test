@@ -199,7 +199,7 @@ export default {
       DxFileUploader,
       library: [],
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       },
       fileNameInputOptions: { placeholder: 'Enter file name' },
     };

@@ -488,7 +488,7 @@ export default {
       current_view: {},
       inspection_date: "",
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       },
       popUpWidth: 0,
       pictureLog: "",

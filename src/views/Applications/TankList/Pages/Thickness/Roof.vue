@@ -618,7 +618,7 @@ export default {
       inspRecordList: {},
 
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-thk-style"
       },
       maxID: 0,
       tabCurrent: "A2",

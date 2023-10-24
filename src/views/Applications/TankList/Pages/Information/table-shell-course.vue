@@ -1,22 +1,23 @@
 <template>
   <div>
     <DxDataGrid
-      id="data-grid-style"
+      id="data-grid-shell-course"
       key-expr="id_tank_course"
       :data-source="courseList"
       :element-attr="dataGridAttributes"
-      :selection="{ mode: 'single' }"
       :hover-state-enabled="true"
       :allow-column-reordering="true"
       :show-borders="true"
-      :column-hiding-enabled="true"
       :show-row-lines="true"
       :row-alternation-enabled="false"
       :word-wrap-enabled="true"
+      :column-min-width="70"
+      :column-auto-width="true"
       @row-inserted="CREATE_COURSE"
       @row-updated="UPDATE_COURSE"
       @row-removed="DELETE_COURSE"
     >
+      <DxColumnFixing :enabled="false"/>
       <DxEditing
         :allow-updating="true"
         :allow-deleting="true"
@@ -28,7 +29,7 @@
         <DxItem location="before" template="table-header" />
         <DxItem location="after" template="table-header-button-set" />
       </DxToolbar>-->
-      <DxColumn data-field="created_time" :width="0" caption />
+      <!-- <DxColumn data-field="created_time" :width="0" caption /> -->
       <DxColumn data-field="course_no" caption="Course No" sort-order="asc" :width="80" />
       <DxColumn
         data-field="t_nom_plate_mm"
@@ -76,7 +77,7 @@
         caption="T"
         header-cell-template="headerT"
         :allow-editing="false"
-        :width="70"
+        :min-width="70"
         alignment="center"
         format="#,##0"
       />
@@ -86,7 +87,7 @@
         format="#,###0.000"
         header-cell-template="headerHhydro"
         :allow-editing="false"
-        :width="70"
+        :min-width="70"
       />
       <DxColumn
         data-field="height_of_course_prod_m"
@@ -229,7 +230,8 @@ import {
   //DxToolbar,
   //DxItem,
   DxEditing,
-  DxLookup
+  DxLookup,
+  DxColumnFixing,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -245,7 +247,8 @@ export default {
     //DxToolbar,
     //DxItem,
     DxEditing,
-    DxLookup
+    DxLookup,
+    DxColumnFixing
   },
   created() {
     if (this.$store.state.status.server == true) {
@@ -258,7 +261,7 @@ export default {
       courseList: {},
       matList: {},
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       }
     };
   },

@@ -1240,7 +1240,7 @@ export default {
       isLoading: false,
       upload_flag: true,
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-eval-style"
       },
       pagePanelHiding: false,
       tabCurrent: "data",

@@ -285,7 +285,7 @@ export default {
       isInitEdit: 0,
       id_inspection_record: 0,
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       },
       pagePanelHiding: false,
       current_view: {},

@@ -675,7 +675,7 @@ export default {
         last_insp_thk: []
       },
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-thk-style"
       },
       isLoading: false,
       current_view_item: {

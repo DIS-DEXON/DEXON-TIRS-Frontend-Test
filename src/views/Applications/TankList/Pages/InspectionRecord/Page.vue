@@ -2,7 +2,7 @@
   <div class="page-container">
     <div class="page-section">
       <DxDataGrid
-        id="data-grid-style"
+        id="data-grid-insp-record"
         key-expr="id_inspection_record"
         :data-source="inspRecordList"
         :element-attr="dataGridAttributes"
@@ -202,7 +202,7 @@ export default {
       inspRecordList: {},
       campaigeList: {},
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       },
       inspDateInputOptions: { placeholder: "Select date" },
       projectNoInputOptions: { placeholder: "Enter project no" },

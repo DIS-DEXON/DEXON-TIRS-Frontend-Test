@@ -346,7 +346,7 @@ export default {
       id_component: 0,
       id_inspection_record: 0,
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-thk-style"
       },
       pagePanelHiding: false,
       current_view: {},

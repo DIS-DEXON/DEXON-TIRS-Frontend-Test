@@ -653,7 +653,7 @@ export default {
       dataIMGTemp: "",
       fileNameInputOptions: { placeholder: "Enter description ..." },
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-thk-style"
       },
       isLoading: false,
       current_view_item: {

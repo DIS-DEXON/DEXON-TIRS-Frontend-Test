@@ -324,7 +324,7 @@ export default {
         },
         {
           desc: "Installation Date ",
-          value: moment(this.infoTank.installation_date).format("LL")
+          value: moment(this.infoTank.installation_date).format("DD MMM yyyy")
         },
         {
           desc: "Insulation Thickness (mm)",
@@ -332,7 +332,7 @@ export default {
         },
         {
           desc: "First In-service Date ",
-          value: moment(this.infoTank.inservice_date).format("LL")
+          value: moment(this.infoTank.inservice_date).format("DD MMM yyyy")
         },
         {
           desc: "Product",
@@ -341,7 +341,7 @@ export default {
         {
           desc: "Previous Inspection Date",
           value: this.infoTank.last_inspection_date
-            ? moment(this.infoTank.last_inspection_date).format("LL")
+            ? moment(this.infoTank.last_inspection_date).format("DD MMM yyyy")
             : null
           //value: moment(this.infoTank.last_inspection_date).format("LL")
         },

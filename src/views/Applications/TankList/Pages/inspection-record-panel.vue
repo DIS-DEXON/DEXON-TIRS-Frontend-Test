@@ -149,7 +149,7 @@ export default {
       }
     },
     DATE_FORMAT(d) {
-      return moment(d).format("LL");
+      return moment(d).format("DD MMM yyyy");
     },
     SHOW_HIDE_PANEL() {
       if (this.panelHiding == true) this.panelHiding = false;

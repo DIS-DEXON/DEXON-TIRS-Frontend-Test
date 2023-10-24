@@ -249,7 +249,7 @@ export default {
   computed: {
     tank_inservice_date() {
       if (this.infoTank.inservice_date) {
-        return moment(this.infoTank.inservice_date).format("LL");
+        return moment(this.infoTank.inservice_date).format("DD MMM yyyy");
       } else return "N/A";
     }
   }
