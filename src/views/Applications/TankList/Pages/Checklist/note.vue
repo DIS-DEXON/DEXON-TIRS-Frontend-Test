@@ -85,6 +85,7 @@ export default {
       const sign = new SignaturePad(canvas,  {
         velocityFilterWeight: 0.5,
         throttle: 0,
+        backgroundColor: "white"
       })
       return sign
     },
@@ -104,50 +105,22 @@ export default {
         form_data.append("file", file)
         axios({
           method: "put",
-          url: "/chk-generic/edit-chkgeneric-note?id_result=" + this.id,
+          url: "/chk-generic/edit-chkgeneric-note?id=" + this.id,
           headers: {
             Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
-          data: form_data
+          data: this.sign_pad.isEmpty() ? null : form_data
         }).then((res) => {
-          console.log(res)
+          if (res.status == 200) {
+            this.$emit("closePopup")
+            this.$ons.notification.alert("Save Successfully.")
+            return
+          }
+          this.$ons.notification.alert(res.data)
+        }).catch(() => {
+          this.$ons.notification.alert("Unexpected error.")
         })
       })
-      return;
-      // id_result , base64  Add
-      if (signature) {
-        this.$ons.notification.confirm("Confirm SAVE?").then(res => {
-          if (res == 1) {
-            axios({
-              method: "put",
-              url: "/",
-              headers: {
-                Authorization:
-                  "Bearer " + JSON.parse(localStorage.getItem("token"))
-              },
-              data: this.formData
-            })
-              .then(res => {
-                if (res.status == 200) {
-                  console.log(res);
-                  if (this.signer == "dexon") {
-                    this.$ons.notification.alert("Dexon Signed");
-                  } else {
-                    this.$ons.notification.alert("Client Signed");
-                  }
-                  this.$emit("closePopup");
-                  this.$emit("FETCH_INFO");
-                }
-              })
-              .catch(error => {
-                this.$ons.notification.alert(
-                  error.code + " " + error.response.status + " " + error.message
-                );
-              })
-              .finally(() => {});
-          }
-        });
-      }
     },
     CANCEL() {
       this.$emit("closePopup");
