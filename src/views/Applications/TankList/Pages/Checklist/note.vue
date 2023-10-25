@@ -9,9 +9,9 @@
           <div class="signature-pad--body">
             <canvas
               id="sign-canvas"
-              width="600"
-              style="touch-action: none; user-select: none"
-              height="200"
+              width="800"
+              style="touch-action: none; user-select: none; width: 800px; height: 400px"
+              height="400"
             >
               <h1>test</h1>
             </canvas>
@@ -69,9 +69,15 @@ export default {
     },
     SAVE() {
       var canvas = document.querySelector("canvas");
-      var signature = canvas.toDataURL();
+      var signature = canvas.toBlob((s) => {
+        console.log(s);
+      },
+        "image/jpeg",
+        0.5
+      );
       console.log(signature);
       return;
+      // id_result , base64  Add
       if (signature) {
         this.$ons.notification.confirm("Confirm SAVE?").then(res => {
           if (res == 1) {
@@ -176,8 +182,7 @@ export default {
   .popup-card {
     background-color: #fff;
     // padding: 20px;
-    min-width: 70%;
-    width: fit-content;
+    width: 840px;
     height: fit-content;
     max-height: calc(100vh - 140px);
     position: absolute;
