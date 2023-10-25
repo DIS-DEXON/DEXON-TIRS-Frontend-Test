@@ -1,20 +1,19 @@
 <template>
   <div class="popup-wrapper">
     <!-- v-closable="{handler:'hide'}" -->
-    <div class="popup-card">
+    <div class="popup-card" style="max-width: 90%;">
       <div class="popup-header" style="justify-content: space-between;padding-right:20px">
-        <label></label>
+        <label>Picture Log</label>
         <v-ons-toolbar-button @click="CANCEL">
           <i class="fa-solid fa-x" style="font-size:22px"></i>
         </v-ons-toolbar-button>
       </div>
       <div class="popup-content form" style>
         <div class="form-item-container">
-          <!-- <h1>hello world !</h1>
-          <label>{{ insp_record.id_inspection_record }}</label>-->
+          <!--<label>{{ insp_record.id_inspection_record }}</label>-->
           <div style="grid-column:span 3">
             <DxDataGrid
-              id="data-grid-style"
+              id="data-grid-pic-log"
               key-expr="id_visual"
               :data-source="dataList"
               :element-attr="dataGridAttributes"
@@ -445,7 +444,7 @@ export default {
       current_view: {},
       inspection_date: "",
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-custom-style"
       },
       popUpWidth: 0,
       pictureLog: "",
