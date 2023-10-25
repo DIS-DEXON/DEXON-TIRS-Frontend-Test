@@ -53,14 +53,14 @@
           caption="Overview"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-drag-drop-1"
-          :width="0"
+          :visible="0"
         />
         <DxColumn
           data-field="file_path_2"
           caption="Close-up view"
           cell-template="dwg-img"
           edit-cell-template="dwg-img-drag-drop-2"
-          :width="0"
+          :visible="0"
         />
 
         <DxColumn
@@ -68,7 +68,7 @@
           caption="Finding"
           cell-template="dxTextArea"
           :editor-options="findingInputOptions"
-          :width="0"
+          :visible="0"
         />
 
         <DxColumn
@@ -76,7 +76,7 @@
           caption="Recommendation"
           cell-template="dxTextArea"
           :editor-options="recInputOptions"
-          :width="0"
+          :visible="0"
         />
 
         <DxColumn caption="Picture Log" cell-template="picture-log-template" />

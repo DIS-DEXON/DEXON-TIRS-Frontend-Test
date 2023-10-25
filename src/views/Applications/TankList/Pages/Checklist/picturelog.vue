@@ -5,7 +5,7 @@
       <div class="popup-header" style="justify-content: space-between;padding-right:20px">
         <label>Picture Log</label>
         <v-ons-toolbar-button @click="CANCEL">
-          <i class="fa-solid fa-x" style="font-size:22px"></i>
+          <i class="fa-solid fa-x" style="font-size:14px"></i>
         </v-ons-toolbar-button>
       </div>
       <div class="popup-content form" style>
@@ -45,14 +45,14 @@
                 caption="Overview"
                 cell-template="dwg-img"
                 edit-cell-template="dwg-img-editor1"
-                :width="0"
+                :visible="0"
               />
               <DxColumn
                 data-field="file_path_2"
                 caption="Close-up view"
                 cell-template="dwg-img"
                 edit-cell-template="dwg-img-editor2"
-                :width="0"
+                :visible="0"
               />
 
               <DxColumn
@@ -60,7 +60,7 @@
                 caption="Finding"
                 cell-template="dxTextArea"
                 :editor-options="findingInputOptions"
-                :width="0"
+                :visible="0"
               />
 
               <DxColumn
@@ -68,7 +68,7 @@
                 caption="Recommendation"
                 cell-template="dxTextArea"
                 :editor-options="recInputOptions"
-                :width="0"
+                :visible="0"
               />
 
               <DxColumn caption="Picture Log" cell-template="picture-log-template" />
