@@ -16,9 +16,18 @@
               <h1>test</h1>
             </canvas>
             <!-- <div class="signature-line"></div> -->
+            <div class="btn-undo" v-on:click="UNDO_CANVAS()">
+              <i class="las la-undo"></i>
+              <span>UNDO</span>
+            </div>
             <div class="btn-clear" v-on:click="CLEAR_CANVAS()">
-              <i class="las la-undo-alt"></i>
-              <span>clear</span>
+              <i class="las la-trash"></i>
+              <span>CLEAR</span>
+            </div>
+            <div class="color-picker">
+              <div class="select-border" :selected="selected_color == color" :key="color" v-for="color in color_list">
+                <div class="color-btn" :style="`background-color: ${color};`" v-on:click="SELECT_COLOR(color)" />
+              </div>
             </div>
           </div>
         </div>
@@ -49,33 +58,61 @@ export default {
   components: {},
   data() {
     return {
-      formData: {}
+      sign_pad: null,
+      selected_color: "black",
+      color_list: [
+        "black",
+        "red",
+        "green", 
+        "blue"
+      ]
     };
   },
   props: {
-    title: String,
-    signer: String,
-    info: Object
+    id: Number,
   },
   mounted() {
-    signature();
-    this.formData = clone(this.info);
+    // signature();
+    this.sign_pad = this.CREATE_CANVAS()
   },
   methods: {
+    SELECT_COLOR(color) {
+      this.selected_color = color
+      this.sign_pad.penColor = this.selected_color
+    },
+    CREATE_CANVAS() {
+      const canvas = document.querySelector("canvas")
+      const sign = new SignaturePad(canvas,  {
+        velocityFilterWeight: 0.5,
+        throttle: 0,
+      })
+      return sign
+    },
     CLEAR_CANVAS() {
-      var canvas = document.querySelector("canvas");
-      var signaturePad = new SignaturePad(canvas);
-      signaturePad.clear();
+      this.sign_pad.clear()
+    },
+    UNDO_CANVAS() {
+      const data = this.sign_pad.toData()
+      data.pop()
+      this.sign_pad.fromData(data)
     },
     SAVE() {
-      var canvas = document.querySelector("canvas");
-      var signature = canvas.toBlob((s) => {
-        console.log(s);
-      },
-        "image/jpeg",
-        0.5
-      );
-      console.log(signature);
+      const canvas = document.querySelector("canvas")
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "sign.png")
+        const form_data = new FormData()
+        form_data.append("file", file)
+        axios({
+          method: "put",
+          url: "/chk-generic/edit-chkgeneric-note?id_result=" + this.id,
+          headers: {
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+          },
+          data: form_data
+        }).then((res) => {
+          console.log(res)
+        })
+      })
       return;
       // id_result , base64  Add
       if (signature) {
@@ -143,6 +180,31 @@ export default {
       border: 1px solid #000;
       border-width: 0 0 1px 0;
     }
+    .btn-undo {
+      position: absolute;
+      top: 5px;
+      right: 90px;
+      background-color: transparent;
+      padding: 4px 6px;
+      width: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 0px;
+      cursor: pointer;
+
+      i {
+        font-size: 18px;
+        color: $web-font-color-blue;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        color: $web-font-color-blue;
+        padding-left: 6px;
+      }
+    }
     .btn-clear {
       position: absolute;
       top: 5px;
@@ -166,6 +228,30 @@ export default {
         font-weight: 500;
         color: $web-font-color-blue;
         padding-left: 6px;
+      }
+    }
+    .color-picker {
+      position: absolute;
+      display: flex;
+      gap: 8px;
+      bottom: 12px;
+      right: 6px;
+      .select-border {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        width: 34px;
+        border-radius: 100%;
+        &[selected] {
+          background-color: lightgray;
+        }
+        .color-btn {
+          position: absolute;
+          aspect-ratio: 1 / 1;
+          top: 3px;
+          left: 3px;
+          width: 28px;
+          border-radius: 100%;
+        }
       }
     }
   }
