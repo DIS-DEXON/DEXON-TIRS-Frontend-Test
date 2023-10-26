@@ -200,7 +200,7 @@
       :chk_type="'generic'"
       @close-popup="TOGGLE_POPUP"
     />
-    <note v-if="this.isNoteOpen" :id="note_id" @closePopup="TOGGLE_POPUP_NOTE" />
+    <note v-if="this.isNoteOpen" :url="'/chk-generic/edit-chkgeneric-note?id='" :id="note_id" @closePopup="TOGGLE_POPUP_NOTE" />
   </div>
 </template>
 
@@ -302,7 +302,7 @@ export default {
     TOGGLE_POPUP_NOTE(item) {
       this.note_id = item || 0
       this.isNoteOpen = !this.isNoteOpen;
-      console.log(this.note_id)
+      // console.log(this.note_id)
     }
   }
 };

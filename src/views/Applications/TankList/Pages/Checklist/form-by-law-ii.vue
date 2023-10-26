@@ -151,7 +151,7 @@
                 <v-ons-toolbar-button
                   class="item"
                   style="padding:0;width:20px"
-                  @click="TOGGLE_POPUP_NOTE(item3)"
+                  @click="TOGGLE_POPUP_NOTE(item2.result[0].id)"
                 >
                   <i class="fa-solid fa-pen-to-square" style="color:rgb(20,14,64);font-size:14px"></i>
                 </v-ons-toolbar-button>
@@ -168,7 +168,7 @@
       :insp_record="record"
       @close-popup="TOGGLE_POPUP"
     />
-    <note v-if="this.isNoteOpen" :info="this.record" @closePopup="TOGGLE_POPUP_NOTE" />
+    <note v-if="this.isNoteOpen" :url="'/chk-by-law/edit-chkbylaw-2-note?id='" :id="note_id" @closePopup="TOGGLE_POPUP_NOTE" />
   </div>
 </template>
 
@@ -192,6 +192,7 @@ export default {
       id_result: 0,
       isPopupOpen: false,
       isNoteOpen: false,
+      note_id: 0,
       formData: {
         id: null,
         result_desc: null,
@@ -231,7 +232,8 @@ export default {
       this.id_result = i !== undefined ? i.result[0].id : 0;
       this.isPopupOpen = !this.isPopupOpen;
     },
-    TOGGLE_POPUP_NOTE() {
+    TOGGLE_POPUP_NOTE(item) {
+      this.note_id = item || 0
       this.isNoteOpen = !this.isNoteOpen;
     }
   }

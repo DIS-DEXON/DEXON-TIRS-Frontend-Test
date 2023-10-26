@@ -70,6 +70,7 @@ export default {
   },
   props: {
     id: Number,
+    url: String
   },
   mounted() {
     // signature();
@@ -103,14 +104,16 @@ export default {
         const file = new File([blob], "sign.png")
         const form_data = new FormData()
         form_data.append("file", file)
-        axios({
+        const map = {
           method: "put",
-          url: "/chk-generic/edit-chkgeneric-note?id=" + this.id,
+          url: this.url + this.id,
           headers: {
             Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
-          data: this.sign_pad.isEmpty() ? null : form_data
-        }).then((res) => {
+          data: this.sign_pad.isEmpty() ? undefined : form_data
+        }
+        console.log(map)
+        axios(map).then((res) => {
           if (res.status == 200) {
             this.$emit("closePopup")
             this.$ons.notification.alert("Save Successfully.")
