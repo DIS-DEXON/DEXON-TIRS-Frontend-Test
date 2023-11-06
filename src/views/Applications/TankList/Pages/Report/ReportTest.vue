@@ -301,9 +301,9 @@ export default {
       console.log(item);
       console.log("view item insp id :" + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
-      this.data1.insp_campaign = item.campaign_desc;
+      this.data1.insp_campaign = item.campaign_desc.toUpperCase();
       this.data1.insp_date = moment(item.inspection_date).format(
-        "MMM DD, YYYY"
+        "DD MMM YYYY"
       );
       this.data1.name_api_653 = item.name_api_653;
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
@@ -525,9 +525,15 @@ export default {
       //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         this.data1.shell_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
+        this.data1.shell_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.shell_thk[i].t_req = t_req.toFixed(2);
+        this.data1.shell_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     DATE_FOR_ROOF_THK(obj) {
@@ -568,89 +574,136 @@ export default {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
+        this.data1.roof_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.roof_thk[i].t_req = t_req.toFixed(2);
+        this.data1.roof_thk[i].t_actual = t_actual.toFixed(2);
         this.data1.roof_thk[i].scr = scr.toFixed(2);
-        this.data1.roof_thk[i].rl = rl.toFixed(2);
+        this.data1.roof_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
     },
     NUMBER_ROUNDING_ROOFNZ_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
+        this.data1.roofnz_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.roofnz_thk[i].t_req = t_req.toFixed(2);
+        this.data1.roofnz_thk[i].t_actual = t_actual.toFixed(2);
         this.data1.roofnz_thk[i].scr = scr.toFixed(2);
-        this.data1.roofnz_thk[i].rl = rl.toFixed(2);
+        this.data1.roofnz_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
     },
     NUMBER_ROUNDING_SHELLNZ_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.shellnz_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.shellnz_thk[i].scr = scr.toFixed(2);
-        this.data1.shellnz_thk[i].rl = rl.toFixed(2);
+        this.data1.shellnz_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.shellnz_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.shellnz_thk[i].t_req = t_req.toFixed(2);
+        this.data1.shellnz_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_ANNULAR_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.annular_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.annular_thk[i].scr = scr.toFixed(2);
-        this.data1.annular_thk[i].rl = rl.toFixed(2);
-        this.data1.annular_thk[i].t_req = obj[i].t_req.toFixed(2);
+        this.data1.annular_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.annular_thk[i].t_req = t_req.toFixed(2);
+        this.data1.annular_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.annular_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_PIPING_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.piping_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.piping_thk[i].scr = scr.toFixed(2);
-        this.data1.piping_thk[i].rl = rl.toFixed(2);
+        this.data1.piping_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.piping_thk[i].t_req = t_req.toFixed(2);
+        this.data1.piping_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.piping_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_COIL_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.coil_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.coil_thk[i].scr = scr.toFixed(2);
-        this.data1.coil_thk[i].rl = rl.toFixed(2);
+        this.data1.coil_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.coil_thk[i].t_req = t_req.toFixed(2);
+        this.data1.coil_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.coil_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_PROJECTION_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.projection_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.projection_thk[i].scr = scr.toFixed(2);
-        this.data1.projection_thk[i].rl = rl.toFixed(2);
+        this.data1.projection_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.projection_thk[i].t_req = t_req.toFixed(2);
+        this.data1.projection_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.projection_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_SUMP_THK(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         const date = obj[i].inspection_date;
         this.data1.sump_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.sump_thk[i].scr = scr.toFixed(2);
-        this.data1.sump_thk[i].rl = rl.toFixed(2);
+        this.data1.sump_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.sump_thk[i].t_req = t_req.toFixed(2);
+        this.data1.sump_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.sump_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_MFLANNULAR_THK(obj) {
@@ -717,16 +770,28 @@ export default {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         this.data1.bottom_thk[i].scr = scr.toFixed(2);
-        this.data1.bottom_thk[i].rl = rl.toFixed(2);
+        this.data1.bottom_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.bottom_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.bottom_thk[i].t_req = t_req.toFixed(2);
+        this.data1.bottom_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_CRIT_ZONE(obj) {
       for (let i = 0; i < obj.length; i++) {
         const scr = obj[i].scr;
         const rl = obj[i].rl;
+        const t_nom = obj[i].t_nom;
+        const t_req = obj[i].t_req;
+        const t_actual = obj[i].t_actual;
         this.data1.critical_thk[i].scr = scr.toFixed(2);
-        this.data1.critical_thk[i].rl = rl.toFixed(2);
+        this.data1.critical_thk[i].rl = rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.critical_thk[i].t_nom = t_nom.toFixed(2);
+        this.data1.critical_thk[i].t_req = t_req.toFixed(2);
+        this.data1.critical_thk[i].t_actual = t_actual.toFixed(2);
       }
     },
     NUMBER_ROUNDING_ACCEPT(obj) {
@@ -748,11 +813,26 @@ export default {
       this.data1.accept[0].ui_next_max = obj.ui_next_max.toFixed(2);
     },
     NUMBER_ROUNDING_TANK_COURSE(obj) {
+      console.warn(obj);
       for (let i = 0; i < obj.length; i++) {
-        //const scr = obj[i].scr;
         const min_rl = obj[i].min_rl;
-        //this.data1.tank_course[i].scr = scr.toFixed(2)
-        this.data1.tank_course[i].min_rl = min_rl.toFixed(2);
+        const h = obj[i].height_of_course_m;
+        const t_nom = obj[i].t_nom_plate_mm;
+        const t_min = obj[i].tmin_prod_mm;
+        const min_thk = obj[i].min_thk;
+        const y_value = obj[i].y_value;
+        const t_value = obj[i].t_value;
+        const stress_prod = obj[i].stress_prod;
+        const scr = obj[i].scr;
+        this.data1.tank_course[i].min_rl = min_rl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.tank_course[i].height_of_course_m = h.toFixed(2);
+        this.data1.tank_course[i].t_nom_plate_mm = t_nom.toFixed(2);
+        this.data1.tank_course[i].tmin_prod_mm = t_min.toFixed(2);
+        this.data1.tank_course[i].min_thk = min_thk.toFixed(2);
+        this.data1.tank_course[i].scr = scr.toFixed(2);
+        this.data1.tank_course[i].y_value = y_value.toLocaleString();
+        this.data1.tank_course[i].t_value = t_value.toLocaleString();
+        this.data1.tank_course[i].stress_prod = stress_prod.toLocaleString();
       }
     },
     saveFile(filename, blob) {
@@ -2070,6 +2150,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_course = res.data;
+            this.NUMBER_ROUNDING_SHELL_COURSE(this.data1.shell_course)
           }
         })
         .catch(error => {
@@ -2078,6 +2159,15 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_ROUNDING_SHELL_COURSE(obj) {
+      console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        const tnom = obj[i].t_nom_plate_mm;
+        const h = obj[i].height_of_course_m;
+        this.data1.shell_course[i].t_nom_plate_mm = tnom.toFixed(2);
+        this.data1.shell_course[i].height_of_course_m = h.toFixed(2);
+      }
     },
     FETCH_TANK_COURSE() {
       const id_tag = this.$route.params.id_tag;

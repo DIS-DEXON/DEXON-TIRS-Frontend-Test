@@ -23,7 +23,7 @@
         <div class="center">
           <span class="date">{{ DATE_FORMAT(item.inspection_date) }}</span>
           <span class="campaign">{{ SET_CAMPAIGN(item.id_campaign) }}</span>
-          <span
+          <!-- <span
             style="
               position: absolute;
               bottom: 0;
@@ -33,7 +33,7 @@
             "
           >
             id_insp: {{ item.id_inspection_record }}
-          </span>
+          </span> -->
         </div>
         <div class="right">
           <v-ons-toolbar-button>

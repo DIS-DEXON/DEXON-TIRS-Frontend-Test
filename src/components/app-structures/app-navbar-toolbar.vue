@@ -9,7 +9,7 @@
         <i class="las la-angle-left"></i>
         <span>Back</span>
       </v-ons-toolbar-button>
-      <span
+      <!-- <span
         v-if="infoTank"
         style="
           position: absolute;
@@ -18,7 +18,7 @@
           font-size: 12px;
           color: red;
         "
-      >id_tag: {{ infoTank.id_tag }}</span>
+      >id_tag: {{ infoTank.id_tag }}</span> -->
       <h1>{{ pageName }}</h1>
       <h2>{{ pageSubName }}</h2>
       <div class="sub-page-box" v-if="pageSubInnerName">

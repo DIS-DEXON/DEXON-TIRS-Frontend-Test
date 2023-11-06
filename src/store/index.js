@@ -10,11 +10,11 @@ export default new Vuex.Store({
     mode: "dev", //dev, prod
     modeURL: {
       dev: "https://localhost:5001/",
-      prod: "https://dis02.dexon-technology.com:444/",
+      prod: "https://dis02.dexon-technology.com:448/",
     },
     urlApi: {
       dev: "https://localhost:5001/api",
-      prod: "https://dis02.dexon-technology.com:444/api",
+      prod: "https://dis02.dexon-technology.com:448/api",
     },
     user: "",
     appIcon: "/app-icon.png",
@@ -251,7 +251,7 @@ export default new Vuex.Store({
             // router.push("/login");
           }
         })
-        .finally(() => {});
+        .finally(() => { });
     },
     FETCH_USER_INFO: (state) => {
       if (JSON.parse(localStorage.getItem("user"))) {
@@ -276,7 +276,7 @@ export default new Vuex.Store({
           .catch((error) => {
             console.log(error);
           })
-          .finally(() => {});
+          .finally(() => { });
       }
     },
     UPDATE_CURRENT_VIEW_CLIENT: (state, payload) => {
