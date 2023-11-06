@@ -495,6 +495,7 @@ export default {
         // const jsonData = this.data1;
         // const data = JSON.parse(jsonData);
         const data = this.data1;
+        console.warn(data);
         console.log("2");
 
         // 3. process the template
@@ -736,34 +737,29 @@ export default {
     },
     NUMBER_ROUNDING_SHELL_SETTLE_API(obj) {
       for (let i = 0; i < obj.length; i++) {
-        const rad = obj[i].theta_radians;
-        const degree = obj[i].theta_degrees;
+        const cumulative = obj[i].cumulative;
+        const reduced_level = obj[i].reduced_level;
+        const theta_radians = obj[i].theta_radians;
+        const theta_degrees = obj[i].theta_degrees;
+        const relative_value = obj[i].relative_value;
         const y = obj[i].y;
         const out_of_plane = obj[i].out_of_plane;
         const deviation_value = obj[i].deviation_value;
         const difference_2_value = obj[i].difference_2_value;
         const deviation_2_value = obj[i].deviation_2_value;
         const difference_value = obj[i].difference_value;
-        this.data1.shell_settlement_api[i].theta_radians = rad.toFixed(2);
-        this.data1.shell_settlement_api[i].theta_degrees = degree.toFixed(2);
 
+        this.data1.shell_settlement_api[i].cumulative = cumulative.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.shell_settlement_api[i].reduced_level = reduced_level.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.shell_settlement_api[i].theta_radians = theta_radians.toFixed(2);
+        this.data1.shell_settlement_api[i].theta_degrees = theta_degrees.toFixed(2);
+        this.data1.shell_settlement_api[i].relative_value = relative_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         this.data1.shell_settlement_api[i].y = y.toFixed(2);
-        this.data1.shell_settlement_api[
-          i
-        ].difference_value = difference_value.toFixed(2);
-        this.data1.shell_settlement_api[i].out_of_plane = out_of_plane.toFixed(
-          2
-        );
-        this.data1.shell_settlement_api[
-          i
-        ].deviation_value = deviation_value.toFixed(2);
-
-        this.data1.shell_settlement_api[
-          i
-        ].difference_2_value = difference_2_value.toFixed(2);
-        this.data1.shell_settlement_api[
-          i
-        ].deviation_2_value = deviation_2_value.toFixed(2);
+        this.data1.shell_settlement_api[i].out_of_plane = out_of_plane.toFixed(2);
+        this.data1.shell_settlement_api[i].deviation_value = deviation_value.toFixed(2);
+        this.data1.shell_settlement_api[i].difference_2_value = difference_2_value.toFixed(2);
+        this.data1.shell_settlement_api[i].deviation_2_value = deviation_2_value.toFixed(2);
+        this.data1.shell_settlement_api[i].difference_value = difference_value.toFixed(2);
       }
     },
     NUMBER_ROUNDING_BOTTOM_THK(obj) {
@@ -795,25 +791,21 @@ export default {
       }
     },
     NUMBER_ROUNDING_ACCEPT(obj) {
-      this.data1.accept[0].angle_degrees = obj.angle_degrees.toFixed(2);
-      this.data1.accept[0].deflection_ft = obj.deflection_ft.toFixed(2);
-      this.data1.accept[0].deflection_mm = obj.deflection_mm.toFixed(2);
-      this.data1.accept[0].direction_degrees_cw_pi = obj.direction_degrees_cw_pi.toFixed(
-        2
-      );
-      this.data1.accept[0].l_value = obj.l_value.toFixed(2);
-      this.data1.accept[0].predicted_tilt = obj.predicted_tilt.toFixed(2);
-      this.data1.accept[0].r_2 = obj.r_2.toFixed(2);
-      this.data1.accept[0].s_max_in = obj.s_max_in.toFixed(2);
-      this.data1.accept[0].s_max_mm = obj.s_max_mm.toFixed(2);
-      this.data1.accept[0].s_value = obj.s_value.toFixed(2);
-      this.data1.accept[0].st_value = obj.st_value.toFixed(2);
-      this.data1.accept[0].ui_before_max = obj.ui_before_max.toFixed(2);
-      this.data1.accept[0].ui_max = obj.ui_max.toFixed(2);
-      this.data1.accept[0].ui_next_max = obj.ui_next_max.toFixed(2);
+      this.data1.accept[0].deflection_ft = obj.deflection_ft != null ? obj.deflection_ft.toFixed(2) : '';
+      this.data1.accept[0].deflection_mm = obj.deflection_mm != null ? obj.deflection_mm.toFixed(2) : '';
+      this.data1.accept[0].direction_degrees_cw_pi = obj.direction_degrees_cw_pi != null ? obj.direction_degrees_cw_pi.toFixed(2) : '';
+      this.data1.accept[0].l_value = obj.l_value != null ? obj.l_value.toFixed(2) : '';
+      this.data1.accept[0].predicted_tilt = obj.predicted_tilt != null ? obj.predicted_tilt.toFixed(2) : '';
+      this.data1.accept[0].r_2 = obj.r_2 != null ? obj.r_2.toFixed(2) : '';
+      this.data1.accept[0].s_max_in = obj.s_max_in != null ? obj.s_max_in.toFixed(2) : '';
+      this.data1.accept[0].s_max_mm = obj.s_max_mm != null ? obj.s_max_mm.toFixed(2) : '';
+      this.data1.accept[0].s_value = obj.s_value != null ? obj.s_value.toFixed(2) : '';
+      this.data1.accept[0].st_value = obj.st_value != null ? obj.st_value.toFixed(2) : '';
+      this.data1.accept[0].ui_before_max = obj.ui_before_max != null ? obj.ui_before_max.toFixed(2) : '';
+      this.data1.accept[0].ui_max = obj.ui_max != null ? obj.ui_max.toFixed(2) : '';
+      this.data1.accept[0].ui_next_max = obj.ui_next_max != null ? obj.ui_next_max.toFixed(2) : '';
     },
     NUMBER_ROUNDING_TANK_COURSE(obj) {
-      console.warn(obj);
       for (let i = 0; i < obj.length; i++) {
         const min_rl = obj[i].min_rl;
         const h = obj[i].height_of_course_m;
@@ -1470,6 +1462,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_settlement_point = res.data;
+            this.NUMBER_FORMAT_SHELL_SETTLEMENT_POINT(this.data1.shell_settlement_point);
           }
         })
         .catch(error => {
@@ -1478,6 +1471,18 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_FORMAT_SHELL_SETTLEMENT_POINT(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        const maximum_space = obj[i].maximum_space;
+        const cumulative = obj[i].cumulative;
+        const relative_value = obj[i].relative_value;
+
+        this.data1.shell_settlement_point[i].maximum_space = maximum_space.toLocaleString();
+        this.data1.shell_settlement_point[i].cumulative = cumulative.toLocaleString();
+        this.data1.shell_settlement_point[i].relative_value = relative_value.toLocaleString();
+
+      }
     },
     FETCH_SHELL_API() {
       const id_tag = this.$route.params.id_tag;
