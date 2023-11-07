@@ -53,6 +53,7 @@
           edit-cell-template="repair-img-drag-drop"
           :width="320"
         ></DxColumn>
+        
 
         <DxColumn data-field="part" caption="Part" :editor-options="partInputOptions" :width="0">
           <DxRequiredRule />
@@ -171,6 +172,9 @@
               @upload-started="upload_start"
               @value-changed="ON_REPAIR_CHANGE"
             />
+            <div class="delete-image-button" v-on:click="DELETE_IMAGE()">
+              Delete
+            </div>
           </div>
         </template>
 
@@ -519,6 +523,11 @@ export default {
       // this.progressVisible = true;
       this.progressVisible = true;
       this.imageSource = "";
+    },
+    DELETE_IMAGE() {
+      this.imgRepair = ""
+      this.imageSource = ""
+      this.textVisible = true
     }
   },
   watch: {
@@ -546,6 +555,20 @@ export default {
   // padding: 20px;
   display: grid;
   grid-template-columns: 201px calc(100% - 201px);
+}
+
+.delete-image-button {
+  cursor: pointer;
+  display: flex;
+  width: 56.8px;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin-top: 8px;
+  margin-left: 244px;
+  &:hover {
+    background-color: #eee;
+  }
 }
 
 .page-container-hide {
