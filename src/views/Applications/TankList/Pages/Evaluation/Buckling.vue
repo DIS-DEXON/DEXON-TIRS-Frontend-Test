@@ -16,7 +16,7 @@
       <div class="content">
         <div class="table-wrapper">
           <DxDataGrid
-            id="data-table-cml"
+            id="buckling-grid"
             key-expr="id_eval"
             :data-source="bucklingList"
             :element-attr="dataGridAttributes"
@@ -42,30 +42,33 @@
               mode="row"
             />
 
-            <DxColumn data-field="plate" caption="Course - Plate No." />
+            <DxColumn data-field="plate" caption="Course - Plate No." :editor-options="{ placeholder: 'Course - Plate No' }" />
 
             <DxColumn
               data-field="measured_height_m"
               caption="Measured Height (m)"
               format="#,###0.000"
+              :editor-options="{ placeholder: 'Height' }"
             />
 
             <DxColumn
               data-field="shape_dia_mm"
               caption="Theoretical Shape Diameter (mm)"
               format="#,##0.00"
+              :editor-options="{ placeholder: 'Shape Diameter' }"
             />
 
-            <DxColumn data-field="deviation_mm" caption="Deviation (mm)" format="#,##0.00" />
+            <DxColumn data-field="deviation_mm" caption="Deviation (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Deviation' }" />
 
             <DxColumn
               data-field="radious_tolerance"
               caption="Radius Tolerance (mm)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'Radius Tolerance' }"
             />
 
-            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

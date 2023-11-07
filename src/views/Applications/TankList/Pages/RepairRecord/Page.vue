@@ -291,8 +291,8 @@ export default {
       current_view: {},
       is_changed_repair: 0,
       dataRepairTemp: "",
-      partInputOptions: { placeholder: "Enter part ..." },
-      recInputOptions: { placeholder: "Enter recommendation ..." },
+      partInputOptions: { placeholder: "Part" },
+      recInputOptions: { placeholder: "Recommendation" },
 
       //devextreme drag-drop
       isDropZoneActive: false,

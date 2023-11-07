@@ -42,31 +42,33 @@
               mode="row"
             />
 
-            <DxColumn data-field="eval_location" caption="Location" />
+            <DxColumn data-field="eval_location" caption="Location" :editor-options="{ placeholder: 'Location' }" />
 
-            <DxColumn data-field="bottom_tank" caption="Bottom of Tank (mm)" format="#,##0.00" />
+            <DxColumn data-field="bottom_tank" caption="Bottom of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Bottom of Tank' }" />
 
-            <DxColumn data-field="top_tank" caption="Top of Tank (mm)" format="#,##0.00" />
+            <DxColumn data-field="top_tank" caption="Top of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Top of Tank' }" />
 
             <DxColumn
               data-field="deviation"
               caption="Deviation [St](mm)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'Deviation' }"
             />
 
-            <DxColumn data-field="in_out_ward" caption="Result" :allow-editing="false" />
+            <DxColumn data-field="in_out_ward" caption="Result" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
             <DxColumn
               data-field="s_value"
               caption="Plumbness Tolerance [S](mm)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'S Value' }"
             />
 
             <!-- <DxColumn data-field="st" caption="St (mm)" format="#,##0.00" :allow-editing="false" /> -->
 
-            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -214,7 +216,7 @@ export default {
       id_inspection_record: "",
       current_view: "",
       dataGridAttributes: {
-        class: "data-grid-style"
+        class: "data-grid-eval-style"
       },
       pagePanelHiding: false
     };

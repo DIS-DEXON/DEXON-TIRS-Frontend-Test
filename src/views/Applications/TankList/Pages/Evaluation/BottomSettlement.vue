@@ -50,15 +50,15 @@
               mode="row"
             />
 
-            <DxColumn data-field="direction_from" caption="Direction From" />
+            <DxColumn data-field="direction_from" caption="Direction From" :editor-options="{ placeholder: 'Direction From' }" />
 
-            <DxColumn data-field="direction_to" caption="Direction To (Degree)" />
+            <DxColumn data-field="direction_to" caption="Direction To (Degree)" :editor-options="{ placeholder: 'Direction To' }" />
 
             <!-- <DxColumn data-field="degree_from" caption="Degree From  (x°)" format="#,##0.00" /> -->
 
             <!-- <DxColumn data-field="degree_to" caption="Degree To (x°)" format="#,##0.00" /> -->
 
-            <DxColumn data-field="remark" caption="Remark" />
+            <DxColumn data-field="remark" caption="Remark" :editor-options="{ placeholder: 'Remark' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -115,11 +115,11 @@
               mode="row"
             />
 
-            <DxColumn data-field="point_no" caption="Survey Points" />
+            <DxColumn data-field="point_no" caption="Survey Points" :editor-options="{ placeholder: 'Survey Points' }" />
 
-            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00" />
+            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00" :editor-options="{ placeholder: 'Distance' }" />
 
-            <DxColumn data-field="value" caption="Value" format="#,##0.00" />
+            <DxColumn data-field="value" caption="Value" format="#,##0.00" :editor-options="{ placeholder: 'Value' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

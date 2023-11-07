@@ -493,8 +493,8 @@ export default {
       popUpWidth: 0,
       pictureLog: "",
       pagePanelHiding: false,
-      findingInputOptions: { placeholder: "Enter finding ..." },
-      recInputOptions: { placeholder: "Enter recommendation ..." },
+      findingInputOptions: { placeholder: "Finding" },
+      recInputOptions: { placeholder: "Recommendation" },
       is_changed_dwg_1: 0,
       is_changed_dwg_2: 0
     };

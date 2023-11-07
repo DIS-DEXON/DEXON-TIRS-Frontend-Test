@@ -53,12 +53,13 @@
               <!-- <DxToolbar>
               <DxItem location="before" template="table-header" />
               </DxToolbar>-->
-              <DxColumn data-field="circum_no" caption="Circumference No." />
+              <DxColumn data-field="circum_no" caption="Circumference No." :editor-options="{ placeholder: 'No' }" />
 
               <DxColumn
                 data-field="distance_above_bottom"
                 caption="Distance Above Bottom (m)"
                 format="#,###0.000"
+                :editor-options="{ placeholder: 'Distance' }"
               />
 
               <DxColumn type="buttons">
@@ -114,19 +115,21 @@
               <DxItem location="before" template="table-header" />
               <DxItem location="after" template="table-header-button-set" />
             </DxToolbar>
-            <DxColumn data-field="point_no" caption="Point No." :allow-editing="false" />
+            <DxColumn data-field="point_no" caption="Point No." :allow-editing="false" :editor-options="{ placeholder: 'Point No' }" />
 
             <DxColumn
               data-field="angle_degree"
               caption="Angle (degree)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'Angle' }"
             />
 
             <DxColumn
               data-field="measure_value"
               caption="Radius Meassured Value (mm)"
               format="#,##0.00"
+              :editor-options="{ placeholder: 'Radius Meassured Value' }"
             />
 
             <DxColumn
@@ -134,6 +137,7 @@
               caption="Relative to nom. (mm)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'Relative to nom' }"
             />
 
             <DxColumn
@@ -141,9 +145,10 @@
               caption="Radius Tolerance (mm)"
               format="#,##0.00"
               :allow-editing="false"
+              :editor-options="{ placeholder: 'Radius Tolerance' }"
             />
 
-            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" />
+            <DxColumn data-field="result" caption="Inspection Result" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

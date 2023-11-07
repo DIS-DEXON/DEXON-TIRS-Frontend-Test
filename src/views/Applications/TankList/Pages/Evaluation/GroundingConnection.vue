@@ -43,8 +43,8 @@
                 mode="row"
               />
 
-              <DxColumn data-field="ground_no" caption="Grounding connection no" :width="180" />
-              <DxColumn data-field="criteria" caption="Criteria (ohms)" :width="180">
+              <DxColumn data-field="ground_no" caption="Grounding connection no" :width="180" :editor-options="{ placeholder: 'No' }" />
+              <DxColumn data-field="criteria" caption="Criteria (ohms)" :width="180" :editor-options="{ placeholder: 'Criteria' }">
                 <DxLookup
                   :data-source="formSelect.acceptance_criteria"
                   valueExpr="code"
@@ -58,10 +58,11 @@
                 format="#,##0.00"
                 :width="180"
                 alignment="left"
+                :editor-options="{ placeholder: 'Measured' }"
               />
-              <DxColumn data-field="result" caption="Result" :width="180" :allow-editing="false" />
+              <DxColumn data-field="result" caption="Result" :width="180" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
-              <DxColumn data-field="note" caption="Note" />
+              <DxColumn data-field="note" caption="Note" :editor-options="{ placeholder: 'Note' }" />
 
               <DxColumn type="buttons">
                 <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

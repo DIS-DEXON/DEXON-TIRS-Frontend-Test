@@ -47,33 +47,33 @@
         />-->
         <DxColumn
           data-field="inspection_date"
-          caption="Inspection date"
+          caption="Inspection Date"
           data-type="date"
           format="dd MMM yyyy"
           sort-order="desc"
           :width="140"
-          :editor-options="inspDateInputOptions"
+          :editor-options="{ placeholder: 'Select Date' }"
         >
           <DxRequiredRule />
         </DxColumn>
 
         <DxColumn
           data-field="project_no"
-          caption="Project number"
+          caption="Project Number"
           :width="140"
-          :editor-options="projectNoInputOptions"
+          :editor-options="{ placeholder: 'Project Number' }"
         >
           <DxRequiredRule />
         </DxColumn>
 
         <DxColumn
           data-field="report_no"
-          caption="Report number"
+          caption="Report Number"
           :width="140"
-          :editor-options="reportNoInputOptions"
+          :editor-options="{ placeholder: 'Report Number' }"
         />
 
-        <DxColumn data-field="id_campaign" caption="Campaign" :width="100">
+        <DxColumn data-field="id_campaign" caption="Campaign" :width="100" :editor-options="{ placeholder: 'Select Campaign' }">
           <DxLookup
             :data-source="campaigeList"
             value-expr="id_campaign"
@@ -86,31 +86,31 @@
           data-field="name_api_653"
           caption="Name of API 653"
           :width="200"
-          :editor-options="nameInputOptions"
+          :editor-options="{ placeholder: 'Name of API 653' }"
         />
 
         <DxColumn
           data-field="cert_no"
           caption="API 653 cert no"
           :width="200"
-          :editor-options="certInputOptions"
+          :editor-options="{ placeholder: 'API 653 Cert No' }"
         />
 
         <DxColumn
           data-field="name_inspection_engineer"
           caption="Name of inspection engineer"
           :width="200"
-          :editor-options="nameInputOptions"
+          :editor-options="{ placeholder: 'Name of Inspection Engineer' }"
         />
 
         <DxColumn
           data-field="name_ndt_examiner"
-          caption="Name of NDT examiner"
+          caption="Name of NDT Examiner"
           :width="200"
-          :editor-options="nameInputOptions"
+          :editor-options="{ placeholder: 'Name of NDT Examiner' }"
         />
 
-        <DxColumn data-field="remark" caption="Remark">
+        <DxColumn data-field="remark" caption="Remark" :editor-options="{ placeholder: 'Remark' }">
           <!-- <DxFormItem
             :col-span="2"
           />-->
@@ -204,11 +204,6 @@ export default {
       dataGridAttributes: {
         class: "data-grid-custom-style"
       },
-      inspDateInputOptions: { placeholder: "Select date" },
-      projectNoInputOptions: { placeholder: "Enter project no" },
-      reportNoInputOptions: { placeholder: "Enter report no" },
-      nameInputOptions: { placeholder: "Enter name" },
-      certInputOptions: { placeholder: "Enter cert no" }
     };
   },
   computed: {},

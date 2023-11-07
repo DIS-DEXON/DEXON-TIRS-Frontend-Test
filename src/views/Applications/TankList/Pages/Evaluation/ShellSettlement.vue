@@ -54,6 +54,7 @@
                 data-field="location"
                 caption="Evaluation Location at the Tank (Mark on shell map)"
                 :allow-editing="false"
+                :editor-options="{ placeholder: 'Location' }"
               />
 
               <DxColumn
@@ -61,6 +62,7 @@
                 caption="UI Active"
                 :allow-editing="false"
                 :min-width="80"
+                :editor-options="{ placeholder: 'UI Active' }"
               />
 
               <DxColumn
@@ -68,6 +70,7 @@
                 caption="Distance Between Survey Location (mm)"
                 format="#,##0.00"
                 :allow-editing="false"
+                :editor-options="{ placeholder: 'Maximum Space' }"
               />
 
               <DxColumn
@@ -75,12 +78,14 @@
                 caption="Cumulative Distance Around Tank (mm)"
                 format="#,##0.00"
                 :allow-editing="false"
+                :editor-options="{ placeholder: 'Cumulative' }"
               />
 
               <DxColumn
                 data-field="relative_value"
                 caption="Relative Level/Distance Above Datum Point (mm)"
                 format="#,##0.00"
+                :editor-options="{ placeholder: 'Relative Level' }"
               />
 
               <DxColumn type="buttons">

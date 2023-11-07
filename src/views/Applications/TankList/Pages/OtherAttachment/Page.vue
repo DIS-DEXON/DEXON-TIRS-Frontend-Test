@@ -86,7 +86,7 @@
             />
 
             <DxFileUploader
-              select-button-text="Select photo"
+              select-button-text="Select Photo"
               label-text
               accept="image/*"
               upload-mode="useForm"
@@ -202,7 +202,7 @@ export default {
       pagePanelHiding: false,
       current_view: {},
       dataIMGTemp: "",
-      fileNameInputOptions: { placeholder: "Enter text here ..." }
+      fileNameInputOptions: { placeholder: "Description" }
     };
   },
   computed: {

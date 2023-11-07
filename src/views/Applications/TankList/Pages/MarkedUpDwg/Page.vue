@@ -268,7 +268,7 @@ export default {
       current_view: {},
       is_changed_dwg: 0,
       dataDwgTemp: "",
-      fileNameInputOptions: { placeholder: "Enter file name ...", value: "" },
+      fileNameInputOptions: { placeholder: "File Name", value: "" },
 
       //devextreme
       isDropZoneActive: false,
