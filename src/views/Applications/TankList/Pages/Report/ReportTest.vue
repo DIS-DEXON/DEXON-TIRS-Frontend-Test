@@ -267,7 +267,7 @@ export default {
         shell_settlement_1: "",
         shell_settlement_2: "",
         shell_roundness: "",
-        bottom_settlement: {},
+        bottom_settlement: "",
         repair: [{}],
         attachments: [],
         addi_roof: [],
@@ -1545,6 +1545,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.shell_buckling = res.data;
+            this.NUMBER_SHELL_BUCKING(this.data1.shell_buckling);
           }
         })
         .catch(error => {
@@ -1553,6 +1554,17 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_SHELL_BUCKING(obj) {
+      console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        const measured_height_m = obj[i].measured_height_m;
+        const shape_dia_mm = obj[i].shape_dia_mm;
+        const deviation_mm = obj[i].deviation_mm;
+        this.data1.shell_buckling[i].measured_height_m = measured_height_m.toFixed(3);
+        this.data1.shell_buckling[i].shape_dia_mm = shape_dia_mm.toLocaleString();
+        this.data1.shell_buckling[i].deviation_mm = deviation_mm.toLocaleString();
+      }
     },
     FETCH_EVAL_DEVIATION() {
       const id_tag = this.$route.params.id_tag;
@@ -1572,8 +1584,8 @@ export default {
           console.log("EVAL LOCAL DEVIATION :");
           //console.log(res);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.local_deviation = res.data;
+            this.NUMBER_DIVIATION(this.data1.local_deviation);
           }
         })
         .catch(error => {
@@ -1582,6 +1594,19 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_DIVIATION(obj) {
+      console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        const location_1 = obj[i].location_1;
+        const location_2 = obj[i].location_2;
+        const location_3 = obj[i].location_3;
+        const tolerance = obj[i].tolerance;
+        this.data1.local_deviation[i].location_1 = location_1.toFixed(2);
+        this.data1.local_deviation[i].location_2 = location_2.toFixed(2);
+        this.data1.local_deviation[i].location_3 = location_3.toFixed(2);
+        this.data1.local_deviation[i].tolerance = tolerance.toFixed(2);
+      }
     },
     FETCH_EVAL_ROUNDNESS() {
       //const id_tag = this.$route.params.id_tag;
@@ -1600,6 +1625,7 @@ export default {
           if (res.status == 200) {
             //console.log(res.data);
             this.data1.roundness = res.data;
+            this.NUMBER_ROUNDNESS(this.data1.roundness);
           }
         })
         .catch(error => {
@@ -1608,6 +1634,17 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_ROUNDNESS(obj) {
+      console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        const distance_above_bottom = obj[i].distance_above_bottom;
+        const measure_value = obj[i].measure_value;
+        const relative_to_nom = obj[i].relative_to_nom;
+        this.data1.roundness[i].distance_above_bottom = distance_above_bottom.toFixed(3);
+        this.data1.roundness[i].measure_value = measure_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.roundness[i].relative_to_nom = relative_to_nom.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
     },
     FETCH_EVAL_GROUNDING() {
       //const id_tag = this.$route.params.id_tag;
@@ -1686,6 +1723,7 @@ export default {
           if (res.status == 200) {
             console.log(res.data);
             this.data1.eval_bottom = res.data;
+            this.NUMBER_BOTTOM_SET(this.data1.eval_bottom);
           }
         })
         .catch(error => {
@@ -1694,6 +1732,15 @@ export default {
         .finally(() => {
           //this.isLoading = false;
         });
+    },
+    NUMBER_BOTTOM_SET(obj) {
+      console.log(obj);
+      for (let i = 0; i < obj.length; i++) {
+        const distance_m = obj[i].distance_m;
+        const value = obj[i].value;
+        this.data1.eval_bottom[i].distance_m = distance_m.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        this.data1.eval_bottom[i].value = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
     },
     FETCH_PLUMBNESS() {
       const id_tag = this.$route.params.id_tag;
