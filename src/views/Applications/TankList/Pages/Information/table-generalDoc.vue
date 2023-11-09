@@ -166,7 +166,7 @@ export default {
       dataGridAttributes: {
         class: "data-grid-custom-style"
       },
-      fileNameInputOptions: { placeholder: 'Enter file name' },
+      fileNameInputOptions: { placeholder: 'File Name' },
     };
   },
   computed: {

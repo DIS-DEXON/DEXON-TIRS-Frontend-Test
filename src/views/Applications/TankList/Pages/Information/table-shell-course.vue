@@ -30,13 +30,14 @@
         <DxItem location="after" template="table-header-button-set" />
       </DxToolbar>-->
       <!-- <DxColumn data-field="created_time" :width="0" caption /> -->
-      <DxColumn data-field="course_no" caption="Course No" sort-order="asc" :width="80" />
+      <DxColumn data-field="course_no" caption="Course No" sort-order="asc" :width="80" :editor-options="{ placeholder: 'No' }" />
       <DxColumn
         data-field="t_nom_plate_mm"
         caption="Nominal Shell Thk (mm)"
         format="#,##0.00"
         header-cell-template="headerTnom"
         :width="80"
+        :editor-options="{ placeholder: 'tnom' }"
       />
       <DxColumn
         data-field="height_of_course_m"
@@ -44,6 +45,7 @@
         format="#,###0.000"
         header-cell-template="headerHofC"
         :width="80"
+        :editor-options="{ placeholder: 'Height' }"
       />
       <DxColumn
         data-field="height_accumulate_course_m"
@@ -53,7 +55,7 @@
         :allow-editing="false"
         :width="80"
       />
-      <DxColumn data-field="id_material" caption="Tank Material">
+      <DxColumn data-field="id_material" caption="Tank Material" :editor-options="{ placeholder: 'Select Mat' }">
         <DxLookup :data-source="matList" value-expr="id_material" display-expr="mat_spec" />
       </DxColumn>
       <DxColumn
