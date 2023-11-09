@@ -132,8 +132,8 @@
               id="dropzone-external"
               class="flex-box"
               :class="[isDropZoneActive
-        ? 'dx-theme-accent-as-border-color dropzone-active'
-        : 'dx-theme-border-color']"
+                ? 'dx-theme-accent-as-border-color dropzone-active'
+                : 'dx-theme-border-color']"
             >
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
               <img

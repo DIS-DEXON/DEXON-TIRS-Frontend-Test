@@ -170,31 +170,40 @@
 
               <template #dwg-img-editor1="{ data }">
                 <div>
-                  <img
-                    :src="baseURL + data.value"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg1 != '' && isInitEdit_1 == 0"
-                  />
-                  <img
-                    :src="imgDwg1"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg1 != '' && isInitEdit_1 == 1"
-                  />
-                  <img
-                    src="http://tmt-solution.com/public/image-empty.png"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg1 == ''"
-                  />
-                  <div style="position:relative;">
+                  <div
+                    id="dropzone-external"
+                    class="flex-box"
+                    :class="['dx-theme-border-color']"
+                  >
+                    <img
+                      :src="baseURL + data.value"
+                      width="300"
+                      height="200"
+                      v-if="imgDwg1 != '' && isInitEdit_1 == 0"
+                    />
+                    <img
+                      :src="imgDwg1"
+                      width="300"
+                      height="200"
+                      v-if="imgDwg1 != '' && isInitEdit_1 == 1"
+                    />
+                    <div id="dropzone-text" class="flex-box" v-if="imgDwg1 == ''">
+                      <span>Drag & Drop the file</span>
+                      <br>
+                      <span>…or click to browse for a file.</span>
+                      <br>
+                      <i class="las la-file-import" style="font-size: 32px;"/>
+                    </div>
+                  </div>
+                  <div style="position:relative; height: 50px;">
                     <DxFileUploader
-                      select-button-text="Select photo"
-                      label-text
+                      id="file-uploader"
+                      dialog-trigger="#dropzone-external"
+                      drop-zone="#dropzone-external"
+                      :multiple="false"
                       accept="image/*"
-                      upload-mode="useForm"
-                      :showFileList="false"
+                      upload-mode="instantly"
+                      :visible="false"
                       @value-changed="ON_DWG_CHANGE_1"
                       style="position:absolute;"
                     />
@@ -205,41 +214,48 @@
                       type="normal"
                       styling-mode="contained"
                       @click="DEL_PIC(1)"
-                      style="position:absolute; left:130px;"
+                      style="position:absolute; left:0px; top: 8px;"
                     />
                   </div>
                 </div>
               </template>
+              
               <template #dwg-img-editor2="{ data }">
                 <div>
-                  <img
-                    :src="baseURL + data.value"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg2 != '' && isInitEdit_2 == 0"
-                  />
-
-                  <img
-                    :src="imgDwg2"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg2 != '' && isInitEdit_2 == 1"
-                  />
-
-                  <img
-                    src="http://tmt-solution.com/public/image-empty.png"
-                    width="300"
-                    height="200"
-                    v-if="imgDwg2 == ''"
-                  />
-
-                  <div style="position:relative; height:50px;">
+                  <div
+                    id="dropzone-external"
+                    class="flex-box"
+                    :class="['dx-theme-border-color']"
+                  >
+                    <img
+                      :src="baseURL + data.value"
+                      width="300"
+                      height="200"
+                      v-if="imgDwg2 != '' && isInitEdit_2 == 0"
+                    />
+                    <img
+                      :src="imgDwg2"
+                      width="300"
+                      height="200"
+                      v-if="imgDwg2 != '' && isInitEdit_2 == 1"
+                    />
+                    <div id="dropzone-text" class="flex-box" v-if="imgDwg2 == ''">
+                      <span>Drag & Drop the file</span>
+                      <br>
+                      <span>…or click to browse for a file.</span>
+                      <br>
+                      <i class="las la-file-import" style="font-size: 32px;"/>
+                    </div>
+                  </div>
+                  <div style="position:relative; height: 50px;">
                     <DxFileUploader
-                      select-button-text="Select photo"
-                      label-text
+                      id="file-uploader"
+                      dialog-trigger="#dropzone-external"
+                      drop-zone="#dropzone-external"
+                      :multiple="false"
                       accept="image/*"
-                      upload-mode="useForm"
-                      :showFileList="false"
+                      upload-mode="instantly"
+                      :visible="false"
                       @value-changed="ON_DWG_CHANGE_2"
                       style="position:absolute;"
                     />
@@ -250,7 +266,7 @@
                       type="normal"
                       styling-mode="contained"
                       @click="DEL_PIC(2)"
-                      style="position:absolute; left:130px;"
+                      style="position:absolute; left:0px; top: 8px;"
                     />
                   </div>
                 </div>
@@ -806,5 +822,16 @@ hr {
 .vue-tabs-chrome .tabs-footer {
   height: 0;
   background-color: #fff;
+}
+
+#dropzone-external {
+  width: 300px;
+  height: 200px;
+  background-color: rgba(220, 220, 220, 1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
