@@ -42,45 +42,47 @@
             mode="row"
           />
 
-          <DxColumn data-field="plate_no" caption="Plate no" :width="75" />
+          <DxColumn data-field="plate_no" caption="Plate no" :width="70" :editor-options="{ placeholder: 'Plate No' }" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" :width="75" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" :width="70" :editor-options="{ placeholder: 'tnom (mm)' }" />
 
-          <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" :width="75" />
+          <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" :width="70" :editor-options="{ placeholder: 'Metal Loss' }" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" :width="75" />
+          <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" :width="70" :editor-options="{ placeholder: 'Metal Loss' }" />
 
           <DxColumn
             data-field="lowest_remaining_thk_top"
             caption="Remaining thk top side (mm)"
             :allow-editing="false"
-            :width="75"
+            :width="70"
+            :editor-options="{ placeholder: 'Thickness' }"
           />
 
           <DxColumn
             data-field="lowest_remaining_thk_bottom"
             caption="Remaining thk bottom side (mm)"
             :allow-editing="false"
-            :width="75"
+            :width="70"
+            :editor-options="{ placeholder: 'Thickness' }"
           />
 
-          <DxColumn data-field="defect_x" caption="X (mm)" :width="75" />
+          <DxColumn data-field="defect_x" caption="X (mm)" :width="75" :editor-options="{ placeholder: 'X' }" />
 
-          <DxColumn data-field="defect_y" caption="Y (mm)" :width="75" />
+          <DxColumn data-field="defect_y" caption="Y (mm)" :width="75" :editor-options="{ placeholder: 'X' }" />
 
-          <DxColumn data-field="type_of_repair" caption="Type of repair">
+          <DxColumn data-field="type_of_repair" caption="Type of repair" :editor-options="{ placeholder: 'Select' }">
             <DxLookup :data-source="typeOfRepair" display-expr="code" value-expr="code" />
           </DxColumn>
 
-          <DxColumn data-field="repair_width" caption="Width (mm)" :width="75" />
+          <DxColumn data-field="repair_width" caption="Width (mm)" :width="70" :editor-options="{ placeholder: 'Width' }" />
 
-          <DxColumn data-field="repair_length" caption="Length (mm)" :width="75" />
+          <DxColumn data-field="repair_length" caption="Length (mm)" :width="70" :editor-options="{ placeholder: 'Length' }" />
 
-          <DxColumn data-field="repair_thick" caption="Thick (mm)" :width="75" />
+          <DxColumn data-field="repair_thick" caption="Thick (mm)" :width="70" :editor-options="{ placeholder: 'Thick' }" />
 
-          <DxColumn data-field="repair_radius" caption="Radius (mm)" :width="75" />
+          <DxColumn data-field="repair_radius" caption="Radius (mm)" :width="70" :editor-options="{ placeholder: 'Radius' }" />
 
-          <DxColumn data-field="repair_status" caption="Repair status" :width="75" >
+          <DxColumn data-field="repair_status" caption="Repair status" :width="70" :editor-options="{ placeholder: 'Select' }" >
             <DxLookup :data-source="repairStatus" display-expr="code" value-expr="code" />
           </DxColumn>
 
@@ -225,7 +227,7 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="list-page"
         style="margin-top:20px"
         v-if="this.dataMRT == null && this.id_inspection_record != ''"
@@ -236,9 +238,9 @@
             <span>Create New MRT Result</span>
           </v-ons-toolbar-button>
         </div>
-      </div>
+      </div> -->
 
-      <div class="app-instruction" style="margin-top:20px">
+      <!-- <div class="app-instruction" style="margin-top:20px">
         <appInstruction
           title="Instruction"
           desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
@@ -262,7 +264,7 @@
             </li>
           </ol>
         </appInstruction>
-      </div>
+      </div> -->
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
@@ -277,7 +279,7 @@ import moment from "moment";
 import "devextreme/dist/css/dx.light.css";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
-import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
+//import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
 import PageLoading from "@/components/app-structures/app-loading.vue";
 
 //DataGrid
@@ -312,7 +314,7 @@ export default {
     //VueTabsChrome,
     SelectInspRecord,
     PageLoading,
-    appInstruction,
+    //appInstruction,
     DxDataGrid,
     DxSearchPanel,
     DxPaging,
