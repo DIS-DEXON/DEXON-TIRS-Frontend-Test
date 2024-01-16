@@ -27,9 +27,9 @@
           <DxForm label-location="top">
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="inspection_date" :col-span="1" />
+              <DxItem data-field="id_campaign" :col-span="1" />
               <DxItem data-field="project_no" :col-span="1" />
               <DxItem data-field="report_no" :col-span="1" />
-              <DxItem data-field="id_campaign" :col-span="1" />
               <DxItem data-field="name_api_653" :col-span="1" />
               <DxItem data-field="cert_no" :col-span="1" />
               <DxItem data-field="name_inspection_engineer" :col-span="1" />
@@ -57,22 +57,6 @@
           <DxRequiredRule />
         </DxColumn>
 
-        <DxColumn
-          data-field="project_no"
-          caption="Project Number"
-          :width="140"
-          :editor-options="{ placeholder: 'Project Number' }"
-        >
-          <DxRequiredRule />
-        </DxColumn>
-
-        <DxColumn
-          data-field="report_no"
-          caption="Report Number"
-          :width="140"
-          :editor-options="{ placeholder: 'Report Number' }"
-        />
-
         <DxColumn data-field="id_campaign" caption="Campaign" :width="100" :editor-options="{ placeholder: 'Select Campaign' }">
           <DxLookup
             :data-source="campaigeList"
@@ -81,6 +65,21 @@
           />
           <DxRequiredRule />
         </DxColumn>
+
+        <DxColumn
+          data-field="project_no"
+          caption="Project Number"
+          :width="140"
+          :editor-options="{ placeholder: 'Project Number' }"
+        >
+        </DxColumn>
+
+        <DxColumn
+          data-field="report_no"
+          caption="Report Number"
+          :width="140"
+          :editor-options="{ placeholder: 'Report Number' }"
+        />
 
         <DxColumn
           data-field="name_api_653"

@@ -4,7 +4,7 @@
       <vue-tabs-chrome v-model="tabCurrent" :tabs="tabs" />
     </div>
     <div class="page-section info-tab-display" v-if="tabCurrent == 'info'">
-      <div class="report-sheet report-sheet-info" style="grid-row: span 2">
+      <div class="report-sheet report-sheet-info" style="grid-row: span 2;">
         <div class="report-container">
           <div class="sheet-body" style="grid-template-columns: 50% 50%">
             <div class="section-label" style="grid-column: span 2">
