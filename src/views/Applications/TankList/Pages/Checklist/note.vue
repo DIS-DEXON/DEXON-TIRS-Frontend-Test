@@ -122,7 +122,7 @@ export default {
         axios(map).then((res) => {
           if (res.status == 200) {
             this.$emit("closePopup")
-            this.$emit("refresh")
+            this.$emit("refresh", this.item.id_insp_record)
             this.$ons.notification.alert("Save Successfully.")
             return
           }
