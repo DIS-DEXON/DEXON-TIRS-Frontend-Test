@@ -388,6 +388,7 @@ export default {
       );
       //console.log(request);
       this.theTemplate = await request.blob();
+      return this.theTemplate;
     },
     async createILASTDocx() {
       console.log("CREATED DOCX: ");
@@ -492,17 +493,15 @@ export default {
 
         // 2. read json data
         this.status = "Parsing data...";
-        // const jsonData = this.data1;
-        // const data = JSON.parse(jsonData);
         const data = this.data1;
-        console.warn(data);
+        console.log(data);
         console.log("2");
 
         // 3. process the template
         this.status = "Creating document...";
         const handler = new TemplateHandler();
         console.log("3.1");
-        let docx = await handler.process(this.theTemplate, data);
+        let docx = await handler.process(templateFile, data);
         console.log("3.2:" + docx);
 
         // 4. save output
@@ -1175,16 +1174,14 @@ export default {
         });
     },
     FETCH_CHECKLIST_GENERIC() {
+      const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
       axios({
-        method: "post",
-        url: "chk-generic/get-chkgeneric-by-insp-id",
+        method: "get",
+        url: "chk-generic/get-chkgeneric-by-insp-id?id_tag=" + id_tag + "&id_insp_record=" + id_insp,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_insp_record: id_insp
-        }
       })
         .then(res => {
           console.log("checklist generic :");
@@ -1302,7 +1299,7 @@ export default {
           console.log("tank info:");
           //console.log(res);
           if (res.status == 200) {
-            //console.log(res.data);
+            console.log(res.data);
             //this.data1 = res.data[0];
             this.data1.company_name = res.data[0].company_name;
             this.data1.overview_img_path = res.data[0].overview_img_path;
@@ -2781,11 +2778,14 @@ export default {
     async getImgTankInfo() {
       if (this.data1.overview_img_path != null) {
         console.warn("TANK IMAGE");
-        const response = await fetch(
-          encodeURI(this.baseURL + this.data1.overview_img_path)
+        const response = await axios.get(
+          encodeURI(this.baseURL + this.data1.overview_img_path),
+          {
+            responseType: "arraybuffer"
+          }
         );
-        const imageData = await response.arrayBuffer();
-        const mimeType = response.headers.get("content-type");
+        const imageData = response.data;
+        const mimeType = response.headers["content-type"];
         const imageBlob = new Blob([imageData], { type: mimeType });
         const imageObject = {
           _type: "image",
