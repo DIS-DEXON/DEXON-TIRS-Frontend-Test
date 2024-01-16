@@ -174,7 +174,7 @@
               </label>-->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.tank_capacity_litre"
               placeholder="Capacity (Litre)"
             />
@@ -186,7 +186,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.tank_height_m" placeholder="Tank Height (m)" />
+            <input type="number" v-model="formData.tank_height_m" placeholder="Tank Height (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -195,7 +195,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
+            <input type="number" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -204,7 +204,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.max_liquid_level_m" placeholder="Liquid Level (m)" />
+            <input type="number" v-model="formData.max_liquid_level_m" placeholder="Liquid Level (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -212,7 +212,7 @@
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.bottom_nominal_thk_mm"
               placeholder="Thickness (mm)"
             />
@@ -223,7 +223,7 @@
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.annular_nominal_thk_mm"
               placeholder="Thickness (mm)"
             />
@@ -233,7 +233,7 @@
               <p class="label">Roof Nominal Thk. (mm):</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
-            <input type="text" v-model="formData.roof_nominal_thk_mm" placeholder="Thickness (mm)" />
+            <input type="number" v-model="formData.roof_nominal_thk_mm" placeholder="Thickness (mm)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -242,7 +242,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.diameter_m" placeholder="Diameter (m)" />
+            <input type="number" v-model="formData.diameter_m" placeholder="Diameter (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -250,7 +250,7 @@
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.no_of_shell_course"
               placeholder="No. of Shell Course"
             />
@@ -330,7 +330,7 @@
               </label>-->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.insulation_thk_mm"
               placeholder="Insulation Thickness (mm)"
             />
@@ -342,7 +342,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.sg_of_product" placeholder="Specific Gravity" />
+            <input type="number" v-model="formData.sg_of_product" placeholder="Specific Gravity" />
           </div>
           <div class="input-set">
             <div class="label-box">
@@ -368,7 +368,7 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Design Pressure Coil):</p>
+              <p class="label">Design Pressure Coil:</p>
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
@@ -394,7 +394,7 @@
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
-              type="text"
+              type="number"
               v-model="formData.corrosion_allowance"
               placeholder="Corrosion Allowance (mm)"
             />
