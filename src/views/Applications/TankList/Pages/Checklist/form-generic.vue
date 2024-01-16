@@ -166,7 +166,7 @@
                 <v-ons-toolbar-button
                   class="item"
                   style="padding:0;width:20px"
-                  @click="TOGGLE_POPUP_NOTE(item3.result[0].id)"
+                  @click="TOGGLE_POPUP_NOTE(item3.result[0])"
                 >
                   <i class="fa-solid fa-pen-to-square" style="color:rgb(20,14,64);font-size:14px"></i>
                 </v-ons-toolbar-button>
@@ -200,7 +200,7 @@
       :chk_type="'generic'"
       @close-popup="TOGGLE_POPUP"
     />
-    <note v-if="this.isNoteOpen" :url="'/chk-generic/edit-chkgeneric-note?id='" :id="note_id" @closePopup="TOGGLE_POPUP_NOTE" />
+    <note v-if="this.isNoteOpen" :url="'/chk-generic/edit-chkgeneric-note?id='" @refresh="refresh" :item="note_item" :id="note_id" @closePopup="TOGGLE_POPUP_NOTE" />
   </div>
 </template>
 
@@ -217,6 +217,7 @@ export default {
   },
   props: {
     checklistInfo: Array,
+    refresh: Function,
     record: Object
   },
   data() {
@@ -225,6 +226,7 @@ export default {
       isPopupOpen: false,
       isNoteOpen: false,
       note_id: 0,
+      note_item: null,
       formData: {
         id: null,
         result_desc: null,
@@ -300,7 +302,13 @@ export default {
       this.isPopupOpen = !this.isPopupOpen;
     },
     TOGGLE_POPUP_NOTE(item) {
-      this.note_id = item || 0
+      if (item) {
+        this.note_id = item.id
+        this.note_item = item
+      } else {
+        this.note_id = 0
+        this.note_item = null
+      }
       this.isNoteOpen = !this.isNoteOpen;
       // console.log(this.note_id)
     }

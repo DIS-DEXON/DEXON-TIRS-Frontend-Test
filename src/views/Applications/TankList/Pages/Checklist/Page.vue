@@ -17,6 +17,7 @@
         <div v-if="this.checklistList_existance.general == true">
           <checklistGeneric
             :checklistInfo="this.checklistList.generic"
+            :refresh="FETCH_CHECKLIST_GENERIC"
             :record="this.current_view"
             v-if="this.checklistList.generic.length > 0"
           />
@@ -25,6 +26,7 @@
           <checklistIlastExt
             :checklistInfo="this.checklistList.ilast_ext"
             :record="this.current_view"
+            :refresh="FETCH_CHECKLIST_ILAST_EXT"
             v-if="this.checklistList.ilast_ext.length > 0"
           />
         </div>
@@ -32,14 +34,15 @@
           <checklistIlastInt
             :checklistInfo="this.checklistList.ilast_int"
             :record="this.current_view"
+            :refresh="FETCH_CHECKLIST_ILAST_INT"
             v-if="this.checklistList.ilast_int.length > 0"
           />
         </div>
         <div v-if="this.checklistList_existance.by_law_i == true">
-          <checklistByLawI :checklistInfo="this.chk_bylaw_i" :record="this.current_view" />
+          <checklistByLawI :checklistInfo="this.chk_bylaw_i" :record="this.current_view" :refresh="FETCH_CHECKLIST_BY_LAW" />
         </div>
         <div v-if="this.checklistList_existance.by_law_ii == true">
-          <checklistByLawII :checklistInfo="this.chk_bylaw_ii" :record="this.current_view" />
+          <checklistByLawII :checklistInfo="this.chk_bylaw_ii" :record="this.current_view" :refresh="FETCH_CHECKLIST_BY_LAW_2"/>
         </div>
         <div
           class="center-box-wrapper"

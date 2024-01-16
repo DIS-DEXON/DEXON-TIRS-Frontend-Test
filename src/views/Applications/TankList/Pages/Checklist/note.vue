@@ -70,7 +70,8 @@ export default {
   },
   props: {
     id: Number,
-    url: String
+    url: String,
+    item: Object
   },
   mounted() {
     // signature();
@@ -88,6 +89,11 @@ export default {
         throttle: 0,
         backgroundColor: "white"
       })
+      if (this.item.note_path) {
+        const m = this.$store.state.mode
+        const url = this.$store.state.modeURL[m]
+        sign.fromDataURL(url + this.item.note_path, {ratio: 1})
+      }
       return sign
     },
     CLEAR_CANVAS() {
@@ -116,6 +122,7 @@ export default {
         axios(map).then((res) => {
           if (res.status == 200) {
             this.$emit("closePopup")
+            this.$emit("refresh")
             this.$ons.notification.alert("Save Successfully.")
             return
           }
