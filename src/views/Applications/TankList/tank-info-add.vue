@@ -392,13 +392,32 @@
           </div>
           <div class="input-set">
             <div class="label-box">
-              <p class="label">Corrosion Allowance (mm):</p>
-              <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
+              <p class="label">Shell Corrosion Allowance (mm):</p>
             </div>
             <input
               type="number"
-              v-model="formData.corrosion_allowance"
-              placeholder="Corrosion Allowance (mm)"
+              v-model="formData.corrosion_allowance_shell"
+              placeholder="Shell Corrosion Allowance (mm)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Bottom Corrosion Allowance (mm):</p>
+            </div>
+            <input
+              type="number"
+              v-model="formData.corrosion_allowance_bottom"
+              placeholder="Bottom Corrosion Allowance (mm)"
+            />
+          </div>
+          <div class="input-set">
+            <div class="label-box">
+              <p class="label">Roof Corrosion Allowance (mm):</p>
+            </div>
+            <input
+              type="number"
+              v-model="formData.corrosion_allowance_roof"
+              placeholder="Roof Corrosion Allowance (mm)"
             />
           </div>
           <div class="input-set" style="grid-column: span 3">
