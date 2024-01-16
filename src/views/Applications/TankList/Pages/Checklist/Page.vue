@@ -211,13 +211,10 @@ export default {
         this.isLoading = true;
         axios({
           method: "post",
-          url: "chk-generic/add-all-chkgeneric",
+          url: "chk-generic/add-all-chkgeneric?id_tag=" + this.id_tag + "&id_insp=" + this.id_inspection_record,
           headers: {
             Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
           },
-          data: {
-            id_insp_record: this.id_inspection_record
-          }
         })
           .then(res => {
             if (res.status == 200) {
@@ -522,14 +519,11 @@ export default {
       console.log("FECTH INSPECTION RECORD: " + id_inspection_record);
       this.isLoading = true;
       axios({
-        method: "post",
-        url: "chk-generic/get-chkgeneric-by-insp-id",
+        method: "get",
+        url: "chk-generic/get-chkgeneric-by-insp-id?id_tag=" + this.id_tag + "&id_insp_record=" + this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_insp_record: id_inspection_record
-        }
       })
         .then(res => {
           console.log("FETCH_CHECKLIST_GENERAL: id = " + id_inspection_record);
