@@ -53,12 +53,13 @@
               <!-- <DxToolbar>
               <DxItem location="before" template="table-header" />
               </DxToolbar>-->
-              <DxColumn data-field="circum_no" caption="Circumference No." :editor-options="{ placeholder: 'No' }" />
+              <DxColumn data-field="circum_no" data-type="number" caption="Circumference No." :editor-options="{ placeholder: 'No' }" />
 
               <DxColumn
                 data-field="distance_above_bottom"
                 caption="Distance Above Bottom (m)"
                 format="#,###0.000"
+                data-type="number"
                 :editor-options="{ placeholder: 'Distance' }"
               />
 
@@ -129,6 +130,7 @@
               data-field="measure_value"
               caption="Radius Meassured Value (mm)"
               format="#,##0.00"
+              data-type="number"
               :editor-options="{ placeholder: 'Radius Meassured Value' }"
             />
 

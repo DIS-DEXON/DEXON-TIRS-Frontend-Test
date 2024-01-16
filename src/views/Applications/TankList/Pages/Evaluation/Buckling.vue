@@ -48,6 +48,7 @@
               data-field="measured_height_m"
               caption="Measured Height (m)"
               format="#,###0.000"
+              data-type="number"
               :editor-options="{ placeholder: 'Height' }"
             />
 
@@ -55,6 +56,7 @@
               data-field="shape_dia_mm"
               caption="Theoretical Shape Diameter (mm)"
               format="#,##0.00"
+              data-type="number"
               :editor-options="{ placeholder: 'Shape Diameter' }"
             />
 

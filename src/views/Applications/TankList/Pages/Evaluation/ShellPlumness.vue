@@ -42,11 +42,11 @@
               mode="row"
             />
 
-            <DxColumn data-field="eval_location" caption="Location" :editor-options="{ placeholder: 'Location' }" />
+            <DxColumn data-type="number" data-field="eval_location" caption="Location" :editor-options="{ placeholder: 'Location' }" />
 
-            <DxColumn data-field="bottom_tank" caption="Bottom of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Bottom of Tank' }" />
+            <DxColumn data-type="number" data-field="bottom_tank" caption="Bottom of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Bottom of Tank' }" />
 
-            <DxColumn data-field="top_tank" caption="Top of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Top of Tank' }" />
+            <DxColumn data-type="number" data-field="top_tank" caption="Top of Tank (mm)" format="#,##0.00" :editor-options="{ placeholder: 'Top of Tank' }" />
 
             <DxColumn
               data-field="deviation"

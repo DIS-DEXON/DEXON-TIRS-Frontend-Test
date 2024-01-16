@@ -115,11 +115,11 @@
               mode="row"
             />
 
-            <DxColumn data-field="point_no" caption="Survey Points" :editor-options="{ placeholder: 'Survey Points' }" />
+            <DxColumn data-field="point_no" data-type="number" caption="Survey Points" :editor-options="{ placeholder: 'Survey Points' }" />
 
-            <DxColumn data-field="distance_m" caption="Distance (m)" format="#,##0.00" :editor-options="{ placeholder: 'Distance' }" />
+            <DxColumn data-field="distance_m" data-type="number" caption="Distance (m)" format="#,##0.00" :editor-options="{ placeholder: 'Distance' }" />
 
-            <DxColumn data-field="value" caption="Value" format="#,##0.00" :editor-options="{ placeholder: 'Value' }" />
+            <DxColumn data-field="value" data-type="number" caption="Value" format="#,##0.00" :editor-options="{ placeholder: 'Value' }" />
 
             <DxColumn type="buttons">
               <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->

@@ -13,7 +13,7 @@
                 <i class="las la-asterisk"></i>
               </label>
             </div>
-            <input type="text" v-model="formData.points" placeholder="Amount of point" />
+            <input type="number" v-model="formData.points" placeholder="Amount of point" />
           </div>
         </div>
       </div>

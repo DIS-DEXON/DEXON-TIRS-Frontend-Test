@@ -44,7 +44,7 @@
               />
 
               <DxColumn data-field="ground_no" caption="Grounding connection no" :width="180" :editor-options="{ placeholder: 'No' }" />
-              <DxColumn data-field="criteria" caption="Criteria (ohms)" :width="180" :editor-options="{ placeholder: 'Criteria' }">
+              <DxColumn data-field="criteria" data-type="number" caption="Criteria (ohms)" :width="180" :editor-options="{ placeholder: 'Criteria' }">
                 <DxLookup
                   :data-source="formSelect.acceptance_criteria"
                   valueExpr="code"
@@ -58,6 +58,7 @@
                 format="#,##0.00"
                 :width="180"
                 alignment="left"
+                data-type="number"
                 :editor-options="{ placeholder: 'Measured' }"
               />
               <DxColumn data-field="result" caption="Result" :width="180" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />

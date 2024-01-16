@@ -40,18 +40,18 @@
           mode="row"
         />
 
-        <DxColumn data-field="item_no" caption="No." :editor-options="{ placeholder: 'No' }" />
+        <DxColumn data-type="number" data-field="item_no" caption="No." :editor-options="{ placeholder: 'No' }" />
 
         <DxColumn data-field="deviation_type" caption="Deviation type" :editor-options="{ placeholder: 'Select Type' }">
           <DxLookup :data-source="deviationType" />
         </DxColumn>
 
-        <DxColumn data-field="joint_no" caption="Joint No." :editor-options="{ placeholder: 'Joint No' }" />
+        <DxColumn data-field="joint_no" data-type="number"  caption="Joint No." :editor-options="{ placeholder: 'Joint No' }" />
 
-        <DxColumn data-field="location_1" caption="Location 1" :editor-options="{ placeholder: 'Location 1' }" />
-        <DxColumn data-field="location_2" caption="Location 2" :editor-options="{ placeholder: 'Location 2' }" />
-        <DxColumn data-field="location_3" caption="Location 3" :editor-options="{ placeholder: 'Location 3' }" />
-        <DxColumn data-field="tolerance" caption="Tolerance (mm)" :allow-editing="false" :editor-options="{ placeholder: 'Tolerance' }" />
+        <DxColumn data-field="location_1" data-type="number" format="#,##0.00" caption="Location 1" :editor-options="{ placeholder: 'Location 1' }" />
+        <DxColumn data-field="location_2" data-type="number" format="#,##0.00" caption="Location 2" :editor-options="{ placeholder: 'Location 2' }" />
+        <DxColumn data-field="location_3" data-type="number" format="#,##0.00" caption="Location 3" :editor-options="{ placeholder: 'Location 3' }" />
+        <DxColumn data-field="tolerance" caption="Tolerance (mm)" format="#,##0.00" :allow-editing="false" :editor-options="{ placeholder: 'Tolerance' }" />
 
         <DxColumn data-field="result" caption="Inspection result" :allow-editing="false" :editor-options="{ placeholder: 'Result' }" />
 
