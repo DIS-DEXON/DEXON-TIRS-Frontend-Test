@@ -354,8 +354,16 @@ export default {
           value: this.infoTank.inservice_age_of_tank_yrs
         },
         {
-          desc: "Corrosion Allowance (mm)",
-          value: this.infoTank.corrosion_allowance
+          desc: "Shell Corrosion Allowance (mm)",
+          value: this.infoTank.corrosion_allowance_shell
+        },
+        {
+          desc: "Bottom Corrosion Allowance (mm)",
+          value: this.infoTank.corrosion_allowance_bottom
+        },
+        {
+          desc: "Roof Corrosion Allowance (mm)",
+          value: this.infoTank.corrosion_allowance_roof
         },
         {
           desc: ""
