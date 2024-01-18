@@ -57,7 +57,7 @@
 import axios from "/axios.js";
 
 //JS
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 
 //UI
 import ViewLayout from "@/layouts/non-sidebar-layout.vue";
@@ -89,8 +89,8 @@ export default {
         if (this.formData.password) {
           this.isLoading = true;
           setTimeout(() => {
-            var password = sha256(this.formData.password);
             var username = this.formData.username.toLowerCase();
+            var password = this.formData.password;
 
             axios({
               method: "post",

@@ -26,10 +26,9 @@
               <!-- <label class="star-label"><i class="las la-asterisk"></i></label> -->
             </div>
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               v-model="formData.password"
-              disabled
             />
           </div>
 
@@ -175,7 +174,7 @@ import DxSelectBox from "devextreme-vue/select-box";
 import contentLoading from "@/components/app-structures/app-content-loading.vue";
 
 //JS
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 
 export default {
   name: "popup-add-account",
@@ -189,7 +188,6 @@ export default {
   data() {
     return {
       formData: {
-        password: "dex0n7845",
         is_active: true,
         is_dexon: true,
       },
@@ -210,12 +208,12 @@ export default {
         this.formData.emp_no &&
         this.formData.id_department &&
         this.formData.id_position &&
-        this.formData.id_role
+        this.formData.id_role && 
+        this.formData.password 
       ) {
         this.$ons.notification.confirm("Confirm save?").then((res) => {
           if (res == 1) {
             const data = this.formData;
-            data.password = sha256(data.password);
             console.log(data);
             axios({
               method: "post",
