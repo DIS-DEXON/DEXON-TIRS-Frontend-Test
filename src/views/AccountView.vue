@@ -159,7 +159,7 @@
           <div class="input-set" v-if="isEdit.account == true">
             <p class="label">New Password:</p>
             <input
-              placeholder="New Password"
+              placeholder="New Password (Least 8 characters long)"
               v-model="formData.newPassword"
               type="password"
             />
@@ -170,7 +170,7 @@
           >
             <p class="label">Confirm Password:</p>
             <input
-              placeholder="Confirm Password"
+              placeholder="Confirm Password (Least 8 characters long)"
               v-model="formData.confirmPassword"
               v-if="isEdit.account == true"
               type="password"
@@ -197,7 +197,7 @@
 <script>
 //JS
 import clone from "just-clone";
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 // import moment from "moment";
 
 //API
@@ -399,10 +399,9 @@ export default {
     },
     SAVE_EDIT_ACCOUNT() {
       if (this.formData.oldPassword) {
-        if (this.formData.newPassword) {
-          if (this.formData.confirmPassword) {
+        if (this.formData.newPassword && this.formData.newPassword.length >= 8) {
+          if (this.formData.confirmPassword && this.formData.newPassword.length >= 8) {
             if (this.formData.newPassword == this.formData.confirmPassword) {
-              if (sha256(this.formData.oldPassword) == this.user.password) {
                 this.$ons.notification.confirm("Confirm Save").then((res) => {
                   if (res == 1) {
                     axios({
@@ -414,10 +413,12 @@ export default {
                       },
                       data: {
                         id_account: this.formData.id_account,
-                        password: sha256(this.formData.confirmPassword),
+                        password: this.formData.oldPassword,
+                        new_password: this.formData.confirmPassword
                       },
                     })
                       .then((res) => {
+                        console.log(res);
                         if (res.status == 200 && res.data) {
                           this.$ons.notification
                             .alert("Account password changed")
@@ -430,30 +431,24 @@ export default {
                         }
                       })
                       .catch((error) => {
+                        console.log(error);
                         this.$ons.notification.alert(
-                          error.code +
-                            " " +
-                            error.response.status +
-                            " " +
-                            error.message
+                          error.response.data
                         );
                       })
                       .finally(() => {});
                   }
                 });
-              } else {
-                this.$ons.notification.alert("Old password is incorrect.");
-              }
             } else {
               this.$ons.notification.alert("Confirm password mismatch.");
             }
           } else {
             this.$ons.notification.alert(
-              '"Confirm Password" field cannot be empty.'
+              '"Confirm Password" field cannot be empty or must be at least 8 characters long.'
             );
           }
         } else {
-          this.$ons.notification.alert('"Password" field cannot be empty.');
+          this.$ons.notification.alert('"Password" field cannot be empty or must be at least 8 characters long.');
         }
       } else {
         this.$ons.notification.alert('"Old Password" field cannot be empty.');
