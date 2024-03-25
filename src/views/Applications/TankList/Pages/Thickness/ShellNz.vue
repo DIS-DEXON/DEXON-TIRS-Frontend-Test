@@ -170,15 +170,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="shellnz_no" caption="Nozzle no." sort-order="asc" :width="90" />
+          <DxColumn data-field="shellnz_no" caption="Nozzle no." sort-order="asc" :width="90" :editor-options="{ 'placeholder': 'Nozzle no' }" />
 
-          <DxColumn data-field="nps" caption="DIA (in)" :width="80" />
+          <DxColumn data-field="nps" caption="NPS" :width="80" :editor-options="{ 'placeholder': 'NPS' }" />
 
-          <DxColumn data-field="material_type" caption="Material type" :width="90">
+          <DxColumn data-field="material_type" caption="Material type" :width="100" :editor-options="{ 'placeholder': 'Material' }">
             <DxLookup :data-source="matList" display-expr="code" value-expr="code" />
           </DxColumn>
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" :editor-options="{ 'placeholder': 'tnom' }" />
 
           <DxColumn
             data-field="t_req"
@@ -194,6 +194,7 @@
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -278,9 +279,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" :width="100" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="100" :editor-options="{ 'placeholder': 'TP name' }" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" :width="200" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="200" :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -346,6 +347,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -354,7 +356,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
@@ -1118,6 +1120,7 @@ export default {
             if (res.status == 204) {
               this.FETCH_CML();
               this.FETCH_VIEW();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1127,7 +1130,7 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
+            
           });
       } else {
         this.$ons.notification.alert(
@@ -1160,6 +1163,7 @@ export default {
             if (res.status == 204) {
               this.FETCH_TP();
               this.FETCH_VIEW();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1169,7 +1173,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(

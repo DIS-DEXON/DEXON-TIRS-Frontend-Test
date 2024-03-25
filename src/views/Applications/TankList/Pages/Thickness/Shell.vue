@@ -236,14 +236,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="plate_no" caption="Plate No." :width="80" />
-          <DxColumn data-field="plate_desc" caption="Plate Desc." :width="80" />
+          <DxColumn data-field="plate_no" caption="Plate No." :width="80" :editor-options="{ 'placeholder': 'Plate no' }" sort-order="asc" />
+          <DxColumn data-field="plate_desc" caption="Plate Desc." :width="80" :editor-options="{ 'placeholder': 'Desc' }" />
           <DxColumn
             data-field="inservice_date"
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -333,8 +334,8 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP No." :width="100" />
-          <DxColumn data-field="tp_desc" caption="TP Desc." :width="200" />
+          <DxColumn data-field="tp_name" caption="TP Name" :width="100" :editor-options="{ 'placeholder': 'TP name' }" />
+          <DxColumn data-field="tp_desc" caption="TP Desc." :width="200" :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
@@ -399,6 +400,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -407,7 +409,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -1291,6 +1293,7 @@ export default {
               console.log("success");
               // this.FETCH_CML();
               // this.FETCH_LAST_INSP_THK();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1300,7 +1303,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -1332,6 +1334,7 @@ export default {
             console.log(res);
             if (res.status == 204) {
               this.FETCH_LAST_INSP_THK();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1341,7 +1344,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(

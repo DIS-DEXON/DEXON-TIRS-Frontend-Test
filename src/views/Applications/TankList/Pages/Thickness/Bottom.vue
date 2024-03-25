@@ -177,21 +177,14 @@
             mode="row"
           />
 
-          <DxColumn
-            data-field="bottom_no"
-            caption="Plate No."
-            sort-order="asc"
-            :allow-editing="false"
-            :width="80"
-          />
-          <DxColumn data-field="bottom_row" caption="Row" :width="80" />
-          <DxColumn data-field="bottom_column" caption="Column" :width="80" />
+          <DxColumn data-field="bottom_row" caption="Bottom row" :width="90" :editor-options="{ 'placeholder': 'Bottom row' }" />
+          <DxColumn data-field="bottom_column" caption="Bottom column" :width="90" :editor-options="{ 'placeholder': 'Bottom column' }" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" :editor-options="{ 'placeholder': 'tnom' }" />
 
           <DxColumn
             data-field="t_req"
-            caption="tretire (mm)"
+            caption="treq (mm)"
             format="#,##0.00"
             :allow-editing="false"
             :width="80"
@@ -203,6 +196,7 @@
             data-type="date"
             format="dd MMM yyyy"
             :width="150"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -287,9 +281,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP Name" :width="100" />
+          <DxColumn data-field="tp_name" caption="TP Name" :width="100" :editor-options="{ 'placeholder': 'TP name' }" />
 
-          <DxColumn data-field="tp_desc" caption="TP Desc" :width="200" />
+          <DxColumn data-field="tp_desc" caption="TP Desc" :width="200" :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -355,6 +349,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -363,7 +358,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />

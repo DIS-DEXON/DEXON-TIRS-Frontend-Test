@@ -158,9 +158,9 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn data-field="piping_no" caption="Piping no" sort-order="asc" :width="85" />
+          <DxColumn data-field="piping_no" caption="Piping no" sort-order="asc" :width="85" :editor-options="{ 'placeholder': 'Piping no' }" />
 
-          <DxColumn data-field="piping_name" caption="Piping name" :width="120" />
+          <DxColumn data-field="piping_name" caption="Piping name" :width="120" :editor-options="{ 'placeholder': 'Piping name' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -243,15 +243,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="cml_no" caption="CML no" sort-order="asc" :width="80" />
+          <DxColumn data-field="cml_no" caption="CML no" sort-order="asc" :width="80" :editor-options="{ 'placeholder': 'CML no' }" />
 
-          <DxColumn data-field="cml_name" caption="CML name" :width="80" />
+          <DxColumn data-field="cml_name" caption="CML name" :width="80" :editor-options="{ 'placeholder': 'CML name' }" />
 
-          <DxColumn data-field="part" caption="Part" :width="100" />
+          <DxColumn data-field="part" caption="Part" :width="100" :editor-options="{ 'placeholder': 'Part' }" />
 
-          <DxColumn data-field="nps" caption="NPS" :width="70" />
+          <DxColumn data-field="nps" caption="NPS" :width="70" :editor-options="{ 'placeholder': 'NPS' }" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="70" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="70" :editor-options="{ 'placeholder': 'tnom' }" />
 
           <DxColumn
             data-field="t_req"
@@ -261,13 +261,13 @@
             :width="70"
           />
 
-          <DxColumn data-field="P" caption="P (psi)" format="#,##0.00" :width="70" />
+          <DxColumn data-field="P" caption="P (psi)" format="#,##0.00" :width="70" :editor-options="{ 'placeholder': 'P' }" />
 
-          <DxColumn data-field="S" caption="S (psi)" format="#,##0.00" :width="80" />
+          <DxColumn data-field="S" caption="S (psi)" format="#,##0.00" :width="80" :editor-options="{ 'placeholder': 'S' }" />
 
-          <DxColumn data-field="E" caption="E" :width="60" />
+          <DxColumn data-field="E" caption="E" :width="60" :editor-options="{ 'placeholder': 'E' }" />
 
-          <DxColumn data-field="material_type" caption="Material type" :width="90">
+          <DxColumn data-field="material_type" caption="Material type" :width="100" :editor-options="{ 'placeholder': 'Material' }">
             <DxLookup :data-source="matList" display-expr="code" value-expr="code" />
           </DxColumn>
 
@@ -276,7 +276,8 @@
             caption="In-service date"
             data-type="date"
             format="dd MMM yyyy"
-            :width="100"
+            :width="120"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -366,8 +367,8 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP No." sort-order="asc" :width="100" />
-          <DxColumn data-field="tp_desc" caption="TP Desc." :width="150" />
+          <DxColumn data-field="tp_name" caption="TP name" sort-order="asc" :width="100" :editor-options="{ 'placeholder': 'TP name' }" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="150" :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
@@ -440,6 +441,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -448,7 +450,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->

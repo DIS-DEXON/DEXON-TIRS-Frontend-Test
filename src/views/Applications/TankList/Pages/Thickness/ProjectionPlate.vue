@@ -153,8 +153,22 @@
             :allow-deleting="true"
             :allow-adding="true"
             :use-icons="true"
-            mode="form"
-          />
+            mode="popup"
+          >
+            <DxPopup
+              :show-title="true"
+              :width="500"
+              :height="300"
+              title="Projection Plate TP"
+            />
+            <DxForm label-location="top">
+              <DxItem :col-count="2" :col-span="2" item-type="group">
+                <DxItem data-field="t_nom" :col-span="1" />
+                <DxItem data-field="inservice_date" :col-span="1" />
+                <DxItem data-field="tp_num" :col-span="1" />
+              </DxItem>
+            </DxForm>
+          </DxEditing>
 
           <DxColumn
             data-field="tp_no"
@@ -164,13 +178,12 @@
             :width="100"
           />
 
-          <DxColumn data-field="tp_num" caption="TP num" width="0" :allow-editing="editTpNum" />
-
-          <DxColumn
-            data-field="tp_desc"
-            caption="TP desc"
-            :allow-editing="editTpDesc"
-            :width="100"
+          <DxColumn 
+            data-field="tp_num" 
+            caption="Quantity of TP" 
+            width="0" 
+            :allow-editing="editTpNum" 
+            :editor-options="{ 'placeholder': 'Quantity of TP' }"
           />
 
           <DxColumn
@@ -179,6 +192,7 @@
             format="#,##0.00"
             :allow-editing="editTnom"
             :width="100"
+            :editor-options="{ 'placeholder': 'tnom' }"
           />
 
           <DxColumn
@@ -196,6 +210,7 @@
             format="dd MMM yyyy"
             :width="120"
             :allow-editing="true"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -260,6 +275,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -268,7 +284,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
@@ -454,7 +470,8 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxSelection
+  DxSelection,
+  DxPopup,
 } from "devextreme-vue/data-grid";
 
 export default {
@@ -481,7 +498,8 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     DxSelection,
-    VueTabsChrome
+    VueTabsChrome,
+    DxPopup,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
@@ -590,6 +608,9 @@ export default {
         });
     },
     initNewRowCML(e) {
+      this.editTpNum = true;
+      this.editTnom = true;
+      this.editInserviceDate = true;
       e.data.inservice_date = this.infoTank.inservice_date;
     },
     FETCH_TP() {
@@ -890,6 +911,7 @@ export default {
       this.editInserviceDate = true;
       this.editTpNum = false;
       this.editTreq = false;
+      this.visibleTpNo = true;
       // var a = document.querySelectorAll('input.dx-texteditor-input');
       // console.log(a);
       // a.filter

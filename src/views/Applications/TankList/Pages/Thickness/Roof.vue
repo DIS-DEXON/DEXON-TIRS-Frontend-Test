@@ -179,12 +179,12 @@
             caption="Roof row"
             sort-order="asc"
             :width="120"
-            alignment
+            :editor-options="{ 'placeholder': 'Roof row' }"
           />
 
-          <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" :width="120" />
+          <DxColumn data-field="roof_column" caption="Roof column" sort-order="asc" :width="120" :editor-options="{ 'placeholder': 'Roof column' }" />
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="100" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="100" :editor-options="{ 'placeholder': 'tnom' }" />
 
           <DxColumn
             data-field="t_req"
@@ -200,6 +200,7 @@
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
+            :editor-options="{ 'placeholder': 'Select date' }"
           />
 
           <DxColumn type="buttons">
@@ -285,9 +286,9 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP name" :width="100" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="100"  :editor-options="{ 'placeholder': 'TP name' }" />
 
-          <DxColumn data-field="tp_desc" caption="TP desc" :width="200" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="200"  :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_THK" /> -->
@@ -354,6 +355,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -361,7 +363,7 @@
               value-expr="id_inspection_record"
             />
           </DxColumn>
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150"  :editor-options="{ 'placeholder': 'tactual' }" />
 
           <DxColumn type="buttons">
             <DxButton name="edit" hint="Edit" icon="edit" />
@@ -1151,6 +1153,7 @@ export default {
             if (res.status == 204) {
               this.FETCH_CML();
               this.FETCH_VIEW();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1160,7 +1163,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -1193,6 +1195,7 @@ export default {
             if (res.status == 204) {
               this.FETCH_TP();
               this.FETCH_VIEW();
+              this.$ons.notification.alert("Upload Completed!");
             }
           })
           .catch(error => {
@@ -1202,7 +1205,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.$ons.notification.alert("Upload Completed!");
           });
       } else {
         this.$ons.notification.alert(
@@ -1454,6 +1456,7 @@ export default {
     padding: 20px;
     height: fit-content;
     width: auto;
+    overflow-y: auto;
   }
   .page-container-A3 {
     width: 100%;

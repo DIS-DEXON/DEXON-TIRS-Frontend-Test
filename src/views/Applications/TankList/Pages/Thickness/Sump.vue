@@ -159,9 +159,9 @@
             :use-icons="true"
             mode="row"
           />
-          <DxColumn data-field="sump_no" caption="Sump no" :width="80" />
+          <DxColumn data-field="sump_no" caption="Sump no" :width="100" :editor-options="{ 'placeholder': 'Sump no' }" />
 
-          <DxColumn data-field="sump_name" caption="Sump name" :width="120" />
+          <DxColumn data-field="sump_name" caption="Sump name" :width="100" :editor-options="{ 'placeholder': 'Sump name' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -244,15 +244,15 @@
             mode="row"
           />
 
-          <DxColumn data-field="cml_no" caption="CML no" :width="80" />
+          <DxColumn data-field="cml_no" caption="CML no" :width="80" :editor-options="{ 'placeholder': 'CML no' }" />
 
-          <DxColumn data-field="cml_name" caption="CML name" :width="80" />
+          <DxColumn data-field="cml_name" caption="CML name" :width="80" :editor-options="{ 'placeholder': 'CML name' }" />
 
-          <DxColumn data-field="location" caption="Location" :width="120">
+          <DxColumn data-field="location" caption="Location" :width="120" :editor-options="{ 'placeholder': 'Location' }">
             <DxLookup :data-source="location" display-expr="code" value-expr="code" />
           </DxColumn>
 
-          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" />
+          <DxColumn data-field="t_nom" caption="tnom (mm)" format="#,##0.00" :width="80" :editor-options="{ 'placeholder': 'tnom' }" />
 
           <DxColumn
             data-field="t_req"
@@ -268,6 +268,7 @@
             data-type="date"
             format="dd MMM yyyy"
             :width="120"
+            :editor-options="{ 'placeholder': 'Selete date' }"
           />
 
           <DxColumn type="buttons">
@@ -357,8 +358,8 @@
             mode="row"
           />
 
-          <DxColumn data-field="tp_name" caption="TP No." :width="100" />
-          <DxColumn data-field="tp_desc" caption="TP Desc." :width="150" />
+          <DxColumn data-field="tp_name" caption="TP name" :width="100" :editor-options="{ 'placeholder': 'TP name' }" />
+          <DxColumn data-field="tp_desc" caption="TP desc" :width="150" :editor-options="{ 'placeholder': 'Desc' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View TP" icon="search" :on-click="VIEW_UTM" /> -->
@@ -423,6 +424,7 @@
             sort-order="desc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
+            :editor-options="{ 'placeholder': 'Select date' }"
           >
             <DxLookup
               :data-source="inspRecordList"
@@ -431,7 +433,7 @@
             />
           </DxColumn>
 
-          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" />
+          <DxColumn data-field="t_actual" caption="tactual (mm)" format="#,##0.00" :width="150" :editor-options="{ 'placeholder': 'tactual' }" />
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
