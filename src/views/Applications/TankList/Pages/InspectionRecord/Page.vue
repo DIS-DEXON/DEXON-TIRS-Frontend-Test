@@ -22,8 +22,14 @@
           :allow-deleting="true"
           :allow-adding="true"
           :use-icons="true"
-          mode="form"
+          mode="popup"
         >
+          <DxPopup
+            :show-title="true"
+            :width="650"
+            :height="500"
+            title="Inspection Record"
+          />
           <DxForm label-location="top">
             <DxItem :col-count="2" :col-span="2" item-type="group">
               <DxItem data-field="inspection_date" :col-span="1" />
@@ -159,7 +165,8 @@ import {
   DxLookup,
   DxRequiredRule,
   //DxFormItem,
-  DxForm
+  DxForm,
+  DxPopup,
 } from "devextreme-vue/data-grid";
 
 //Structures
@@ -179,8 +186,10 @@ export default {
     DxItem,
     DxEditing,
     DxLookup,
-    DxRequiredRule
+    DxRequiredRule,
+    DxPopup,
     //DxFormItem,
+
   },
   created() {
     // this.$store.commit("UPDATE_CURRENT_INAPP", {
