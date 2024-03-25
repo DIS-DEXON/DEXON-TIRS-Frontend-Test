@@ -70,7 +70,7 @@
         caption="Y"
         header-cell-template="headerY"
         :allow-editing="false"
-        :width="70"
+        :width="80"
         alignment="center"
         format="#,##0"
       />
@@ -79,7 +79,7 @@
         caption="T"
         header-cell-template="headerT"
         :allow-editing="false"
-        :min-width="70"
+        :width="80"
         alignment="center"
         format="#,##0"
       />
@@ -89,7 +89,7 @@
         format="#,###0.000"
         header-cell-template="headerHhydro"
         :allow-editing="false"
-        :min-width="70"
+        :width="80"
       />
       <DxColumn
         data-field="height_of_course_prod_m"
@@ -97,7 +97,7 @@
         format="#,###0.000"
         header-cell-template="headerHprod"
         :allow-editing="false"
-        :width="70"
+        :width="80"
       />
       <DxColumn
         data-field="tmin_hydro_mm"
@@ -105,7 +105,7 @@
         format="#,##0.00"
         header-cell-template="headerTrHydro"
         :allow-editing="false"
-        :width="70"
+        :width="80"
       />
       <DxColumn
         data-field="tmin_prod_mm"
@@ -113,7 +113,7 @@
         format="#,##0.00"
         header-cell-template="headerTrProd"
         :allow-editing="false"
-        :width="70"
+        :width="80"
       />
       <!-- <DxColumn :width="80" caption="" cell-template="cell-button-set" /> -->
       <template #headerTnom>

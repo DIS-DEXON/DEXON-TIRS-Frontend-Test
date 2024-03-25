@@ -140,7 +140,7 @@
           </div>
         </div>
       </div>
-      <shellCourse v-if="tabCurrent == 'info'" style="grid-column: span 2" />
+      <shellCourse v-if="tabCurrent == 'info'" style="grid-column: span 2; margin-top: 5px;" />
     </div>
     <div v-if="tabCurrent == 'additional'">
       <infoAdditional :infoAddi="generalInfo" />

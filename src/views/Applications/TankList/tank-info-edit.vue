@@ -81,29 +81,25 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Installation Date:</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
               type="date"
               v-model="formData.installation_date"
               placeholder="Installation Date"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">First In-service Date:</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <DxDateBox
               :value="formSelect.now"
               type="date"
               v-model="formData.inservice_date"
               placeholder="In-service Date"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -118,6 +114,7 @@
               type="date"
               v-model="formData.last_inspection_date"
               placeholder="Previous Inspection Date"
+              display-format="dd MMM yyyy"
             />
           </div>
         </div>
@@ -127,9 +124,6 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Material Type:</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <DxSelectBox
               style="border: 0; font-size: 14px"
@@ -182,27 +176,18 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Tank Height (m):</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <input type="number" v-model="formData.tank_height_m" placeholder="Tank Height (m)" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Joint Efficiency:</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <input type="number" v-model="formData.joint_efficiency" placeholder="Joint Efficiency" />
           </div>
           <div class="input-set">
             <div class="label-box">
               <p class="label">Max. Liquid Level (m):</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <input type="number" v-model="formData.max_liquid_level_m" placeholder="Liquid Level (m)" />
           </div>
@@ -238,9 +223,6 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Diameter (m):</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <input type="number" v-model="formData.diameter_m" placeholder="Diameter (m)" />
           </div>
@@ -338,9 +320,6 @@
           <div class="input-set">
             <div class="label-box">
               <p class="label">Specific Gravity:</p>
-              <label class="star-label">
-                <i class="las la-asterisk"></i>
-              </label>
             </div>
             <input type="number" v-model="formData.sg_of_product" placeholder="Specific Gravity" />
           </div>
@@ -560,6 +539,7 @@
               type="date"
               v-model="formData.fei_last_inspected"
               placeholder="FEI Last Inspected"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -572,6 +552,7 @@
               type="date"
               v-model="formData.fei_last_coated"
               placeholder="FEI Last Coated"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -584,6 +565,7 @@
               type="date"
               v-model="formData.fei_last_cleaned"
               placeholder="FEI Last Coated"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -596,6 +578,7 @@
               type="date"
               v-model="formData.fei_recommended_next"
               placeholder="FEI Recommended Next"
+              display-format="dd MMM yyyy"
             />
           </div>
           <hr style="grid-column: span 3" />
@@ -610,6 +593,7 @@
               type="date"
               v-model="formData.fii_last_inspected"
               placeholder="FII Last Inspected"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -622,6 +606,7 @@
               type="date"
               v-model="formData.fii_last_coated"
               placeholder="FII Last Coated"
+              display-format="dd MMM yyyy"
             />
           </div>
           <div class="input-set">
@@ -634,6 +619,7 @@
               type="date"
               v-model="formData.fii_last_cleaned"
               placeholder="FII Last Cleaned"
+              display-format="dd MMM yyyy"
             />
           </div>
           <hr style="grid-column: span 3" />
@@ -898,15 +884,7 @@ export default {
       console.log(this.formData);
       if (
         this.formData.tag_no &&
-        this.formData.tank_no &&
-        this.formData.installation_date &&
-        this.formData.inservice_date &&
-        this.formData.mat_type &&
-        this.formData.tank_height_m &&
-        this.formData.max_liquid_level_m &&
-        this.formData.diameter_m &&
-        this.formData.joint_efficiency &&
-        this.formData.sg_of_product !== ""
+        this.formData.tank_no
       ) {
         this.$ons.notification.confirm("Confirm save?").then(res => {
           if (res == 1) {
