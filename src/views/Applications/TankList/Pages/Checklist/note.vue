@@ -268,7 +268,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       height: 50px;
-      background-color: #fbfbfb;
+      background-color: #140a4b;
       border-radius: 6px 6px 0 0;
       border: 1px solid #e6e6e6;
       border-width: 0 0 1px 0;
@@ -280,7 +280,7 @@ export default {
         font-style: normal;
         font-weight: 600;
         letter-spacing: -0.08px;
-        color: $web-font-color-black;
+        color: #fff;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
