@@ -203,6 +203,7 @@
                 :show-row-lines="true"
                 :row-alternation-enabled="false"
                 :word-wrap-enabled="true"
+                style="margin-bottom: 10px;"
               >
                 <DxFilterRow :visible="true" />
                 <DxHeaderFilter :visible="true" />
