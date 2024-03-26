@@ -210,7 +210,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 40px 50% 40px 40px 40px auto !important;
+  grid-template-columns: 40px 40px 30% 40px 40px 40px auto !important;
   .topic-label {
     grid-template-columns: 40px auto;
   }
@@ -229,15 +229,21 @@ export default {
   }
 
   .topic-item {
-    grid-template-columns: 40px 40px 50% 40px 40px 40px auto !important;
+    grid-template-columns: 40px 40px 30% 40px 40px 40px auto !important;
   }
 }
+
 .chk-radio {
   justify-content: center !important;
 }
 .form-item-value {
   display: grid !important;
   grid-template-columns: 70% auto !important;
+  
+  @media screen and (max-width: 1200px) {
+    display: flex !important;
+    flex-direction: column;
+  }
 }
 img {
   width: 18px;
@@ -246,9 +252,20 @@ img {
 }
 .item-wrapper {
   display: flex !important;
-  margin-left: 10px;
   width: 100%;
+  margin-left: 10px;
   justify-content: center !important;
   align-items: center;
+  @media screen and (max-width: 1200px) {
+    margin-left: 0px;
+    gap: 10px;
+    justify-content: flex-end !important;
+    margin: 10px 0;
+  }
+}
+.title {
+  @media screen and (max-width: 1200px) {
+    font-size: 11px !important;
+  }
 }
 </style>

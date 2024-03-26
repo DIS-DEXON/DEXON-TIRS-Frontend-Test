@@ -319,7 +319,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/style/main.scss";
 .sheet-body {
-  grid-template-columns: 40px 40% 40px 40px 40px 40px 40px 40px auto !important;
+  grid-template-columns: 40px 20% 40px 40px 40px 40px 40px 40px auto !important;
   .topic-label {
     grid-template-columns: 40px auto;
   }
@@ -337,7 +337,7 @@ export default {
   }
 
   .topic-item {
-    grid-template-columns: 40px 40% 40px 40px 40px 40px 40px 40px auto !important;
+    grid-template-columns: 40px 20% 40px 40px 40px 40px 40px 40px auto !important;
   }
 }
 .chk-radio {
@@ -354,10 +354,21 @@ img {
   margin-left: 10px;
   justify-content: center !important;
   align-items: center;
+  @media screen and (max-width: 1200px) {
+    margin-left: 0px;
+    gap: 10px;
+    justify-content: flex-end !important;
+    margin: 10px 0;
+  }
 }
 
 .form-item-value {
   display: grid !important;
   grid-template-columns: 70% auto !important;
+
+  @media screen and (max-width: 1200px) {
+    display: flex !important;
+    flex-direction: column;
+  }
 }
 </style>
