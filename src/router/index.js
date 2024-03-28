@@ -128,9 +128,19 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Thickness/Sump.vue'),
           },
           {
+            path: 'thickness/nozzle-dimension',
+            alias: 'Nozzle Dimension',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/NozzleDimension.vue'),
+          },
+          {
             path: 'thickness/critical-zone',
             alias: 'Sump',
             component: () => import('../views/Applications/TankList/Pages/Thickness/CriticalZone.vue'),
+          },
+          {
+            path: 'thickness/critical-zone-shell',
+            alias: 'Sump',
+            component: () => import('../views/Applications/TankList/Pages/Thickness/CriticalZoneShell.vue'),
           },
           {
             path: 'thickness/project-plate',

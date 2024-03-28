@@ -358,23 +358,33 @@ export default {
           },
           {
             id: 11,
+            code: "Critical Zone Shell",
+            path: "critical-zone-shell"
+          },
+          {
+            id: 12,
             code: "Projection Plate",
             path: "project-plate"
           },
           {
-            id: 12,
+            id: 13,
             code: "MFL - Bottom",
             path: "mfl-bottom"
           },
           {
-            id: 13,
+            id: 14,
             code: "MFL - Annular",
             path: "mfl-annular"
           },
           {
-            id: 14,
+            id: 15,
             code: "Sump",
             path: "sump"
+          },
+          {
+            id: 16,
+            code: "Nozzle Dimension",
+            path: "nozzle-dimension"
           }
         ],
         evaluation: [
