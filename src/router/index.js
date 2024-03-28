@@ -198,6 +198,16 @@ const routes = [
             component: () => import('../views/Applications/TankList/Pages/Evaluation/ShellPlumness.vue'),
           },
           {
+            path: 'summary-of-findings',
+            alias: 'Summary Of Findings',
+            component: () => import('../views/Applications/TankList/Pages/Report/SummaryOfFindings.vue'),
+          },
+          {
+            path: 'nde-summary',
+            alias: 'NDE Inspection Summary',
+            component: () => import('../views/Applications/TankList/Pages/Report/NDESummary.vue'),
+          },
+          {
             path: 'report',
             alias: 'Report',
             component: () => import('../views/Applications/TankList/Pages/Report/ReportTest.vue'),

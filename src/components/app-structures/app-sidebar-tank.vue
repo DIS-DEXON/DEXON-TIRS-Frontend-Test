@@ -118,6 +118,18 @@
         <label>Report</label>
         <hr />
       </div>
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/summary-of-findings'">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/report.png" />
+          <span>Summary Of Findings</span>
+        </v-ons-toolbar-button>
+      </router-link>
+      <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/nde-summary'">
+        <v-ons-toolbar-button class="item">
+          <img src="/img/icon_sidebar/tank/report.png" />
+          <span>NDE Summary</span>
+        </v-ons-toolbar-button>
+      </router-link>
       <router-link :to="'/tank/client/' + id_company + '/tag/' + id_tag + '/report'">
         <v-ons-toolbar-button class="item">
           <img src="/img/icon_sidebar/tank/report.png" />
