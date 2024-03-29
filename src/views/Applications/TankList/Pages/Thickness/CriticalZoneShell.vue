@@ -196,7 +196,7 @@
           />
 
           <DxColumn
-            data-field="t_req"
+            data-field="treq_mm"
             caption="treq (mm)"
             format="#,##0.00"
             :allow-editing="editTreq"
@@ -272,7 +272,7 @@
             data-field="id_inspection_record"
             caption="Inspection date"
             format="dd MMM yyyy"
-            sort-order="desc"
+            sort-order="asc"
             :width="150"
             :calculate-display-value="SET_FORMAT_DATE"
             :editor-options="{ 'placeholder': 'Select date' }"
@@ -509,7 +509,7 @@ export default {
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_TP();
-      // this.FETCH_VIEW();
+      this.FETCH_VIEW();
       this.FETCH_TANK_INFO();
     }
   },
@@ -660,13 +660,11 @@ export default {
       var id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
-        url: "projection-plate-thickness/projection-plate-thk-view-last-insp",
+        url: "critical-shell-thickness/critical-shell-thk-view-last-insp?id_tag=" + id_tag,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_tag: id_tag
-        }
+        
       })
         .then(res => {
           console.log("view:");
@@ -733,7 +731,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -758,7 +756,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -784,7 +782,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -815,7 +813,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -844,7 +842,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -871,7 +869,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
-            // this.FETCH_VIEW();
+            this.FETCH_VIEW();
           }
         })
         .catch(error => {
