@@ -111,9 +111,7 @@
             <div
               id="dropzone-external"
               class="flex-box"
-              :class="[isDropZoneActive
-        ? 'dx-theme-accent-as-border-color dropzone-active'
-        : 'dx-theme-border-color']"
+              :class="[isDropZoneActive ? 'dx-theme-accent-as-border-color dropzone-active' : 'dx-theme-border-color']"
             >
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
               <img
@@ -123,8 +121,8 @@
                 alt
               />
               <div id="dropzone-text" class="flex-box" v-if="textVisible">
-                <span>Drag & Drop the desired file</span>
-                <span>…or click to browse for a file instead.</span>
+                <span>Drop a file here to upload, or</span>
+                <span>click here to browse</span>
               </div>
               <DxProgressBar
                 id="upload-progress"
@@ -583,7 +581,7 @@ export default {
 
 //devextreme style
 #dropzone-external {
-  width: 300px;
+  width: 100%;
   height: 300px;
   background-color: rgba(183, 183, 183, 0.1);
   border-width: 2px;
