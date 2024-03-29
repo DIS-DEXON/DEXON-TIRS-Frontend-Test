@@ -509,7 +509,7 @@ export default {
     if (this.$store.state.status.server == true) {
       this.FETCH_INSP_RECORD();
       this.FETCH_TP();
-      this.FETCH_VIEW();
+      // this.FETCH_VIEW();
       this.FETCH_TANK_INFO();
     }
   },
@@ -616,14 +616,11 @@ export default {
     FETCH_TP() {
       var id_tag = this.$route.params.id_tag;
       axios({
-        method: "post",
-        url: "projection-plate-thickness/projection-plate-thk-tp-by-tank-id",
+        method: "get",
+        url: "critical-shell-thickness/critical-shell-thk-tp-by-tank-id?id_tag=" + id_tag,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_tag: id_tag
-        }
       })
         .then(res => {
           console.log("tp:");
@@ -641,14 +638,11 @@ export default {
       console.log(this.id_tp);
 
       axios({
-        method: "post",
-        url: "projection-plate-thickness/projection-plate-thk-data-by-tp",
+        method: "get",
+        url: "critical-shell-thickness/critical-shell-thk-data-by-tp-id?id_tp=" + this.id_tp,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_tp: this.id_tp
-        }
       })
         .then(res => {
           console.log("thk:");
@@ -729,7 +723,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "projection-plate-thickness/add-projection-plate-thk-tp",
+        url: "critical-shell-thickness/add-critical-shell-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -739,7 +733,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -754,7 +748,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "projection-plate-thickness/edit-projection-plate-thk-tp",
+        url: "critical-shell-thickness/edit-critical-shell-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -764,7 +758,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -778,7 +772,7 @@ export default {
       console.log(e);
       axios({
         method: "delete",
-        url: "projection-plate-thickness/delete-projection-plate-thk-tp",
+        url: "critical-shell-thickness/delete-critical-shell-thk-tp",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -790,7 +784,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -811,7 +805,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "post",
-        url: "projection-plate-thickness/add-projection-plate-thk-data",
+        url: "critical-shell-thickness/add-critical-shell-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -821,7 +815,7 @@ export default {
           console.log(res);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -840,7 +834,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "put",
-        url: "projection-plate-thickness/edit-projection-plate-thk-data",
+        url: "critical-shell-thickness/edit-critical-shell-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -850,7 +844,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_TP();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
@@ -865,7 +859,7 @@ export default {
       this.isLoading = true;
       axios({
         method: "delete",
-        url: "projection-plate-thickness/delete-projection-plate-thk-data",
+        url: "critical-shell-thickness/delete-critical-shell-thk-data",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -877,7 +871,7 @@ export default {
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.FETCH_THK();
-            this.FETCH_VIEW();
+            // this.FETCH_VIEW();
           }
         })
         .catch(error => {
