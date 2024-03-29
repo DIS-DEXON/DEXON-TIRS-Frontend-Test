@@ -16,8 +16,8 @@
       <div>
         <DxDataGrid
           id="data-table-cml"
-          key-expr="id_thk"
-          :data-source="mflBottom"
+          key-expr="id"
+          :data-source="nozzlesDimension"
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -27,9 +27,9 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_MFL"
-          @row-updated="UPDATE_MFL"
-          @row-removed="DELETE_MFL"
+          @row-inserted="CREATE_NOZZLES_DIMENSION"
+          @row-updated="UPDATE_NOZZLES_DIMENSION"
+          @row-removed="DELETE_NOZZLES_DIMENSION"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -43,21 +43,21 @@
           />
 
           <DxColumn caption="Item ID Shell Nozzles">
-            <DxColumn data-field="t_nom" :width="70" />
-            <DxColumn data-field="t_nom" :width="200" />
+            <DxColumn data-field="nozzle_name" caption="" :width="100" />
+            <DxColumn data-field="nozzle_desc" caption="" :width="200" />
           </DxColumn>
 
-          <DxColumn data-field="t_nom" caption="A Distance from Repad o Flange" :width="120" :editor-options="{ placeholder: 'tnom (mm)' }" />
+          <DxColumn data-field="a_value" caption="A Distance from Repad o Flange" :width="120" :editor-options="{ placeholder: 'tnom (mm)' }" />
 
-          <DxColumn data-field="metal_loss_top" caption="B Center of Nozzle to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="b_value" caption="B Center of Nozzle to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="C Length of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="c_value" caption="C Length of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="D Distance Repad to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="d_value" caption="D Distance Repad to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="E Width of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="e_value" caption="E Width of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
 
-          <DxColumn data-field="metal_loss_bottom" caption="Cover Thickness" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="cover_thk" caption="Cover Thickness" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -81,163 +81,6 @@
         </DxDataGrid>
       </div>
       <PageLoading v-if="isLoading == true" text="Loading. . ." />
-      <div class="table-wrapper" v-if="this.dataMRT!=null">
-        <div class="report-sheet">
-          <div class="report-container">
-            <div class="sheet-body">
-              <div class="section-label">
-                <label>Bottom Plate</label>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>RTbc</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_RTbc" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>RTip</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_RTip" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Or</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_Or" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>years</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>StPr</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_StPr" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm/yr</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>UPr</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_UPr" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm/yr</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Age of Tank</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_age_of_tank" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>years</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>MRT</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_MRT" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>tmin</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_tmin" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Result</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_result" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label></label>
-                </div>
-              </div>
-              <div class="form-item" style="grid-template-rows: 101px">
-                <div class="form-item-label">
-                  <label>Recommendation</label>
-                </div>
-                <div class="form-item-textarea">
-                  <textarea v-model="dataMRT.bt_recommedation" @focusout="UPDATE_MRT()" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div
-        class="list-page"
-        style="margin-top:20px"
-        v-if="this.dataMRT == null && this.id_inspection_record != ''"
-      >
-        <div class="center-box-wrapper">
-          <v-ons-toolbar-button v-on:click="CREATE_MRT()">
-            <i class="las la-plus"></i>
-            <span>Create New MRT Result</span>
-          </v-ons-toolbar-button>
-        </div>
-      </div> -->
-
-      <!-- <div class="app-instruction" style="margin-top:20px">
-        <appInstruction
-          title="Instruction"
-          desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
-        >
-          <ol>
-            <li>
-              Deviations (peaking) at vertical weld joints shall not exceed 13
-              mm (1/2 in.). Peaking at vertical weld joints shall be determined
-              using a horizontal sweep board 900 mm (36 in.) long. The sweep
-              board shall be made to the nominal radius of the tank.
-            </li>
-            <li>
-              Deviations (banding) at horizontal weld joints shall not exceed 13
-              mm (1/2 in.). Banding at horizontal weld joints shall be
-              determined using a straight edge vertical sweep board 900 mm (36
-              in.) long.
-            </li>
-            <li>
-              DFlat spots measured in the vertical plane shall not exceed 1/200
-              of the total height.
-            </li>
-          </ol>
-        </appInstruction>
-      </div> -->
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
@@ -309,7 +152,7 @@ export default {
   },
   data() {
     return {
-      mflBottom: {},
+      nozzlesDimension: {},
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -364,26 +207,27 @@ export default {
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       console.warn(this.id_inspection_record);
-      this.FETCH_MFL(this.current_view);
-      this.FETCH_MRT();
+      this.FETCH_NOZZLES_DIMENSION(this.current_view);
+      // this.FETCH_MRT();
     },
-    FETCH_MFL(i) {
+    FETCH_NOZZLES_DIMENSION() {
       this.isLoading = true;
       axios({
-        method: "post",
-        url: "mfl-bottom-thickness/get-mfl-bottom-data-by-insp-id",
+        method: "get",
+        url: "/NozzleDimension/get-by-id-insp-record?id_insp=" + this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_inspection_record: i.id_inspection_record
-        }
+        // data: {
+        //   id_inspection_record: i.id_inspection_record
+        // }
       })
         .then(res => {
-          console.log("mfl:");
+          console.log("insp: ", this.id_inspection_record);
+          console.log("nozzles:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.mflBottom = res.data;
+            this.nozzlesDimension = res.data;
           }
         })
         .catch(error => {
@@ -393,16 +237,17 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_MFL(e) {
+    CREATE_NOZZLES_DIMENSION(e) {
       this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_tag = id_tag;
-      e.data.id_thk = 0;
+      // var id_tag = this.$route.params.id_tag;
+      // e.data.id_tag = id_tag;
+      // e.data.id_thk = 0;
+      e.data.id = 0;
       e.data.id_inspection_record = this.id_inspection_record;
       console.log(e.data);
       axios({
         method: "post",
-        url: "mfl-bottom-thickness/add-mfl-bottom-data",
+        url: "/NozzleDimension",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -424,11 +269,11 @@ export default {
           this.isLoading = false;
         });
     },
-    UPDATE_MFL(e) {
+    UPDATE_NOZZLES_DIMENSION(e) {
       console.log(e.data);
       axios({
         method: "put",
-        url: "mfl-bottom-thickness/edit-mfl-bottom-data",
+        url: "/NozzleDimension/" + e.key,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -450,17 +295,17 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_MFL(e) {
+    DELETE_NOZZLES_DIMENSION(e) {
       console.log(e);
       axios({
         method: "delete",
-        url: "mfl-bottom-thickness/delete-mfl-bottom-data",
+        url: "/NozzleDimension/delete-nozzle-dimension?id=" + e.key,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_thk: e.key
-        }
+        // data: {
+        //   id_thk: e.key
+        // }
       })
         .then(res => {
           console.log(res.data);
@@ -491,83 +336,6 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    FETCH_MRT() {
-      this.isLoading = true;
-      axios({
-        method: "post",
-        url: "mrt/get-mrt",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: {
-          id_inspection_record: this.id_inspection_record,
-          id_tag: this.$route.params.id_tag
-        }
-      })
-        .then(res => {
-          console.log("MRT result:");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.dataMRT = res.data[0];
-            this.mrt_status = 200;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    CREATE_MRT() {
-      axios({
-        method: "post",
-        url: "mrt/add-mrt",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: {
-          id_inspection_record: this.id_inspection_record,
-          id_tag: this.$route.params.id_tag
-        }
-      })
-        .then(res => {
-          if (res.status == 200 && res.data) {
-            console.log("MRT Created");
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    UPDATE_MRT() {
-      axios({
-        method: "put",
-        url: "mrt/edit-mrt",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: this.dataMRT
-      })
-        .then(res => {
-          if (res.status == 200 && res.data) {
-            console.log("MRT Updated");
-            console.log(res.data);
-            this.FETCH_MRT();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    }
   }
 };
 </script>
