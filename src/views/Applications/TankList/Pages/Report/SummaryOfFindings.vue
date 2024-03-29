@@ -16,8 +16,8 @@
       <div>
         <DxDataGrid
           id="data-table-cml"
-          key-expr="id_thk"
-          :data-source="mflBottom"
+          key-expr="id_sum"
+          :data-source="summaryOfFinding"
           :element-attr="dataGridAttributes"
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
@@ -27,9 +27,9 @@
           :show-row-lines="true"
           :row-alternation-enabled="false"
           :word-wrap-enabled="true"
-          @row-inserted="CREATE_MFL"
-          @row-updated="UPDATE_MFL"
-          @row-removed="DELETE_MFL"
+          @row-inserted="CREATE_SOF"
+          @row-updated="UPDATE_SOF"
+          @row-removed="DELETE_SOF"
         >
           <DxFilterRow :visible="true" />
           <DxHeaderFilter :visible="true" />
@@ -42,49 +42,13 @@
             mode="row"
           />
 
-          <DxColumn data-field="plate_no" caption="Plate no" :width="70" :editor-options="{ placeholder: 'Plate No' }" />
-
-          <DxColumn data-field="t_nom" caption="tnom (mm)" :width="70" :editor-options="{ placeholder: 'tnom (mm)' }" />
-
-          <DxColumn data-field="metal_loss_top" caption="%Metal loss (top side)" :width="70" :editor-options="{ placeholder: 'Metal Loss' }" />
-
-          <DxColumn data-field="metal_loss_bottom" caption="%Metal loss (bottom side)" :width="70" :editor-options="{ placeholder: 'Metal Loss' }" />
-
-          <DxColumn
-            data-field="lowest_remaining_thk_top"
-            caption="Remaining thk top side (mm)"
-            :allow-editing="false"
-            :width="70"
-            :editor-options="{ placeholder: 'Thickness' }"
-          />
-
-          <DxColumn
-            data-field="lowest_remaining_thk_bottom"
-            caption="Remaining thk bottom side (mm)"
-            :allow-editing="false"
-            :width="70"
-            :editor-options="{ placeholder: 'Thickness' }"
-          />
-
-          <DxColumn data-field="defect_x" caption="X (mm)" :width="75" :editor-options="{ placeholder: 'X' }" />
-
-          <DxColumn data-field="defect_y" caption="Y (mm)" :width="75" :editor-options="{ placeholder: 'X' }" />
-
-          <DxColumn data-field="type_of_repair" caption="Type of repair" :editor-options="{ placeholder: 'Select' }">
-            <DxLookup :data-source="typeOfRepair" display-expr="code" value-expr="code" />
+          <DxColumn data-field="id_tank_part" caption="PART" :width="200" :editor-options="{ placeholder: 'Select' }">
+            <DxLookup :data-source="mdTankPart" display-expr="code" value-expr="id" />
           </DxColumn>
 
-          <DxColumn data-field="repair_width" caption="Width (mm)" :width="70" :editor-options="{ placeholder: 'Width' }" />
-
-          <DxColumn data-field="repair_length" caption="Length (mm)" :width="70" :editor-options="{ placeholder: 'Length' }" />
-
-          <DxColumn data-field="repair_thick" caption="Thick (mm)" :width="70" :editor-options="{ placeholder: 'Thick' }" />
-
-          <DxColumn data-field="repair_radius" caption="Radius (mm)" :width="70" :editor-options="{ placeholder: 'Radius' }" />
-
-          <DxColumn data-field="repair_status" caption="Repair status" :width="70" :editor-options="{ placeholder: 'Select' }" >
-            <DxLookup :data-source="repairStatus" display-expr="code" value-expr="code" />
-          </DxColumn>
+          <DxColumn data-field="item_no" caption="Item No." :width="200" :editor-options="{ placeholder: 'Item No.' }" />
+          
+          <DxColumn data-field="content" caption="Content" :min-width="200" :editor-options="{ placeholder: 'Content' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -108,163 +72,6 @@
         </DxDataGrid>
       </div>
       <PageLoading v-if="isLoading == true" text="Loading. . ." />
-      <div class="table-wrapper" v-if="this.dataMRT!=null">
-        <div class="report-sheet">
-          <div class="report-container">
-            <div class="sheet-body">
-              <div class="section-label">
-                <label>Bottom Plate</label>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>RTbc</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_RTbc" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>RTip</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_RTip" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Or</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_Or" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>years</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>StPr</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_StPr" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm/yr</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>UPr</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_UPr" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm/yr</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Age of Tank</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_age_of_tank" @focusout="UPDATE_MRT()" />
-                </div>
-                <div class="form-item-unit">
-                  <label>years</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>MRT</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_MRT" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>tmin</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_tmin" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label>mm</label>
-                </div>
-              </div>
-              <div class="form-item">
-                <div class="form-item-label">
-                  <label>Result</label>
-                </div>
-                <div class="form-item-value">
-                  <input v-model="dataMRT.bt_result" disabled />
-                </div>
-                <div class="form-item-unit">
-                  <label></label>
-                </div>
-              </div>
-              <div class="form-item" style="grid-template-rows: 101px">
-                <div class="form-item-label">
-                  <label>Recommendation</label>
-                </div>
-                <div class="form-item-textarea">
-                  <textarea v-model="dataMRT.bt_recommedation" @focusout="UPDATE_MRT()" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div
-        class="list-page"
-        style="margin-top:20px"
-        v-if="this.dataMRT == null && this.id_inspection_record != ''"
-      >
-        <div class="center-box-wrapper">
-          <v-ons-toolbar-button v-on:click="CREATE_MRT()">
-            <i class="las la-plus"></i>
-            <span>Create New MRT Result</span>
-          </v-ons-toolbar-button>
-        </div>
-      </div> -->
-
-      <!-- <div class="app-instruction" style="margin-top:20px">
-        <appInstruction
-          title="Instruction"
-          desc="Local deviations from the theoretical shape (for example, weld discontinuities and flat spots) shall be limited as follows."
-        >
-          <ol>
-            <li>
-              Deviations (peaking) at vertical weld joints shall not exceed 13
-              mm (1/2 in.). Peaking at vertical weld joints shall be determined
-              using a horizontal sweep board 900 mm (36 in.) long. The sweep
-              board shall be made to the nominal radius of the tank.
-            </li>
-            <li>
-              Deviations (banding) at horizontal weld joints shall not exceed 13
-              mm (1/2 in.). Banding at horizontal weld joints shall be
-              determined using a straight edge vertical sweep board 900 mm (36
-              in.) long.
-            </li>
-            <li>
-              DFlat spots measured in the vertical plane shall not exceed 1/200
-              of the total height.
-            </li>
-          </ol>
-        </appInstruction>
-      </div> -->
     </div>
     <SelectInspRecord v-if="this.id_inspection_record == ''" />
   </div>
@@ -333,10 +140,14 @@ export default {
       subpageName: "Thickness Messurement",
       subpageInnerName: "MFL - Bottom"
     });
+    if (this.$store.state.status.server == true) {
+      this.FETCH_MD_TANK_PART();
+      console.log("test");
+    }
   },
   data() {
     return {
-      mflBottom: {},
+      summaryOfFinding: {},
       inspRecordList: {},
       campaignList: {},
       isLoading: false,
@@ -352,13 +163,14 @@ export default {
       },
       pagePanelHiding: false,
       current_view: {},
-      typeOfRepair: [
-        { code: "Patch Plate" },
-        { code: "Recoating" },
-        { code: "Deposited weld" }
-      ],
+      mdTankPart: [],
+      // typeOfRepair: [
+      //   { code: "Patch Plate" },
+      //   { code: "Recoating" },
+      //   { code: "Deposited weld" }
+      // ],
       repairStatus: [{ code: "Yes" }, { code: "No" }],
-      dataMRT: null
+      dataSOF: null
     };
   },
   computed: {
@@ -387,30 +199,26 @@ export default {
       e.cancel = true;
     },
     VIEW_ITEM(item) {
-      this.dataMRT = null;
+      this.dataSOF = null;
       this.id_inspection_record = item.id_inspection_record;
       this.current_view = item;
       console.warn(this.id_inspection_record);
-      this.FETCH_MFL(this.current_view);
-      this.FETCH_MRT();
+      this.FETCH_SOF(this.current_view);
     },
-    FETCH_MFL(i) {
+    FETCH_SOF() {
       this.isLoading = true;
       axios({
-        method: "post",
-        url: "mfl-bottom-thickness/get-mfl-bottom-data-by-insp-id",
+        method: "get",
+        url: "/SumOfFindings/get-sum-of-findings-by-id-insp-record?id_insp=" + this.id_inspection_record,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
-        data: {
-          id_inspection_record: i.id_inspection_record
-        }
       })
         .then(res => {
-          console.log("mfl:");
+          console.log("SOF:");
           console.log(res.data);
           if (res.status == 200 && res.data) {
-            this.mflBottom = res.data;
+            this.summaryOfFinding = res.data;
           }
         })
         .catch(error => {
@@ -420,16 +228,14 @@ export default {
           this.isLoading = false;
         });
     },
-    CREATE_MFL(e) {
+    CREATE_SOF(e) {
       this.isLoading = true;
-      var id_tag = this.$route.params.id_tag;
-      e.data.id_tag = id_tag;
-      e.data.id_thk = 0;
+      e.data.id_sum = 0;
       e.data.id_inspection_record = this.id_inspection_record;
-      console.log(e.data);
+      console.log("data: ",e.data);
       axios({
         method: "post",
-        url: "mfl-bottom-thickness/add-mfl-bottom-data",
+        url: "/SumOfFindings",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -451,11 +257,11 @@ export default {
           this.isLoading = false;
         });
     },
-    UPDATE_MFL(e) {
+    UPDATE_SOF(e) {
       console.log(e.data);
       axios({
         method: "put",
-        url: "mfl-bottom-thickness/edit-mfl-bottom-data",
+        url: "/SumOfFindings/" + e.key,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -477,11 +283,11 @@ export default {
           this.isLoading = false;
         });
     },
-    DELETE_MFL(e) {
+    DELETE_SOF(e) {
       console.log(e);
       axios({
         method: "delete",
-        url: "mfl-bottom-thickness/delete-mfl-bottom-data",
+        url: "/SumOfFindings/" + e.key,
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -518,83 +324,29 @@ export default {
     DATE_FORMAT(d) {
       return moment(d).format("LL");
     },
-    FETCH_MRT() {
-      this.isLoading = true;
-      axios({
-        method: "post",
-        url: "mrt/get-mrt",
+    FETCH_MD_TANK_PART() {
+        axios({
+        method: "get",
+        url: "/MdTankPart",
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: {
-          id_inspection_record: this.id_inspection_record,
-          id_tag: this.$route.params.id_tag
-        }
-      })
-        .then(res => {
-          console.log("MRT result:");
-          console.log(res.data);
-          if (res.status == 200 && res.data) {
-            this.dataMRT = res.data[0];
-            this.mrt_status = 200;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    CREATE_MRT() {
-      axios({
-        method: "post",
-        url: "mrt/add-mrt",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: {
-          id_inspection_record: this.id_inspection_record,
-          id_tag: this.$route.params.id_tag
         }
       })
         .then(res => {
           if (res.status == 200 && res.data) {
-            console.log("MRT Created");
-            console.log(res.data);
-            this.VIEW_ITEM(this.current_view);
+            console.log("test api true");
+            this.mdTankPart = res.data;
+            console.log('mdTank ',res.data)
           }
         })
         .catch(error => {
           console.log(error);
+          console.log("test api false");
         })
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    UPDATE_MRT() {
-      axios({
-        method: "put",
-        url: "mrt/edit-mrt",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-        },
-        data: this.dataMRT
-      })
-        .then(res => {
-          if (res.status == 200 && res.data) {
-            console.log("MRT Updated");
-            console.log(res.data);
-            this.FETCH_MRT();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    }
+      }
   }
 };
 </script>
