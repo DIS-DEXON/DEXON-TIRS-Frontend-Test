@@ -99,8 +99,8 @@
               />
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
               <div id="dropzone-text" class="flex-box" v-if="textVisible">
-                <span>Drag & Drop the desired file</span>
-                <span>…or click to browse for a file instead.</span>
+                <span>Drop a file here to upload, or</span>
+                <span>click here to browse</span>
               </div>
               <DxProgressBar
                 id="upload-progress"
@@ -129,12 +129,11 @@
               @upload-started="onUploadStarted"
             />
             <DxButton
-              :width="120"
               text="Delete"
               type="normal"
               styling-mode="contained"
               @click="DEL_PIC(1)"
-              style="position:relative; left:90px; top:10px;"
+              style="display: flex; align-self:flex-end; margin-top: 10px;"
             />
           </div>
         </template>
@@ -157,8 +156,8 @@
               />
               <img id="dropzone-image" :src="imageSource_2" v-if="imageSource_2" alt />
               <div id="dropzone-text" class="flex-box" v-if="textVisible_2">
-                <span>Drag & Drop the desired file</span>
-                <span>…or click to browse for a file instead.</span>
+                <span>Drop a file here to upload, or</span>
+                <span>click here to browse</span>
               </div>
               <DxProgressBar
                 id="upload-progress"
@@ -187,12 +186,11 @@
               @value-changed="ON_DWG_CHANGE_2"
             />
             <DxButton
-              :width="120"
               text="Delete"
               type="normal"
               styling-mode="contained"
               @click="DEL_PIC(2)"
-              style="position:relative; left:90px; top:10px;"
+              style="display: flex; align-self:flex-end; margin-top: 10px;"
             />
           </div>
         </template>
@@ -871,7 +869,7 @@ export default {
 //devextreme style
 #dropzone-external,
 #dropzone-external-2 {
-  width: 300px;
+  width: 100%;
   height: 300px;
   background-color: rgba(183, 183, 183, 0.1);
   border-width: 2px;
