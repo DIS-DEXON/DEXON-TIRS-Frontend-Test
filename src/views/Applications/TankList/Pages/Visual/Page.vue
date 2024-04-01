@@ -44,6 +44,9 @@
               <DxItem data-field="file_path_2" :col-span="1" />
               <DxItem data-field="finding" editor-type="dxTextArea" :col-span="2" />
               <DxItem data-field="recommendation" editor-type="dxTextArea" :col-span="2" />
+              <DxItem data-field="id_tank_part" editor-type="dxSelectBox" :col-span="1" />
+              <DxItem data-field="for_sort" editor-type="dxTextBox" :col-span="1" />
+              <DxItem data-field="is_summary" editor-type="dxCheckBox" :col-span="1" />
             </DxItem>
           </DxForm>
         </DxEditing>
@@ -78,6 +81,30 @@
           :editor-options="recInputOptions"
           :visible="0"
         />
+
+        <DxColumn data-field="id_tank_part" caption="Select" :visible="0">
+          <DxLookup :data-source="mdTankPast" display-expr="code" value-expr="id" /> 
+        </DxColumn>
+        
+        <DxColumn
+          data-field="for_sort"
+          caption="FOR SORT "
+          cell-template="dxTextBOX"
+          :editor-options="forsortInputOptions"
+          :visible="0"
+        />
+
+        <DxColumn :visible="0" data-field="is_summary">
+          <DxCheckBox
+            
+            caption="FOR SORT "
+            cell-template="dxCheckBox"
+            :value="true"
+            
+          />
+        </DxColumn>
+        
+      
 
         <DxColumn caption="Picture Log" cell-template="picture-log-template" />
 
@@ -395,6 +422,7 @@ import DxButton from "devextreme-vue/button";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 import { DxProgressBar } from "devextreme-vue/progress-bar";
+// import DxSelectBox from "devextreme-vue/select-box";
 
 //DataGrid
 import {
@@ -407,7 +435,9 @@ import {
   DxExport,
   DxEditing,
   // DxPopup,
-  DxForm
+  DxForm,
+  // DxSelectBox
+  DxLookup
 } from "devextreme-vue/data-grid";
 
 //List
@@ -417,6 +447,7 @@ import {
 import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
 import { DxItem } from "devextreme-vue/form";
+import { DxCheckBox } from 'devextreme-vue/check-box';
 
 const fileUploaderRef = "fu";
 const imgRef = "img";
@@ -442,13 +473,17 @@ export default {
     DxItem,
     DxTextArea,
     // DxPopup,
-    DxButton
+    DxButton,
+    // DxSelectBox
+    DxLookup,
+    DxCheckBox
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
       subpageName: "Picture Log",
       subpageInnerName: null
     });
+    this.FETCH_MD();
   },
   data() {
     return {
@@ -493,8 +528,12 @@ export default {
       pagePanelHiding: false,
       findingInputOptions: { placeholder: "Finding" },
       recInputOptions: { placeholder: "Recommendation" },
+      forsortInputOptions: { placeholder: "FOR SORT" },
+      issummaryInputOptions: { placeholder: "IS SUMMARY" },
       is_changed_dwg_1: 0,
-      is_changed_dwg_2: 0
+      is_changed_dwg_2: 0,
+      mdTankPast: [],
+      testList: [{id : 1, code: 'test'}]
     };
   },
   computed: {
@@ -556,6 +595,9 @@ export default {
       formData.append("file_path_2", "");
       formData.append("created_by", user.id_account);
       formData.append("updated_by", user.id_account);
+      formData.append("id_tank_part", e.data.id_tank_part);
+      formData.append("for_sort", e.data.for_sort);
+      formData.append("is_summary", e.data.is_summary);
 
       axios({
         method: "post",
@@ -599,6 +641,10 @@ export default {
       formData.append("file_path_2", this.file_path_2_tmp ?? "");
       formData.append("created_by", e.data.created_by);
       formData.append("updated_by", user.id_account);
+      formData.append("id_tank_part", e.data.id_tank_part);
+      formData.append("for_sort", e.data.for_sort);
+      formData.append("is_summary", e.data.is_summary);
+
       axios({
         method: "put",
         url: "visual-report/" + e.data.id_visual,
@@ -824,6 +870,24 @@ export default {
     onUploadStarted_2() {
       this.imageSource_2 = "";
       this.progressVisible_2 = true;
+    },
+    FETCH_MD() {
+      axios({
+        method: "get",
+        url: "MdTankPart",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          if (res.status == 200) {
+            this.mdTankPast = res.data;
+            console.log("data ", res.data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -916,4 +980,5 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 </style>
