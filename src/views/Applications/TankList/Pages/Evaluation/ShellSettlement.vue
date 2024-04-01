@@ -552,6 +552,40 @@
                 </button>
               </div>
             </div>
+            <div class="upload-graph">
+              <!-- <chartShellSettlement1
+                :current_view="this.current_view"
+                :key="this.formData.multi.s_arc"
+              /> -->
+
+              <DxFileUploader
+                select-button-text="Select File"
+                label-text="or Drop an image here"
+                upload-mode="useForm"
+                :allowed-file-extensions="['.jpg', '.jpeg', '.gif', '.png']"
+                accept="image/*"
+                ready-to-upload-message="UPLOAD SUCCESSFULLY"
+                @value-changed="VALUE_CHANGE3"
+                v-if="chart_3==0"
+              />
+              <div
+                v-if="chart_3!=0"
+                style="margin-top: 10px; border: 1px solid #000; border-radius: 6px; position: relative;"
+              >
+                <img
+                  :src="baseURL + chart_img_3"
+                  width="100%"
+                  height="200"
+                  style="margin-top: 5px;"
+                />
+                <button
+                  style="position:absolute; top: 5px; right: 5px;"
+                  v-on:click="DELETE_CHART(3)"
+                >
+                  <i class="las la-trash"></i>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="app-instruction" style="margin-top: 20px">
             <appInstruction
@@ -1273,8 +1307,10 @@ export default {
       },
       chart_1: 0,
       chart_2: 0,
+      chart_3: 0,
       chart_img_1: "",
-      chart_img_2: ""
+      chart_img_2: "",
+      chart_img_3: "",
     };
   },
   computed: {
@@ -1326,6 +1362,7 @@ export default {
         this.FETCH_CALC();
         this.FETCH_CHART_1();
         this.FETCH_CHART_2();
+        this.FETCH_CHART_3();
       } else if (this.tabCurrent == "ad") {
         this.FETCH_ACCPT();
       } else {
@@ -1649,6 +1686,35 @@ export default {
           this.isLoading = false;
         });
     },
+    FETCH_CHART_3() {
+      console.log("==> FETCH: Chart 3");
+      var id = this.current_view.id_inspection_record;
+      this.isLoading = true;
+      axios({
+        method: "get",
+        url:
+          "chart-image-file/get-chart-image-file-by-ir-id-type?id=" +
+          id +
+          "&type=s_arc",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        }
+      })
+        .then(res => {
+          console.log("==> RES: Chart 3");
+          console.log(res.data);
+          if (res.status == 200 && res.data) {
+            this.chart_3 = res.data[0].id_chart;
+            this.chart_img_3 = res.data[0].file_path;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     UPLOAD_CHART(type) {
       var formData = new FormData();
       formData.append(
@@ -1673,6 +1739,7 @@ export default {
             console.log("UPLOAD COMPLETED");
             this.FETCH_CHART_1();
             this.FETCH_CHART_2();
+            this.FETCH_CHART_3();
           }
         })
         .catch(error => {
@@ -1705,6 +1772,16 @@ export default {
       this.file_name = e.value[0].name;
       this.UPLOAD_CHART("shell_settlement_2");
     },
+    VALUE_CHANGE3(e) {
+      //console.log("fileReader e data:");
+      //console.log(e);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.value[0]);
+      reader.onload = () => {};
+      this.file = e.value[0];
+      this.file_name = e.value[0].name;
+      this.UPLOAD_CHART("s_arc");
+    },
     DELETE_CHART(i) {
       //console.warn(i);
       this.$ons.notification.confirm("Confirm delete?").then(res => {
@@ -1712,8 +1789,10 @@ export default {
           var id = 0;
           if (i == 1) {
             id = this.chart_1;
-          } else {
+          } else if (i==2) {
             id = this.chart_2;
+          } else {
+            id = this.chart_3;
           }
           //console.warn(id);
           axios({
@@ -1731,10 +1810,12 @@ export default {
                 if (i == 1) {
                   this.chart_1 = 0;
                   //this.FETCH_CHART_1();
-                } else {
+                } else if (i == 2){
                   //this.FETCH_CHART_2();
                   this.chart_2 = 0;
-                }
+                } else {
+                  this.chart_3 = 0;
+                }  
               }
             })
             .catch(error => {
