@@ -39,8 +39,16 @@
             :allow-deleting="true"
             :allow-adding="IS_VISIBLE_ADD()"
             :use-icons="true"
-            mode="row"
-          />
+            mode="form"
+          >
+            <DxForm label-location="top">
+              <DxItem :col-count="2" :col-span="2" item-type="group">
+                <DxItem data-field="id_tank_part" :col-span="1" />
+                <DxItem data-field="item_no" :col-span="1" />
+                <DxItem data-field="content" editor-type="dxTextArea" :col-span="2" />
+              </DxItem>
+            </DxForm>
+          </DxEditing>
 
           <DxColumn data-field="id_tank_part" caption="PART" :width="200" :editor-options="{ placeholder: 'Select' }">
             <DxLookup :data-source="mdTankPart" display-expr="code" value-expr="id" />
@@ -48,13 +56,19 @@
 
           <DxColumn data-field="item_no" caption="Item No." :width="200" :editor-options="{ placeholder: 'Item No.' }" />
           
-          <DxColumn data-field="content" caption="Content" :min-width="200" :editor-options="{ placeholder: 'Content' }" />
+          <DxColumn data-field="content" caption="Content" :min-width="200" cell-template="dxTextArea" :editor-options="{ placeholder: 'Content' }" />
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
             <DxButton name="edit" hint="Edit" icon="edit" />
             <DxButton name="delete" hint="Delete" icon="trash" />
           </DxColumn>
+
+          <template #dxTextArea="{ data }">
+            <div>
+              <DxTextArea :height="100" :read-only="true" :value="data.value" />
+            </div>
+          </template>
 
           <!-- Configuration goes here -->
           <!-- <DxFilterRow :visible="true" /> -->
@@ -84,6 +98,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
+import DxTextArea from "devextreme-vue/text-area";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 //import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
@@ -104,13 +119,14 @@ import {
   DxButton,
   DxHeaderFilter,
   DxFilterRow,
-  DxLookup
+  DxLookup,
+  DxForm
 } from "devextreme-vue/data-grid";
 
 //FileUpload
 //import { DxFileUploader } from "devextreme-vue/file-uploader";
 //import { DxButton } from 'devextreme-vue/button';
-//import { DxItem } from "devextreme-vue/form";
+import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
 const imgRef = "img";
@@ -133,7 +149,10 @@ export default {
     DxHeaderFilter,
     DxFilterRow,
     InspectionRecordPanel,
-    DxLookup
+    DxLookup,
+    DxTextArea,
+    DxItem,
+    DxForm
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
