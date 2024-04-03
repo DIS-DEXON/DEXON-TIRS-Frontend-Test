@@ -297,24 +297,17 @@ export default {
       this.isLoadingFetch = true;
       console.clear();
       this.current_view = item;
-      console.log("records:");
-      console.log(item);
-      console.log("view item insp id :" + item.id_inspection_record);
+      console.log("id_inspection_record: " + item.id_inspection_record);
       this.id_inspection_record = item.id_inspection_record;
       this.data1.insp_campaign = item.campaign_desc.toUpperCase();
-      this.data1.insp_date = moment(item.inspection_date).format(
-        "DD MMM YYYY"
-      );
+      this.data1.insp_date = moment(item.inspection_date).format("DD MMM YYYY");
       this.data1.name_api_653 = item.name_api_653;
       this.data1.name_inspection_engineer = item.name_inspection_engineer;
       this.data1.name_ndt_examiner = item.name_ndt_examiner;
       this.data1.cert_no = item.cert_no;
       if (item.id_campaign == 1) {
-        //console.warn("external id=1");
         this.FETCH_CHECKLIST_ILAST_EX();
-      }
-      if (item.id_campaign == 2) {
-        //console.warn("Full id=2");
+      } else if (item.id_campaign == 2) {
         this.FETCH_CHECKLIST_ILAST_IN();
       }
       this.FETCH_MARKUP_ANNULAR(this.current_view);
@@ -329,8 +322,6 @@ export default {
       this.FETCH_MARKUP_SHELLNZ(this.current_view);
       this.FETCH_MARKUP_PROJECTION_PLATE(this.current_view);
       this.FETCH_IMAGE();
-      //console.warn(item.id_campaign);
-
       this.FETCH_CHECKLIST_GENERIC();
       this.FETCH_CHECKLIST_BY_LAW();
       this.FETCH_TANK_INFO();
@@ -370,7 +361,6 @@ export default {
       const request = await fetch(
         "/report_template/Inspection Report Template.docx"
       );
-      //console.log(request);
       this.theTemplate = await request.blob();
     },
     async getTemplateByLaw() {
@@ -378,7 +368,6 @@ export default {
       const request = await fetch(
         "/report_template/EXTERNAL TANK INSPECTION REPORT.docx"
       );
-      //console.log(request);
       this.theTemplate = await request.blob();
     },
     async getTemplateGeneral() {
@@ -386,7 +375,6 @@ export default {
       const request = await fetch(
         "/report_template/General_Report_Template.docx"
       );
-      //console.log(request);
       this.theTemplate = await request.blob();
       return this.theTemplate;
     },
@@ -522,7 +510,6 @@ export default {
       return moment(d).format("LL");
     },
     DATE_FOR_SHELL_THK(obj) {
-      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         const t_nom = obj[i].t_nom;
@@ -537,7 +524,6 @@ export default {
       }
     },
     DATE_FOR_ROOF_THK(obj) {
-      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         this.data1.roof_thk[i].inspection_date = moment(date).format(
@@ -546,7 +532,6 @@ export default {
       }
     },
     DATE_FOR_ROOFNZ_THK(obj) {
-      //console.log("DATE FOR DOCX:!");
       for (let i = 0; i < obj.length; i++) {
         const date = obj[i].inspection_date;
         this.data1.roofnz_thk[i].inspection_date = moment(date).format(
@@ -859,9 +844,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG annular:");
-          //console.log(res.data);
-
+          console.log("FETCH_MARKUP_ANNULAR:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.annular = res.data;
             this.getImgDWG_Annular();
@@ -871,7 +854,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_BOTTOM(item) {
@@ -887,8 +869,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG bottom:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_BOTTOM:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.bottom = res.data;
             this.getImgDWG_Bottom();
@@ -898,9 +879,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          // this.isLoading = false;
-          // console.log("DWG bottom:");
-          // console.log(this.drawingList);
         });
     },
     FETCH_MARKUP_COIL(item) {
@@ -916,8 +894,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG coil:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_COIL:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.coil = res.data;
             this.getImgDWG_Coil();
@@ -927,7 +904,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_CRITICAL_ZONE(item) {
@@ -943,8 +919,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG CRITICAL:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_CRITICAL_ZONE:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.critical_zone = res.data;
             this.getImgDWG_Critical_zone();
@@ -954,7 +929,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_PIPING(item) {
@@ -970,8 +944,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG PIPING:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_PIPING:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.piping = res.data;
             this.getImgDWG_Piping();
@@ -981,7 +954,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_ROOF(item) {
@@ -997,8 +969,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG Roof:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_ROOF:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof = res.data;
             this.getImgDWG_Roof();
@@ -1008,7 +979,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_ROOFNZ(item) {
@@ -1024,8 +994,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG Roof nozzle:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_ROOFNZ:",res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.roof_nozzle = res.data;
             this.getImgDWG_Roofnz();
@@ -1035,7 +1004,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_SUMP(item) {
@@ -1051,8 +1019,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG SUMP:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_SUMP:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.sump = res.data;
             this.getImgDWG_Sump();
@@ -1062,7 +1029,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_SHELL(item) {
@@ -1078,8 +1044,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG SHELL:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_SHELL:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell = res.data;
             this.getImgDWG_Shell();
@@ -1089,7 +1054,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_SHELLNZ(item) {
@@ -1105,8 +1069,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG SHELL NOZZLE:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_SHELLNZ:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.shell_nozzle = res.data;
             this.getImgDWG_Shellnz();
@@ -1116,7 +1079,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MARKUP_PROJECTION_PLATE(item) {
@@ -1132,8 +1094,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("DWG PROJECTION PLATE:");
-          //console.log(res.data);
+          console.log("FETCH_MARKUP_PROJECTION_PLATE:", res.data);
           if (res.status == 200 && res.data) {
             this.drawingList.projection_plate = res.data;
             this.getImgDWG_Projection_plate();
@@ -1143,7 +1104,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_CHECKLIST_ILAST_EX() {
@@ -1159,10 +1119,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("checklist ilast ex:");
-          //console.log(res);
+          console.log("FETCH_CHECKLIST_ILAST_EX:", res.data);
           if (res.status == 200 && res.data) {
-            //console.log(res.data);
             this.data1.checklist = res.data;
           }
         })
@@ -1170,7 +1128,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_CHECKLIST_GENERIC() {
@@ -1184,10 +1141,8 @@ export default {
         },
       })
         .then(res => {
-          console.log("checklist generic :");
-          //console.log(res);
+          console.log("FETCH_CHECKLIST_GENERIC:", res.data);
           if (res.status == 200 && res.data) {
-            //console.log(res.data);
             this.data1.checklist_generic = res.data;
           }
         })
@@ -1195,7 +1150,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_CHECKLIST_ILAST_IN() {
@@ -1211,10 +1165,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("checklist ilast in:");
-          //console.log(res);
+          console.log("FETCH_CHECKLIST_ILAST_IN:", res.data);
           if (res.status == 200 && res.data) {
-            //console.log(res.data);
             this.data1.checklist = res.data;
           }
         })
@@ -1222,7 +1174,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_CHECKLIST_BY_LAW() {
@@ -1238,10 +1189,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("checklist by law I:");
-          //console.log(res);
+          console.log("FETCH_CHECKLIST_BY_LAW_1:", res.data);
           if (res.status == 200 && res.data) {
-            //console.log(res.data);
             this.data1.checklist_by_law_i = res.data;
           }
         })
@@ -1249,7 +1198,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
       axios({
         method: "post",
@@ -1262,10 +1210,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("checklist by law II:");
-          //console.log(res);
+          console.log("FETCH_CHECKLIST_BY_LAW_2:", res.data);
           if (res.status == 200 && res.data) {
-            //console.log(res.data);
             this.data1.checklist_by_law_ii = res.data;
             this.data1.checklist_by_law_ii.forEach(item => {
               item.sub_header.forEach(subItem => {
@@ -1278,12 +1224,10 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_TANK_INFO() {
       const id_tag = this.$route.params.id_tag;
-      //console.log("id_insp:" + id_insp_record);
       axios({
         method: "post",
         url: "tank-info/tank-info-by-id",
@@ -1292,15 +1236,11 @@ export default {
         },
         data: {
           id_tag: id_tag
-          //id_inspection_record: 18
         }
       })
         .then(res => {
-          console.log("tank info:");
-          //console.log(res);
+          console.log("FETCH_TANK_INFO:", res.data);
           if (res.status == 200) {
-            console.log(res.data);
-            //this.data1 = res.data[0];
             this.data1.company_name = res.data[0].company_name;
             this.data1.overview_img_path = res.data[0].overview_img_path;
             this.data1.name_plate_img_path = res.data[0].name_plate_img_path;
@@ -1331,71 +1271,41 @@ export default {
             this.data1.component_drain = res.data[0].component_drain;
             this.data1.component_vents = res.data[0].component_vents;
             this.data1.component_manways = res.data[0].component_manways;
-            this.data1.component_floating_roof =
-              res.data[0].component_floating_roof;
+            this.data1.component_floating_roof = res.data[0].component_floating_roof;
             this.data1.component_type = res.data[0].component_type;
-            this.data1.component_material_and_style =
-              res.data[0].component_material_and_style;
-            this.data1.component_primary_seal =
-              res.data[0].component_primary_seal;
-            this.data1.component_secondary_seal =
-              res.data[0].component_secondary_seal;
-            this.data1.component_anti_rotation_device =
-              res.data[0].component_anti_rotation_device;
+            this.data1.component_material_and_style = res.data[0].component_material_and_style;
+            this.data1.component_primary_seal = res.data[0].component_primary_seal;
+            this.data1.component_secondary_seal = res.data[0].component_secondary_seal;
+            this.data1.component_anti_rotation_device = res.data[0].component_anti_rotation_device;
             this.data1.component_gauge_pipe = res.data[0].component_gauge_pipe;
-            this.data1.fei_last_inspected = moment(
-              res.data[0].fei_last_inspected
-            ).format("DD MMM YYYY");
-            this.data1.fei_last_coated = moment(
-              res.data[0].fei_last_coated
-            ).format("DD MMM YYYY");
-            this.data1.fei_last_cleaned = moment(
-              res.data[0].fei_last_cleaned
-            ).format("DD MMM YYYY");
-            this.data1.fei_recommended_next = moment(
-              res.data[0].fei_recommended_next
-            ).format("DD MMM YYYY");
-            this.data1.fii_last_inspected = moment(
-              res.data[0].fii_last_inspected
-            ).format("DD MMM YYYY");
-            this.data1.fii_last_coated = moment(
-              res.data[0].fii_last_coated
-            ).format("DD MMM YYYY");
-            this.data1.fii_last_cleaned = moment(
-              res.data[0].fii_last_cleaned
-            ).format("DD MMM YYYY");
-            this.data1.fii_recommended_next = moment(
-              res.data[0].fii_recommended_next
-            ).format("DD MMM YYYY");
+            this.data1.fei_last_inspected = moment(res.data[0].fei_last_inspected).format("DD MMM YYYY");
+            this.data1.fei_last_coated = moment(res.data[0].fei_last_coated).format("DD MMM YYYY");
+            this.data1.fei_last_cleaned = moment(res.data[0].fei_last_cleaned).format("DD MMM YYYY");
+            this.data1.fei_recommended_next = moment(res.data[0].fei_recommended_next).format("DD MMM YYYY");
+            this.data1.fii_last_inspected = moment(res.data[0].fii_last_inspected).format("DD MMM YYYY");
+            this.data1.fii_last_coated = moment(res.data[0].fii_last_coated).format("DD MMM YYYY");
+            this.data1.fii_last_cleaned = moment(res.data[0].fii_last_cleaned).format("DD MMM YYYY");
+            this.data1.fii_recommended_next = moment(res.data[0].fii_recommended_next).format("DD MMM YYYY");
             this.data1.coating_ext_bottom = res.data[0].coating_ext_bottom;
             this.data1.coating_ext_shell = res.data[0].coating_ext_shell;
-            this.data1.coating_ext_fixed_roof =
-              res.data[0].coating_ext_fixed_roof;
-            this.data1.coating_ext_floating_roof =
-              res.data[0].coating_ext_floating_roof;
+            this.data1.coating_ext_fixed_roof = res.data[0].coating_ext_fixed_roof;
+            this.data1.coating_ext_floating_roof = res.data[0].coating_ext_floating_roof;
             this.data1.coating_int_bottom = res.data[0].coating_int_bottom;
             this.data1.coating_int_shell = res.data[0].coating_int_shell;
-            this.data1.coating_int_fixed_roof =
-              res.data[0].coating_int_fixed_roof;
-            this.data1.coating_int_floating_roof =
-              res.data[0].coating_int_floating_roof;
-            this.data1.desc_cond_visual_finding =
-              res.data[0].desc_cond_visual_finding;
+            this.data1.coating_int_fixed_roof = res.data[0].coating_int_fixed_roof;
+            this.data1.coating_int_floating_roof = res.data[0].coating_int_floating_roof;
+            this.data1.desc_cond_visual_finding = res.data[0].desc_cond_visual_finding;
             this.data1.misc_pressure = res.data[0].misc_pressure;
             this.data1.misc_temp = res.data[0].misc_temp;
             this.data1.misc_venting = res.data[0].misc_venting;
             this.data1.misc_flow_rate = res.data[0].misc_flow_rate;
             this.data1.misc_suction_line = res.data[0].misc_suction_line;
             this.data1.misc_receipt = res.data[0].misc_receipt;
-            this.data1.installation_date = moment(
-              res.data[0].installation_date
-            ).format("DD MMM YYYY");
+            this.data1.installation_date = moment(res.data[0].installation_date).format("DD MMM YYYY");
             this.data1.roof_type = res.data[0].roof_type;
             this.data1.applicable_status = res.data[0].applicable_status;
-            this.data1.bottom_nominal_thk_mm =
-              res.data[0].bottom_nominal_thk_mm;
-            this.data1.annular_nominal_thk_mm =
-              res.data[0].annular_nominal_thk_mm;
+            this.data1.bottom_nominal_thk_mm = res.data[0].bottom_nominal_thk_mm;
+            this.data1.annular_nominal_thk_mm = res.data[0].annular_nominal_thk_mm;
             this.data1.roof_nominal_thk_mm = res.data[0].roof_nominal_thk_mm;
             this.getImgTankInfo();
           }
@@ -1404,7 +1314,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
           const temp = this.data1.inservice_date;
           this.data1.inservice_date = moment(temp).format("DD MMM YYYY");
         });
@@ -1424,10 +1333,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("FETCH EVAL MRT :");
-          //console.log(res);
+          console.log("FETCH_EVAL_MRT:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.mrt = res.data;
             this.data1.mrt[0].an_tmin = this.data1.mrt[0].an_tmin.toFixed(2);
           }
@@ -1436,7 +1343,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_SHELL_POINT() {
@@ -1454,10 +1360,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("eval shell point:");
-          //console.log(res);
+          console.log("FETCH_SHELL_POINT:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shell_settlement_point = res.data;
             this.NUMBER_FORMAT_SHELL_SETTLEMENT_POINT(this.data1.shell_settlement_point);
           }
@@ -1466,7 +1370,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_FORMAT_SHELL_SETTLEMENT_POINT(obj) {
@@ -1474,11 +1377,9 @@ export default {
         const maximum_space = obj[i].maximum_space;
         const cumulative = obj[i].cumulative;
         const relative_value = obj[i].relative_value;
-
         this.data1.shell_settlement_point[i].maximum_space = maximum_space.toLocaleString();
         this.data1.shell_settlement_point[i].cumulative = cumulative.toLocaleString();
         this.data1.shell_settlement_point[i].relative_value = relative_value.toLocaleString();
-
       }
     },
     FETCH_SHELL_API() {
@@ -1496,30 +1397,21 @@ export default {
         }
       })
         .then(res => {
-          console.log("eval shell api:");
-          //console.log(res);
+          console.log("FETCH_SHELL_API:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shell_settlement_api = res.data;
             const temp = this.data1.shell_settlement_api;
             this.NUMBER_ROUNDING_SHELL_SETTLE_API(temp);
-            this.data1.shell_settlement_api_sum.push(
-              this.data1.shell_settlement_api[0]
-            );
+            this.data1.shell_settlement_api_sum.push(this.data1.shell_settlement_api[0]);
             this.data1.shell_settlement_api_sum[0].syy.toFixed(2);
-            this.data1.shell_settlement_api_sum[0].r_2 = this.data1.shell_settlement_api_sum[0].r_2.toFixed(
-              2
-            );
-            this.data1.shell_settlement_api_sum[0].sse = this.data1.shell_settlement_api_sum[0].sse.toFixed(
-              2
-            );
+            this.data1.shell_settlement_api_sum[0].r_2 = this.data1.shell_settlement_api_sum[0].r_2.toFixed(2);
+            this.data1.shell_settlement_api_sum[0].sse = this.data1.shell_settlement_api_sum[0].sse.toFixed(2);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_EVAL_BUCKLING() {
@@ -1537,10 +1429,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("EVAL SHELL BUCKLING :");
-          //console.log(res);
+          console.log("FETCH_EVAL_BUCKLING:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shell_buckling = res.data;
             this.NUMBER_SHELL_BUCKING(this.data1.shell_buckling);
           }
@@ -1549,7 +1439,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_SHELL_BUCKING(obj) {
@@ -1578,8 +1467,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("EVAL LOCAL DEVIATION :");
-          //console.log(res);
+          console.log("FETCH_EVAL_DEVIATION:", res.data);
           if (res.status == 200) {
             this.data1.local_deviation = res.data;
             this.NUMBER_DIVIATION(this.data1.local_deviation);
@@ -1589,7 +1477,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_DIVIATION(obj) {
@@ -1606,7 +1493,6 @@ export default {
       }
     },
     FETCH_EVAL_ROUNDNESS() {
-      //const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
       axios({
         method: "get",
@@ -1617,10 +1503,8 @@ export default {
         data: null
       })
         .then(res => {
-          console.log("EVAL ROUNDNESS :");
-          //console.log(res);
+          console.log("FETCH_EVAL_ROUNDNESS:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.roundness = res.data;
             this.NUMBER_ROUNDNESS(this.data1.roundness);
           }
@@ -1629,7 +1513,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_ROUNDNESS(obj) {
@@ -1644,7 +1527,6 @@ export default {
       }
     },
     FETCH_EVAL_GROUNDING() {
-      //const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
       axios({
         method: "post",
@@ -1657,10 +1539,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("EVAL GROUNDING :");
-          //console.log(res);
+          console.log("FETCH_EVAL_GROUNDING:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.grounding = res.data;
           }
         })
@@ -1668,11 +1548,9 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_EVAL_GROUNDING_DETAIL() {
-      //const id_tag = this.$route.params.id_tag;
       const id_insp = this.id_inspection_record;
       axios({
         method: "post",
@@ -1685,10 +1563,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("EVAL GROUNDING DETAL :");
-          //console.log(res);
+          console.log("FETCH_EVAL_GROUNDING_DETAIL:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.grounding_detail = res.data;
           }
         })
@@ -1696,7 +1572,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_EVAL_BOTTOM_SETTLEMENT() {
@@ -1715,8 +1590,7 @@ export default {
         data: {}
       })
         .then(res => {
-          console.log("EVAL BOTTOM SETTLEMENT :");
-          //console.log(res);
+          console.log("FETCH_EVAL_BOTTOM_SETTLEMENT:", res.data);
           if (res.status == 200) {
             console.log(res.data);
             this.data1.eval_bottom = res.data;
@@ -1727,7 +1601,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_BOTTOM_SET(obj) {
@@ -1745,7 +1618,6 @@ export default {
       axios({
         method: "post",
         url: "plumbness/get-plumbness",
-
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
         },
@@ -1755,10 +1627,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("plumness:");
-          //console.log(res);
+          console.log("FETCH_PLUMBNESS:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.plumbness = res.data;
           }
         })
@@ -1766,7 +1636,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_BOTTOM_THK() {
@@ -1784,10 +1653,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("BOTTOM THK:");
-          //console.log(res);
+          console.log("FETCH_BOTTOM_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.bottom_thk = res.data;
             const temp = this.data1.bottom_thk;
             this.DATE_FOR_BOTTOM_THK(temp);
@@ -1798,7 +1665,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_CRITICAL_THK() {
@@ -1816,10 +1682,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("CRITICAL THK:");
-          //console.log(res);
+          console.log("FETCH_CRITICAL_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.critical_thk = res.data;
             const temp = this.data1.critical_thk;
             this.DATE_FOR_CRIT_ZONE(temp);
@@ -1830,7 +1694,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ROOF_THK() {
@@ -1848,10 +1711,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("ROOF THK:");
-          //console.log(res);
+          console.log("FETCH_ROOF_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.roof_thk = res.data;
             const s = this.data1.roof_thk;
             this.DATE_FOR_ROOF_THK(s);
@@ -1863,7 +1724,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ROOFNZ_THK() {
@@ -1881,10 +1741,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("ROOFNZ THK:");
-          //console.log(res);
+          console.log("FETCH_ROOFNZ_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.roofnz_thk = res.data;
             const s = this.data1.roofnz_thk;
             this.DATE_FOR_ROOFNZ_THK(s);
@@ -1896,7 +1754,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_SHELL_THK() {
@@ -1914,10 +1771,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("SHELL THK:");
-          //console.log(res);
+          console.log("FETCH_SHELL_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shell_thk = res.data;
             const s = this.data1.shell_thk;
             this.DATE_FOR_SHELL_THK(s);
@@ -1927,7 +1782,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_SHELLNZ_THK() {
@@ -1945,21 +1799,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("SHELLNZ THK:");
-          //console.log(res);
+          console.log("FETCH_SHELLNZ_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shellnz_thk = res.data;
             this.NUMBER_ROUNDING_SHELLNZ_THK(this.data1.shellnz_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ANNULAR_THK() {
@@ -1977,10 +1826,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("ANNULAR THK:");
-          //console.log(res);
+          console.log("FETCH_ANNULAR_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.annular_thk = res.data;
             this.NUMBER_ROUNDING_ANNULAR_THK(this.data1.annular_thk);
           }
@@ -1989,7 +1836,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MFLANNULAR_THK() {
@@ -2005,21 +1851,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("MFL ANNULAR THK:");
-          //console.log(res);
+          console.log("FETCH_MFLANNULAR_THK:");
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.mfl_annular = res.data;
             this.NUMBER_ROUNDING_MFLANNULAR_THK(this.data1.mfl_annular);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_MFLBOTTOM_THK() {
@@ -2035,21 +1876,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("MFL BOTTOM THK:");
-          //console.log(res);
+          console.log("FETCH_MFLBOTTOM_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.mfl_bottom = res.data;
             this.NUMBER_ROUNDING_MFLBOTTOM_THK(this.data1.mfl_bottom);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_PIPING_THK() {
@@ -2067,21 +1903,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("PIPING THK:");
-          //console.log(res);
+          console.log("FETCH_PIPING_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.piping_thk = res.data;
             this.NUMBER_ROUNDING_PIPING_THK(this.data1.piping_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_PROJECTION_PLATE_THK() {
@@ -2100,21 +1931,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("PROJECTION THK:");
-          //console.log(res);
+          console.log("FETCH_PROJECTION_PLATE_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.projection_thk = res.data;
             this.NUMBER_ROUNDING_PROJECTION_THK(this.data1.projection_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_SUMP_THK() {
@@ -2132,21 +1958,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("PIPING THK:");
-          //console.log(res);
+          console.log("FETCH_SUMP_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.sump_thk = res.data;
             this.NUMBER_ROUNDING_SUMP_THK(this.data1.sump_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_COIL_THK() {
@@ -2164,21 +1985,16 @@ export default {
         }
       })
         .then(res => {
-          console.log("PIPING THK:");
-          //console.log(res);
+          console.log("FETCH_COIL_THK:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.coil_thk = res.data;
             this.NUMBER_ROUNDING_COIL_THK(this.data1.coil_thk);
-            // const s = res.data.shell_thk;
-            // this.DATE_FOR_DOCX(s);
           }
         })
         .catch(error => {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_SHELL_COURSE() {
@@ -2194,10 +2010,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("SHELL COURSE:");
-          //console.log(res);
+          console.log("FETCH_SHELL_COURSE:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.shell_course = res.data;
             this.NUMBER_ROUNDING_SHELL_COURSE(this.data1.shell_course)
           }
@@ -2206,7 +2020,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     NUMBER_ROUNDING_SHELL_COURSE(obj) {
@@ -2231,10 +2044,8 @@ export default {
         }
       })
         .then(res => {
-          console.log("TANK COURSE:");
-          //console.log(res);
+          console.log("FETCH_TANK_COURSE:", res.data);
           if (res.status == 200) {
-            //console.log(res.data);
             this.data1.tank_course = res.data;
             this.NUMBER_ROUNDING_TANK_COURSE(this.data1.tank_course);
           }
@@ -2243,7 +2054,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_GRAPH_IMG() {
@@ -2258,8 +2068,7 @@ export default {
         data: {}
       })
         .then(res => {
-          console.log("FETCH GRAPH :");
-          //console.log(res.data);
+          console.log("FETCH_GRAPH_IMG:", res.data);
           if (res.status == 200 && res.data) {
             this.graph = res.data;
             console.log(this.graph);
@@ -2270,7 +2079,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_REPAIR_RECORD() {
@@ -2285,7 +2093,7 @@ export default {
         data: {}
       })
         .then(res => {
-          console.log("repair record:");
+          console.log("FETCH_REPAIR_RECORD:", res.data);
           console.log(res.data);
           if (res.status == 200) {
             this.repairList = res.data;
@@ -2296,7 +2104,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ATTACHMENTS() {
@@ -2311,7 +2118,7 @@ export default {
         data: {}
       })
         .then(res => {
-          console.log("FETCH attachments :");
+          console.log("FETCH_ATTACHMENTS:", res.data);
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.attachmentsList = res.data;
@@ -2322,7 +2129,6 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ADDITIONAL_ATTACHMENTS() {
@@ -2337,7 +2143,7 @@ export default {
         data: {}
       })
         .then(res => {
-          console.log("FETCH additional attachments :");
+          console.log("FETCH_ADDITIONAL_ATTACHMENTS:", res.data);
           console.log(res.data);
           if (res.status == 200 && res.data) {
             this.additionalList = res.data;
@@ -2348,12 +2154,9 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
         });
     },
     FETCH_ACCPT() {
-      //console.log("==> FETCH: Acceptance Determination");
-      //this.isLoading = true;
       const id_tag = this.$route.params.id_tag;
       axios({
         method: "post",
@@ -2367,10 +2170,9 @@ export default {
         }
       })
         .then(res => {
-          console.log("FETCH ACCEPTANCE: ");
+          console.log("FETCH_ACCPT:", res.data);
           //console.log(res.data[0]);
           if (res.status == 200 && res.data) {
-            //console.log("==> SUCCESS: Acceptance Determination");
             this.data1.accept = res.data;
             this.NUMBER_ROUNDING_ACCEPT(this.data1.accept[0]);
           }
@@ -2389,7 +2191,6 @@ export default {
       console.log("readFile");
       console.log(e);
       let reader = new FileReader();
-
       reader.readAsDataURL(e);
       reader.onload = () => {
         return reader.result;
@@ -2408,8 +2209,7 @@ export default {
         }
       })
         .then(res => {
-          //console.log("GET IMAGE");
-          //console.log(res.data);
+          console.log("FETCH_IMAGE", res.data);
           if (res.status == 200 && res.data) {
             this.imgpath = res.data;
             this.getImageData();
@@ -2419,28 +2219,18 @@ export default {
           console.log(error);
         })
         .finally(() => {
-          //this.isLoading = false;
-          // console.log("image:");
-          // console.log(this.imgpath);
         });
     },
     alertTimeOUT() {
       this.isLoading = false;
-      this.$ons.notification.alert(
-        "Something went wrong ! Please try again later"
-      );
+      this.$ons.notification.alert("Something went wrong ! Please try again later");
     },
     async getImageData() {
-      console.log("create image obj:");
-      //const imagePath = "https://localhost:5001/wwwroot/attach/visual_report/MicrosoftTeams-image%20(28).png";
       const o = this.imgpath;
-      //console.log(encodeURI(this.baseURL + o[1].file_path_2));
-
       for (let j = 0; j < o.length; j++) {
         const response = await fetch(
           encodeURI(this.baseURL + o[j].file_path_1)
         );
-
         const imageData = await response.arrayBuffer();
         const mimeType = response.headers.get("content-type");
         const imageBlob = new Blob([imageData], { type: mimeType });
