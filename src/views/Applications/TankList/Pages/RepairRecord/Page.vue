@@ -131,9 +131,7 @@
             <div
               id="dropzone-external"
               class="flex-box"
-              :class="[isDropZoneActive
-                ? 'dx-theme-accent-as-border-color dropzone-active'
-                : 'dx-theme-border-color']"
+              :class="[isDropZoneActive ? 'dx-theme-accent-as-border-color dropzone-active' : 'dx-theme-border-color']"
             >
               <img id="dropzone-image" :src="imageSource" v-if="imageSource" alt />
               <img
@@ -143,8 +141,8 @@
                 alt
               />
               <div id="dropzone-text" class="flex-box" v-if="textVisible">
-                <span>Drag & Drop the desired file</span>
-                <span>…or click to browse for a file instead.</span>
+                <span>Drop a file here to upload, or</span>
+                <span>click here to browse</span>
               </div>
               <DxProgressBar
                 id="upload-progress"
@@ -172,9 +170,13 @@
               @upload-started="upload_start"
               @value-changed="ON_REPAIR_CHANGE"
             />
-            <div class="delete-image-button" v-on:click="DELETE_IMAGE()">
-              Delete
-            </div>
+            <DxButton
+              text="Delete"
+              type="normal"
+              styling-mode="contained"
+              @click="DELETE_IMAGE()"
+              style="display: flex; align-self: flex-start; margin-top: 10px; width: 100px; justify-content: center;"
+            />
           </div>
         </template>
 
@@ -235,7 +237,7 @@ import {
 
 //FileUpload
 import { DxFileUploader } from "devextreme-vue/file-uploader";
-//import { DxButton } from 'devextreme-vue/button';
+import { DxButton } from 'devextreme-vue/button';
 import { DxItem } from "devextreme-vue/form";
 
 const fileUploaderRef = "fu";
@@ -259,7 +261,7 @@ export default {
     DxForm,
     DxItem,
     //DxPopup,
-    //DxButton,
+    DxButton,
     // innerPageName,
     InspectionRecordPanel,
     SelectInspRecord,
@@ -597,7 +599,7 @@ export default {
 }
 //devextreme style
 #dropzone-external {
-  width: 300px;
+  width: 100%;
   height: 300px;
   background-color: rgba(183, 183, 183, 0.1);
   border-width: 2px;
@@ -632,5 +634,12 @@ export default {
 #upload-progress {
   display: flex;
   margin-top: 10px;
+}
+
+.flex-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

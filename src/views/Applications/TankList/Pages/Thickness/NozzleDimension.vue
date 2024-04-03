@@ -22,7 +22,7 @@
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
-          :column-hiding-enabled="true"
+          :column-hiding-enabled="false"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -42,22 +42,76 @@
             mode="row"
           />
 
-          <DxColumn caption="Item ID Shell Nozzles">
-            <DxColumn data-field="nozzle_name" caption="" :width="100" />
-            <DxColumn data-field="nozzle_desc" caption="" :width="200" />
-          </DxColumn>
 
-          <DxColumn data-field="a_value" caption="A Distance from Repad o Flange" :width="120" :editor-options="{ placeholder: 'tnom (mm)' }" />
+          <DxColumn data-field="nozzle_name" caption="Nozzle No" :width="100" :editor-options="{ placeholder: 'Nozzle No' }" alignment="center" />
+          
+          <DxColumn data-field="nozzle_desc" caption="Descripttion" :width="200" :editor-options="{ placeholder: 'Descripttion' }" alignment="center" />
+     
+          <DxColumn data-field="a_value" caption="A Distance from Repad to Flange" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerA" />
+          <template #headerA>
+            <div>
+              A
+              <br />
+              Distance from Repad to Flange
+              <br />
+              (mm)
+            </div>
+          </template>
 
-          <DxColumn data-field="b_value" caption="B Center of Nozzle to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="b_value" caption="B Center of Nozzle to Bottom" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerB" />
+          <template #headerB>
+            <div>
+              B
+              <br />
+              Center of Nozzle to Bottom
+              <br />
+              (mm)
+            </div>
+          </template>
 
-          <DxColumn data-field="c_value" caption="C Length of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="c_value" caption="C Length of Repad" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerC" />
+          <template #headerC>
+            <div>
+              C
+              <br />
+              Length of Repad
+              <br />
+              (mm)
+            </div>
+          </template>
 
-          <DxColumn data-field="d_value" caption="D Distance Repad to Bottom" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="d_value" caption="D Distance Repad to Bottom" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerD" />
+          <template #headerD>
+            <div>
+              D
+              <br />
+              Distance Repad to Bottom
+              <br />
+              (mm)
+            </div>
+          </template>
 
-          <DxColumn data-field="e_value" caption="E Width of Repad" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="e_value" caption="E Width of Repad" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerE" />
+          <template #headerE>
+            <div>
+              E
+              <br />
+              Width of Repad
+              <br />
+              (mm)
+            </div>
+          </template>
 
-          <DxColumn data-field="cover_thk" caption="Cover Thickness" :width="120" :editor-options="{ placeholder: 'Metal Loss' }" />
+          <DxColumn data-field="cover_thk" caption="Cover Thickness" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerCover" />
+          <template #headerCover>
+            <div>
+              Cover
+              <br />
+              Thickness
+              <br />
+              (mm)
+            </div>
+          </template>
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
