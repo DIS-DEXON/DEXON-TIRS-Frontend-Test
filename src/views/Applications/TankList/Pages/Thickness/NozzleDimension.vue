@@ -45,7 +45,7 @@
 
           <DxColumn data-field="nozzle_name" caption="Nozzle No" :width="100" :editor-options="{ placeholder: 'Nozzle No' }" alignment="center" />
           
-          <DxColumn data-field="nozzle_desc" caption="Descripttion" :width="200" :editor-options="{ placeholder: 'Descripttion' }" alignment="center" />
+          <DxColumn data-field="nozzle_desc" caption="Description" :width="200" :editor-options="{ placeholder: 'Descripttion' }" alignment="center" />
      
           <DxColumn data-field="a_value" caption="A Distance from Repad to Flange" :width="120" :editor-options="{ placeholder: 'Value' }" alignment="center" header-cell-template="headerA" />
           <template #headerA>

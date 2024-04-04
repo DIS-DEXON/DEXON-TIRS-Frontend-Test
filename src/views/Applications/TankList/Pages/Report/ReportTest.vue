@@ -257,6 +257,7 @@ export default {
         sump_thk: [],
         mfl_bottom: [],
         mfl_annular: [],
+        nozzle_dimension: [],
         shell_course: [{}],
         tank_course: [],
         shell_settlement_point: [],
@@ -280,7 +281,26 @@ export default {
         addi_annular: [],
         addi_critical: [],
         addi_projection: [],
-        addi_sump: []
+        addi_sump: [],
+        summary_of_findings: [],
+        summary_of_findings_foundation: [],
+        summary_of_findings_bottom: [],
+        summary_of_findings_critical_zone: [],
+        summary_of_findings_fixed_roof: [],
+        summary_of_findings_floating_roof: [],
+        summary_of_findings_nozzle: [],
+        summary_of_findings_secondary_containment: [],
+        summary_of_findings_miscellaneous: [],
+        nde_summary: [],
+        nde_summary_nde_inspection: [],
+        nde_summary_significant_findings: [],
+        nde_summary_bottom_examination: [],
+        nde_summary_critical_zone_examination: [],
+        nde_summary_shell_readings: [],
+        nde_summary_fixed_roof_readings: [],
+        nde_summary_floating_roof_readings: [],
+        nde_summary_nozzle: [],
+        nde_summary_sump_readings: [],
       }
     };
   },
@@ -343,6 +363,7 @@ export default {
       this.FETCH_SUMP_THK();
       this.FETCH_PROJECTION_PLATE_THK();
       this.FETCH_PIPING_THK();
+      this.FETCH_NOZZLES_DIMENSION();
       this.FETCH_GRAPH_IMG();
       this.FETCH_EVAL_MRT();
       this.FETCH_EVAL_BUCKLING();
@@ -354,6 +375,7 @@ export default {
       this.FETCH_REPAIR_RECORD();
       this.FETCH_ATTACHMENTS();
       this.FETCH_ADDITIONAL_ATTACHMENTS();
+      this.FETCH_SUMMARY_OF_FINDINGS();
       this.FETCH_ACCPT(); //FETCH_ACCPT need to be last to Fetch, loading screen flag is in here
     },
     async getTemplate() {
@@ -515,12 +537,16 @@ export default {
         const t_nom = obj[i].t_nom;
         const t_req = obj[i].t_req;
         const t_actual = obj[i].t_actual;
+        const scr = obj[i].scr;
+        const rl = obj[i].rl;
         this.data1.shell_thk[i].inspection_date = moment(date).format(
           "DD MMM YYYY"
         );
         this.data1.shell_thk[i].t_nom = t_nom.toFixed(2);
         this.data1.shell_thk[i].t_req = t_req.toFixed(2);
         this.data1.shell_thk[i].t_actual = t_actual.toFixed(2);
+        this.data1.shell_thk[i].scr = scr.toFixed(2);
+        this.data1.shell_thk[i].rl = rl.toFixed(2);
       }
     },
     DATE_FOR_ROOF_THK(obj) {
@@ -1997,6 +2023,27 @@ export default {
         .finally(() => {
         });
     },
+    FETCH_NOZZLES_DIMENSION() {
+      const id_insp = this.id_inspection_record;
+      axios({
+        method: "get",
+        url: "/NozzleDimension/get-by-id-insp-record?id_insp=" + id_insp,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+      })
+        .then(res => {
+          console.log('FETCH_NOZZLES_DIMENSION:', res.data);
+          if (res.status == 200 && res.data) {
+            this.data1.nozzle_dimension = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+        });
+    },
     FETCH_SHELL_COURSE() {
       const id_tag = this.$route.params.id_tag;
       axios({
@@ -2027,8 +2074,10 @@ export default {
       for (let i = 0; i < obj.length; i++) {
         const tnom = obj[i].t_nom_plate_mm;
         const h = obj[i].height_of_course_m;
+        const stress = obj[i].stress_prod;
         this.data1.shell_course[i].t_nom_plate_mm = tnom.toFixed(2);
         this.data1.shell_course[i].height_of_course_m = h.toFixed(2);
+        this.data1.shell_course[i].stress_prod = stress.toFixed(2);
       }
     },
     FETCH_TANK_COURSE() {
@@ -2195,6 +2244,102 @@ export default {
       reader.onload = () => {
         return reader.result;
       };
+    },
+    FETCH_SUMMARY_OF_FINDINGS() {
+      axios({
+        method: "get",
+        url: "/SumOfFindings/get-sum-of-findings-by-id-insp-record?id_insp=" + this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+      })
+        .then(res => {
+          console.log('FETCH_SUMMARY_OF_FINDINGS:', res.data);
+          if (res.status == 200 && res.data) {
+            this.data1.summary_of_findings = res.data;
+            this.data1.summary_of_findings_foundation  = res.data.filter(item => {
+              return item.id_tank_part == 1
+            });
+            this.data1.summary_of_findings_bottom  = res.data.filter(item => {
+              return item.id_tank_part == 2
+            });
+            this.data1.summary_of_findings_critical_zone  = res.data.filter(item => {
+              return item.id_tank_part == 3
+            });
+            this.data1.summary_of_findings_shell  = res.data.filter(item => {
+              return item.id_tank_part == 4
+            });
+            this.data1.summary_of_findings_fixed_roof  = res.data.filter(item => {
+              return item.id_tank_part == 5
+            });
+            this.data1.summary_of_findings_floating_roof  = res.data.filter(item => {
+              return item.id_tank_part == 6
+            });
+            this.data1.summary_of_findings_nozzle  = res.data.filter(item => {
+              return item.id_tank_part == 7
+            });
+            this.data1.summary_of_findings_secondary_containment  = res.data.filter(item => {
+              return item.id_tank_part == 8
+            });
+            this.data1.summary_of_findings_miscellaneous = res.data.filter(item => {
+              return item.id_tank_part == 9
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    FETCH_NDE_SUMMARY() {
+      axios({
+        method: "get",
+        url: "/SumOfNDE/get-sum-of-nde-by-id-insp-record?id_insp=" + this.id_inspection_record,
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+        },
+      })
+        .then(res => {
+          console.log('FETCH_SUMMARY_OF_FINDINGS:', res.data);
+          if (res.status == 200 && res.data) {
+            this.data1.nde_summary = res.data;
+            this.data1.nde_summary_nde_inspection  = res.data.filter(item => {
+              return item.id_nde_type == 1
+            });
+            this.data1.nde_summary_significant_findings  = res.data.filter(item => {
+              return item.id_nde_type == 2
+            });
+            this.data1.nde_summary_bottom_examination  = res.data.filter(item => {
+              return item.id_nde_type == 3
+            });
+            this.data1.nde_summary_critical_zone_examination  = res.data.filter(item => {
+              return item.id_nde_type == 4
+            });
+            this.data1.nde_summary_shell_readings  = res.data.filter(item => {
+              return item.id_nde_type == 5
+            });
+            this.data1.nde_summary_fixed_roof_readings  = res.data.filter(item => {
+              return item.id_nde_type == 6
+            });
+            this.data1.nde_summary_floating_roof_readings  = res.data.filter(item => {
+              return item.id_nde_type == 7
+            });
+            this.data1.nde_summary_nozzle  = res.data.filter(item => {
+              return item.id_nde_type == 8
+            });
+            this.data1.nde_summary_sump_readings  = res.data.filter(item => {
+              return item.id_nde_type == 9
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     FETCH_IMAGE() {
       const id_insp = this.id_inspection_record;
