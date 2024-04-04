@@ -22,7 +22,7 @@
           :selection="{ mode: 'single' }"
           :hover-state-enabled="true"
           :allow-column-reordering="true"
-          :column-hiding-enabled="true"
+          :column-hiding-enabled="false"
           :show-borders="true"
           :show-row-lines="true"
           :row-alternation-enabled="false"
@@ -45,7 +45,7 @@
                 <DxItem :col-count="2" :col-span="2" item-type="group">
                   <DxItem data-field="id_nde_type" :col-span="1" />
                   <DxItem data-field="item_no" :col-span="1" />
-                  <DxItem data-field="content" editor-type="dxTextArea" :col-span="2" />
+                  <DxItem data-field="content" :col-span="2" />
                 </DxItem>
             </DxForm>
           </DxEditing>
@@ -54,9 +54,15 @@
             <DxLookup :data-source="ndeType" display-expr="code" value-expr="id" />
           </DxColumn>
 
-          <DxColumn data-field="item_no" caption="Item No." :width="200" :editor-options="{ placeholder: 'Item No.' }" />
+          <DxColumn data-field="item_no" caption="Item No" :width="100" :editor-options="{ placeholder: 'Item No' }" alignment="center" />
 
-          <DxColumn data-field="content" caption="Content" :min-width="200" cell-template="dxTextArea" :editor-options="{ placeholder: 'Content' }" />
+          <DxColumn data-field="content" caption="Content" :min-width="200" cell-template="dxTextArea" :editor-options="{ placeholder: 'Content' }" >
+            <DxFormItem
+              :col-span="2"
+              :editor-options="{ height: 200 }"
+              editor-type="dxTextArea"
+            />
+          </DxColumn>
 
           <DxColumn type="buttons">
             <!-- <DxButton hint="View CML" icon="search" :on-click="VIEW_CML" /> -->
@@ -66,7 +72,8 @@
 
           <template #dxTextArea="{ data }">
             <div>
-              <DxTextArea :height="100" :read-only="true" :value="data.value" />
+              <!-- <DxTextArea :height="100" :read-only="true" :value="data.value" \ /> -->
+              <textarea :value="data.value" style="width: 100%; min-height: 100px; border: none; font-size: 12px;"></textarea>
             </div>
           </template>
 
@@ -98,7 +105,7 @@ import moment from "moment";
 
 //Components
 import "devextreme/dist/css/dx.light.css";
-import DxTextArea from "devextreme-vue/text-area";
+import "devextreme-vue/text-area";
 import InspectionRecordPanel from "@/views/Applications/TankList/Pages/inspection-record-panel.vue";
 import SelectInspRecord from "@/components/select-insp-record.vue";
 //import appInstruction from "@/components/app-structures/app-instruction-dialog.vue";
@@ -120,7 +127,8 @@ import {
   DxHeaderFilter,
   DxFilterRow,
   DxLookup,
-  DxForm
+  DxForm,
+  DxFormItem,
 } from "devextreme-vue/data-grid";
 
 //FileUpload
@@ -147,13 +155,13 @@ export default {
     DxFilterRow,
     InspectionRecordPanel,
     DxLookup,
-    DxTextArea,
     DxItem,
-    DxForm
+    DxForm,
+    DxFormItem,
   },
   created() {
     this.$store.commit("UPDATE_CURRENT_PAGENAME", {
-      subpageName: "Thickness Messurement",
+      subpageName: "Report",
       subpageInnerName: "NDE Inspection Summary"
     });
     this.FETCH_NDE_TYPE();
